@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 200 44"
+     width="400" height="88">
+
+    <!-- Red rounded-square background -->
+    <rect x="0" y="0" width="32" height="32" rx="4" fill="#D90000"/>
+
+    <!-- Cloud + monitor icon, unchanged from your original -->
+    <g transform="translate(16,16)
+                 scale(1.4)
+                 translate(-12,-16)
+                 translate(0,2)">
+        <path
+                d="M3 15a4 4 0 014-4h1.26a6 6 0 0111.48 0H17a4 4 0 110 8H7a4 4 0 01-4-4z"
+                fill="none"
+                stroke="#fff"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+        />
+        <rect x="8.5"  y="15" width="1" height="3" fill="#fff"/>
+        <rect x="11.5" y="13" width="1" height="5" fill="#fff"/>
+        <rect x="14.5" y="15" width="1" height="3" fill="#fff"/>
+        <circle cx="12" cy="21" r="1" fill="#fff"/>
+    </g>
+
+    <!-- BIG “MONTY” to the right -->
+    <text
+            x="40"
+    y="28"
+    fill="#fff"
+    font-size="27"
+    font-family="Arial, Helvetica, sans-serif"
+    font-weight="700"
+    letter-spacing="1"
+    text-anchor="start"
+    >
+    MONTY
+</text>
+        </svg>

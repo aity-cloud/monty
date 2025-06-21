@@ -79,8 +79,8 @@ func run(ctx *Context) (runErr error) {
 	var chartRepoOpts *helm.RepositoryOptsArgs
 	if conf.UseLocalCharts {
 		var ok bool
-		if opniCrdChart, ok = findLocalChartDir("opni-crd"); !ok {
-			return errors.New("could not find local opni-crd chart")
+		if opniCrdChart, ok = findLocalChartDir("monty-crd"); !ok {
+			return errors.New("could not find local monty-crd chart")
 		}
 		if opniPrometheusCrdChart, ok = findLocalChartDir("opni-prometheus-crd"); !ok {
 			return errors.New("could not find local opni-prometheus-crd chart")
@@ -92,13 +92,13 @@ func run(ctx *Context) (runErr error) {
 		chartRepoOpts = &helm.RepositoryOptsArgs{
 			Repo: StringPtr(conf.ChartsRepo),
 		}
-		opniCrdChart = "opni-crd"
+		opniCrdChart = "monty-crd"
 		opniPrometheusCrdChart = "opni-prometheus-crd"
 		opniChart = "opni"
 	}
 
 	opniServiceLB := mainCluster.Provider.ApplyT(func(k *kubernetes.Provider) (StringOutput, error) {
-		opniCrd, err := helm.NewRelease(ctx, "opni-crd", &helm.ReleaseArgs{
+		opniCrd, err := helm.NewRelease(ctx, "monty-crd", &helm.ReleaseArgs{
 			Chart:          String(opniCrdChart),
 			RepositoryOpts: chartRepoOpts,
 			Version:        StringPtr(conf.ChartVersion),

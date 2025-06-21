@@ -20,7 +20,7 @@ func (r *Reconciler) rbac() ([]resources.Resource, error) {
 	}
 	role := &rbacv1.Role{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "opni-crd",
+			Name:      "monty-crd",
 			Namespace: r.gw.Namespace,
 			Labels:    resources.NewGatewayLabels(),
 		},
@@ -180,14 +180,14 @@ func (r *Reconciler) rbac() ([]resources.Resource, error) {
 
 	roleBinding := &rbacv1.RoleBinding{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "opni-crd",
+			Name:      "monty-crd",
 			Namespace: r.gw.Namespace,
 			Labels:    resources.NewGatewayLabels(),
 		},
 		RoleRef: rbacv1.RoleRef{
 			APIGroup: "rbac.authorization.k8s.io",
 			Kind:     "Role",
-			Name:     "opni-crd",
+			Name:     "monty-crd",
 		},
 		Subjects: []rbacv1.Subject{
 			{

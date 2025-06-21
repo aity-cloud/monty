@@ -163,7 +163,7 @@ func (r *CoreMonitoringReconciler) Upgrade(ctx context.Context, umc *unstructure
 			if err == nil {
 				err = fmt.Errorf("error: monitoringclusters.core.opni.io is missing annotation %q", corev1beta1.InternalSchemalessAnnotation)
 			}
-			err := fmt.Errorf("MonitoringCluster CRD is out of date or cannot be verified; please ensure both the 'opni-crd' and 'opni' helm charts are updated to the latest version (caused by: %w)", err)
+			err := fmt.Errorf("MonitoringCluster CRD is out of date or cannot be verified; please ensure both the 'monty-crd' and 'opni' helm charts are updated to the latest version (caused by: %w)", err)
 			return k8sutil.RequeueErr(err), err
 		}
 	}

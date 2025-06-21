@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 32 44"
+     width="200" height="275">
+
+  <!-- Square rounded background -->
+  <rect width="32" height="32" rx="4" fill="#D90000"/>
+
+  <!-- Scaled & centered cloud artwork -->
+  <g transform="translate(16,16)
+                 scale(1.4)
+                 translate(-12,-16)
+                 translate(0,2)">
+    <!-- Cloud outline -->
+    <path
+      d="M3 15a4 4 0 014-4h1.26a6 6 0 0111.48 0H17a4 4 0 110 8H7a4 4 0 01-4-4z"
+      fill="none"
+      stroke="#fff"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <!-- Monitoring bars -->
+    <rect x="8.5" y="15" width="1" height="3" fill="#fff"/>
+    <rect x="11.5" y="13" width="1" height="5" fill="#fff"/>
+    <rect x="14.5" y="15" width="1" height="3" fill="#fff"/>
+    <!-- Heartbeat circle -->
+    <circle cx="12" cy="21" r="1" fill="#fff"/>
+  </g>
+
+  <!-- “MONTY” text, centered under the mark -->
+  <text
+    x="16"          
+    y="40"           
+    fill="#344845"
+    font-size="6"
+    font-family="Arial, Helvetica, sans-serif"
+    font-weight="700"
+    text-anchor="middle"
+    letter-spacing="0.5"
+  >
+    MONTY
+  </text>
+</svg>

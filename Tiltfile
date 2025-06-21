@@ -39,8 +39,8 @@ local_resource('build charts',
   ignore=ignore,
 )
 
-k8s_yaml(helm('./charts/opni-crd/'+version,
-  name='opni-crd',
+k8s_yaml(helm('./charts/monty-crd/'+version,
+  name='monty-crd',
   namespace='opni',
 ), allow_duplicates=True)
 

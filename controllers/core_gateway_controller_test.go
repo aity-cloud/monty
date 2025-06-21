@@ -243,7 +243,7 @@ var _ = Describe("Core Gateway Controller", Ordered, Label("controller", "slow")
 				))
 				Eventually(Object(&rbacv1.Role{
 					ObjectMeta: metav1.ObjectMeta{
-						Name:      "opni-crd",
+						Name:      "monty-crd",
 						Namespace: gw.Namespace,
 					},
 				})).Should(ExistAnd(
@@ -251,7 +251,7 @@ var _ = Describe("Core Gateway Controller", Ordered, Label("controller", "slow")
 				))
 				Eventually(Object(&rbacv1.RoleBinding{
 					ObjectMeta: metav1.ObjectMeta{
-						Name:      "opni-crd",
+						Name:      "monty-crd",
 						Namespace: gw.Namespace,
 					},
 				})).Should(ExistAnd(

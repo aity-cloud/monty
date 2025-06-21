@@ -1,7 +1,7 @@
 annotations:
   catalog.cattle.io/display-name: Opni Agent
   catalog.cattle.io/os: linux
-  catalog.cattle.io/namespace: opni
+  catalog.cattle.io/namespace: monty
   catalog.cattle.io/release-name: opni-agent
 apiVersion: v2
 appVersion: 0.12.1
