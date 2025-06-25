@@ -3,14 +3,14 @@ package metrics
 import (
 	"context"
 
+	"github.com/aity-cloud/monty/pkg/metrics/collector"
+	"github.com/aity-cloud/monty/pkg/plugins"
 	"github.com/hashicorp/go-plugin"
-	"github.com/rancher/opni/pkg/metrics/collector"
-	"github.com/rancher/opni/pkg/plugins"
 	"google.golang.org/grpc"
 )
 
 const (
-	MetricsPluginID = "opni.Metrics"
+	MetricsPluginID = "monty.Metrics"
 	ServiceID       = "collector.RemoteCollector"
 )
 

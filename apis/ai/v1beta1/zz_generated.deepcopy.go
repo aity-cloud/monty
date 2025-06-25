@@ -5,7 +5,7 @@
 package v1beta1
 
 import (
-	"github.com/rancher/opni/pkg/util/meta"
+	"github.com/aity-cloud/monty/pkg/util/meta"
 	"k8s.io/api/core/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/util/intstr"

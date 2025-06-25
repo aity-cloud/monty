@@ -1,5 +1,5 @@
 syntax = "proto3";
-option go_package = "github.com/rancher/opni/pkg/test/testgrpc";
+option go_package = "github.com/aity-cloud/monty/pkg/test/testgrpc";
 
 message TestSecret{
     string username = 1;

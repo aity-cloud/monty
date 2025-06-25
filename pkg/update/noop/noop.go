@@ -4,9 +4,9 @@ import (
 	"context"
 	"encoding/hex"
 
-	controlv1 "github.com/rancher/opni/pkg/apis/control/v1"
-	"github.com/rancher/opni/pkg/update"
-	"github.com/rancher/opni/pkg/urn"
+	controlv1 "github.com/aity-cloud/monty/pkg/apis/control/v1"
+	"github.com/aity-cloud/monty/pkg/update"
+	"github.com/aity-cloud/monty/pkg/urn"
 )
 
 const (

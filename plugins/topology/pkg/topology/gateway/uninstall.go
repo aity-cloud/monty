@@ -6,13 +6,13 @@ import (
 
 	"log/slog"
 
-	"github.com/rancher/opni/pkg/capabilities"
-	"github.com/rancher/opni/pkg/capabilities/wellknown"
-	"github.com/rancher/opni/pkg/machinery/uninstall"
-	"github.com/rancher/opni/pkg/storage"
-	"github.com/rancher/opni/pkg/task"
+	"github.com/aity-cloud/monty/pkg/capabilities"
+	"github.com/aity-cloud/monty/pkg/capabilities/wellknown"
+	"github.com/aity-cloud/monty/pkg/machinery/uninstall"
+	"github.com/aity-cloud/monty/pkg/storage"
+	"github.com/aity-cloud/monty/pkg/task"
 
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
 )
 
 type TopologyUninstallTaskRunner struct {

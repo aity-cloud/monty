@@ -1,25 +1,25 @@
 import { CoreStoreSpecifics, CoreStoreConfig } from '@shell/core/types';
 import { Cluster as ClusterModel } from '@pkg/opni/models/Cluster';
-import * as core from '@pkg/opni/generated/github.com/rancher/opni/pkg/apis/core/v1/core_pb';
-import * as management from '@pkg/opni/generated/github.com/rancher/opni/pkg/apis/management/v1/management_pb';
+import * as core from '@pkg/opni/generated/ github.com/aity-cloud/monty/pkg/apis/core/v1/core_pb';
+import * as management from '@pkg/opni/generated/ github.com/aity-cloud/monty/pkg/apis/management/v1/management_pb';
 
-const config: CoreStoreConfig = { namespace: 'opni' };
+const config: CoreStoreConfig = { namespace: 'monty' };
 
 export interface ClustersState {
   clusters: ClusterModel[];
 }
 
 // Getters
-export const Clusters = 'opni/clusters';
+export const Clusters = 'monty/clusters';
 
 // Mutations
-export const UpdateCluster = 'opni/updateCluster';
-export const UpdateClusterHealthStatus = 'opni/updateClusterHealthStatus';
-export const DeleteCluster = 'opni/deleteCluster';
+export const UpdateCluster = 'monty/updateCluster';
+export const UpdateClusterHealthStatus = 'monty/updateClusterHealthStatus';
+export const DeleteCluster = 'monty/deleteCluster';
 
 // Actions
-export const HandleClusterWatchEvent = 'opni/handleClusterWatchEvent';
-export const HandleClusterHealthStatusEvent = 'opni/handleClusterHealthStatusEvent';
+export const HandleClusterWatchEvent = 'monty/handleClusterWatchEvent';
+export const HandleClusterHealthStatusEvent = 'monty/handleClusterHealthStatusEvent';
 
 const createStore = (): CoreStoreSpecifics => {
   const initialHealthStatusCache = new Map<string, core.HealthStatus>();

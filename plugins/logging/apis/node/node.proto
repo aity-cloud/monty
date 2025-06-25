@@ -1,9 +1,9 @@
 syntax = "proto3";
-option go_package = "github.com/rancher/opni/plugins/logging/apis/node";
+option go_package = "github.com/aity-cloud/monty/plugins/logging/apis/node";
 
 import "google/protobuf/empty.proto";
-import "github.com/rancher/opni/pkg/config/v1beta1/agent_config.proto";
-import "github.com/rancher/opni/pkg/apis/capability/v1/capability.proto";
+import "github.com/aity-cloud/monty/pkg/config/v1beta1/agent_config.proto";
+import "github.com/aity-cloud/monty/pkg/apis/capability/v1/capability.proto";
 
 package node.logging;
 

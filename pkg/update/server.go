@@ -9,11 +9,11 @@ import (
 
 	"log/slog"
 
+	controlv1 "github.com/aity-cloud/monty/pkg/apis/control/v1"
+	"github.com/aity-cloud/monty/pkg/logger"
+	"github.com/aity-cloud/monty/pkg/urn"
+	"github.com/aity-cloud/monty/pkg/util/streams"
 	"github.com/prometheus/client_golang/prometheus"
-	controlv1 "github.com/rancher/opni/pkg/apis/control/v1"
-	"github.com/rancher/opni/pkg/logger"
-	"github.com/rancher/opni/pkg/urn"
-	"github.com/rancher/opni/pkg/util/streams"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
@@ -47,7 +47,7 @@ func (s *UpdateServer) RegisterUpdateHandler(strategy string, handler UpdateType
 // SyncManifest implements UpdateSync.  It expects a manifest with a single
 // type and a single strategy.  It will return an error if either of these
 // conditions are not met.  The package URN must be in the following format
-// urn:opni:<type>:<strategy>:<name>
+// urn:monty:<type>:<strategy>:<name>
 func (s *UpdateServer) SyncManifest(ctx context.Context, manifest *controlv1.UpdateManifest) (*controlv1.SyncResults, error) {
 	lg := s.logger
 	strategy, err := getStrategy(manifest.GetItems())

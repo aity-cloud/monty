@@ -11,11 +11,11 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/rancher/opni/pkg/alerting/cache"
-	"github.com/rancher/opni/pkg/alerting/extensions/destination"
-	"github.com/rancher/opni/pkg/alerting/shared"
-	alertingv1 "github.com/rancher/opni/pkg/apis/alerting/v1"
-	"github.com/rancher/opni/pkg/logger"
+	"github.com/aity-cloud/monty/pkg/alerting/cache"
+	"github.com/aity-cloud/monty/pkg/alerting/extensions/destination"
+	"github.com/aity-cloud/monty/pkg/alerting/shared"
+	alertingv1 "github.com/aity-cloud/monty/pkg/apis/alerting/v1"
+	"github.com/aity-cloud/monty/pkg/logger"
 	"log/slog"
 
 	// add profiles
@@ -64,7 +64,7 @@ func StartOpniEmbeddedServer(
 	opniAddr string,
 	sendK8s bool,
 ) *http.Server {
-	lg := logger.NewPluginLogger().WithGroup("opni.alerting")
+	lg := logger.NewPluginLogger().WithGroup("monty.alerting")
 	es := NewEmbeddedServer(lg, 125, sendK8s)
 	mux := http.NewServeMux()
 
@@ -85,7 +85,7 @@ func StartOpniEmbeddedServer(
 		Handler: mux,
 	}
 	go func() {
-		lg.With("addr", opniAddr).Info("starting opni embedded server")
+		lg.With("addr", opniAddr).Info("starting monty embedded server")
 		err := hookServer.ListenAndServe()
 		if !errors.Is(err, http.ErrServerClosed) {
 			panic(err)

@@ -4,13 +4,13 @@ import (
 	"context"
 	"strings"
 
+	managementv1 "github.com/aity-cloud/monty/pkg/apis/management/v1"
+	"github.com/aity-cloud/monty/pkg/bootstrap"
+	"github.com/aity-cloud/monty/pkg/capabilities/wellknown"
+	"github.com/aity-cloud/monty/pkg/test"
+	mock_ident "github.com/aity-cloud/monty/pkg/test/mock/ident"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	managementv1 "github.com/rancher/opni/pkg/apis/management/v1"
-	"github.com/rancher/opni/pkg/bootstrap"
-	"github.com/rancher/opni/pkg/capabilities/wellknown"
-	"github.com/rancher/opni/pkg/test"
-	mock_ident "github.com/rancher/opni/pkg/test/mock/ident"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 

@@ -7,18 +7,18 @@ import (
 	"net/url"
 	"path/filepath"
 
-	"github.com/rancher/opni/pkg/alerting/shared"
-	"github.com/rancher/opni/pkg/logger"
+	"github.com/aity-cloud/monty/pkg/alerting/shared"
+	"github.com/aity-cloud/monty/pkg/logger"
 
 	"emperror.dev/errors"
-	opnicorev1beta1 "github.com/rancher/opni/apis/core/v1beta1"
-	"github.com/rancher/opni/pkg/auth/openid"
-	cfgmeta "github.com/rancher/opni/pkg/config/meta"
-	cfgv1beta1 "github.com/rancher/opni/pkg/config/v1beta1"
-	"github.com/rancher/opni/pkg/noauth"
-	"github.com/rancher/opni/pkg/resources"
-	"github.com/rancher/opni/pkg/util"
-	natsutil "github.com/rancher/opni/pkg/util/nats"
+	opnicorev1beta1 "github.com/aity-cloud/monty/apis/core/v1beta1"
+	"github.com/aity-cloud/monty/pkg/auth/openid"
+	cfgmeta "github.com/aity-cloud/monty/pkg/config/meta"
+	cfgv1beta1 "github.com/aity-cloud/monty/pkg/config/v1beta1"
+	"github.com/aity-cloud/monty/pkg/noauth"
+	"github.com/aity-cloud/monty/pkg/resources"
+	"github.com/aity-cloud/monty/pkg/util"
+	natsutil "github.com/aity-cloud/monty/pkg/util/nats"
 	"github.com/samber/lo"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -40,13 +40,13 @@ func (r *Reconciler) configMap() (resources.Resource, string, error) {
 		},
 		Spec: cfgv1beta1.GatewayConfigSpec{
 			Plugins: cfgv1beta1.PluginsSpec{
-				Dir: "/var/lib/opni/plugins",
+				Dir: "/var/lib/monty/plugins",
 				Binary: cfgv1beta1.BinaryPluginsSpec{
 					Cache: cfgv1beta1.CacheSpec{
 						PatchEngine: cfgv1beta1.PatchEngineBsdiff,
 						Backend:     cfgv1beta1.CacheBackendFilesystem,
 						Filesystem: cfgv1beta1.FilesystemCacheSpec{
-							Dir: "/var/lib/opni/plugin-cache",
+							Dir: "/var/lib/monty/plugin-cache",
 						},
 					},
 				},
@@ -54,7 +54,7 @@ func (r *Reconciler) configMap() (resources.Resource, string, error) {
 			Hostname: r.gw.Spec.Hostname,
 			Cortex: cfgv1beta1.CortexSpec{
 				Management: cfgv1beta1.ClusterManagementSpec{
-					ClusterDriver: "opni-manager",
+					ClusterDriver: "monty-manager",
 				},
 				Certs: cfgv1beta1.MTLSSpec{
 					ServerCA:   "/run/cortex/certs/server/ca.crt",
@@ -65,9 +65,9 @@ func (r *Reconciler) configMap() (resources.Resource, string, error) {
 			},
 			AuthProvider: string(r.gw.Spec.Auth.Provider),
 			Certs: cfgv1beta1.CertsSpec{
-				CACert:      lo.ToPtr("/run/opni/certs/ca.crt"),
-				ServingCert: lo.ToPtr("/run/opni/certs/tls.crt"),
-				ServingKey:  lo.ToPtr("/run/opni/certs/tls.key"),
+				CACert:      lo.ToPtr("/run/monty/certs/ca.crt"),
+				ServingCert: lo.ToPtr("/run/monty/certs/tls.crt"),
+				ServingKey:  lo.ToPtr("/run/monty/certs/tls.key"),
 			},
 			Storage: cfgv1beta1.StorageSpec{
 				Type: r.gw.Spec.StorageType,
@@ -91,7 +91,7 @@ func (r *Reconciler) configMap() (resources.Resource, string, error) {
 			},
 			Keyring: cfgv1beta1.KeyringSpec{
 				EphemeralKeyDirs: []string{
-					"/run/opni/keyring",
+					"/run/monty/keyring",
 				},
 			},
 			AgentUpgrades: cfgv1beta1.AgentUpgradesSpec{
@@ -171,7 +171,7 @@ func (r *Reconciler) configMap() (resources.Resource, string, error) {
 				}
 				return fmt.Sprintf("https://grafana.%s/login/generic_oauth", r.gw.Spec.Hostname)
 			}(),
-			ManagementAPIEndpoint: "opni-internal:11090",
+			ManagementAPIEndpoint: "monty-internal:11090",
 			Port:                  4000,
 			OpenID: openid.OpenidConfig{
 				Discovery: &openid.DiscoverySpec{
@@ -210,7 +210,7 @@ func (r *Reconciler) configMap() (resources.Resource, string, error) {
 
 	cm := &corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "opni-gateway",
+			Name:      "monty-gateway",
 			Namespace: r.gw.Namespace,
 			Labels:    resources.NewGatewayLabels(),
 		},
@@ -245,9 +245,9 @@ func (r *Reconciler) amtoolConfigMap() resources.Resource {
 
 	httpConfig := promcommon.HTTPClientConfig{
 		TLSConfig: promcommon.TLSConfig{
-			CAFile:   "/run/opni/certs/ca.crt",
-			CertFile: "/run/opni/certs/tls.crt",
-			KeyFile:  "/run/opni/certs/tls.key",
+			CAFile:   "/run/monty/certs/ca.crt",
+			CertFile: "/run/monty/certs/tls.crt",
+			KeyFile:  "/run/monty/certs/tls.key",
 		},
 		FollowRedirects: true,
 	}

@@ -8,10 +8,10 @@ import (
 	"strings"
 	"time"
 
+	"github.com/aity-cloud/monty/pkg/alerting/message"
 	"github.com/prometheus/common/model"
 	"github.com/prometheus/prometheus/model/rulefmt"
 	promql "github.com/prometheus/prometheus/promql/parser"
-	"github.com/rancher/opni/pkg/alerting/message"
 	"github.com/samber/lo"
 	"gopkg.in/yaml.v3"
 )

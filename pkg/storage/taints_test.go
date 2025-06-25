@@ -3,13 +3,13 @@ package storage_test
 import (
 	"context"
 
+	mock_storage "github.com/aity-cloud/monty/pkg/test/mock/storage"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	mock_storage "github.com/rancher/opni/pkg/test/mock/storage"
 	"go.uber.org/mock/gomock"
 
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	"github.com/rancher/opni/pkg/storage"
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	"github.com/aity-cloud/monty/pkg/storage"
 )
 
 var _ = Describe("Taints", Ordered, Label("unit"), func() {

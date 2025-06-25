@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/rancher/opni/pkg/util"
+	"github.com/aity-cloud/monty/pkg/util"
 )
 
 type envProvider struct {

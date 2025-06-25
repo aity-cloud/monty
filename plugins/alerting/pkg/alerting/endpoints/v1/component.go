@@ -4,13 +4,13 @@ import (
 	"context"
 	"sync"
 
-	"github.com/rancher/opni/pkg/alerting/server"
-	alertingSync "github.com/rancher/opni/pkg/alerting/server/sync"
-	"github.com/rancher/opni/pkg/alerting/storage/spec"
-	alertingv1 "github.com/rancher/opni/pkg/apis/alerting/v1"
-	"github.com/rancher/opni/pkg/util"
-	"github.com/rancher/opni/pkg/util/future"
-	notifications "github.com/rancher/opni/plugins/alerting/pkg/alerting/notifications/v1"
+	"github.com/aity-cloud/monty/pkg/alerting/server"
+	alertingSync "github.com/aity-cloud/monty/pkg/alerting/server/sync"
+	"github.com/aity-cloud/monty/pkg/alerting/storage/spec"
+	alertingv1 "github.com/aity-cloud/monty/pkg/apis/alerting/v1"
+	"github.com/aity-cloud/monty/pkg/util"
+	"github.com/aity-cloud/monty/pkg/util/future"
+	notifications "github.com/aity-cloud/monty/plugins/alerting/pkg/alerting/notifications/v1"
 	"log/slog"
 )
 

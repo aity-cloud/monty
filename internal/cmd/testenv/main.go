@@ -17,37 +17,37 @@ import (
 
 	"slices"
 
+	v1 "github.com/aity-cloud/monty/pkg/apis/capability/v1"
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	managementv1 "github.com/aity-cloud/monty/pkg/apis/management/v1"
+	"github.com/aity-cloud/monty/pkg/dashboard"
+	"github.com/aity-cloud/monty/pkg/logger"
+	"github.com/aity-cloud/monty/pkg/test"
+	"github.com/aity-cloud/monty/pkg/test/freeport"
+	"github.com/aity-cloud/monty/pkg/test/testlog"
+	"github.com/aity-cloud/monty/pkg/tokens"
+	"github.com/aity-cloud/monty/pkg/tracing"
+	"github.com/aity-cloud/monty/pkg/util"
+	"github.com/aity-cloud/monty/plugins/metrics/apis/cortexops"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"github.com/mattn/go-tty"
 	"github.com/pkg/browser"
-	v1 "github.com/rancher/opni/pkg/apis/capability/v1"
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	managementv1 "github.com/rancher/opni/pkg/apis/management/v1"
-	"github.com/rancher/opni/pkg/dashboard"
-	"github.com/rancher/opni/pkg/logger"
-	"github.com/rancher/opni/pkg/test"
-	"github.com/rancher/opni/pkg/test/freeport"
-	"github.com/rancher/opni/pkg/test/testlog"
-	"github.com/rancher/opni/pkg/tokens"
-	"github.com/rancher/opni/pkg/tracing"
-	"github.com/rancher/opni/pkg/util"
-	"github.com/rancher/opni/plugins/metrics/apis/cortexops"
 	"github.com/spf13/pflag"
 	"github.com/ttacon/chalk"
 	"google.golang.org/protobuf/types/known/durationpb"
 	"google.golang.org/protobuf/types/known/emptypb"
 
-	_ "github.com/rancher/opni/pkg/storage/etcd"
-	_ "github.com/rancher/opni/pkg/storage/jetstream"
+	_ "github.com/aity-cloud/monty/pkg/storage/etcd"
+	_ "github.com/aity-cloud/monty/pkg/storage/jetstream"
 
-	alertingv1 "github.com/rancher/opni/pkg/apis/alerting/v1"
-	"github.com/rancher/opni/plugins/alerting/apis/alertops"
-	_ "github.com/rancher/opni/plugins/alerting/test"
-	_ "github.com/rancher/opni/plugins/example/test"
-	_ "github.com/rancher/opni/plugins/logging/test"
-	_ "github.com/rancher/opni/plugins/metrics/test"
-	_ "github.com/rancher/opni/plugins/slo/test"
+	alertingv1 "github.com/aity-cloud/monty/pkg/apis/alerting/v1"
+	"github.com/aity-cloud/monty/plugins/alerting/apis/alertops"
+	_ "github.com/aity-cloud/monty/plugins/alerting/test"
+	_ "github.com/aity-cloud/monty/plugins/example/test"
+	_ "github.com/aity-cloud/monty/plugins/logging/test"
+	_ "github.com/aity-cloud/monty/plugins/metrics/test"
+	_ "github.com/aity-cloud/monty/plugins/slo/test"
 )
 
 func main() {
@@ -156,7 +156,7 @@ func main() {
 				}
 				if enableGateway && isLocalAgent {
 					optional = append(optional, test.PrometheusJob{
-						JobName:     "opni-gateway",
+						JobName:     "monty-gateway",
 						ScrapePort:  environment.GetPorts().GatewayMetrics,
 						MetricsPath: "/metrics",
 					})

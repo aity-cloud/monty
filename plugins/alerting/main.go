@@ -1,13 +1,13 @@
 package main
 
 import (
-	"github.com/rancher/opni/pkg/plugins"
-	"github.com/rancher/opni/pkg/plugins/meta"
-	"github.com/rancher/opni/plugins/alerting/pkg/agent"
-	"github.com/rancher/opni/plugins/alerting/pkg/alerting"
+	"github.com/aity-cloud/monty/pkg/plugins"
+	"github.com/aity-cloud/monty/pkg/plugins/meta"
+	"github.com/aity-cloud/monty/plugins/alerting/pkg/agent"
+	"github.com/aity-cloud/monty/plugins/alerting/pkg/alerting"
 
-	_ "github.com/rancher/opni/plugins/alerting/pkg/agent/drivers/default_driver"
-	_ "github.com/rancher/opni/plugins/alerting/pkg/alerting/drivers/alerting_manager"
+	_ "github.com/aity-cloud/monty/plugins/alerting/pkg/agent/drivers/default_driver"
+	_ "github.com/aity-cloud/monty/plugins/alerting/pkg/alerting/drivers/alerting_manager"
 )
 
 func main() {

@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"sync"
 
+	"github.com/aity-cloud/monty/pkg/opensearch/certs"
 	"github.com/jarcoal/httpmock"
-	"github.com/rancher/opni/pkg/opensearch/certs"
 )
 
 const (
@@ -69,13 +69,13 @@ func OpensearchMockTransport() http.RoundTripper {
 
 	transport.RegisterResponder(
 		http.MethodPost,
-		fmt.Sprintf("=~%s/opni-cluster-metadata/_doc/.+", OpensearchURL),
+		fmt.Sprintf("=~%s/monty-cluster-metadata/_doc/.+", OpensearchURL),
 		httpmock.NewStringResponder(200, ""),
 	)
 
 	transport.RegisterResponder(
 		http.MethodGet,
-		fmt.Sprintf("%s/_plugins/_security/api/internalusers/opni", OpensearchURL),
+		fmt.Sprintf("%s/_plugins/_security/api/internalusers/monty", OpensearchURL),
 		httpmock.NewStringResponder(200, ""),
 	)
 

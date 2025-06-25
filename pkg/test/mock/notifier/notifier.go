@@ -8,7 +8,7 @@ import (
 	context "context"
 	reflect "reflect"
 
-	notifier "github.com/rancher/opni/pkg/util/notifier"
+	notifier "github.com/aity-cloud/monty/pkg/util/notifier"
 	gomock "go.uber.org/mock/gomock"
 )
 

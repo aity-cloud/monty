@@ -3,9 +3,9 @@ package gateway
 import (
 	"encoding/json"
 
-	"github.com/rancher/opni/pkg/auth/session"
-	"github.com/rancher/opni/pkg/keyring/ephemeral"
-	"github.com/rancher/opni/pkg/resources"
+	"github.com/aity-cloud/monty/pkg/auth/session"
+	"github.com/aity-cloud/monty/pkg/keyring/ephemeral"
+	"github.com/aity-cloud/monty/pkg/resources"
 	"github.com/samber/lo"
 	corev1 "k8s.io/api/core/v1"
 	k8serrors "k8s.io/apimachinery/pkg/api/errors"
@@ -17,7 +17,7 @@ import (
 func (r *Reconciler) ephemeralKeys() ([]resources.Resource, error) {
 	localAgentKey := &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "opni-local-agent-key",
+			Name:      "monty-local-agent-key",
 			Namespace: r.gw.Namespace,
 		},
 		Type:      corev1.SecretTypeOpaque,

@@ -3,9 +3,9 @@ package testlog
 import (
 	"log/slog"
 
+	"github.com/aity-cloud/monty/pkg/logger"
+	"github.com/aity-cloud/monty/pkg/test/testruntime"
 	"github.com/onsi/ginkgo/v2"
-	"github.com/rancher/opni/pkg/logger"
-	"github.com/rancher/opni/pkg/test/testruntime"
 	"github.com/samber/lo"
 )
 

@@ -63,9 +63,9 @@ if (!isStandalone) {
   baseConfig.publicPath = './';
 }
 
-// We need to add a custom script to the index in order to change how assets for the opni backendso we have to override the index.html
+// We need to add a custom script to the index in order to change how assets for the monty backendso we have to override the index.html
 if (isStandalone) {
-  baseConfig.pages.index.template = './pkg/opni/index.html';
+  baseConfig.pages.index.template = './pkg/monty/index.html';
 }
 
 baseConfig.productionSourceMap = false;

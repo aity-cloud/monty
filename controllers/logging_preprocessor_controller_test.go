@@ -4,11 +4,11 @@ import (
 	"context"
 	"fmt"
 
+	opniloggingv1beta1 "github.com/aity-cloud/monty/apis/logging/v1beta1"
+	opnimeta "github.com/aity-cloud/monty/pkg/util/meta"
 	. "github.com/kralicky/kmatch"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	opniloggingv1beta1 "github.com/rancher/opni/apis/logging/v1beta1"
-	opnimeta "github.com/rancher/opni/pkg/util/meta"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"

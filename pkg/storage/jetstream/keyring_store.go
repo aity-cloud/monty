@@ -6,10 +6,10 @@ import (
 	"fmt"
 	"path"
 
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	"github.com/aity-cloud/monty/pkg/keyring"
+	"github.com/aity-cloud/monty/pkg/storage"
 	"github.com/nats-io/nats.go"
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	"github.com/rancher/opni/pkg/keyring"
-	"github.com/rancher/opni/pkg/storage"
 )
 
 type jetstreamKeyringStore struct {

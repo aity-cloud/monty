@@ -13,17 +13,17 @@ import (
 
 	alertmanagerv2 "github.com/prometheus/alertmanager/api/v2/models"
 
+	"github.com/aity-cloud/monty/pkg/alerting/message"
+	alertingv1 "github.com/aity-cloud/monty/pkg/apis/alerting/v1"
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	managementv1 "github.com/aity-cloud/monty/pkg/apis/management/v1"
+	"github.com/aity-cloud/monty/pkg/test"
+	"github.com/aity-cloud/monty/pkg/test/alerting"
+	"github.com/aity-cloud/monty/pkg/test/testruntime"
+	"github.com/aity-cloud/monty/plugins/alerting/apis/alertops"
 	"github.com/google/uuid"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/rancher/opni/pkg/alerting/message"
-	alertingv1 "github.com/rancher/opni/pkg/apis/alerting/v1"
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	managementv1 "github.com/rancher/opni/pkg/apis/management/v1"
-	"github.com/rancher/opni/pkg/test"
-	"github.com/rancher/opni/pkg/test/alerting"
-	"github.com/rancher/opni/pkg/test/testruntime"
-	"github.com/rancher/opni/plugins/alerting/apis/alertops"
 	"github.com/samber/lo"
 	"golang.org/x/exp/slices"
 	"google.golang.org/grpc/codes"
@@ -108,9 +108,9 @@ func BuildAlertingClusterIntegrationTests(
 
 		// contains agent id and other useful metadata and functions
 		var agents []*agentWithContext
-		// physical servers that receive opni alerting notifications
+		// physical servers that receive monty alerting notifications
 		var servers []*alerting.MockIntegrationWebhookServer
-		// physical servers that receive all opni alerting notifications
+		// physical servers that receive all monty alerting notifications
 		var notificationServers []*alerting.MockIntegrationWebhookServer
 		// conditionsIds => endopintIds
 		expectedRouting := map[string]*alertingv1.ConditionReferenceList{}

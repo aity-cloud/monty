@@ -113,7 +113,7 @@ export function cloneSLOToClusters(id: string, clusterIds: string[]) {
 
 export async function getSLO(id: string, vue: any) {
   // This doesn't work currently because the service doesn't support params being a part of the url and get requests can't have a body from browsers.
-  // const response = (await axios.get<SloResponse>(`opni-api/SLO/slos/${ id }`))?.data;
+  // const response = (await axios.get<SloResponse>(`monty-api/SLO/slos/${ id }`))?.data;
 
   const slos = await getSLOs(vue);
   const slo = slos.find(s => s.id === id);

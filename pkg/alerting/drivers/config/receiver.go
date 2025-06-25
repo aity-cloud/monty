@@ -9,11 +9,11 @@ import (
 	"net/url"
 	"strings"
 
+	"github.com/aity-cloud/monty/pkg/alerting/shared"
+	"github.com/aity-cloud/monty/pkg/alerting/templates"
+	alertingv1 "github.com/aity-cloud/monty/pkg/apis/alerting/v1"
+	"github.com/aity-cloud/monty/pkg/util"
 	amCfg "github.com/prometheus/alertmanager/config"
-	"github.com/rancher/opni/pkg/alerting/shared"
-	"github.com/rancher/opni/pkg/alerting/templates"
-	alertingv1 "github.com/rancher/opni/pkg/apis/alerting/v1"
-	"github.com/rancher/opni/pkg/util"
 	"github.com/samber/lo"
 	"gopkg.in/yaml.v2"
 )

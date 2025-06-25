@@ -7,9 +7,9 @@ import (
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 
-	"github.com/rancher/opni/pkg/storage"
-	"github.com/rancher/opni/pkg/storage/lock"
-	"github.com/rancher/opni/pkg/util/future"
+	"github.com/aity-cloud/monty/pkg/storage"
+	"github.com/aity-cloud/monty/pkg/storage/lock"
+	"github.com/aity-cloud/monty/pkg/util/future"
 	"github.com/samber/lo"
 )
 

@@ -11,11 +11,11 @@ import (
 	"slices"
 
 	"github.com/Masterminds/semver"
-	aiv1beta1 "github.com/rancher/opni/apis/ai/v1beta1"
-	"github.com/rancher/opni/pkg/logger"
-	"github.com/rancher/opni/pkg/util/nats"
-	"github.com/rancher/opni/pkg/versions"
-	"github.com/rancher/opni/plugins/aiops/apis/admin"
+	aiv1beta1 "github.com/aity-cloud/monty/apis/ai/v1beta1"
+	"github.com/aity-cloud/monty/pkg/logger"
+	"github.com/aity-cloud/monty/pkg/util/nats"
+	"github.com/aity-cloud/monty/pkg/versions"
+	"github.com/aity-cloud/monty/plugins/aiops/apis/admin"
 	"github.com/samber/lo"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -39,8 +39,8 @@ const (
 )
 
 const (
-	OpniServicesName = "opni"
-	OpniS3SecretName = "opni-s3-credentials"
+	OpniServicesName = "monty"
+	OpniS3SecretName = "monty-s3-credentials"
 	AccessKeyKey     = "accessKey"
 	SecretKeyKey     = "secretKey"
 )
@@ -526,7 +526,7 @@ func updateModelSpec(modelType pretrainedModelType, modelRequest *admin.Pretrain
 }
 
 func modelObjectName(modelType pretrainedModelType) string {
-	return fmt.Sprintf("opni-model-%s", modelType)
+	return fmt.Sprintf("monty-model-%s", modelType)
 }
 
 func modelEnabled(models []corev1.LocalObjectReference, modelType pretrainedModelType) bool {

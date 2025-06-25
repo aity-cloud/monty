@@ -7,7 +7,7 @@ import (
 
 	"log/slog"
 
-	"github.com/rancher/opni/pkg/logger"
+	"github.com/aity-cloud/monty/pkg/logger"
 )
 
 type UserInfo struct {

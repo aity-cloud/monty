@@ -4,10 +4,10 @@ import (
 	"context"
 	"os"
 
+	"github.com/aity-cloud/monty/pkg/test/testk8s"
+	"github.com/aity-cloud/monty/pkg/util/k8sutil"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/rancher/opni/pkg/test/testk8s"
-	"github.com/rancher/opni/pkg/util/k8sutil"
 	"github.com/samber/lo"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/client-go/rest"

@@ -7,10 +7,10 @@ Functions to help proxy a cortex alert paylaod
 import (
 	"fmt"
 
+	alertingv1 "github.com/aity-cloud/monty/pkg/apis/alerting/v1"
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
 	"github.com/prometheus/alertmanager/notify/webhook"
 	"github.com/prometheus/alertmanager/template"
-	alertingv1 "github.com/rancher/opni/pkg/apis/alerting/v1"
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
 	"github.com/tidwall/gjson"
 )
 
@@ -38,7 +38,7 @@ var RequiredCortexWebhookAnnotationIdentifiers = []string{"conditionId"}
 var OpniDisconnect *alertingv1.AlertCondition = &alertingv1.AlertCondition{
 	Name:        "Disconnected Opni Agent {{ .agentId }} ",
 	Description: "Opni agent {{ .agentId }} has been disconnected for more than {{ .timeout }}",
-	Labels:      []string{"opni", "agent", "system"},
+	Labels:      []string{"monty", "agent", "system"},
 	Severity:    alertingv1.OpniSeverity_Critical,
 	AlertType:   &alertingv1.AlertTypeDetails{Type: &alertingv1.AlertTypeDetails_System{}},
 }
@@ -87,7 +87,7 @@ func ParseAlertManagerWebhookPayload(annotations []gjson.Result) ([]*alertingv1.
 		for _, identifier := range RequiredCortexWebhookAnnotationIdentifiers {
 			if _, ok := result[identifier]; !ok {
 				errors = append(errors, fmt.Errorf(
-					"cortex Annotation missing required opni identifier to pass on alert%s", annotation.String()))
+					"cortex Annotation missing required monty identifier to pass on alert%s", annotation.String()))
 				opniRequests = append(opniRequests, nil)
 				anyFailed = true
 				break
@@ -96,7 +96,7 @@ func ParseAlertManagerWebhookPayload(annotations []gjson.Result) ([]*alertingv1.
 				case "conditionId":
 					res.ConditionId = &corev1.Reference{Id: result[identifier].String()}
 				default:
-					errors = append(errors, fmt.Errorf("unhandled opni identifier %s", identifier))
+					errors = append(errors, fmt.Errorf("unhandled monty identifier %s", identifier))
 					opniRequests = append(opniRequests, nil)
 					anyFailed = true
 					break IDENTIFIERS

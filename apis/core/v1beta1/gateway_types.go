@@ -1,10 +1,10 @@
 package v1beta1
 
 import (
-	"github.com/rancher/opni/pkg/auth/openid"
-	cfgv1beta1 "github.com/rancher/opni/pkg/config/v1beta1"
-	"github.com/rancher/opni/pkg/noauth"
-	opnimeta "github.com/rancher/opni/pkg/util/meta"
+	"github.com/aity-cloud/monty/pkg/auth/openid"
+	cfgv1beta1 "github.com/aity-cloud/monty/pkg/config/v1beta1"
+	"github.com/aity-cloud/monty/pkg/noauth"
+	opnimeta "github.com/aity-cloud/monty/pkg/util/meta"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )

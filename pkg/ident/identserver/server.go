@@ -3,9 +3,9 @@ package identserver
 import (
 	"context"
 
-	controlv1 "github.com/rancher/opni/pkg/apis/control/v1"
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	"github.com/rancher/opni/pkg/ident"
+	controlv1 "github.com/aity-cloud/monty/pkg/apis/control/v1"
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	"github.com/aity-cloud/monty/pkg/ident"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 

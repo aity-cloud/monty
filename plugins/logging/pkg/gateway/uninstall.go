@@ -7,16 +7,16 @@ import (
 
 	"log/slog"
 
+	opnicorev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	"github.com/aity-cloud/monty/pkg/capabilities"
+	"github.com/aity-cloud/monty/pkg/capabilities/wellknown"
+	"github.com/aity-cloud/monty/pkg/machinery/uninstall"
+	"github.com/aity-cloud/monty/pkg/storage"
+	"github.com/aity-cloud/monty/pkg/task"
+	"github.com/aity-cloud/monty/pkg/util/future"
+	backenddriver "github.com/aity-cloud/monty/plugins/logging/pkg/gateway/drivers/backend"
+	"github.com/aity-cloud/monty/plugins/logging/pkg/opensearchdata"
 	"github.com/lestrrat-go/backoff/v2"
-	opnicorev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	"github.com/rancher/opni/pkg/capabilities"
-	"github.com/rancher/opni/pkg/capabilities/wellknown"
-	"github.com/rancher/opni/pkg/machinery/uninstall"
-	"github.com/rancher/opni/pkg/storage"
-	"github.com/rancher/opni/pkg/task"
-	"github.com/rancher/opni/pkg/util/future"
-	backenddriver "github.com/rancher/opni/plugins/logging/pkg/gateway/drivers/backend"
-	"github.com/rancher/opni/plugins/logging/pkg/opensearchdata"
 )
 
 type UninstallTaskRunner struct {

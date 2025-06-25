@@ -1,7 +1,7 @@
 package v1beta1
 
 import (
-	opnimeta "github.com/rancher/opni/pkg/util/meta"
+	opnimeta "github.com/aity-cloud/monty/pkg/util/meta"
 	corev1 "k8s.io/api/core/v1"
 )
 
@@ -51,15 +51,15 @@ func (s ServiceKind) String() string {
 }
 
 func (s ServiceKind) ServiceName() string {
-	return "opni-svc-" + s.String()
+	return "monty-svc-" + s.String()
 }
 
 func (s ServiceKind) ImageName() string {
 	switch s {
 	case GPUControllerService:
-		return "opni-gpu-service-controller"
+		return "monty-gpu-service-controller"
 	default:
-		return "opni-" + s.String() + "-service"
+		return "monty-" + s.String() + "-service"
 	}
 }
 

@@ -8,13 +8,13 @@ import (
 	"strings"
 	"time"
 
+	openidauth "github.com/aity-cloud/monty/pkg/auth/openid"
+	"github.com/aity-cloud/monty/pkg/logger"
 	"github.com/lestrrat-go/jwx/jwk"
 	"github.com/ory/fosite"
 	"github.com/ory/fosite/compose"
 	"github.com/ory/fosite/handler/openid"
 	"github.com/ory/fosite/storage"
-	openidauth "github.com/rancher/opni/pkg/auth/openid"
-	"github.com/rancher/opni/pkg/logger"
 	"golang.org/x/crypto/bcrypt"
 )
 

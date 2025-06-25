@@ -4,12 +4,12 @@ import (
 	"context"
 	"fmt"
 
+	alertingv1 "github.com/aity-cloud/monty/pkg/apis/alerting/v1"
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	"github.com/aity-cloud/monty/pkg/auth/cluster"
+	"github.com/aity-cloud/monty/pkg/util"
+	"github.com/aity-cloud/monty/plugins/alerting/pkg/apis/rules"
 	"github.com/google/go-cmp/cmp"
-	alertingv1 "github.com/rancher/opni/pkg/apis/alerting/v1"
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	"github.com/rancher/opni/pkg/auth/cluster"
-	"github.com/rancher/opni/pkg/util"
-	"github.com/rancher/opni/plugins/alerting/pkg/apis/rules"
 	"github.com/samber/lo"
 	"go.uber.org/multierr"
 	"google.golang.org/grpc/codes"
@@ -95,7 +95,7 @@ func (a *AlarmServerComponent) SyncRules(ctx context.Context, rules *rules.RuleM
 			if metadata == nil {
 				metadata = map[string]string{}
 			}
-			// keep opni managed metadata, unless overriden
+			// keep monty managed metadata, unless overriden
 			retMetadata := lo.Assign(metadata, incomingCond.Metadata)
 			if !areRuleSpecsEqual(existing, incomingCond) {
 				applyMutableReadOnlyFields(incomingCond, existing)

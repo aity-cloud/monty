@@ -7,13 +7,13 @@ import (
 	"github.com/jhump/protoreflect/desc"
 	"google.golang.org/grpc"
 
-	streamv1 "github.com/rancher/opni/pkg/apis/stream/v1"
-	"github.com/rancher/opni/pkg/plugins"
-	"github.com/rancher/opni/pkg/plugins/apis/apiextensions"
+	streamv1 "github.com/aity-cloud/monty/pkg/apis/stream/v1"
+	"github.com/aity-cloud/monty/pkg/plugins"
+	"github.com/aity-cloud/monty/pkg/plugins/apis/apiextensions"
 )
 
 const (
-	StreamAPIExtensionPluginID = "opni.apiextensions.StreamAPIExtension"
+	StreamAPIExtensionPluginID = "monty.apiextensions.StreamAPIExtension"
 	ServiceID                  = "apiextensions.StreamAPIExtension"
 )
 

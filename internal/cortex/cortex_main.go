@@ -134,7 +134,7 @@ func Main(args []string) {
 		return
 	}
 
-	level.Info(util_log.Logger).Log("msg", "Starting Cortex", "version", "(opni embedded)")
+	level.Info(util_log.Logger).Log("msg", "Starting Cortex", "version", "(monty embedded)")
 	err = t.Run()
 	cancelFn()
 

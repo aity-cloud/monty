@@ -1,9 +1,9 @@
 package extensions
 
 import (
-	"github.com/rancher/opni/pkg/alerting/cache"
-	"github.com/rancher/opni/pkg/alerting/drivers/config"
-	alertingv1 "github.com/rancher/opni/pkg/apis/alerting/v1"
+	"github.com/aity-cloud/monty/pkg/alerting/cache"
+	"github.com/aity-cloud/monty/pkg/alerting/drivers/config"
+	alertingv1 "github.com/aity-cloud/monty/pkg/apis/alerting/v1"
 )
 
 func (e *EmbeddedServer) cacheAlarm(msgMeta cache.MessageMetadata, alert config.Alert) error {

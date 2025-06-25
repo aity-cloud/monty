@@ -6,6 +6,16 @@ import (
 	"net/url"
 	"time"
 
+	capabilityv1 "github.com/aity-cloud/monty/pkg/apis/capability/v1"
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	managementv1 "github.com/aity-cloud/monty/pkg/apis/management/v1"
+	"github.com/aity-cloud/monty/pkg/metrics"
+	"github.com/aity-cloud/monty/pkg/metrics/compat"
+	"github.com/aity-cloud/monty/pkg/test"
+	"github.com/aity-cloud/monty/pkg/test/freeport"
+	"github.com/aity-cloud/monty/pkg/util"
+	"github.com/aity-cloud/monty/plugins/metrics/apis/cortexadmin"
+	"github.com/aity-cloud/monty/plugins/metrics/apis/cortexops"
 	"github.com/golang/snappy"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
@@ -13,16 +23,6 @@ import (
 	"github.com/prometheus/common/model"
 	"github.com/prometheus/prometheus/prompb"
 	"github.com/prometheus/prometheus/storage/remote"
-	capabilityv1 "github.com/rancher/opni/pkg/apis/capability/v1"
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	managementv1 "github.com/rancher/opni/pkg/apis/management/v1"
-	"github.com/rancher/opni/pkg/metrics"
-	"github.com/rancher/opni/pkg/metrics/compat"
-	"github.com/rancher/opni/pkg/test"
-	"github.com/rancher/opni/pkg/test/freeport"
-	"github.com/rancher/opni/pkg/util"
-	"github.com/rancher/opni/plugins/metrics/apis/cortexadmin"
-	"github.com/rancher/opni/plugins/metrics/apis/cortexops"
 	"google.golang.org/protobuf/types/known/durationpb"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
@@ -334,7 +334,7 @@ var _ = Describe("Tenant Impersonation", Ordered, Label("integration"), func() {
 					})
 					Expect(err).NotTo(HaveOccurred())
 				})
-				It("should drop the metric due to opni default relabeling rules", func() {
+				It("should drop the metric due to monty default relabeling rules", func() {
 					Eventually(func() error {
 						vec, err := queryVec([]string{"agent2"}, "opni_test_metric_4")
 						if err != nil {

@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"sync"
 
-	capabilityv1 "github.com/rancher/opni/pkg/apis/capability/v1"
+	capabilityv1 "github.com/aity-cloud/monty/pkg/apis/capability/v1"
 	"google.golang.org/protobuf/types/known/emptypb"
 	"log/slog"
 )

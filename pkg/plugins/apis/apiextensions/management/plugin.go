@@ -3,17 +3,17 @@ package managementext
 import (
 	"context"
 
+	"github.com/aity-cloud/monty/pkg/plugins"
+	"github.com/aity-cloud/monty/pkg/plugins/apis/apiextensions"
+	"github.com/aity-cloud/monty/pkg/util"
 	"github.com/hashicorp/go-plugin"
 	"github.com/jhump/protoreflect/grpcreflect"
-	"github.com/rancher/opni/pkg/plugins"
-	"github.com/rancher/opni/pkg/plugins/apis/apiextensions"
-	"github.com/rancher/opni/pkg/util"
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 const (
-	ManagementAPIExtensionPluginID = "opni.apiextensions.ManagementAPIExtension"
+	ManagementAPIExtensionPluginID = "monty.apiextensions.ManagementAPIExtension"
 	ServiceID                      = "apiextensions.ManagementAPIExtension"
 )
 

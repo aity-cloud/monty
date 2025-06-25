@@ -33,7 +33,7 @@ func SpecialCaseEnvVars(client *dagger.Client) []SpecialCaseEnv {
 		{
 			EnvVar: "DOCKER_USERNAME",
 			Keys: []string{
-				"images.opni.auth.username",
+				"images.monty.auth.username",
 				"images.minimal.auth.username",
 				"images.opensearch.opensearch.auth.username",
 				"images.opensearch.dashboards.auth.username",
@@ -46,7 +46,7 @@ func SpecialCaseEnvVars(client *dagger.Client) []SpecialCaseEnv {
 		{
 			EnvVar: "DOCKER_PASSWORD",
 			Keys: []string{
-				"images.opni.auth.secret",
+				"images.monty.auth.secret",
 				"images.minimal.auth.secret",
 				"images.opensearch.opensearch.auth.secret",
 				"images.opensearch.dashboards.auth.secret",
@@ -67,7 +67,7 @@ func SpecialCaseEnvVars(client *dagger.Client) []SpecialCaseEnv {
 		{
 			EnvVar: "DRONE_BRANCH",
 			Keys: []string{
-				"images.opni.tag",
+				"images.monty.tag",
 				"images.minimal.tag",
 				"images.opensearch.opensearch.tag",
 				"images.opensearch.dashboards.tag",
@@ -78,7 +78,7 @@ func SpecialCaseEnvVars(client *dagger.Client) []SpecialCaseEnv {
 		{
 			EnvVar: "DRONE_TAG", // if set, will override DRONE_BRANCH
 			Keys: []string{
-				"images.opni.tag",
+				"images.monty.tag",
 				"images.minimal.tag",
 				"images.opensearch.opensearch.tag",
 				"images.opensearch.dashboards.tag",

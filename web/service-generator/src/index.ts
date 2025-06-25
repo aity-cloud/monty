@@ -33,8 +33,8 @@ function printMethod(f: GeneratedFile, method: DescMethod, service: DescService)
   const input = f.import(method.input);
   const output = f.import(method.output);
 
-  const _axios = f.import('axios', '@pkg/opni/utils/axios');
-  const _Socket = f.import('Socket', '@pkg/opni/utils/socket');
+  const _axios = f.import('axios', '@pkg/monty/utils/axios');
+  const _Socket = f.import('Socket', '@pkg/monty/utils/socket');
   const _EVENT_CONNECTED = f.import('EVENT_CONNECTED', '@shell/utils/socket');
   const _EVENT_CONNECTING = f.import('EVENT_CONNECTING', '@shell/utils/socket');
   const _EVENT_CONNECT_ERROR = f.import('EVENT_CONNECT_ERROR', '@shell/utils/socket');
@@ -49,7 +49,7 @@ function printMethod(f: GeneratedFile, method: DescMethod, service: DescService)
   // const transformResponse = outputIsEmpty ? '' : [`\n    transformResponse: resp => `, output, `.fromBinary(new Uint8Array(resp)),`];
   const data = inputIsEmpty ? '' : `,\n    data: input?.toBinary() as ArrayBuffer`;
   const urlPath = (m?.pattern.value as any || '').replaceAll('{', '${input.');
-  const potentialModelPath = output ? path.join('./web/pkg/opni/models', service.name, `${ output.name }.ts`) : '';
+  const potentialModelPath = output ? path.join('./web/pkg/monty/models', service.name, `${ output.name }.ts`) : '';
   const modelFound = potentialModelPath && fs.existsSync(potentialModelPath);
   const modelImport = modelFound ? f.import(output.name, `@pkg/opni/models/${ service.name }/${ output.name }`) : null;
 

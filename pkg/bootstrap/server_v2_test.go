@@ -11,13 +11,13 @@ import (
 	"strings"
 	"time"
 
+	mock_storage "github.com/aity-cloud/monty/pkg/test/mock/storage"
+	"github.com/aity-cloud/monty/pkg/test/testdata"
+	"github.com/aity-cloud/monty/pkg/util"
 	"github.com/lestrrat-go/jwx/jwa"
 	"github.com/lestrrat-go/jwx/jws"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	mock_storage "github.com/rancher/opni/pkg/test/mock/storage"
-	"github.com/rancher/opni/pkg/test/testdata"
-	"github.com/rancher/opni/pkg/util"
 	"github.com/samber/lo"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
@@ -26,12 +26,12 @@ import (
 	"google.golang.org/grpc/status"
 	"google.golang.org/grpc/test/bufconn"
 
-	bootstrapv2 "github.com/rancher/opni/pkg/apis/bootstrap/v2"
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	"github.com/rancher/opni/pkg/bootstrap"
-	"github.com/rancher/opni/pkg/ecdh"
-	"github.com/rancher/opni/pkg/storage"
-	"github.com/rancher/opni/pkg/tokens"
+	bootstrapv2 "github.com/aity-cloud/monty/pkg/apis/bootstrap/v2"
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	"github.com/aity-cloud/monty/pkg/bootstrap"
+	"github.com/aity-cloud/monty/pkg/ecdh"
+	"github.com/aity-cloud/monty/pkg/storage"
+	"github.com/aity-cloud/monty/pkg/tokens"
 )
 
 var _ = Describe("Server V2", Ordered, Label("unit"), func() {

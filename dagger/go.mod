@@ -1,9 +1,9 @@
-module github.com/rancher/opni/dagger
+module github.com/aity-cloud/monty/dagger
 
 go 1.21
 
 require (
-	dagger.io/dagger v0.8.7
+	dagger.io/dagger v0.8.8
 	github.com/AlecAivazis/survey/v2 v2.3.7
 	github.com/bmatcuk/doublestar/v4 v4.6.0
 	github.com/go-playground/validator/v10 v10.14.1

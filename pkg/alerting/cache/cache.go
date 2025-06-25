@@ -6,10 +6,10 @@ import (
 
 	"slices"
 
+	"github.com/aity-cloud/monty/pkg/alerting/drivers/config"
+	"github.com/aity-cloud/monty/pkg/alerting/message"
+	alertingv1 "github.com/aity-cloud/monty/pkg/apis/alerting/v1"
 	lru "github.com/hashicorp/golang-lru/v2"
-	"github.com/rancher/opni/pkg/alerting/drivers/config"
-	"github.com/rancher/opni/pkg/alerting/message"
-	alertingv1 "github.com/rancher/opni/pkg/apis/alerting/v1"
 	"github.com/samber/lo"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
@@ -118,7 +118,7 @@ func (l LfuMessageCache) Set(severity alertingv1.OpniSeverity, key string, alert
 	if ok {
 		msg := data
 		mapPartitions := assignByPartition(func(key, value string) string {
-			if strings.HasPrefix(strings.ToLower(key), "opni") {
+			if strings.HasPrefix(strings.ToLower(key), "monty") {
 				return partitionProperty
 			}
 			return partitionDetails
@@ -160,7 +160,7 @@ func toMessageInstance(alert config.Alert) *alertingv1.MessageInstance {
 		LastDetails:  map[string]string{},
 	}
 	mapPartitions := assignByPartition(func(key, value string) string {
-		if strings.HasPrefix(key, "opni") || strings.HasPrefix(key, "Opni") {
+		if strings.HasPrefix(key, "monty") || strings.HasPrefix(key, "Opni") {
 			return partitionProperty
 		}
 		return partitionDetails

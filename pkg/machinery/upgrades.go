@@ -3,9 +3,9 @@ package machinery
 import (
 	"errors"
 
-	"github.com/rancher/opni/pkg/config/v1beta1"
-	"github.com/rancher/opni/pkg/oci"
-	"github.com/rancher/opni/pkg/update"
+	"github.com/aity-cloud/monty/pkg/config/v1beta1"
+	"github.com/aity-cloud/monty/pkg/oci"
+	"github.com/aity-cloud/monty/pkg/update"
 	"log/slog"
 )
 

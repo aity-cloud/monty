@@ -11,9 +11,9 @@ import (
 	. "github.com/onsi/gomega"
 	"go.uber.org/atomic"
 
-	"github.com/rancher/opni/pkg/keyring"
-	"github.com/rancher/opni/pkg/keyring/ephemeral"
-	"github.com/rancher/opni/pkg/pkp"
+	"github.com/aity-cloud/monty/pkg/keyring"
+	"github.com/aity-cloud/monty/pkg/keyring/ephemeral"
+	"github.com/aity-cloud/monty/pkg/pkp"
 )
 
 var _ = Describe("Keyring", Label("unit"), func() {

@@ -1,5 +1,5 @@
 syntax = "proto3";
-option go_package = "github.com/rancher/opni/pkg/config/v1beta1";
+option go_package = "github.com/aity-cloud/monty/pkg/config/v1beta1";
 
 package config.v1beta1;
 

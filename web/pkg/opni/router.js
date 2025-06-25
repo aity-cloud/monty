@@ -27,7 +27,7 @@ import Root from './pages/Root';
 export const NAVIGATION = {
   routes: [
     {
-      name:      isStandalone() ? 'index' : 'opni',
+      name:      isStandalone() ? 'index' : 'monty',
       path:      '/',
       component: Root,
       display:   false
@@ -35,13 +35,13 @@ export const NAVIGATION = {
     {
       name:      'agents',
       path:      '/agents',
-      labelKey:  'opni.nav.agents',
+      labelKey:  'monty.nav.agents',
       component: Clusters,
       routes:    [
         {
           name:      'agent-create',
           path:      '/create',
-          labelKey:  'opni.nav.clusters',
+          labelKey:  'monty.nav.clusters',
           component: Cluster,
           display:   false
         },
@@ -50,14 +50,14 @@ export const NAVIGATION = {
     {
       name:      'logging-config',
       path:      '/logging',
-      labelKey:  'opni.nav.loggingConfig',
+      labelKey:  'monty.nav.loggingConfig',
       component: LoggingBackend,
       display:   true,
       routes:    [
         {
           name:      'snapshots',
           path:      '/snapshots',
-          labelKey:  'opni.nav.snapshots',
+          labelKey:  'monty.nav.snapshots',
           component: Snapshots,
           display:   true,
           routes:     [
@@ -80,26 +80,26 @@ export const NAVIGATION = {
     {
       name:      'monitoring',
       path:      '/monitoring',
-      labelKey:  'opni.nav.monitoring',
+      labelKey:  'monty.nav.monitoring',
       component: MonitoringBackend,
       routes:    [
         {
           name:     'rbac',
           path:     '/rbac',
-          labelKey: 'opni.nav.rbac',
+          labelKey: 'monty.nav.rbac',
           display:   true,
           redirect: { name: 'roles' },
           routes:   [
             {
               name:      'roles',
               path:      '/roles',
-              labelKey:  'opni.nav.roles',
+              labelKey:  'monty.nav.roles',
               component: Roles,
               routes:    [
                 {
                   name:      'role-create',
                   path:      '/create',
-                  labelKey:  'opni.nav.roles',
+                  labelKey:  'monty.nav.roles',
                   component: Role,
                   display:   false
                 },
@@ -108,13 +108,13 @@ export const NAVIGATION = {
             {
               name:      'role-bindings',
               path:      '/role-bindings',
-              labelKey:  'opni.nav.roleBindings',
+              labelKey:  'monty.nav.roleBindings',
               component: RoleBindings,
               routes:    [
                 {
                   name:      'role-binding-create',
                   path:      '/create',
-                  labelKey:  'opni.nav.roleBindings',
+                  labelKey:  'monty.nav.roleBindings',
                   component: RoleBinding,
                   display:   false
                 },
@@ -127,7 +127,7 @@ export const NAVIGATION = {
     {
       name:      'alerting',
       path:      '/alerting',
-      labelKey:  'opni.nav.alerting',
+      labelKey:  'monty.nav.alerting',
       display:   true,
       component: AlertingBackend,
       // redirect:  { name: 'slos' },
@@ -135,28 +135,28 @@ export const NAVIGATION = {
         {
           name:      'alerting-overview',
           path:      '/overview',
-          labelKey:  'opni.nav.alertingOverview',
+          labelKey:  'monty.nav.alertingOverview',
           component: AlertingOverview,
           display:   true
         },
         {
           name:      'endpoints',
           path:      '/endpoints',
-          labelKey:  'opni.nav.endpoints',
+          labelKey:  'monty.nav.endpoints',
           component: Endpoints,
           display:   true,
           routes:    [
             {
               name:      'endpoint-create',
               path:      '/create',
-              labelKey:  'opni.nav.endpoints',
+              labelKey:  'monty.nav.endpoints',
               component: Endpoint,
               display:   false
             },
             {
               name:      'endpoint',
               path:      '/:id',
-              labelKey:  'opni.nav.endpoints',
+              labelKey:  'monty.nav.endpoints',
               component: Endpoint,
               display:   false
             },
@@ -165,21 +165,21 @@ export const NAVIGATION = {
         {
           name:      'alarms',
           path:      '/alarms',
-          labelKey:  'opni.nav.alarms',
+          labelKey:  'monty.nav.alarms',
           component: Alarms,
           display:   true,
           routes:    [
             {
               name:      'alarm-create',
               path:      '/create',
-              labelKey:  'opni.nav.alarms',
+              labelKey:  'monty.nav.alarms',
               component: Alarm,
               display:   false
             },
             {
               name:      'alarm',
               path:      '/:id',
-              labelKey:  'opni.nav.alarms',
+              labelKey:  'monty.nav.alarms',
               component: Alarm,
               display:   false
             },
@@ -188,21 +188,21 @@ export const NAVIGATION = {
         {
           name:      'slos',
           path:      '/slos',
-          labelKey:  'opni.nav.slos',
+          labelKey:  'monty.nav.slos',
           component: SLOs,
           display:   true,
           routes:    [
             {
               name:      'slo',
               path:      '/:id',
-              labelKey:  'opni.nav.slos',
+              labelKey:  'monty.nav.slos',
               component: SLO,
               display:   false
             },
             {
               name:      'slo-create',
               path:      '/create',
-              labelKey:  'opni.nav.slos',
+              labelKey:  'monty.nav.slos',
               component: SLO,
               display:   false
             },
@@ -213,28 +213,28 @@ export const NAVIGATION = {
     {
       name:      'ai-ops',
       path:      '/ai-ops',
-      labelKey:  'opni.nav.aiOps',
+      labelKey:  'monty.nav.aiOps',
       display:   true,
       redirect:  { name: 'log-anomaly' },
       routes:    [
         {
           name:      'log-anomaly',
           path:      '/log-anomaly',
-          labelKey:  'opni.nav.logAnomaly',
+          labelKey:  'monty.nav.logAnomaly',
           display:   true,
           component: LogAnomalyBackend,
           routes:    [
             {
               name:      'pretrained-models',
               path:      '/pretrained-models',
-              labelKey:  'opni.nav.pretrainedModels',
+              labelKey:  'monty.nav.pretrainedModels',
               display:   true,
               component: PretrainedModels,
             },
             {
               name:      'workload-model-config',
               path:      '/workload-insights',
-              labelKey:  'opni.nav.workloadModel',
+              labelKey:  'monty.nav.workloadModel',
               component: WorkloadModelConfig,
               display:   true
             },
@@ -246,7 +246,7 @@ export const NAVIGATION = {
     {
       name:      'configuration',
       path:      '/configuration',
-      labelKey:  'opni.nav.configuration',
+      labelKey:  'monty.nav.configuration',
       component: Configuration,
       display:   true
     },

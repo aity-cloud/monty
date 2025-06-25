@@ -6,19 +6,19 @@ import (
 	"os"
 	"time"
 
+	corev1beta1 "github.com/aity-cloud/monty/apis/core/v1beta1"
+	"github.com/aity-cloud/monty/internal/cortex/config/storage"
+	"github.com/aity-cloud/monty/internal/cortex/config/validation"
+	cfgv1beta1 "github.com/aity-cloud/monty/pkg/config/v1beta1"
+	"github.com/aity-cloud/monty/pkg/noauth"
+	"github.com/aity-cloud/monty/pkg/test/testutil"
+	"github.com/aity-cloud/monty/pkg/util/flagutil"
+	"github.com/aity-cloud/monty/plugins/metrics/apis/cortexops"
 	"github.com/cortexproject/cortex/pkg/cortex"
 	grafanav1beta1 "github.com/grafana-operator/grafana-operator/v5/api/v1beta1"
 	. "github.com/kralicky/kmatch"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	corev1beta1 "github.com/rancher/opni/apis/core/v1beta1"
-	"github.com/rancher/opni/internal/cortex/config/storage"
-	"github.com/rancher/opni/internal/cortex/config/validation"
-	cfgv1beta1 "github.com/rancher/opni/pkg/config/v1beta1"
-	"github.com/rancher/opni/pkg/noauth"
-	"github.com/rancher/opni/pkg/test/testutil"
-	"github.com/rancher/opni/pkg/util/flagutil"
-	"github.com/rancher/opni/plugins/metrics/apis/cortexops"
 	"github.com/samber/lo"
 	"google.golang.org/protobuf/types/known/durationpb"
 	"gopkg.in/yaml.v2"
@@ -85,7 +85,7 @@ var _ = Describe("Monitoring Controller", Ordered, Label("controller", "slow"), 
 		newmcv0 := func() *unstructured.Unstructured {
 			return &unstructured.Unstructured{
 				Object: map[string]any{
-					"apiVersion": "core.opni.io/v1beta1",
+					"apiVersion": "core.monty.io/v1beta1",
 					"kind":       "MonitoringCluster",
 					"metadata": map[string]any{
 						"name":      "samplev0",
@@ -236,7 +236,7 @@ var _ = Describe("Monitoring Controller", Ordered, Label("controller", "slow"), 
 		unstructuredV1 := func() *unstructured.Unstructured {
 			return &unstructured.Unstructured{
 				Object: map[string]any{
-					"apiVersion": "core.opni.io/v1beta1",
+					"apiVersion": "core.monty.io/v1beta1",
 					"kind":       "MonitoringCluster",
 					"metadata": map[string]any{
 						"name":      "samplev1",
@@ -352,7 +352,7 @@ var _ = Describe("Monitoring Controller", Ordered, Label("controller", "slow"), 
 				mcv0 := newmcv0()
 				crd := &apiextensionsv1.CustomResourceDefinition{
 					ObjectMeta: metav1.ObjectMeta{
-						Name: "monitoringclusters.core.opni.io",
+						Name: "monitoringclusters.core.monty.io",
 					},
 				}
 				Expect(k8sClient.Get(context.Background(), client.ObjectKeyFromObject(crd), crd)).To(Succeed())

@@ -6,7 +6,7 @@ metadata:
     controller-gen.kubebuilder.io/version: v0.13.0
   name: roles.monitoring.opni.io
 spec:
-  group: monitoring.opni.io
+  group: monitoring.monty.io
   names:
     kind: Role
     listKind: RoleList

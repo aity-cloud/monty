@@ -5,13 +5,13 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/aity-cloud/monty/pkg/test/mock/auth"
+	"github.com/aity-cloud/monty/pkg/util/streams"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/rancher/opni/pkg/test/mock/auth"
-	"github.com/rancher/opni/pkg/util/streams"
 	"google.golang.org/grpc/metadata"
 
-	"github.com/rancher/opni/pkg/auth/challenges"
+	"github.com/aity-cloud/monty/pkg/auth/challenges"
 )
 
 type (

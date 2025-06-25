@@ -4,11 +4,11 @@ import (
 	"context"
 	"time"
 
+	mock_notifier "github.com/aity-cloud/monty/pkg/test/mock/notifier"
+	"github.com/aity-cloud/monty/pkg/util/notifier"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	"github.com/prometheus/prometheus/model/rulefmt"
-	mock_notifier "github.com/rancher/opni/pkg/test/mock/notifier"
-	"github.com/rancher/opni/pkg/util/notifier"
 	"go.uber.org/mock/gomock"
 )
 

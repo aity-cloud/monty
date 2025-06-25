@@ -3,17 +3,17 @@ package v1_test
 import (
 	"time"
 
+	alertingv1 "github.com/aity-cloud/monty/pkg/apis/alerting/v1"
+	storagev1 "github.com/aity-cloud/monty/pkg/apis/storage/v1"
+	"github.com/aity-cloud/monty/pkg/test"
+	"github.com/aity-cloud/monty/pkg/util"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	alertingv1 "github.com/rancher/opni/pkg/apis/alerting/v1"
-	storagev1 "github.com/rancher/opni/pkg/apis/storage/v1"
-	"github.com/rancher/opni/pkg/test"
-	"github.com/rancher/opni/pkg/util"
 	"github.com/samber/lo"
 )
 
-var _ = Describe("Redacting opni alerting secrets", Ordered, Label("unit", "slow"), func() {
-	When("we use protobuf messages for opni alerting", func() {
+var _ = Describe("Redacting monty alerting secrets", Ordered, Label("unit", "slow"), func() {
+	When("we use protobuf messages for monty alerting", func() {
 		It("should redact/undredact secrets when appropriate", func() {
 			originalPg := &alertingv1.AlertEndpoint{
 				Name:        "some-name",
@@ -41,7 +41,7 @@ var _ = Describe("Redacting opni alerting secrets", Ordered, Label("unit", "slow
 				Endpoint: &alertingv1.AlertEndpoint_Email{
 					Email: &alertingv1.EmailEndpoint{
 						To:               test.RandomName(time.Now().UnixNano()) + "@gmail.com",
-						SmtpFrom:         lo.ToPtr("bot@opni.com"),
+						SmtpFrom:         lo.ToPtr("bot@monty.com"),
 						SmtpSmartHost:    lo.ToPtr("server:6000"),
 						SmtpAuthUsername: lo.ToPtr("alex"),
 						SmtpAuthPassword: lo.ToPtr("password"),

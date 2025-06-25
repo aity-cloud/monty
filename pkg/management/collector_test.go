@@ -5,12 +5,12 @@ import (
 	"fmt"
 	"strings"
 
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	"github.com/aity-cloud/monty/pkg/metrics"
+	"github.com/aity-cloud/monty/pkg/plugins"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	"github.com/prometheus/client_golang/prometheus"
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	"github.com/rancher/opni/pkg/metrics"
-	"github.com/rancher/opni/pkg/plugins"
 )
 
 func descriptorString(fqName, help string, constLabels []string, varLabels []prometheus.ConstrainedLabel) string {

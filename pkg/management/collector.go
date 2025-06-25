@@ -5,10 +5,10 @@ import (
 	"strings"
 	"time"
 
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	managementv1 "github.com/aity-cloud/monty/pkg/apis/management/v1"
+	"github.com/aity-cloud/monty/pkg/metrics"
 	"github.com/prometheus/client_golang/prometheus"
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	managementv1 "github.com/rancher/opni/pkg/apis/management/v1"
-	"github.com/rancher/opni/pkg/metrics"
 	"github.com/samber/lo"
 )
 

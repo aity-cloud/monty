@@ -8,14 +8,14 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/aity-cloud/monty/internal/codegen"
+	"github.com/aity-cloud/monty/internal/codegen/cli"
 	"github.com/kralicky/ragu"
 	"github.com/kralicky/ragu/pkg/plugins/external"
 	"github.com/kralicky/ragu/pkg/plugins/golang"
 	"github.com/kralicky/ragu/pkg/plugins/golang/grpc"
 	"github.com/kralicky/ragu/pkg/plugins/python"
 	"github.com/magefile/mage/mg"
-	"github.com/rancher/opni/internal/codegen"
-	"github.com/rancher/opni/internal/codegen/cli"
 	_ "go.opentelemetry.io/proto/otlp/metrics/v1"
 	"golang.org/x/exp/slices"
 	"google.golang.org/protobuf/types/pluginpb"
@@ -86,7 +86,7 @@ func (Generate) ProtobufPython(ctx context.Context) error {
 
 func (Generate) ProtobufTypescript() error {
 	mg.Deps(Build.TypescriptServiceGenerator)
-	destDir := "web/pkg/opni/generated"
+	destDir := "web/pkg/monty/generated"
 
 	targets := []string{
 		"pkg/apis/management/v1/management.proto",

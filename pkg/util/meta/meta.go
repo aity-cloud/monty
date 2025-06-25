@@ -15,7 +15,7 @@ import (
 )
 
 const (
-	OpensearchFinalizer = "opni.io/opensearch"
+	OpensearchFinalizer = "monty.io/opensearch"
 )
 
 type LogLevel string

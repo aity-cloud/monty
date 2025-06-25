@@ -8,11 +8,11 @@ import (
 	"text/template"
 
 	"github.com/Masterminds/semver"
-	opnicorev1beta1 "github.com/rancher/opni/apis/core/v1beta1"
-	loggingv1beta1 "github.com/rancher/opni/apis/logging/v1beta1"
-	"github.com/rancher/opni/pkg/opensearch/certs"
-	"github.com/rancher/opni/pkg/resources/multiclusterrolebinding"
-	opnimeta "github.com/rancher/opni/pkg/util/meta"
+	opnicorev1beta1 "github.com/aity-cloud/monty/apis/core/v1beta1"
+	loggingv1beta1 "github.com/aity-cloud/monty/apis/logging/v1beta1"
+	"github.com/aity-cloud/monty/pkg/opensearch/certs"
+	"github.com/aity-cloud/monty/pkg/resources/multiclusterrolebinding"
+	opnimeta "github.com/aity-cloud/monty/pkg/util/meta"
 	"github.com/samber/lo"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -24,7 +24,7 @@ import (
 )
 
 const (
-	OpniPreprocessingInstanceName = "opni"
+	OpniPreprocessingInstanceName = "monty"
 )
 
 var (

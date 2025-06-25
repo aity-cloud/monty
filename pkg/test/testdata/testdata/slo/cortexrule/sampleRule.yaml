@@ -1,4 +1,4 @@
-name : opni-test-slo-rule
+name : monty-test-slo-rule
 rules : 
    - record : slo:sli_error:ratio_rate5m
      expr : |

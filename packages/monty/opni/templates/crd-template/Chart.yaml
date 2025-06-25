@@ -1,0 +1,13 @@
+annotations:
+  catalog.cattle.io/hidden: "true"
+  catalog.cattle.io/release-name: monty-crd
+  catalog.cattle.io/namespace: monty
+  catalog.cattle.io/display-name: Monty CRDs
+apiVersion: v1
+version: 0.5.4
+description: Installs the CRDs for Monty.
+name: monty-crd
+type: application
+maintainers:
+- email: raul@aity.cloud
+  name: Raul Bag

@@ -107,7 +107,7 @@ export interface ResourceLimitSpec {
   memory: string;
 }
 export interface ClusterConfiguration {
-  // number of replicas for the opni-alerting (odd-number for HA)
+  // number of replicas for the monty-alerting (odd-number for HA)
   numReplicas: number;
 
   // Maximum time to wait for cluster

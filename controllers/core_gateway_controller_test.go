@@ -3,15 +3,15 @@ package controllers_test
 import (
 	"context"
 
+	corev1beta1 "github.com/aity-cloud/monty/apis/core/v1beta1"
+	"github.com/aity-cloud/monty/pkg/auth/openid"
+	cfgv1beta1 "github.com/aity-cloud/monty/pkg/config/v1beta1"
+	"github.com/aity-cloud/monty/pkg/noauth"
+	opnimeta "github.com/aity-cloud/monty/pkg/util/meta"
 	. "github.com/kralicky/kmatch"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	monitoringv1 "github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring/v1"
-	corev1beta1 "github.com/rancher/opni/apis/core/v1beta1"
-	"github.com/rancher/opni/pkg/auth/openid"
-	cfgv1beta1 "github.com/rancher/opni/pkg/config/v1beta1"
-	"github.com/rancher/opni/pkg/noauth"
-	opnimeta "github.com/rancher/opni/pkg/util/meta"
 	"github.com/samber/lo"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
@@ -34,7 +34,7 @@ var _ = Describe("Core Gateway Controller", Ordered, Label("controller", "slow")
 					},
 					Spec: corev1beta1.GatewaySpec{
 						Image: &opnimeta.ImageSpec{
-							Image: lo.ToPtr("rancher/opni:latest"),
+							Image: lo.ToPtr("rancher/monty:latest"),
 						},
 						Auth: corev1beta1.AuthSpec{
 							Provider: cfgv1beta1.AuthProviderNoAuth,
@@ -65,7 +65,7 @@ var _ = Describe("Core Gateway Controller", Ordered, Label("controller", "slow")
 					},
 					Spec: corev1beta1.GatewaySpec{
 						Image: &opnimeta.ImageSpec{
-							Image: lo.ToPtr("rancher/opni:latest"),
+							Image: lo.ToPtr("rancher/monty:latest"),
 						},
 						Auth: corev1beta1.AuthSpec{
 							Provider: cfgv1beta1.AuthProviderNoAuth,
@@ -88,7 +88,7 @@ var _ = Describe("Core Gateway Controller", Ordered, Label("controller", "slow")
 					},
 					Spec: corev1beta1.GatewaySpec{
 						Image: &opnimeta.ImageSpec{
-							Image: lo.ToPtr("rancher/opni:latest"),
+							Image: lo.ToPtr("rancher/monty:latest"),
 						},
 						Auth: corev1beta1.AuthSpec{
 							Provider: cfgv1beta1.AuthProviderOpenID,
@@ -130,13 +130,13 @@ var _ = Describe("Core Gateway Controller", Ordered, Label("controller", "slow")
 			It("should create the gateway deployment", func() {
 				Eventually(Object(&appsv1.Deployment{
 					ObjectMeta: metav1.ObjectMeta{
-						Name:      "opni-gateway",
+						Name:      "monty-gateway",
 						Namespace: gw.Namespace,
 					},
 				})).Should(ExistAnd(
 					HaveOwner(gw),
 					HaveMatchingContainer(And(
-						HaveImage("rancher/opni:latest"),
+						HaveImage("rancher/monty:latest"),
 						HavePorts(
 							"http",
 							"metrics",
@@ -180,7 +180,7 @@ var _ = Describe("Core Gateway Controller", Ordered, Label("controller", "slow")
 			It("should create the gateway services", func() {
 				Eventually(Object(&corev1.Service{
 					ObjectMeta: metav1.ObjectMeta{
-						Name:      "opni",
+						Name:      "monty",
 						Namespace: gw.Namespace,
 					},
 				})).Should(ExistAnd(
@@ -192,7 +192,7 @@ var _ = Describe("Core Gateway Controller", Ordered, Label("controller", "slow")
 				))
 				Eventually(Object(&corev1.Service{
 					ObjectMeta: metav1.ObjectMeta{
-						Name:      "opni-internal",
+						Name:      "monty-internal",
 						Namespace: gw.Namespace,
 					},
 				})).Should(ExistAnd(
@@ -209,7 +209,7 @@ var _ = Describe("Core Gateway Controller", Ordered, Label("controller", "slow")
 				))
 				Eventually(Object(&corev1.Service{
 					ObjectMeta: metav1.ObjectMeta{
-						Name:      "opni-admin-dashboard",
+						Name:      "monty-admin-dashboard",
 						Namespace: gw.Namespace,
 					},
 				})).Should(ExistAnd(
@@ -223,7 +223,7 @@ var _ = Describe("Core Gateway Controller", Ordered, Label("controller", "slow")
 			It("should create the gateway configmap", func() {
 				Eventually(Object(&corev1.ConfigMap{
 					ObjectMeta: metav1.ObjectMeta{
-						Name:      "opni-gateway",
+						Name:      "monty-gateway",
 						Namespace: gw.Namespace,
 					},
 				})).Should(ExistAnd(
@@ -235,7 +235,7 @@ var _ = Describe("Core Gateway Controller", Ordered, Label("controller", "slow")
 			It("should create gateway rbac", func() {
 				Eventually(Object(&corev1.ServiceAccount{
 					ObjectMeta: metav1.ObjectMeta{
-						Name:      "opni",
+						Name:      "monty",
 						Namespace: gw.Namespace,
 					},
 				})).Should(ExistAnd(
@@ -243,7 +243,7 @@ var _ = Describe("Core Gateway Controller", Ordered, Label("controller", "slow")
 				))
 				Eventually(Object(&rbacv1.Role{
 					ObjectMeta: metav1.ObjectMeta{
-						Name:      "opni-crd",
+						Name:      "monty-crd",
 						Namespace: gw.Namespace,
 					},
 				})).Should(ExistAnd(
@@ -251,7 +251,7 @@ var _ = Describe("Core Gateway Controller", Ordered, Label("controller", "slow")
 				))
 				Eventually(Object(&rbacv1.RoleBinding{
 					ObjectMeta: metav1.ObjectMeta{
-						Name:      "opni-crd",
+						Name:      "monty-crd",
 						Namespace: gw.Namespace,
 					},
 				})).Should(ExistAnd(
@@ -262,7 +262,7 @@ var _ = Describe("Core Gateway Controller", Ordered, Label("controller", "slow")
 			It("should create the gateway servicemonitor", func() {
 				Eventually(Object(&monitoringv1.ServiceMonitor{
 					ObjectMeta: metav1.ObjectMeta{
-						Name:      "opni-gateway",
+						Name:      "monty-gateway",
 						Namespace: gw.Namespace,
 					},
 				})).Should(ExistAnd(

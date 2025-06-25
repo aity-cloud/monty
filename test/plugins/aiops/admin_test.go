@@ -3,12 +3,12 @@ package aiops_test
 import (
 	"context"
 
+	aiv1beta1 "github.com/aity-cloud/monty/apis/ai/v1beta1"
+	"github.com/aity-cloud/monty/pkg/test/testutil"
+	"github.com/aity-cloud/monty/plugins/aiops/apis/admin"
+	. "github.com/aity-cloud/monty/plugins/aiops/pkg/gateway"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	aiv1beta1 "github.com/rancher/opni/apis/ai/v1beta1"
-	"github.com/rancher/opni/pkg/test/testutil"
-	"github.com/rancher/opni/plugins/aiops/apis/admin"
-	. "github.com/rancher/opni/plugins/aiops/pkg/gateway"
 	"github.com/samber/lo"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/protobuf/types/known/emptypb"
@@ -79,7 +79,7 @@ var _ = Describe("AI Admin", Ordered, Label("integration"), func() {
 					_, err := plugin.PutAISettings(context.Background(), request)
 					Expect(err).NotTo(HaveOccurred())
 				})
-				It("should create an opni cluster", func() {
+				It("should create an monty cluster", func() {
 					cluster := &aiv1beta1.OpniCluster{}
 					Eventually(k8sClient.Get(context.Background(), types.NamespacedName{
 						Name:      OpniServicesName,
@@ -127,7 +127,7 @@ var _ = Describe("AI Admin", Ordered, Label("integration"), func() {
 					_, err := plugin.PutAISettings(context.Background(), request)
 					Expect(err).NotTo(HaveOccurred())
 				})
-				It("should create an opni cluster", func() {
+				It("should create an monty cluster", func() {
 					cluster := &aiv1beta1.OpniCluster{}
 					Eventually(k8sClient.Get(context.Background(), types.NamespacedName{
 						Name:      OpniServicesName,
@@ -147,7 +147,7 @@ var _ = Describe("AI Admin", Ordered, Label("integration"), func() {
 					Expect(k8sClient.List(context.Background(), list, client.InNamespace(namespace))).To(Succeed())
 					Expect(len(list.Items)).To(BeNumerically("==", 1))
 					cp := list.Items[0]
-					Expect(cp.Name).To(Equal("opni-model-controlplane"))
+					Expect(cp.Name).To(Equal("monty-model-controlplane"))
 					Expect(cp.Spec.Hyperparameters).To(Equal(map[string]intstr.IntOrString{
 						"modelThreshold": intstr.FromString("0.6"),
 						"minLogTokens":   intstr.FromInt(1),
@@ -192,7 +192,7 @@ var _ = Describe("AI Admin", Ordered, Label("integration"), func() {
 					_, err := plugin.PutAISettings(context.Background(), request)
 					Expect(err).NotTo(HaveOccurred())
 				})
-				It("should create an opni cluster", func() {
+				It("should create an monty cluster", func() {
 					cluster := &aiv1beta1.OpniCluster{}
 					Eventually(k8sClient.Get(context.Background(), types.NamespacedName{
 						Name:      OpniServicesName,
@@ -212,7 +212,7 @@ var _ = Describe("AI Admin", Ordered, Label("integration"), func() {
 					Expect(k8sClient.List(context.Background(), list, client.InNamespace(namespace))).To(Succeed())
 					Expect(len(list.Items)).To(BeNumerically("==", 1))
 					cp := list.Items[0]
-					Expect(cp.Name).To(Equal("opni-model-controlplane"))
+					Expect(cp.Name).To(Equal("monty-model-controlplane"))
 					Expect(cp.Spec.Hyperparameters).To(Equal(map[string]intstr.IntOrString{
 						"modelThreshold": intstr.FromString("0.6"),
 						"minLogTokens":   intstr.FromInt(1),
@@ -260,7 +260,7 @@ var _ = Describe("AI Admin", Ordered, Label("integration"), func() {
 					_, err := plugin.PutAISettings(context.Background(), request)
 					Expect(err).NotTo(HaveOccurred())
 				})
-				It("should create an opni cluster", func() {
+				It("should create an monty cluster", func() {
 					cluster := &aiv1beta1.OpniCluster{}
 					Eventually(k8sClient.Get(context.Background(), types.NamespacedName{
 						Name:      OpniServicesName,
@@ -280,7 +280,7 @@ var _ = Describe("AI Admin", Ordered, Label("integration"), func() {
 					Expect(k8sClient.List(context.Background(), list, client.InNamespace(namespace))).To(Succeed())
 					Expect(len(list.Items)).To(BeNumerically("==", 1))
 					cp := list.Items[0]
-					Expect(cp.Name).To(Equal("opni-model-rancher"))
+					Expect(cp.Name).To(Equal("monty-model-rancher"))
 					Expect(cp.Spec.Hyperparameters).To(Equal(map[string]intstr.IntOrString{
 						"modelThreshold": intstr.FromString("0.6"),
 						"minLogTokens":   intstr.FromInt(1),
@@ -318,14 +318,14 @@ var _ = Describe("AI Admin", Ordered, Label("integration"), func() {
 			When("rancher is specified with settings", func() {
 				request := &admin.AISettings{
 					Rancher: &admin.PretrainedModel{
-						ImageSource: lo.ToPtr("docker.io/opni:test"),
+						ImageSource: lo.ToPtr("docker.io/monty:test"),
 					},
 				}
 				Specify("put should succeed", func() {
 					_, err := plugin.PutAISettings(context.Background(), request)
 					Expect(err).NotTo(HaveOccurred())
 				})
-				It("should create an opni cluster", func() {
+				It("should create an monty cluster", func() {
 					cluster := &aiv1beta1.OpniCluster{}
 					Eventually(k8sClient.Get(context.Background(), types.NamespacedName{
 						Name:      OpniServicesName,
@@ -345,7 +345,7 @@ var _ = Describe("AI Admin", Ordered, Label("integration"), func() {
 					Expect(k8sClient.List(context.Background(), list, client.InNamespace(namespace))).To(Succeed())
 					Expect(len(list.Items)).To(BeNumerically("==", 1))
 					cp := list.Items[0]
-					Expect(cp.Name).To(Equal("opni-model-rancher"))
+					Expect(cp.Name).To(Equal("monty-model-rancher"))
 					Expect(cp.Spec.Hyperparameters).To(Equal(map[string]intstr.IntOrString{
 						"modelThreshold": intstr.FromString("0.6"),
 						"minLogTokens":   intstr.FromInt(1),
@@ -353,7 +353,7 @@ var _ = Describe("AI Admin", Ordered, Label("integration"), func() {
 					}))
 					Expect(cp.Spec.ModelSource).To(Equal(aiv1beta1.ModelSource{
 						Container: &aiv1beta1.ContainerSource{
-							Image: "docker.io/opni:test",
+							Image: "docker.io/monty:test",
 						},
 					}))
 				})
@@ -393,7 +393,7 @@ var _ = Describe("AI Admin", Ordered, Label("integration"), func() {
 					_, err := plugin.PutAISettings(context.Background(), request)
 					Expect(err).NotTo(HaveOccurred())
 				})
-				It("should create an opni cluster", func() {
+				It("should create an monty cluster", func() {
 					cluster := &aiv1beta1.OpniCluster{}
 					Eventually(k8sClient.Get(context.Background(), types.NamespacedName{
 						Name:      OpniServicesName,
@@ -413,7 +413,7 @@ var _ = Describe("AI Admin", Ordered, Label("integration"), func() {
 					Expect(k8sClient.List(context.Background(), list, client.InNamespace(namespace))).To(Succeed())
 					Expect(len(list.Items)).To(BeNumerically("==", 1))
 					cp := list.Items[0]
-					Expect(cp.Name).To(Equal("opni-model-longhorn"))
+					Expect(cp.Name).To(Equal("monty-model-longhorn"))
 					Expect(cp.Spec.Hyperparameters).To(Equal(map[string]intstr.IntOrString{
 						"modelThreshold": intstr.FromString("0.8"),
 						"minLogTokens":   intstr.FromInt(1),
@@ -456,7 +456,7 @@ var _ = Describe("AI Admin", Ordered, Label("integration"), func() {
 					_, err := plugin.PutAISettings(context.Background(), request)
 					Expect(err).NotTo(HaveOccurred())
 				})
-				It("should create an opni cluster", func() {
+				It("should create an monty cluster", func() {
 					cluster := &aiv1beta1.OpniCluster{}
 					Eventually(k8sClient.Get(context.Background(), types.NamespacedName{
 						Name:      OpniServicesName,
@@ -500,7 +500,7 @@ var _ = Describe("AI Admin", Ordered, Label("integration"), func() {
 			})
 		})
 	})
-	When("opni cluster does exist", func() {
+	When("monty cluster does exist", func() {
 		var request *admin.AISettings
 		BeforeEach(func() {
 			request = &admin.AISettings{
@@ -532,7 +532,7 @@ var _ = Describe("AI Admin", Ordered, Label("integration"), func() {
 			BeforeEach(func() {
 				version = "v0.12.1"
 			})
-			When("updating the opni cluster", func() {
+			When("updating the monty cluster", func() {
 				BeforeEach(func() {
 					request.Rancher = &admin.PretrainedModel{}
 				})
@@ -540,7 +540,7 @@ var _ = Describe("AI Admin", Ordered, Label("integration"), func() {
 					_, err := plugin.PutAISettings(context.Background(), request)
 					Expect(err).NotTo(HaveOccurred())
 				})
-				It("should update the opni cluster but not the version", func() {
+				It("should update the monty cluster but not the version", func() {
 					cluster := &aiv1beta1.OpniCluster{}
 					Eventually(k8sClient.Get(context.Background(), types.NamespacedName{
 						Name:      OpniServicesName,

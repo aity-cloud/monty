@@ -11,7 +11,7 @@ const (
 
 var matchNonEmptyRegex = relabel.MustNewRegexp(".+")
 
-// Drops metrics containing any opni internal labels.
+// Drops metrics containing any monty internal labels.
 func OpniInternalLabelFilter() *relabel.Config {
 	return &relabel.Config{
 		SourceLabels: model.LabelNames{

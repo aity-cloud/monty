@@ -9,10 +9,10 @@ import (
 	"strings"
 	"time"
 
+	"github.com/aity-cloud/monty/pkg/test/testutil"
 	"github.com/jhump/protoreflect/grpcreflect"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/rancher/opni/pkg/test/testutil"
 	"github.com/samber/lo"
 	"go.uber.org/atomic"
 	"go.uber.org/mock/gomock"
@@ -24,13 +24,13 @@ import (
 	"google.golang.org/protobuf/types/descriptorpb"
 	"google.golang.org/protobuf/types/known/emptypb"
 
-	"github.com/rancher/opni/pkg/plugins"
-	"github.com/rancher/opni/pkg/plugins/apis/apiextensions"
-	"github.com/rancher/opni/pkg/plugins/meta"
-	"github.com/rancher/opni/pkg/test"
-	mock_apiextensions "github.com/rancher/opni/pkg/test/mock/apiextensions"
-	mock_ext "github.com/rancher/opni/pkg/test/mock/ext"
-	"github.com/rancher/opni/pkg/test/testdata/plugins/ext"
+	"github.com/aity-cloud/monty/pkg/plugins"
+	"github.com/aity-cloud/monty/pkg/plugins/apis/apiextensions"
+	"github.com/aity-cloud/monty/pkg/plugins/meta"
+	"github.com/aity-cloud/monty/pkg/test"
+	mock_apiextensions "github.com/aity-cloud/monty/pkg/test/mock/apiextensions"
+	mock_ext "github.com/aity-cloud/monty/pkg/test/mock/ext"
+	"github.com/aity-cloud/monty/pkg/test/testdata/plugins/ext"
 	statuspb "google.golang.org/genproto/googleapis/rpc/status"
 )
 

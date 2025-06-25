@@ -6,13 +6,13 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/rancher/opni/apis"
-	"github.com/rancher/opni/pkg/logger"
-	"github.com/rancher/opni/pkg/rules"
-	"github.com/rancher/opni/pkg/rules/prometheusrule"
-	"github.com/rancher/opni/pkg/util/k8sutil"
-	"github.com/rancher/opni/pkg/util/notifier"
-	"github.com/rancher/opni/plugins/metrics/apis/remotewrite"
+	"github.com/aity-cloud/monty/apis"
+	"github.com/aity-cloud/monty/pkg/logger"
+	"github.com/aity-cloud/monty/pkg/rules"
+	"github.com/aity-cloud/monty/pkg/rules/prometheusrule"
+	"github.com/aity-cloud/monty/pkg/util/k8sutil"
+	"github.com/aity-cloud/monty/pkg/util/notifier"
+	"github.com/aity-cloud/monty/plugins/metrics/apis/remotewrite"
 	"gopkg.in/yaml.v3"
 )
 

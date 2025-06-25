@@ -4,13 +4,13 @@ import (
 	"context"
 	"crypto/subtle"
 
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	authutil "github.com/rancher/opni/pkg/auth/util"
-	"github.com/rancher/opni/pkg/util/streams"
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	authutil "github.com/aity-cloud/monty/pkg/auth/util"
+	"github.com/aity-cloud/monty/pkg/util/streams"
 	"golang.org/x/crypto/blake2b"
 
-	"github.com/rancher/opni/pkg/auth/cluster"
-	"github.com/rancher/opni/pkg/keyring"
+	"github.com/aity-cloud/monty/pkg/auth/cluster"
+	"github.com/aity-cloud/monty/pkg/keyring"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"

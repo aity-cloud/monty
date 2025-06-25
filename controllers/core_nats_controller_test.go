@@ -4,10 +4,10 @@ import (
 	"context"
 	"fmt"
 
+	opnicorev1beta1 "github.com/aity-cloud/monty/apis/core/v1beta1"
 	. "github.com/kralicky/kmatch"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	opnicorev1beta1 "github.com/rancher/opni/apis/core/v1beta1"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -78,7 +78,7 @@ var _ = Describe("Core Nats Controller", Ordered, Label("controller"), func() {
 		})).Should(ExistAnd(
 			HaveLabels(
 				"app.kubernetes.io/name", "nats",
-				"opni.io/cluster-name", cluster.Name,
+				"monty.io/cluster-name", cluster.Name,
 			),
 			BeHeadless(),
 			HaveOwner(cluster),
@@ -95,7 +95,7 @@ var _ = Describe("Core Nats Controller", Ordered, Label("controller"), func() {
 			HaveOwner(cluster),
 			HaveLabels(
 				"app.kubernetes.io/name", "nats",
-				"opni.io/cluster-name", cluster.Name,
+				"monty.io/cluster-name", cluster.Name,
 			),
 			HavePorts("tcp-cluster"),
 			HaveType(corev1.ServiceTypeClusterIP),
@@ -112,7 +112,7 @@ var _ = Describe("Core Nats Controller", Ordered, Label("controller"), func() {
 			HaveOwner(cluster),
 			HaveLabels(
 				"app.kubernetes.io/name", "nats",
-				"opni.io/cluster-name", cluster.Name,
+				"monty.io/cluster-name", cluster.Name,
 			),
 			HavePorts("tcp-client"),
 			HaveType(corev1.ServiceTypeClusterIP),

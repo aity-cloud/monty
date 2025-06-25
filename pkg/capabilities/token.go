@@ -1,6 +1,6 @@
 package capabilities
 
-import corev1 "github.com/rancher/opni/pkg/apis/core/v1"
+import corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
 
 type TokenCapabilities string
 

@@ -1,17 +1,17 @@
 package resources
 
 const (
-	PretrainedModelLabel = "opni.io/pretrained-model"
-	ServiceLabel         = "opni.io/service"
-	OpniClusterName      = "opni.io/cluster-name"
+	PretrainedModelLabel = "monty.io/pretrained-model"
+	ServiceLabel         = "monty.io/service"
+	OpniClusterName      = "monty.io/cluster-name"
 	AppNameLabel         = "app.kubernetes.io/name"
 	PartOfLabel          = "app.kubernetes.io/part-of"
 	InstanceLabel        = "app.kubernetes.io/instance"
 	HostTopologyKey      = "kubernetes.io/hostname"
-	OpniClusterID        = "opni.io/cluster-id"
-	OpniBootstrapToken   = "opni.io/bootstrap-token"
-	OpniInferenceType    = "opni.io/inference-type"
-	OpniConfigHash       = "opni.io/config-hash"
+	OpniClusterID        = "monty.io/cluster-id"
+	OpniBootstrapToken   = "monty.io/bootstrap-token"
+	OpniInferenceType    = "monty.io/inference-type"
+	OpniConfigHash       = "monty.io/config-hash"
 )
 
 func CombineLabels(maps ...map[string]string) map[string]string {
@@ -34,6 +34,6 @@ func NewOpensearchLabels() OpensearchLabels {
 
 func NewGatewayLabels() map[string]string {
 	return map[string]string{
-		"app.kubernetes.io/name": "opni-gateway",
+		"app.kubernetes.io/name": "monty-gateway",
 	}
 }

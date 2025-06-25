@@ -3,12 +3,12 @@ package versions
 import (
 	"runtime/debug"
 
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
 	"github.com/samber/lo"
 )
 
 const (
-	OpniVersionBuildInfoKey = "opni.version"
+	OpniVersionBuildInfoKey = "monty.version"
 )
 
 func ReadBuildInfo() (*corev1.BuildInfo, bool) {

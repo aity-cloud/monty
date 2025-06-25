@@ -7,9 +7,9 @@ import (
 	nfd "sigs.k8s.io/node-feature-discovery-operator/controllers"
 )
 
-// +kubebuilder:rbac:groups=nfd.opni.io,resources=nodefeaturediscoveries,verbs=get;list;watch;create;update;patch;delete
-// +kubebuilder:rbac:groups=nfd.opni.io,resources=nodefeaturediscoveries/status,verbs=get;update;patch
-// +kubebuilder:rbac:groups=nfd.opni.io,resources=nodefeaturediscoveries/finalizers,verbs=update
+// +kubebuilder:rbac:groups=nfd.monty.io,resources=nodefeaturediscoveries,verbs=get;list;watch;create;update;patch;delete
+// +kubebuilder:rbac:groups=nfd.monty.io,resources=nodefeaturediscoveries/status,verbs=get;update;patch
+// +kubebuilder:rbac:groups=nfd.monty.io,resources=nodefeaturediscoveries/finalizers,verbs=update
 // +kubebuilder:rbac:groups=core,resources=pods,verbs=get;list;watch;create;update;patch;delete
 // +kubebuilder:rbac:groups=core,resources=pods/log,verbs=get
 // +kubebuilder:rbac:groups=apps,resources=daemonsets,verbs=get;list;watch;create;update;patch;delete

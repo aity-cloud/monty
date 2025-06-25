@@ -1,5 +1,5 @@
 syntax = "proto3";
-option go_package = "github.com/rancher/opni/pkg/apis/alerting/v1";
+option go_package = "github.com/aity-cloud/monty/pkg/apis/alerting/v1";
 package alerting;
 
 import "google/protobuf/struct.proto";

@@ -6,12 +6,12 @@ import (
 	"reflect"
 	"strings"
 
+	opnicorev1beta1 "github.com/aity-cloud/monty/apis/core/v1beta1"
+	loggingv1beta1 "github.com/aity-cloud/monty/apis/logging/v1beta1"
+	"github.com/aity-cloud/monty/pkg/test/testk8s"
 	. "github.com/kralicky/kmatch"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	opnicorev1beta1 "github.com/rancher/opni/apis/core/v1beta1"
-	loggingv1beta1 "github.com/rancher/opni/apis/logging/v1beta1"
-	"github.com/rancher/opni/pkg/test/testk8s"
 	"github.com/samber/lo"
 	"golang.org/x/exp/slices"
 	corev1 "k8s.io/api/core/v1"
@@ -51,7 +51,7 @@ var _ = Describe("Logging OpniOpensearch Controller", Ordered, Label("controller
 
 		object = &loggingv1beta1.OpniOpensearch{
 			ObjectMeta: metav1.ObjectMeta{
-				Name:      "opni-test",
+				Name:      "monty-test",
 				Namespace: testNs,
 			},
 			Spec: loggingv1beta1.OpniOpensearchSpec{
@@ -108,7 +108,7 @@ var _ = Describe("Logging OpniOpensearch Controller", Ordered, Label("controller
 						Enable:   true,
 						Version:  "1.0.0",
 						OpensearchCredentialsSecret: corev1.LocalObjectReference{
-							Name: "opni-test-dashboards-auth",
+							Name: "monty-test-dashboards-auth",
 						},
 						Service: opsterv1.DashboardsServiceSpec{
 							Type: corev1.ServiceTypeClusterIP,
@@ -122,7 +122,7 @@ var _ = Describe("Logging OpniOpensearch Controller", Ordered, Label("controller
 		}
 	})
 
-	When("creating an opni opensearch object", func() {
+	When("creating an monty opensearch object", func() {
 		It("should succeed", func() {
 			Expect(k8sClient.Create(context.Background(), object)).To(Succeed())
 		})

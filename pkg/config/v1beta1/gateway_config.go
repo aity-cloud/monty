@@ -1,7 +1,7 @@
 package v1beta1
 
 import (
-	"github.com/rancher/opni/pkg/config/meta"
+	"github.com/aity-cloud/monty/pkg/config/meta"
 )
 
 type GatewayConfig struct {
@@ -339,7 +339,7 @@ func (s *GatewayConfigSpec) SetDefaults() {
 		s.Cortex.Purger.HTTPAddress = "cortex-purger:8080"
 	}
 	if s.Plugins.Dir == "" {
-		s.Plugins.Dir = "/var/lib/opni/plugins"
+		s.Plugins.Dir = "/var/lib/monty/plugins"
 	}
 	if s.Plugins.Binary.Cache.PatchEngine == "" {
 		s.Plugins.Binary.Cache.PatchEngine = PatchEngineBsdiff
@@ -348,7 +348,7 @@ func (s *GatewayConfigSpec) SetDefaults() {
 		s.Plugins.Binary.Cache.Backend = CacheBackendFilesystem
 	}
 	if s.Plugins.Binary.Cache.Filesystem.Dir == "" {
-		s.Plugins.Binary.Cache.Filesystem.Dir = "/var/lib/opni/plugin-cache"
+		s.Plugins.Binary.Cache.Filesystem.Dir = "/var/lib/monty/plugin-cache"
 	}
 }
 

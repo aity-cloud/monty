@@ -3,11 +3,11 @@ package storage_test
 import (
 	"context"
 
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	"github.com/aity-cloud/monty/pkg/storage"
+	mock_storage "github.com/aity-cloud/monty/pkg/test/mock/storage"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	"github.com/rancher/opni/pkg/storage"
-	mock_storage "github.com/rancher/opni/pkg/test/mock/storage"
 	"go.uber.org/mock/gomock"
 )
 

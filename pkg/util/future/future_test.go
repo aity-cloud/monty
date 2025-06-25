@@ -5,9 +5,9 @@ import (
 	"runtime/debug"
 	"time"
 
+	"github.com/aity-cloud/monty/pkg/util/future"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/rancher/opni/pkg/util/future"
 )
 
 var _ = Describe("Future", Label("unit"), func() {

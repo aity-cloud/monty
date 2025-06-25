@@ -3,9 +3,9 @@ package drivers
 import (
 	"context"
 
-	"github.com/rancher/opni/pkg/plugins/driverutil"
-	"github.com/rancher/opni/plugins/alerting/pkg/apis/node"
-	"github.com/rancher/opni/plugins/alerting/pkg/apis/rules"
+	"github.com/aity-cloud/monty/pkg/plugins/driverutil"
+	"github.com/aity-cloud/monty/plugins/alerting/pkg/apis/node"
+	"github.com/aity-cloud/monty/plugins/alerting/pkg/apis/rules"
 )
 
 type ConfigPropagator interface {

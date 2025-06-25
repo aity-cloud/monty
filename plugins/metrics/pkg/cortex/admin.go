@@ -17,9 +17,9 @@ import (
 
 	"log/slog"
 
+	"github.com/aity-cloud/monty/plugins/metrics/apis/cortexadmin"
 	"github.com/cortexproject/cortex/pkg/cortexpb"
 	"github.com/cortexproject/cortex/pkg/distributor"
-	"github.com/rancher/opni/plugins/metrics/apis/cortexadmin"
 	"github.com/samber/lo"
 	"github.com/tidwall/gjson"
 	"golang.org/x/sync/errgroup"
@@ -29,10 +29,10 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	"github.com/rancher/opni/pkg/config/v1beta1"
-	"github.com/rancher/opni/pkg/logger"
-	"github.com/rancher/opni/pkg/util"
-	metricsutil "github.com/rancher/opni/plugins/metrics/pkg/util"
+	"github.com/aity-cloud/monty/pkg/config/v1beta1"
+	"github.com/aity-cloud/monty/pkg/logger"
+	"github.com/aity-cloud/monty/pkg/util"
+	metricsutil "github.com/aity-cloud/monty/plugins/metrics/pkg/util"
 )
 
 type CortexAdminServer struct {

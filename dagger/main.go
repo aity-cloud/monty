@@ -11,14 +11,14 @@ import (
 	"strings"
 
 	"dagger.io/dagger"
+	"github.com/aity-cloud/monty/dagger/config"
+	"github.com/aity-cloud/monty/dagger/helm"
+	"github.com/aity-cloud/monty/dagger/x/cmds"
 	"github.com/knadh/koanf/providers/env"
 	"github.com/knadh/koanf/providers/posflag"
 	"github.com/knadh/koanf/providers/structs"
 	"github.com/knadh/koanf/v2"
 	"github.com/mitchellh/mapstructure"
-	"github.com/rancher/opni/dagger/config"
-	"github.com/rancher/opni/dagger/helm"
-	"github.com/rancher/opni/dagger/x/cmds"
 	"github.com/spf13/pflag"
 	"golang.org/x/sync/errgroup"
 )
@@ -314,8 +314,8 @@ func (b *Builder) runInTreeBuilds(ctx context.Context) error {
 	opni := archives.
 		Pipeline("Build Opni").
 		WithMountedDirectory(webDist, nodeBuild.Directory(webDist)).
-		WithExec(mage([]string{"build:opni"})).
-		WithExec([]string{"bin/opni", "completion", "bash"}, dagger.ContainerWithExecOpts{RedirectStdout: "/etc/bash_completion.d/opni"})
+		WithExec(mage([]string{"build:monty"})).
+		WithExec([]string{"bin/monty", "completion", "bash"}, dagger.ContainerWithExecOpts{RedirectStdout: "/etc/bash_completion.d/monty"})
 
 	minimal := archives.
 		Pipeline("Build Opni Minimal").
@@ -378,15 +378,15 @@ func (b *Builder) runInTreeBuilds(ctx context.Context) error {
 
 	fullImage := alpineBase.
 		Pipeline("Full Image").
-		WithFile("/usr/bin/opni", opni.File(b.bin("opni"))).
-		WithDirectory("/var/lib/opni/plugins", plugins.Directory(b.bin("plugins"))).
+		WithFile("/usr/bin/monty", opni.File(b.bin("monty"))).
+		WithDirectory("/var/lib/monty/plugins", plugins.Directory(b.bin("plugins"))).
 		WithDirectory("/etc/bash_completion.d", opni.Directory("/etc/bash_completion.d")).
-		WithEntrypoint([]string{"opni"})
+		WithEntrypoint([]string{"monty"})
 
 	minimalImage := alpineBase.
 		Pipeline("Minimal Image").
-		WithFile("/usr/bin/opni", minimal.File(b.bin("opni-minimal"))).
-		WithEntrypoint([]string{"opni"})
+		WithFile("/usr/bin/monty", minimal.File(b.bin("monty-minimal"))).
+		WithEntrypoint([]string{"monty"})
 
 	// export and push artifacts
 
@@ -437,7 +437,7 @@ func (b *Builder) runInTreeBuilds(ctx context.Context) error {
 			if minimalRef != "" {
 				fullImage = fullImage.
 					WithEnvVariable("OPNI_MINIMAL_IMAGE_REF", minimalRef).
-					WithLabel("opni.io.minimal-image-ref", minimalRef)
+					WithLabel("monty.io.minimal-image-ref", minimalRef)
 			}
 			ref, err := fullImage.
 				WithRegistryAuth(b.Images.Opni.RegistryAuth()).
@@ -469,14 +469,14 @@ func (b *Builder) runOutOfTreeBuilds(ctx context.Context) error {
 		Pipeline("Opensearch Dashboards Image").
 		From(fmt.Sprintf("opensearchproject/opensearch-dashboards:%s", b.Images.Opensearch.Build.DashboardsVersion)).
 		WithExec([]string{"opensearch-dashboards-plugin", "install",
-			fmt.Sprintf("https://github.com/rancher/opni-ui/releases/download/plugin-%[1]s/opni-dashboards-plugin-%[1]s.zip", b.Images.Opensearch.Build.PluginVersion),
+			fmt.Sprintf("https:// github.com/aity-cloud/monty-ui/releases/download/plugin-%[1]s/monty-dashboards-plugin-%[1]s.zip", b.Images.Opensearch.Build.PluginVersion),
 		})
 
 	opensearch := b.client.Container().
 		Pipeline("Opensearch Image").
 		From(fmt.Sprintf("opensearchproject/opensearch:%s", b.Images.Opensearch.Build.OpensearchVersion)).
 		WithExec([]string{"opensearch-plugin", "-s", "install", "-b",
-			fmt.Sprintf("https://github.com/rancher/opni-ingest-plugin/releases/download/v%s/opnipreprocessing.zip", b.Images.Opensearch.Build.PluginVersion),
+			fmt.Sprintf("https:// github.com/aity-cloud/monty-ingest-plugin/releases/download/v%s/opnipreprocessing.zip", b.Images.Opensearch.Build.PluginVersion),
 		}).
 		WithDirectory("/usr/share/opensearch/extensions", b.client.Directory(), dagger.ContainerWithDirectoryOpts{Owner: "1000:1000"})
 
@@ -510,7 +510,7 @@ func (b *Builder) runOutOfTreeBuilds(ctx context.Context) error {
 		Pipeline("Opensearch Update Service Image").
 		WithDirectory(".", b.sources.Directory("aiops/")).
 		WithExec([]string{"pip", "install", "-r", "requirements.txt"}).
-		WithEntrypoint([]string{"python", "opni-opensearch-update-service/opensearch-update-service/app/main.py"})
+		WithEntrypoint([]string{"python", "monty-opensearch-update-service/opensearch-update-service/app/main.py"})
 
 	imageTargets := map[*config.ImageTarget]*dagger.Container{
 		&b.Images.PythonBase:               opniPythonBase,

@@ -21,7 +21,7 @@ package controllers
 import (
 	"context"
 
-	"github.com/rancher/opni/pkg/util/k8sutil"
+	"github.com/aity-cloud/monty/pkg/util/k8sutil"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -29,10 +29,10 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
+	aiv1beta1 "github.com/aity-cloud/monty/apis/ai/v1beta1"
+	"github.com/aity-cloud/monty/pkg/resources"
+	"github.com/aity-cloud/monty/pkg/resources/opnicluster"
 	"github.com/cisco-open/operator-tools/pkg/reconciler"
-	aiv1beta1 "github.com/rancher/opni/apis/ai/v1beta1"
-	"github.com/rancher/opni/pkg/resources"
-	"github.com/rancher/opni/pkg/resources/opnicluster"
 	opsterv1 "opensearch.opster.io/api/v1"
 )
 
@@ -44,9 +44,9 @@ type AIOpniClusterReconciler struct {
 	Opts     []opnicluster.ReconcilerOption
 }
 
-// +kubebuilder:rbac:groups=ai.opni.io,resources=opniclusters,verbs=get;list;watch;create;update;patch;delete
-// +kubebuilder:rbac:groups=ai.opni.io,resources=opniclusters/status,verbs=get;update;patch
-// +kubebuilder:rbac:groups=ai.opni.io,resources=opniclusters/finalizers,verbs=update
+// +kubebuilder:rbac:groups=ai.monty.io,resources=opniclusters,verbs=get;list;watch;create;update;patch;delete
+// +kubebuilder:rbac:groups=ai.monty.io,resources=opniclusters/status,verbs=get;update;patch
+// +kubebuilder:rbac:groups=ai.monty.io,resources=opniclusters/finalizers,verbs=update
 // +kubebuilder:rbac:groups=monitoring.coreos.com,resources=prometheuses,verbs=get;list;watch
 // +kubebuilder:rbac:groups=monitoring.coreos.com,resources=servicemonitors,verbs=get;list;watch;create;update;patch;delete
 // +kubebuilder:rbac:groups=monitoring.coreos.com,resources=prometheusrules,verbs=get;list;watch;create;update;patch;delete
@@ -95,7 +95,7 @@ func (r *AIOpniClusterReconciler) Reconcile(ctx context.Context, req ctrl.Reques
 func (r *AIOpniClusterReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	r.Client = mgr.GetClient()
 	r.scheme = mgr.GetScheme()
-	r.recorder = mgr.GetEventRecorderFor("opni-controller")
+	r.recorder = mgr.GetEventRecorderFor("monty-controller")
 	return ctrl.NewControllerManagedBy(mgr).
 		For(&aiv1beta1.OpniCluster{}).
 		Owns(&appsv1.StatefulSet{}).

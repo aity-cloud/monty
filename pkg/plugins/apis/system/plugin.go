@@ -5,12 +5,12 @@ import (
 	"sync"
 	"time"
 
+	managementv1 "github.com/aity-cloud/monty/pkg/apis/management/v1"
+	"github.com/aity-cloud/monty/pkg/caching"
+	"github.com/aity-cloud/monty/pkg/plugins"
+	"github.com/aity-cloud/monty/pkg/storage"
+	"github.com/aity-cloud/monty/pkg/util"
 	"github.com/hashicorp/go-plugin"
-	managementv1 "github.com/rancher/opni/pkg/apis/management/v1"
-	"github.com/rancher/opni/pkg/caching"
-	"github.com/rancher/opni/pkg/plugins"
-	"github.com/rancher/opni/pkg/storage"
-	"github.com/rancher/opni/pkg/util"
 	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/backoff"
@@ -44,7 +44,7 @@ type SystemPluginServer interface {
 }
 
 const (
-	SystemPluginID  = "opni.System"
+	SystemPluginID  = "monty.System"
 	KVServiceID     = "system.KeyValueStore"
 	SystemServiceID = "system.System"
 )

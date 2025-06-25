@@ -4,7 +4,7 @@ import AsyncButton from '@shell/components/AsyncButton';
 import Loading from '@shell/components/Loading';
 import Wizard from '@shell/components/Wizard';
 
-const REPO = 'https://github.com/rancher/opni.git';
+const REPO = 'https:// github.com/aity-cloud/monty.git';
 const REPO_ANNOTATION = 'catalog.cattle.io/ui-source-repo';
 const REPO_NAME = 'opni-repo';
 const CHART_NAME = 'opni';

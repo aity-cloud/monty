@@ -8,9 +8,9 @@ import (
 	"encoding/pem"
 	"fmt"
 
-	"github.com/rancher/opni/pkg/config/v1beta1"
-	"github.com/rancher/opni/pkg/resources"
-	"github.com/rancher/opni/pkg/util"
+	"github.com/aity-cloud/monty/pkg/config/v1beta1"
+	"github.com/aity-cloud/monty/pkg/resources"
+	"github.com/aity-cloud/monty/pkg/util"
 	"github.com/samber/lo"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
@@ -24,7 +24,7 @@ import (
 
 var etcdLabels = map[string]string{
 	"app.kubernetes.io/name":    "etcd",
-	"app.kubernetes.io/part-of": "opni",
+	"app.kubernetes.io/part-of": "monty",
 }
 
 func (r *Reconciler) etcd() ([]resources.Resource, error) {

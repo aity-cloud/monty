@@ -3,8 +3,8 @@ package agent
 import (
 	"google.golang.org/grpc"
 
-	capabilityv1 "github.com/rancher/opni/pkg/apis/capability/v1"
-	controlv1 "github.com/rancher/opni/pkg/apis/control/v1"
+	capabilityv1 "github.com/aity-cloud/monty/pkg/apis/capability/v1"
+	controlv1 "github.com/aity-cloud/monty/pkg/apis/control/v1"
 )
 
 type ClientSet interface {

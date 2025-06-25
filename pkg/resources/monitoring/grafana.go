@@ -9,11 +9,11 @@ import (
 
 	_ "embed"
 
+	"github.com/aity-cloud/monty/pkg/auth/openid"
+	"github.com/aity-cloud/monty/pkg/config/v1beta1"
+	"github.com/aity-cloud/monty/pkg/resources"
 	grafanav1beta1 "github.com/grafana-operator/grafana-operator/v5/api/v1beta1"
 	"github.com/imdario/mergo"
-	"github.com/rancher/opni/pkg/auth/openid"
-	"github.com/rancher/opni/pkg/config/v1beta1"
-	"github.com/rancher/opni/pkg/resources"
 	"github.com/samber/lo"
 	"github.com/ttacon/chalk"
 	corev1 "k8s.io/api/core/v1"
@@ -43,14 +43,14 @@ var sloDetailedDashboard []byte
 const (
 	grafanaImageRepo    = "grafana"
 	grafanaImageVersion = "10.1.5"
-	secret              = "opni-gateway-client-cert"
+	secret              = "monty-gateway-client-cert"
 )
 
 func (r *Reconciler) grafana() ([]resources.Resource, error) {
 	dashboardSelector := &metav1.LabelSelector{
 		MatchLabels: map[string]string{
 			resources.AppNameLabel:  "grafana",
-			resources.PartOfLabel:   "opni",
+			resources.PartOfLabel:   "monty",
 			resources.InstanceLabel: r.mc.Name,
 		},
 	}
@@ -66,13 +66,13 @@ func (r *Reconciler) grafana() ([]resources.Resource, error) {
 	legacyResources := []resources.Resource{
 		resources.Absent(&grafanav1beta1.Grafana{
 			ObjectMeta: metav1.ObjectMeta{
-				Name:      "opni-monitoring",
+				Name:      "monty-monitoring",
 				Namespace: r.mc.Namespace,
 			},
 		}),
 		resources.Absent(&grafanav1beta1.GrafanaDatasource{
 			ObjectMeta: metav1.ObjectMeta{
-				Name:      "opni-monitoring",
+				Name:      "monty-monitoring",
 				Namespace: r.mc.Namespace,
 			},
 		}),
@@ -267,7 +267,7 @@ func (r *Reconciler) createGrafanaSpecDefaults(grafanaHostname string) *grafanav
 			},
 		},
 		Preferences: &grafanav1beta1.GrafanaPreferences{
-			HomeDashboardUID: "opni-home",
+			HomeDashboardUID: "monty-home",
 		},
 	}
 }
@@ -302,7 +302,7 @@ func (r *Reconciler) createOpniDatasource(dashboardSelector *metav1.LabelSelecto
 
 	return &grafanav1beta1.GrafanaDatasource{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "opni-datasource",
+			Name:      "monty-datasource",
 			Namespace: r.mc.Namespace,
 		},
 		Spec: grafanav1beta1.GrafanaDatasourceSpec{
@@ -337,7 +337,7 @@ func (r *Reconciler) createOpniAlertManagerDatasource(dashboardSelector *metav1.
 
 	return &grafanav1beta1.GrafanaDatasource{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "opni-alert-manager-datasource",
+			Name:      "monty-alert-manager-datasource",
 			Namespace: r.mc.Namespace,
 		},
 		Spec: grafanav1beta1.GrafanaDatasourceSpec{
@@ -483,7 +483,7 @@ func (r *Reconciler) createGrafanaDashboards(dashboardSelector *metav1.LabelSele
 	grafanaDashboards := []*grafanav1beta1.GrafanaDashboard{
 		{
 			ObjectMeta: metav1.ObjectMeta{
-				Name:      "opni-gateway.json",
+				Name:      "monty-gateway.json",
 				Namespace: r.mc.Namespace,
 			},
 			Spec: grafanav1beta1.GrafanaDashboardSpec{
@@ -496,7 +496,7 @@ func (r *Reconciler) createGrafanaDashboards(dashboardSelector *metav1.LabelSele
 		},
 		{
 			ObjectMeta: metav1.ObjectMeta{
-				Name:      "opni-home.json",
+				Name:      "monty-home.json",
 				Namespace: r.mc.Namespace,
 			},
 			Spec: grafanav1beta1.GrafanaDashboardSpec{
@@ -509,7 +509,7 @@ func (r *Reconciler) createGrafanaDashboards(dashboardSelector *metav1.LabelSele
 		},
 		{
 			ObjectMeta: metav1.ObjectMeta{
-				Name:      "opni-service-latency.json",
+				Name:      "monty-service-latency.json",
 				Namespace: r.mc.Namespace,
 			},
 			Spec: grafanav1beta1.GrafanaDashboardSpec{

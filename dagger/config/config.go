@@ -28,7 +28,7 @@ type BuilderConfig struct {
 }
 
 type ImagesConfig struct {
-	Opni        ImageTarget      `koanf:"opni"`
+	Opni        ImageTarget      `koanf:"monty"`
 	OpniMinimal ImageTarget      `koanf:"minimal"`
 	Opensearch  OpensearchConfig `koanf:"opensearch"`
 	PythonBase  ImageTarget      `koanf:"python-base"`

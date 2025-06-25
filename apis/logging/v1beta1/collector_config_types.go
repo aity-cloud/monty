@@ -1,7 +1,7 @@
 package v1beta1
 
 import (
-	opnimeta "github.com/rancher/opni/pkg/util/meta"
+	opnimeta "github.com/aity-cloud/monty/pkg/util/meta"
 	"github.com/rancher/wrangler/pkg/crd"
 	"github.com/rancher/wrangler/pkg/schemas/openapi"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"

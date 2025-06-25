@@ -1,6 +1,6 @@
 package v1
 
-import "github.com/rancher/opni/pkg/validation"
+import "github.com/aity-cloud/monty/pkg/validation"
 
 func (req *UninstallRequest) Validate() error {
 	if err := validation.Validate(req.Cluster); err != nil {

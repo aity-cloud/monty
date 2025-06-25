@@ -6,9 +6,9 @@ import (
 	"reflect"
 	"sync"
 
+	"github.com/aity-cloud/monty/pkg/plugins/driverutil"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/rancher/opni/pkg/plugins/driverutil"
 	"github.com/samber/lo"
 )
 

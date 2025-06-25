@@ -8,18 +8,18 @@ import (
 	"net/url"
 	"time"
 
-	"github.com/rancher/opni/pkg/alerting/metrics/naming"
-	"github.com/rancher/opni/pkg/capabilities/wellknown"
-	"github.com/rancher/opni/plugins/metrics/apis/cortexadmin"
-	"github.com/rancher/opni/plugins/metrics/apis/cortexops"
+	"github.com/aity-cloud/monty/pkg/alerting/metrics/naming"
+	"github.com/aity-cloud/monty/pkg/capabilities/wellknown"
+	"github.com/aity-cloud/monty/plugins/metrics/apis/cortexadmin"
+	"github.com/aity-cloud/monty/plugins/metrics/apis/cortexops"
 	"github.com/tidwall/gjson"
 
+	capabilityv1 "github.com/aity-cloud/monty/pkg/apis/capability/v1"
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	managementv1 "github.com/aity-cloud/monty/pkg/apis/management/v1"
+	"github.com/aity-cloud/monty/pkg/test"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	capabilityv1 "github.com/rancher/opni/pkg/apis/capability/v1"
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	managementv1 "github.com/rancher/opni/pkg/apis/management/v1"
-	"github.com/rancher/opni/pkg/test"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/durationpb"
@@ -387,7 +387,7 @@ var _ = XDescribe("Converting ServiceLevelObjective Messages to Prometheus Rules
 			Eventually(func() error {
 				return expectRuleGroupToExist(
 					ctx, adminClient, "agent",
-					"opni-test-slo-rule", sampleRuleYamlString)
+					"monty-test-slo-rule", sampleRuleYamlString)
 			}).Should(Succeed())
 
 		})
@@ -407,12 +407,12 @@ var _ = XDescribe("Converting ServiceLevelObjective Messages to Prometheus Rules
 			Eventually(func() error {
 				return expectRuleGroupToExist(
 					ctx, adminClient, "agent",
-					"opni-test-slo-rule", sampleRuleYamlUpdateString)
+					"monty-test-slo-rule", sampleRuleYamlUpdateString)
 			}).Should(Succeed())
 		})
 
 		It("Should be able to delete existing rule groups", func() {
-			deleteGroupName := "opni-test-slo-rule"
+			deleteGroupName := "monty-test-slo-rule"
 			_, err := adminClient.DeleteRule(ctx, &cortexadmin.DeleteRuleRequest{
 				ClusterId: "agent",
 				Namespace: "test",
@@ -420,11 +420,11 @@ var _ = XDescribe("Converting ServiceLevelObjective Messages to Prometheus Rules
 			})
 			Expect(err).To(Succeed())
 
-			// Should find no rule named "opni-test-slo-rule" after deletion
+			// Should find no rule named "monty-test-slo-rule" after deletion
 			Eventually(func() error {
 				return expectRuleGroupToNotExist(
 					ctx, adminClient, "agent",
-					"opni-test-slo-rule")
+					"monty-test-slo-rule")
 			}).Should(Succeed())
 		})
 	})
@@ -451,17 +451,17 @@ var _ = XDescribe("Converting ServiceLevelObjective Messages to Prometheus Rules
 			Eventually(func() error {
 				return expectRuleGroupToExist(
 					ctx, adminClient,
-					"agent", "opni-test-slo-rule", sampleRuleYamlString)
+					"agent", "monty-test-slo-rule", sampleRuleYamlString)
 			}).Should(Succeed())
 
 			Eventually(func() error {
 				return expectRuleGroupToExist(
 					ctx, adminClient,
-					"agent2", "opni-test-slo-rule", sampleRuleYamlString,
+					"agent2", "monty-test-slo-rule", sampleRuleYamlString,
 				)
 			}).Should(Succeed())
 
-			deleteGroupName := "opni-test-slo-rule"
+			deleteGroupName := "monty-test-slo-rule"
 			_, err = adminClient.DeleteRule(ctx, &cortexadmin.DeleteRuleRequest{
 				ClusterId: "agent",
 				Namespace: "test",
@@ -472,13 +472,13 @@ var _ = XDescribe("Converting ServiceLevelObjective Messages to Prometheus Rules
 			Eventually(func() error {
 				return expectRuleGroupToExist(
 					ctx, adminClient, "agent2",
-					"opni-test-slo-rule", sampleRuleYamlString)
+					"monty-test-slo-rule", sampleRuleYamlString)
 			}).Should(Succeed())
 
 			Eventually(func() error {
 				return expectRuleGroupToNotExist(
 					ctx, adminClient, "agent",
-					"opni-test-slo-rule")
+					"monty-test-slo-rule")
 			}).Should(Succeed())
 		})
 	})

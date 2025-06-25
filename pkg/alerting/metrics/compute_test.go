@@ -3,11 +3,11 @@ package metrics_test
 import (
 	"time"
 
+	"github.com/aity-cloud/monty/pkg/alerting/metrics"
+	"github.com/aity-cloud/monty/pkg/alerting/shared"
+	alertingv1 "github.com/aity-cloud/monty/pkg/apis/alerting/v1"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/rancher/opni/pkg/alerting/metrics"
-	"github.com/rancher/opni/pkg/alerting/shared"
-	alertingv1 "github.com/rancher/opni/pkg/apis/alerting/v1"
 	"google.golang.org/protobuf/types/known/durationpb"
 )
 

@@ -7,18 +7,18 @@ import (
 	"os"
 	"time"
 
-	"github.com/rancher/opni/apis"
-	opnicorev1beta1 "github.com/rancher/opni/apis/core/v1beta1"
-	loggingv1beta1 "github.com/rancher/opni/apis/logging/v1beta1"
-	capabilityv1 "github.com/rancher/opni/pkg/apis/capability/v1"
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	"github.com/rancher/opni/pkg/plugins/driverutil"
-	"github.com/rancher/opni/pkg/resources"
-	k8sutilerrors "github.com/rancher/opni/pkg/util/errors/k8sutil"
-	"github.com/rancher/opni/pkg/util/k8sutil"
-	opnimeta "github.com/rancher/opni/pkg/util/meta"
-	loggingerrors "github.com/rancher/opni/plugins/logging/pkg/errors"
-	"github.com/rancher/opni/plugins/logging/pkg/gateway/drivers/backend"
+	"github.com/aity-cloud/monty/apis"
+	opnicorev1beta1 "github.com/aity-cloud/monty/apis/core/v1beta1"
+	loggingv1beta1 "github.com/aity-cloud/monty/apis/logging/v1beta1"
+	capabilityv1 "github.com/aity-cloud/monty/pkg/apis/capability/v1"
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	"github.com/aity-cloud/monty/pkg/plugins/driverutil"
+	"github.com/aity-cloud/monty/pkg/resources"
+	k8sutilerrors "github.com/aity-cloud/monty/pkg/util/errors/k8sutil"
+	"github.com/aity-cloud/monty/pkg/util/k8sutil"
+	opnimeta "github.com/aity-cloud/monty/pkg/util/meta"
+	loggingerrors "github.com/aity-cloud/monty/plugins/logging/pkg/errors"
+	"github.com/aity-cloud/monty/plugins/logging/pkg/gateway/drivers/backend"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	k8serrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -321,7 +321,7 @@ func init() {
 	backend.Drivers.Register("kubernetes-manager", func(_ context.Context, opts ...driverutil.Option) (backend.ClusterDriver, error) {
 		options := KubernetesManagerDriverOptions{
 			OpensearchCluster: &opnimeta.OpensearchClusterRef{
-				Name:      "opni",
+				Name:      "monty",
 				Namespace: os.Getenv("POD_NAMESPACE"),
 			},
 			Namespace: os.Getenv("POD_NAMESPACE"),

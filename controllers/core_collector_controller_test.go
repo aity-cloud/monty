@@ -4,17 +4,17 @@ import (
 	"context"
 	"fmt"
 
-	opnimonitoringv1beta1 "github.com/rancher/opni/apis/monitoring/v1beta1"
-	"github.com/rancher/opni/pkg/otel"
+	opnimonitoringv1beta1 "github.com/aity-cloud/monty/apis/monitoring/v1beta1"
+	"github.com/aity-cloud/monty/pkg/otel"
 	"github.com/samber/lo"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
+	opnicorev1beta1 "github.com/aity-cloud/monty/apis/core/v1beta1"
+	opniloggingv1beta1 "github.com/aity-cloud/monty/apis/logging/v1beta1"
 	. "github.com/kralicky/kmatch"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	promoperatorv1 "github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring/v1"
-	opnicorev1beta1 "github.com/rancher/opni/apis/core/v1beta1"
-	opniloggingv1beta1 "github.com/rancher/opni/apis/logging/v1beta1"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -131,7 +131,7 @@ var _ = Describe("Core Collector Controller", Ordered, Label("controller", "slow
 			By("checking the metrics tls assets secrets exists")
 			Eventually(Object(&corev1.Secret{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      "opni-otel-tls-assets",
+					Name:      "monty-otel-tls-assets",
 					Namespace: ns,
 				},
 			})).Should(ExistAnd(
@@ -142,7 +142,7 @@ var _ = Describe("Core Collector Controller", Ordered, Label("controller", "slow
 		XIt("should mount required tls assets for service monitors based on prometheus crds", func() {
 			Eventually(Object(&corev1.Secret{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      "opni-otel-tls-assets",
+					Name:      "monty-otel-tls-assets",
 					Namespace: ns,
 				},
 			})).Should(ExistAnd(
@@ -240,7 +240,7 @@ var _ = Describe("Core Collector Controller", Ordered, Label("controller", "slow
 			By("checking the metrics tls assets secrets exists")
 			Eventually(Object(&corev1.Secret{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      "opni-otel-tls-assets",
+					Name:      "monty-otel-tls-assets",
 					Namespace: ns,
 				},
 			})).Should(ExistAnd(
@@ -251,7 +251,7 @@ var _ = Describe("Core Collector Controller", Ordered, Label("controller", "slow
 		XIt("should mount required tls assets for service monitors based on prometheus crds", func() {
 			Eventually(Object(&corev1.Secret{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      "opni-otel-tls-assets",
+					Name:      "monty-otel-tls-assets",
 					Namespace: ns,
 				},
 			})).Should(ExistAnd(
@@ -458,7 +458,7 @@ func promDiscoveryObejcts(ns string) []client.Object {
 			Name:      "some-service",
 			Namespace: ns,
 			Labels: map[string]string{
-				"app.kubernetes.io/instance": "opni",
+				"app.kubernetes.io/instance": "monty",
 				"app.kubernetes.io/name":     "kube-state-metrics",
 			},
 		},
@@ -507,7 +507,7 @@ func promDiscoveryObejcts(ns string) []client.Object {
 
 	podMonitor := &promoperatorv1.PodMonitor{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "opni-kube-state-metrics",
+			Name:      "monty-kube-state-metrics",
 			Namespace: ns,
 		},
 		Spec: promoperatorv1.PodMonitorSpec{
@@ -542,7 +542,7 @@ func promDiscoveryObejcts(ns string) []client.Object {
 			Name:      "tls-service",
 			Namespace: ns,
 			Labels: map[string]string{
-				"app.kubernetes.io/instance": "opni",
+				"app.kubernetes.io/instance": "monty",
 				"app.kubernetes.io/name":     "kube-state-metrics",
 			},
 		},
@@ -652,7 +652,7 @@ func promDiscoveryObejcts(ns string) []client.Object {
 	}
 	serviceMonitor := &promoperatorv1.ServiceMonitor{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "opni-kube-state-metrics",
+			Name:      "monty-kube-state-metrics",
 			Namespace: ns,
 		},
 		Spec: promoperatorv1.ServiceMonitorSpec{
@@ -665,7 +665,7 @@ func promDiscoveryObejcts(ns string) []client.Object {
 			JobLabel: "app.kubernetes.io/name",
 			Selector: metav1.LabelSelector{
 				MatchLabels: map[string]string{
-					"app.kubernetes.io/instance": "opni",
+					"app.kubernetes.io/instance": "monty",
 					"app.kubernetes.io/name":     "kube-state-metrics",
 				},
 			},

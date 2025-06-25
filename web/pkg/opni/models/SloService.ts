@@ -27,6 +27,6 @@ export class SloService extends Resource {
     }
 
     get cluster(): Cluster {
-      return this.vue.store.getters['opni/clusters'].find((cluster: Cluster) => cluster.id === this.clusterId) as Cluster;
+      return this.vue.store.getters['monty/clusters'].find((cluster: Cluster) => cluster.id === this.clusterId) as Cluster;
     }
 }

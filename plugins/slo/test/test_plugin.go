@@ -3,10 +3,10 @@ package test
 import (
 	"time"
 
-	"github.com/rancher/opni/pkg/plugins/meta"
-	"github.com/rancher/opni/pkg/test"
-	sloapi "github.com/rancher/opni/plugins/slo/apis/slo"
-	"github.com/rancher/opni/plugins/slo/pkg/slo"
+	"github.com/aity-cloud/monty/pkg/plugins/meta"
+	"github.com/aity-cloud/monty/pkg/test"
+	sloapi "github.com/aity-cloud/monty/plugins/slo/apis/slo"
+	"github.com/aity-cloud/monty/plugins/slo/pkg/slo"
 )
 
 func init() {

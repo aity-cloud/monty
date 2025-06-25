@@ -6,7 +6,7 @@ metadata:
     controller-gen.kubebuilder.io/version: v0.12.1
   name: collectortraceconfigs.logging.opni.io
 spec:
-  group: logging.opni.io
+  group: logging.monty.io
   names:
     kind: CollectorTraceConfig
     listKind: CollectorTraceConfigList

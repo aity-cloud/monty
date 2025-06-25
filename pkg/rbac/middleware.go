@@ -4,8 +4,8 @@ import (
 	"context"
 	"net/http"
 
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
 	"github.com/gin-gonic/gin"
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
 )
 
 type middleware struct {

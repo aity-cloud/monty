@@ -27,8 +27,8 @@ import (
 	"strings"
 	"text/template"
 
+	"github.com/aity-cloud/monty/pkg/slo/shared"
 	"github.com/prometheus/client_golang/prometheus"
-	"github.com/rancher/opni/pkg/slo/shared"
 )
 
 var (
@@ -139,7 +139,7 @@ type MetricQuery interface {
 	Name() string
 	// User-facing description of the pre-configured metric
 	Description() string
-	// Each metric has a unique opni datasource (monitoring vs logging) by which it is filtered by
+	// Each metric has a unique monty datasource (monitoring vs logging) by which it is filtered by
 	Datasource() string
 	Construct(ServiceInfo) (*SLOQueryResult, error)
 	// Some metrics will have different labels for metrics, so handle them independently

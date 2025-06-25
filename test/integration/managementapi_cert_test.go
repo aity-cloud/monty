@@ -7,9 +7,9 @@ import (
 	. "github.com/onsi/gomega"
 	"google.golang.org/protobuf/types/known/emptypb"
 
-	managementv1 "github.com/rancher/opni/pkg/apis/management/v1"
-	"github.com/rancher/opni/pkg/test"
-	_ "github.com/rancher/opni/plugins/example/test"
+	managementv1 "github.com/aity-cloud/monty/pkg/apis/management/v1"
+	"github.com/aity-cloud/monty/pkg/test"
+	_ "github.com/aity-cloud/monty/plugins/example/test"
 )
 
 //#region Test Setup

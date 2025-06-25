@@ -1,7 +1,7 @@
 package kubernetes
 
 import (
-	"github.com/rancher/opni/pkg/oci"
+	"github.com/aity-cloud/monty/pkg/oci"
 )
 
 const (
@@ -11,7 +11,7 @@ const (
 var (
 	ComponentImageMap = map[ComponentType]oci.ImageType{
 		AgentComponent:      oci.ImageTypeMinimal,
-		ControllerComponent: oci.ImageTypeOpni,
+		ControllerComponent: oci.ImageTypeMonty,
 	}
 )
 

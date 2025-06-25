@@ -5,18 +5,18 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/aity-cloud/monty/pkg/alerting/client"
+	"github.com/aity-cloud/monty/pkg/alerting/message"
+	"github.com/aity-cloud/monty/pkg/alerting/shared"
 	"github.com/google/uuid"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/rancher/opni/pkg/alerting/client"
-	"github.com/rancher/opni/pkg/alerting/message"
-	"github.com/rancher/opni/pkg/alerting/shared"
 	"github.com/samber/lo"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	alertingv1 "github.com/aity-cloud/monty/pkg/apis/alerting/v1"
 	alertmanagerv2 "github.com/prometheus/alertmanager/api/v2/models"
 	"github.com/prometheus/alertmanager/pkg/labels"
-	alertingv1 "github.com/rancher/opni/pkg/apis/alerting/v1"
 )
 
 func opniAlerts(ag alertmanagerv2.AlertGroups) alertmanagerv2.AlertGroups {
@@ -122,7 +122,7 @@ func BuildAlertAndQuerierClientTestSuite(
 			sl = silenceBuilder()
 		})
 		When("Using the alert client", func() {
-			It("should intially report an empty list of opni alerts", func() {
+			It("should intially report an empty list of monty alerts", func() {
 				ag, err := cl.ListAlerts(env.Context())
 				Expect(err).To(Succeed())
 				Expect(ag).NotTo(BeNil())

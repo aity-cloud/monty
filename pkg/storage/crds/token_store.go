@@ -4,10 +4,10 @@ import (
 	"context"
 	"time"
 
-	corev1beta1 "github.com/rancher/opni/apis/core/v1beta1"
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	"github.com/rancher/opni/pkg/storage"
-	"github.com/rancher/opni/pkg/tokens"
+	corev1beta1 "github.com/aity-cloud/monty/apis/core/v1beta1"
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	"github.com/aity-cloud/monty/pkg/storage"
+	"github.com/aity-cloud/monty/pkg/tokens"
 	k8serrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -78,7 +78,7 @@ func (c *CRDStore) GetToken(ctx context.Context, ref *corev1.Reference) (*corev1
 	if token.Spec.Metadata.Ttl <= 0 {
 		go c.garbageCollectToken(token)
 		return nil, k8serrors.NewNotFound(schema.GroupResource{
-			Group:    "monitoring.opni.io",
+			Group:    "monitoring.monty.io",
 			Resource: "BootstrapToken",
 		}, token.GetName())
 	}

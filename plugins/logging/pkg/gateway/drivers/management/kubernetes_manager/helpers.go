@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"slices"
 
-	loggingv1beta1 "github.com/rancher/opni/apis/logging/v1beta1"
-	"github.com/rancher/opni/pkg/util"
-	k8sutilerrors "github.com/rancher/opni/pkg/util/errors/k8sutil"
-	"github.com/rancher/opni/plugins/logging/apis/loggingadmin"
-	"github.com/rancher/opni/plugins/logging/pkg/errors"
+	loggingv1beta1 "github.com/aity-cloud/monty/apis/logging/v1beta1"
+	"github.com/aity-cloud/monty/pkg/util"
+	k8sutilerrors "github.com/aity-cloud/monty/pkg/util/errors/k8sutil"
+	"github.com/aity-cloud/monty/plugins/logging/apis/loggingadmin"
+	"github.com/aity-cloud/monty/plugins/logging/pkg/errors"
 	"github.com/samber/lo"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	corev1 "k8s.io/api/core/v1"
@@ -371,10 +371,10 @@ func convertProtobufToDashboards(
 		AdditionalConfig: map[string]string{
 			"opensearchDashboards.branding.applicationTitle":        "Opni Logging",
 			"opensearchDashboards.branding.faviconUrl":              "https://raw.githubusercontent.com/rancher/opni/main/branding/favicon.png",
-			"opensearchDashboards.branding.loadingLogo.darkModeUrl": "https://raw.githubusercontent.com/rancher/opni/main/branding/opni-loading-dark.svg",
-			"opensearchDashboards.branding.loadingLogo.defaultUrl":  "https://raw.githubusercontent.com/rancher/opni/main/branding/opni-loading.svg",
-			"opensearchDashboards.branding.logo.defaultUrl":         "https://raw.githubusercontent.com/rancher/opni/main/branding/opni-logo-dark.svg",
-			"opensearchDashboards.branding.mark.defaultUrl":         "https://raw.githubusercontent.com/rancher/opni/main/branding/opni-mark.svg",
+			"opensearchDashboards.branding.loadingLogo.darkModeUrl": "https://raw.githubusercontent.com/rancher/opni/main/branding/monty-loading-dark.svg",
+			"opensearchDashboards.branding.loadingLogo.defaultUrl":  "https://raw.githubusercontent.com/rancher/opni/main/branding/monty-loading.svg",
+			"opensearchDashboards.branding.logo.defaultUrl":         "https://raw.githubusercontent.com/rancher/opni/main/branding/monty-logo-dark.svg",
+			"opensearchDashboards.branding.mark.defaultUrl":         "https://raw.githubusercontent.com/rancher/opni/main/branding/monty-mark.svg",
 		},
 	}
 }

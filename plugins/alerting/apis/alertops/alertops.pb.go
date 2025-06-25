@@ -2,13 +2,13 @@
 // versions:
 // 	protoc-gen-go v1.31.0
 // 	protoc        v1.0.0
-// source: github.com/rancher/opni/plugins/alerting/apis/alertops/alertops.proto
+// source:  github.com/aity-cloud/monty/plugins/alerting/apis/alertops/alertops.proto
 
 package alertops
 
 import (
-	v1 "github.com/rancher/opni/pkg/apis/alerting/v1"
-	_ "github.com/rancher/opni/pkg/apis/storage/v1"
+	v1 "github.com/aity-cloud/monty/pkg/apis/alerting/v1"
+	_ "github.com/aity-cloud/monty/pkg/apis/storage/v1"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -496,7 +496,7 @@ type ClusterConfiguration struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// number of replicas for the opni-alerting (odd-number for HA)
+	// number of replicas for the monty-alerting (odd-number for HA)
 	NumReplicas int32 `protobuf:"varint,2,opt,name=numReplicas,proto3" json:"numReplicas,omitempty"`
 	// Maximum time to wait for cluster
 	// connections to settle before

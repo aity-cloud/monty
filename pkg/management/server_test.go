@@ -3,14 +3,14 @@ package management_test
 import (
 	"context"
 
-	managementv1 "github.com/rancher/opni/pkg/apis/management/v1"
-	"github.com/rancher/opni/pkg/capabilities"
-	"github.com/rancher/opni/pkg/config/v1beta1"
-	"github.com/rancher/opni/pkg/management"
-	"github.com/rancher/opni/pkg/plugins"
-	mock_capability "github.com/rancher/opni/pkg/test/mock/capability"
-	"github.com/rancher/opni/pkg/test/testlog"
-	"github.com/rancher/opni/pkg/util"
+	managementv1 "github.com/aity-cloud/monty/pkg/apis/management/v1"
+	"github.com/aity-cloud/monty/pkg/capabilities"
+	"github.com/aity-cloud/monty/pkg/config/v1beta1"
+	"github.com/aity-cloud/monty/pkg/management"
+	"github.com/aity-cloud/monty/pkg/plugins"
+	mock_capability "github.com/aity-cloud/monty/pkg/test/mock/capability"
+	"github.com/aity-cloud/monty/pkg/test/testlog"
+	"github.com/aity-cloud/monty/pkg/util"
 	"google.golang.org/protobuf/types/known/emptypb"
 
 	. "github.com/onsi/ginkgo/v2"

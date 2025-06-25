@@ -5,10 +5,10 @@ package controllers
 import (
 	"context"
 
-	loggingv1beta1 "github.com/rancher/opni/apis/logging/v1beta1"
-	"github.com/rancher/opni/pkg/resources"
-	"github.com/rancher/opni/pkg/resources/multiclusterrolebinding"
-	"github.com/rancher/opni/pkg/util/k8sutil"
+	loggingv1beta1 "github.com/aity-cloud/monty/apis/logging/v1beta1"
+	"github.com/aity-cloud/monty/pkg/resources"
+	"github.com/aity-cloud/monty/pkg/resources/multiclusterrolebinding"
+	"github.com/aity-cloud/monty/pkg/util/k8sutil"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
 	opsterv1 "opensearch.opster.io/api/v1"
@@ -23,9 +23,9 @@ type LoggingMulticlusterRoleBindingReconciler struct {
 	scheme *runtime.Scheme
 }
 
-// +kubebuilder:rbac:groups=logging.opni.io,resources=multiclusterrolebindings,verbs=get;list;watch;create;update;patch;delete
-// +kubebuilder:rbac:groups=logging.opni.io,resources=multiclusterrolebindings/status,verbs=get;update;patch
-// +kubebuilder:rbac:groups=logging.opni.io,resources=multiclusterrolebindings/finalizers,verbs=update
+// +kubebuilder:rbac:groups=logging.monty.io,resources=multiclusterrolebindings,verbs=get;list;watch;create;update;patch;delete
+// +kubebuilder:rbac:groups=logging.monty.io,resources=multiclusterrolebindings/status,verbs=get;update;patch
+// +kubebuilder:rbac:groups=logging.monty.io,resources=multiclusterrolebindings/finalizers,verbs=update
 // +kubebuilder:rbac:groups=opensearch.opster.io,resources=opensearchclusters,verbs=get;list;watch;create;update;patch;delete
 // +kubebuilder:rbac:groups=opensearch.opster.io,resources=opensearchclusters/status,verbs=get;update;patch
 // +kubebuilder:rbac:groups=opensearch.opster.io,resources=opensearchclusters/finalizers,verbs=update

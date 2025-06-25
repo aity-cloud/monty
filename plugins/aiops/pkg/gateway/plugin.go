@@ -6,19 +6,19 @@ import (
 
 	"log/slog"
 
+	"github.com/aity-cloud/monty/apis"
+	managementv1 "github.com/aity-cloud/monty/pkg/apis/management/v1"
+	"github.com/aity-cloud/monty/pkg/logger"
+	managementext "github.com/aity-cloud/monty/pkg/plugins/apis/apiextensions/management"
+	"github.com/aity-cloud/monty/pkg/plugins/apis/system"
+	"github.com/aity-cloud/monty/pkg/plugins/meta"
+	"github.com/aity-cloud/monty/pkg/util"
+	"github.com/aity-cloud/monty/pkg/util/future"
+	opnimeta "github.com/aity-cloud/monty/pkg/util/meta"
+	"github.com/aity-cloud/monty/plugins/aiops/apis/admin"
+	"github.com/aity-cloud/monty/plugins/aiops/apis/modeltraining"
 	"github.com/nats-io/nats.go"
 	"github.com/opensearch-project/opensearch-go"
-	"github.com/rancher/opni/apis"
-	managementv1 "github.com/rancher/opni/pkg/apis/management/v1"
-	"github.com/rancher/opni/pkg/logger"
-	managementext "github.com/rancher/opni/pkg/plugins/apis/apiextensions/management"
-	"github.com/rancher/opni/pkg/plugins/apis/system"
-	"github.com/rancher/opni/pkg/plugins/meta"
-	"github.com/rancher/opni/pkg/util"
-	"github.com/rancher/opni/pkg/util/future"
-	opnimeta "github.com/rancher/opni/pkg/util/meta"
-	"github.com/rancher/opni/plugins/aiops/apis/admin"
-	"github.com/rancher/opni/plugins/aiops/apis/modeltraining"
 	"k8s.io/client-go/rest"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -88,7 +88,7 @@ func NewPlugin(ctx context.Context, opts ...PluginOption) *AIOpsPlugin {
 	options := PluginOptions{
 		storageNamespace: os.Getenv("POD_NAMESPACE"),
 		opensearchCluster: &opnimeta.OpensearchClusterRef{
-			Name:      "opni",
+			Name:      "monty",
 			Namespace: os.Getenv("POD_NAMESPACE"),
 		},
 		version: "v0.12.1",

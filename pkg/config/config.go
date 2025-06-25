@@ -9,9 +9,9 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/rancher/opni/pkg/config/meta"
-	"github.com/rancher/opni/pkg/config/v1beta1"
-	"github.com/rancher/opni/pkg/logger"
+	"github.com/aity-cloud/monty/pkg/config/meta"
+	"github.com/aity-cloud/monty/pkg/config/v1beta1"
+	"github.com/aity-cloud/monty/pkg/logger"
 	"sigs.k8s.io/yaml"
 )
 
@@ -84,7 +84,7 @@ func decodeObject(typeMeta meta.TypeMeta, document []byte) (meta.Object, error) 
 func FindConfig() (string, error) {
 	pathsToSearch := []string{
 		".",
-		"/etc/opni",
+		"/etc/monty",
 	}
 
 	filenamesToSearch := []string{
@@ -120,7 +120,7 @@ func FindSupportConfig() (string, error) {
 		".",
 	}
 	if home, err := os.UserHomeDir(); err == nil {
-		pathsToSearch = append(pathsToSearch, filepath.Join(home, ".opni"))
+		pathsToSearch = append(pathsToSearch, filepath.Join(home, ".monty"))
 	}
 
 	filenamesToSearch := []string{

@@ -5,8 +5,8 @@ import (
 
 	_ "embed" // embed should be a blank import
 
-	opensearchtypes "github.com/rancher/opni/pkg/opensearch/opensearch/types"
-	"github.com/rancher/opni/pkg/resources/opnicluster/elastic/indices"
+	opensearchtypes "github.com/aity-cloud/monty/pkg/opensearch/opensearch/types"
+	"github.com/aity-cloud/monty/pkg/resources/opnicluster/elastic/indices"
 	"github.com/samber/lo"
 )
 
@@ -17,16 +17,16 @@ const (
 	LogIndexTemplateName = "logs_rollover_mapping"
 
 	TracePolicyName       = "tracing-policy"
-	SpanIndexPrefix       = "ss4o_traces-kubernetes-opni-v0.5.4"
-	SpanIndexAlias        = "ss4o_traces-kubernetes-opni"
+	SpanIndexPrefix       = "ss4o_traces-kubernetes-monty-v0.5.4"
+	SpanIndexAlias        = "ss4o_traces-kubernetes-monty"
 	SpanIndexTemplateName = "traces_rollover_mapping"
 
 	serviceMapIndexName         = "otel-v1-apm-service-map"
 	serviceMapTemplateName      = "servicemap-mapping"
-	preProcessingPipelineName   = "opni-ingest-pipeline"
+	preProcessingPipelineName   = "monty-ingest-pipeline"
 	kibanaDashboardVersionDocID = "latest"
 	kibanaDashboardVersion      = "v0.5.4"
-	kibanaDashboardVersionIndex = "opni-dashboard-version"
+	kibanaDashboardVersionIndex = "monty-dashboard-version"
 )
 
 var (
@@ -51,7 +51,7 @@ var (
 			{
 				IndexPatterns: []string{
 					"logs*",
-					"ss4o_traces-kubernetes-opni*",
+					"ss4o_traces-kubernetes-monty*",
 					serviceMapIndexName,
 				},
 				AllowedActions: []string{

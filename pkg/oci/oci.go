@@ -11,7 +11,7 @@ import (
 type ImageType string
 
 const (
-	ImageTypeOpni    ImageType = "opni"
+	ImageTypeMonty   ImageType = "monty"
 	ImageTypeMinimal ImageType = "minimal"
 	ImageTypePlugins ImageType = "plugins"
 )

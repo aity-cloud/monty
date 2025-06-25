@@ -14,9 +14,9 @@ import (
 )
 
 func (p *provisioner) buildNamespace(ctx *Context, provider ProviderResource) (*corev1.Namespace, error) {
-	opniNs, err := corev1.NewNamespace(ctx, "opni", &corev1.NamespaceArgs{
+	opniNs, err := corev1.NewNamespace(ctx, "monty", &corev1.NamespaceArgs{
 		Metadata: &metav1.ObjectMetaArgs{
-			Name: String("opni"),
+			Name: String("monty"),
 		},
 	}, Provider(provider), RetainOnDelete(true))
 	if err != nil {
@@ -149,7 +149,7 @@ func (p *provisioner) buildOpensearchIngress(ctx *Context, namespace StringPtrIn
 								PathType: String("Prefix"),
 								Backend: &networkingv1.IngressBackendArgs{
 									Service: networkingv1.IngressServiceBackendArgs{
-										Name: String("opni-opensearch-svc"),
+										Name: String("monty-opensearch-svc"),
 										Port: networkingv1.ServiceBackendPortArgs{
 											Number: Int(9200),
 										},

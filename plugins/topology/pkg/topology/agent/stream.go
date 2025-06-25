@@ -1,14 +1,14 @@
 package agent
 
 import (
-	capabilityv1 "github.com/rancher/opni/pkg/apis/capability/v1"
-	"github.com/rancher/opni/plugins/topology/apis/node"
-	"github.com/rancher/opni/plugins/topology/apis/stream"
+	capabilityv1 "github.com/aity-cloud/monty/pkg/apis/capability/v1"
+	"github.com/aity-cloud/monty/plugins/topology/apis/node"
+	"github.com/aity-cloud/monty/plugins/topology/apis/stream"
 
-	// "github.com/rancher/opni/pkg/clients"
-	controlv1 "github.com/rancher/opni/pkg/apis/control/v1"
+	// "github.com/aity-cloud/monty/pkg/clients"
+	controlv1 "github.com/aity-cloud/monty/pkg/apis/control/v1"
 
-	streamext "github.com/rancher/opni/pkg/plugins/apis/apiextensions/stream"
+	streamext "github.com/aity-cloud/monty/pkg/plugins/apis/apiextensions/stream"
 	"google.golang.org/grpc"
 )
 

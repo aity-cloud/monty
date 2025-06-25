@@ -3,13 +3,13 @@ package rules_test
 import (
 	"unsafe"
 
+	"github.com/aity-cloud/monty/pkg/test/testdata"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	"github.com/prometheus/prometheus/model/rulefmt"
-	"github.com/rancher/opni/pkg/test/testdata"
 
-	"github.com/rancher/opni/pkg/rules"
-	"github.com/rancher/opni/pkg/util/notifier"
+	"github.com/aity-cloud/monty/pkg/rules"
+	"github.com/aity-cloud/monty/pkg/util/notifier"
 )
 
 var _ = Describe("Types", Label("unit"), func() {

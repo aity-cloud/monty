@@ -6,13 +6,13 @@ import (
 	"time"
 
 	"emperror.dev/errors"
+	aiv1beta1 "github.com/aity-cloud/monty/apis/ai/v1beta1"
+	"github.com/aity-cloud/monty/pkg/opensearch/certs"
+	"github.com/aity-cloud/monty/pkg/resources"
+	"github.com/aity-cloud/monty/pkg/resources/opnicluster/elastic/indices"
+	"github.com/aity-cloud/monty/pkg/util/k8sutil"
 	"github.com/cisco-open/operator-tools/pkg/reconciler"
 	monitoringv1 "github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring/v1"
-	aiv1beta1 "github.com/rancher/opni/apis/ai/v1beta1"
-	"github.com/rancher/opni/pkg/opensearch/certs"
-	"github.com/rancher/opni/pkg/resources"
-	"github.com/rancher/opni/pkg/resources/opnicluster/elastic/indices"
-	"github.com/rancher/opni/pkg/util/k8sutil"
 	k8serrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/client-go/tools/record"
@@ -26,7 +26,7 @@ import (
 )
 
 const (
-	prometheusRuleFinalizer = "opni.io/prometheusRule"
+	prometheusRuleFinalizer = "monty.io/prometheusRule"
 )
 
 var (

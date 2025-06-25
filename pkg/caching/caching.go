@@ -3,9 +3,9 @@ package caching
 import (
 	"time"
 
+	"github.com/aity-cloud/monty/pkg/storage"
+	"github.com/aity-cloud/monty/pkg/util/future"
 	ccache "github.com/karlseguin/ccache/v3"
-	"github.com/rancher/opni/pkg/storage"
-	"github.com/rancher/opni/pkg/util/future"
 	"google.golang.org/protobuf/reflect/protoreflect"
 )
 

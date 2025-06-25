@@ -6,13 +6,13 @@ import (
 	"net/url"
 
 	"emperror.dev/errors"
+	aiv1beta1 "github.com/aity-cloud/monty/apis/ai/v1beta1"
+	"github.com/aity-cloud/monty/pkg/resources"
+	"github.com/aity-cloud/monty/pkg/resources/hyperparameters"
+	"github.com/aity-cloud/monty/pkg/util/nats"
 	"github.com/cisco-open/operator-tools/pkg/reconciler"
 	"github.com/go-logr/logr"
 	monitoringv1 "github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring/v1"
-	aiv1beta1 "github.com/rancher/opni/apis/ai/v1beta1"
-	"github.com/rancher/opni/pkg/resources"
-	"github.com/rancher/opni/pkg/resources/hyperparameters"
-	"github.com/rancher/opni/pkg/util/nats"
 	"github.com/samber/lo"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
@@ -161,7 +161,7 @@ func (r *Reconciler) pretrainedModelDeployment(
 		})
 		deployment := &appsv1.Deployment{
 			ObjectMeta: metav1.ObjectMeta{
-				Name:      fmt.Sprintf("opni-inference-%s", model.Name),
+				Name:      fmt.Sprintf("monty-inference-%s", model.Name),
 				Namespace: r.opniCluster.Namespace,
 				Labels:    labels,
 			},
@@ -174,7 +174,7 @@ func (r *Reconciler) pretrainedModelDeployment(
 					ObjectMeta: metav1.ObjectMeta{
 						Labels: labels,
 						Annotations: map[string]string{
-							"opni.io/hyperparameters": hyperparameters.GenerateHyperParametersHash(model.Spec.Hyperparameters),
+							"monty.io/hyperparameters": hyperparameters.GenerateHyperParametersHash(model.Spec.Hyperparameters),
 						},
 					},
 					Spec: corev1.PodSpec{
@@ -236,7 +236,7 @@ func (r *Reconciler) workloadDrainDeployment() (resources.Resource, error) {
 			})
 		deployment := &appsv1.Deployment{
 			ObjectMeta: metav1.ObjectMeta{
-				Name:      fmt.Sprintf("opni-workload-drain"),
+				Name:      fmt.Sprintf("monty-workload-drain"),
 				Namespace: r.opniCluster.Namespace,
 				Labels:    labels,
 			},
@@ -515,7 +515,7 @@ func (r *Reconciler) nulogHyperparameters() (runtime.Object, reconciler.DesiredS
 	if err != nil {
 		return nil, nil, err
 	}
-	cm.Labels["opni-service"] = "nulog"
+	cm.Labels["monty-service"] = "nulog"
 	ctrl.SetControllerReference(r.opniCluster, &cm, r.client.Scheme())
 	return &cm, reconciler.StatePresent, err
 }
@@ -605,7 +605,7 @@ func (r *Reconciler) gpuCtrlDeployment() (runtime.Object, reconciler.DesiredStat
 	}
 	dataVolumeMount := corev1.VolumeMount{
 		Name:      "data",
-		MountPath: "/var/opni-data",
+		MountPath: "/var/monty-data",
 	}
 	deployment.Spec.Template.Spec.RuntimeClassName = r.opniCluster.Spec.Services.GPUController.RuntimeClass
 	deployment.Spec.Strategy.Type = appsv1.RecreateDeploymentStrategyType
@@ -739,7 +739,7 @@ func (r *Reconciler) metricsPrometheusRule() (runtime.Object, reconciler.Desired
 		Spec: monitoringv1.PrometheusRuleSpec{
 			Groups: []monitoringv1.RuleGroup{
 				{
-					Name: "opni-rules",
+					Name: "monty-rules",
 					Rules: []monitoringv1.Rule{
 						{
 							Alert: "ClusterCpuUsageAnomalous",
@@ -831,7 +831,7 @@ func insertHyperparametersVolume(deployment *appsv1.Deployment, modelName string
 		VolumeSource: corev1.VolumeSource{
 			ConfigMap: &corev1.ConfigMapVolumeSource{
 				LocalObjectReference: corev1.LocalObjectReference{
-					Name: fmt.Sprintf("opni-%s-hyperparameters", modelName),
+					Name: fmt.Sprintf("monty-%s-hyperparameters", modelName),
 				},
 				Items: []corev1.KeyToPath{
 					{
@@ -846,7 +846,7 @@ func insertHyperparametersVolume(deployment *appsv1.Deployment, modelName string
 	for i, container := range deployment.Spec.Template.Spec.Containers {
 		container.VolumeMounts = append(container.VolumeMounts, corev1.VolumeMount{
 			Name:      "hyperparameters",
-			MountPath: "/etc/opni/hyperparameters.json",
+			MountPath: "/etc/monty/hyperparameters.json",
 			SubPath:   "hyperparameters.json",
 			ReadOnly:  true,
 		})

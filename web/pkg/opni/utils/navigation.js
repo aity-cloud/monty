@@ -69,7 +69,7 @@ export function flattenNavigation(navigation) {
   const flat = [];
 
   traverseNavigation(navigation, (path, route, depth, isParent, parent) => {
-    const prefix = isStandalone() ? '' : '/opni';
+    const prefix = isStandalone() ? '' : '/monty';
     const newRoute = {
       name:      route.name,
       path:      parent ? path : `${ prefix }${ path }`,

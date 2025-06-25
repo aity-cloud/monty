@@ -2,12 +2,12 @@
 // versions:
 // 	protoc-gen-go v1.31.0
 // 	protoc        v1.0.0
-// source: github.com/rancher/opni/pkg/apis/alerting/v1/alerting.notification.proto
+// source:  github.com/aity-cloud/monty/pkg/apis/alerting/v1/alerting.notification.proto
 
 package v1
 
 import (
-	v1 "github.com/rancher/opni/pkg/apis/core/v1"
+	v1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	_ "google.golang.org/genproto/googleapis/rpc/status"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -358,7 +358,7 @@ func (x *MessageInstance) GetLastDetails() map[string]string {
 	return nil
 }
 
-// opni-alerting internal use
+// monty-alerting internal use
 type TriggerAlertsRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

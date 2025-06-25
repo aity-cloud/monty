@@ -6,8 +6,8 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/rancher/opni/pkg/keyring"
-	"github.com/rancher/opni/pkg/pkp"
+	"github.com/aity-cloud/monty/pkg/keyring"
+	"github.com/aity-cloud/monty/pkg/pkp"
 )
 
 type Strategy interface {

@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/rancher/opni/pkg/resources"
+	"github.com/aity-cloud/monty/pkg/resources"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/intstr"
@@ -18,10 +18,10 @@ func GenerateHyperparametersConfigMap(modelName string, namespace string, hyperp
 	}
 	cm := corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      fmt.Sprintf("opni-%s-hyperparameters", modelName),
+			Name:      fmt.Sprintf("monty-%s-hyperparameters", modelName),
 			Namespace: namespace,
 			Labels: map[string]string{
-				resources.PartOfLabel: "opni",
+				resources.PartOfLabel: "monty",
 			},
 		},
 		Data: map[string]string{

@@ -10,15 +10,15 @@ import (
 
 	"log/slog"
 
+	"github.com/aity-cloud/monty/pkg/versions"
+	"github.com/aity-cloud/monty/plugins/logging/apis/loggingadmin"
+	loggingerrors "github.com/aity-cloud/monty/plugins/logging/pkg/errors"
+	"github.com/aity-cloud/monty/plugins/logging/pkg/gateway/alerting"
+	"github.com/aity-cloud/monty/plugins/logging/pkg/gateway/drivers/backend"
+	"github.com/aity-cloud/monty/plugins/logging/pkg/gateway/drivers/management"
+	"github.com/aity-cloud/monty/plugins/logging/pkg/opensearchdata"
+	"github.com/aity-cloud/monty/plugins/logging/pkg/otel"
 	"github.com/lestrrat-go/backoff/v2"
-	"github.com/rancher/opni/pkg/versions"
-	"github.com/rancher/opni/plugins/logging/apis/loggingadmin"
-	loggingerrors "github.com/rancher/opni/plugins/logging/pkg/errors"
-	"github.com/rancher/opni/plugins/logging/pkg/gateway/alerting"
-	"github.com/rancher/opni/plugins/logging/pkg/gateway/drivers/backend"
-	"github.com/rancher/opni/plugins/logging/pkg/gateway/drivers/management"
-	"github.com/rancher/opni/plugins/logging/pkg/opensearchdata"
-	"github.com/rancher/opni/plugins/logging/pkg/otel"
 	"github.com/samber/lo"
 	"google.golang.org/grpc/codes"
 	grpcstatus "google.golang.org/grpc/status"
@@ -57,8 +57,8 @@ func ClusterStatusDescription(s ClusterStatus, extraInfo ...string) string {
 
 var defaultIndices = []string{
 	"logs*",
-	"ss4o_traces-kubernetes-opni*",
-	"opni-cluster-metadata",
+	"ss4o_traces-kubernetes-monty*",
+	"monty-cluster-metadata",
 }
 
 type LoggingManagerV2 struct {

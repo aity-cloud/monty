@@ -3,8 +3,8 @@ package gateway
 import (
 	"time"
 
-	"github.com/rancher/opni/pkg/resources"
-	"github.com/rancher/opni/pkg/util/k8sutil"
+	"github.com/aity-cloud/monty/pkg/resources"
+	"github.com/aity-cloud/monty/pkg/util/k8sutil"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/util/retry"
@@ -21,7 +21,7 @@ func (r *Reconciler) services() ([]resources.Resource, error) {
 	publicSvcLabels["service-type"] = "public"
 	publicSvc := &corev1.Service{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:        "opni",
+			Name:        "monty",
 			Namespace:   r.gw.Namespace,
 			Labels:      publicSvcLabels,
 			Annotations: r.gw.Spec.ServiceAnnotations,
@@ -43,7 +43,7 @@ func (r *Reconciler) services() ([]resources.Resource, error) {
 	internalSvcLabels["service-type"] = "internal"
 	internalSvc := &corev1.Service{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "opni-internal",
+			Name:      "monty-internal",
 			Namespace: r.gw.Namespace,
 			Labels:    internalSvcLabels,
 		},
@@ -61,7 +61,7 @@ func (r *Reconciler) services() ([]resources.Resource, error) {
 	adminDashboardSvcLabels := resources.NewGatewayLabels()
 	adminDashboardSvc := &corev1.Service{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "opni-admin-dashboard",
+			Name:      "monty-admin-dashboard",
 			Namespace: r.gw.Namespace,
 			Labels:    adminDashboardSvcLabels,
 		},
@@ -75,13 +75,13 @@ func (r *Reconciler) services() ([]resources.Resource, error) {
 	// ensure legacy services are removed
 	legacyPublicSvc := &corev1.Service{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "opni-monitoring",
+			Name:      "monty-monitoring",
 			Namespace: r.gw.Namespace,
 		},
 	}
 	legacyInternalSvc := &corev1.Service{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "opni-monitoring-internal",
+			Name:      "monty-monitoring-internal",
 			Namespace: r.gw.Namespace,
 		},
 	}
@@ -101,7 +101,7 @@ func (r *Reconciler) services() ([]resources.Resource, error) {
 func (r *Reconciler) waitForLoadBalancer() k8sutil.RequeueOp {
 	svc := &corev1.Service{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "opni",
+			Name:      "monty",
 			Namespace: r.gw.Namespace,
 		},
 	}
@@ -130,7 +130,7 @@ func (r *Reconciler) waitForLoadBalancer() k8sutil.RequeueOp {
 func (r *Reconciler) waitForServiceEndpoints() k8sutil.RequeueOp {
 	svc := &corev1.Service{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "opni",
+			Name:      "monty",
 			Namespace: r.gw.Namespace,
 		},
 	}

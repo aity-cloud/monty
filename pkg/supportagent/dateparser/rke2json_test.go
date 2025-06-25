@@ -1,9 +1,9 @@
 package dateparser_test
 
 import (
+	"github.com/aity-cloud/monty/pkg/supportagent/dateparser"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/rancher/opni/pkg/supportagent/dateparser"
 )
 
 var _ = Describe("Day Month Dateparser", Ordered, Label("unit"), func() {
