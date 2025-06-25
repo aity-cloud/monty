@@ -6,7 +6,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/rancher/opni/pkg/storage"
+	"github.com/aity-cloud/monty/pkg/storage"
 )
 
 type KeyValueStoreLocker[T any] interface {

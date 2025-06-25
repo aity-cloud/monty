@@ -9,25 +9,25 @@ import (
 	"strings"
 	"time"
 
+	"github.com/aity-cloud/monty/pkg/alerting/drivers/config"
+	"github.com/aity-cloud/monty/pkg/alerting/interfaces"
+	"github.com/aity-cloud/monty/pkg/alerting/templates"
+	alertingv1 "github.com/aity-cloud/monty/pkg/apis/alerting/v1"
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	"github.com/aity-cloud/monty/pkg/util"
 	"github.com/google/uuid"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/rancher/opni/pkg/alerting/drivers/config"
-	"github.com/rancher/opni/pkg/alerting/interfaces"
-	"github.com/rancher/opni/pkg/alerting/templates"
-	alertingv1 "github.com/rancher/opni/pkg/apis/alerting/v1"
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	"github.com/rancher/opni/pkg/util"
 
 	"google.golang.org/protobuf/types/known/durationpb"
 
 	"text/template"
 
+	"github.com/aity-cloud/monty/pkg/alerting/message"
 	amtemplate "github.com/prometheus/alertmanager/template"
 	"github.com/prometheus/prometheus/model/labels"
 	"github.com/prometheus/prometheus/promql"
 	promtemplate "github.com/prometheus/prometheus/template"
-	"github.com/rancher/opni/pkg/alerting/message"
 )
 
 func init() {
@@ -238,7 +238,7 @@ var _ = DescribeTable("Message templating",
 		[]string{"condition 1", "condition 1 description"},
 	),
 	Entry(
-		"opni alarm is resolved",
+		"monty alarm is resolved",
 		&alertingv1.AlertCondition{
 			Name:        "test header 2",
 			Description: "body 2",

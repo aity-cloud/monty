@@ -3,14 +3,14 @@ package health
 import (
 	"context"
 
+	controlv1 "github.com/aity-cloud/monty/pkg/apis/control/v1"
+	"github.com/aity-cloud/monty/pkg/plugins"
 	"github.com/hashicorp/go-plugin"
-	controlv1 "github.com/rancher/opni/pkg/apis/control/v1"
-	"github.com/rancher/opni/pkg/plugins"
 	"google.golang.org/grpc"
 )
 
 const (
-	HealthPluginID = "opni.Health"
+	HealthPluginID = "monty.Health"
 	ServiceID      = "control.Health"
 )
 

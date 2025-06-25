@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.31.0
 // 	protoc        v1.0.0
-// source: github.com/rancher/opni/plugins/metrics/apis/cortexadmin/cortexadmin.proto
+// source:  github.com/aity-cloud/monty/plugins/metrics/apis/cortexadmin/cortexadmin.proto
 
 package cortexadmin
 
@@ -1855,7 +1855,7 @@ type RuleGroup struct {
 	// Note : string instead of timestamp to preserve compatibility with native prometheus api return value
 	LastEvaluation string  `protobuf:"bytes,5,opt,name=lastEvaluation,proto3" json:"lastEvaluation,omitempty"`
 	EvaluationTime float64 `protobuf:"fixed64,6,opt,name=evaluationTime,proto3" json:"evaluationTime,omitempty"`
-	// opni specific field
+	// monty specific field
 	ClusterId string `protobuf:"bytes,7,opt,name=clusterId,proto3" json:"clusterId,omitempty"`
 }
 

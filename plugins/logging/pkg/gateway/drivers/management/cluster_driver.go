@@ -3,9 +3,9 @@ package management
 import (
 	"context"
 
-	"github.com/rancher/opni/pkg/opensearch/opensearch"
-	"github.com/rancher/opni/pkg/plugins/driverutil"
-	"github.com/rancher/opni/plugins/logging/apis/loggingadmin"
+	"github.com/aity-cloud/monty/pkg/opensearch/opensearch"
+	"github.com/aity-cloud/monty/pkg/plugins/driverutil"
+	"github.com/aity-cloud/monty/plugins/logging/apis/loggingadmin"
 )
 
 type ClusterDriver interface {

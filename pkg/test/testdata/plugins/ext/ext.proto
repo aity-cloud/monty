@@ -2,14 +2,14 @@ syntax = "proto3";
 
 package ext;
 
-import "github.com/rancher/opni/internal/codegen/cli/cli.proto";
-import "github.com/rancher/opni/pkg/apis/core/v1/core.proto";
-import "github.com/rancher/opni/pkg/plugins/driverutil/types.proto";
+import "github.com/aity-cloud/monty/internal/codegen/cli/cli.proto";
+import "github.com/aity-cloud/monty/pkg/apis/core/v1/core.proto";
+import "github.com/aity-cloud/monty/pkg/plugins/driverutil/types.proto";
 import "google/api/annotations.proto";
 import "google/protobuf/duration.proto";
 import "google/protobuf/field_mask.proto";
 
-option go_package = "github.com/rancher/opni/pkg/test/testdata/plugins/ext";
+option go_package = "github.com/aity-cloud/monty/pkg/test/testdata/plugins/ext";
 option (cli.generator) = {
   generate:                        true
   generate_flags_for_all_messages: true

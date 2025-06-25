@@ -48,7 +48,7 @@ export class Role extends Resource {
     }
 
     get clusters() {
-      return this.vue.$store.getters['opni/clusters'];
+      return this.vue.$store.getters['monty/clusters'];
     }
 
     get clusterNames() {

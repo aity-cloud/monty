@@ -5,9 +5,9 @@ import (
 	"fmt"
 	strings "strings"
 
+	cliutil "github.com/aity-cloud/monty/pkg/monty/cliutil"
+	"github.com/aity-cloud/monty/pkg/plugins/driverutil"
 	"github.com/nsf/jsondiff"
-	cliutil "github.com/rancher/opni/pkg/opni/cliutil"
-	"github.com/rancher/opni/pkg/plugins/driverutil"
 	"github.com/samber/lo"
 	cobra "github.com/spf13/cobra"
 	"github.com/ttacon/chalk"

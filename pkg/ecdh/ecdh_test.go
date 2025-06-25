@@ -1,15 +1,15 @@
 package ecdh_test
 
 import (
+	bootstrapv2 "github.com/aity-cloud/monty/pkg/apis/bootstrap/v2"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	bootstrapv2 "github.com/rancher/opni/pkg/apis/bootstrap/v2"
 
 	cryptoecdh "crypto/ecdh"
 	"crypto/rand"
 
-	"github.com/rancher/opni/pkg/ecdh"
-	"github.com/rancher/opni/pkg/keyring"
+	"github.com/aity-cloud/monty/pkg/ecdh"
+	"github.com/aity-cloud/monty/pkg/keyring"
 )
 
 var _ = Describe("ECDH", Label("unit"), func() {

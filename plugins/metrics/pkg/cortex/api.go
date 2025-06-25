@@ -9,16 +9,16 @@ import (
 	"github.com/gin-gonic/gin"
 	"log/slog"
 
-	managementv1 "github.com/rancher/opni/pkg/apis/management/v1"
-	"github.com/rancher/opni/pkg/auth"
-	"github.com/rancher/opni/pkg/config/v1beta1"
-	"github.com/rancher/opni/pkg/logger"
-	httpext "github.com/rancher/opni/pkg/plugins/apis/apiextensions/http"
-	"github.com/rancher/opni/pkg/rbac"
-	"github.com/rancher/opni/pkg/storage"
-	"github.com/rancher/opni/pkg/util"
-	"github.com/rancher/opni/pkg/util/fwd"
-	metricsutil "github.com/rancher/opni/plugins/metrics/pkg/util"
+	managementv1 "github.com/aity-cloud/monty/pkg/apis/management/v1"
+	"github.com/aity-cloud/monty/pkg/auth"
+	"github.com/aity-cloud/monty/pkg/config/v1beta1"
+	"github.com/aity-cloud/monty/pkg/logger"
+	httpext "github.com/aity-cloud/monty/pkg/plugins/apis/apiextensions/http"
+	"github.com/aity-cloud/monty/pkg/rbac"
+	"github.com/aity-cloud/monty/pkg/storage"
+	"github.com/aity-cloud/monty/pkg/util"
+	"github.com/aity-cloud/monty/pkg/util/fwd"
+	metricsutil "github.com/aity-cloud/monty/plugins/metrics/pkg/util"
 )
 
 type forwarders struct {

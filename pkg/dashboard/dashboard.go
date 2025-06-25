@@ -13,11 +13,11 @@ import (
 
 	"log/slog"
 
+	"github.com/aity-cloud/monty/pkg/config/v1beta1"
+	"github.com/aity-cloud/monty/pkg/logger"
+	"github.com/aity-cloud/monty/pkg/util"
+	"github.com/aity-cloud/monty/web"
 	"github.com/gin-gonic/gin"
-	"github.com/rancher/opni/pkg/config/v1beta1"
-	"github.com/rancher/opni/pkg/logger"
-	"github.com/rancher/opni/pkg/util"
-	"github.com/rancher/opni/web"
 	"go.opentelemetry.io/contrib/instrumentation/github.com/gin-gonic/gin/otelgin"
 	"go.opentelemetry.io/otel"
 )
@@ -113,7 +113,7 @@ func (ws *Server) ListenAndServe(ctx context.Context) error {
 	router.Use(
 		gin.Recovery(),
 		logger.GinLogger(ws.logger),
-		otelgin.Middleware("opni-ui"),
+		otelgin.Middleware("monty-ui"),
 	)
 
 	// Static assets
@@ -150,7 +150,7 @@ func (ws *Server) ListenAndServe(ctx context.Context) error {
 		).Error("failed to parse management API URL")
 		panic("failed to parse management API URL")
 	}
-	router.Any("/opni-api/*any", gin.WrapH(http.StripPrefix("/opni-api", httputil.NewSingleHostReverseProxy(mgmtUrl))))
+	router.Any("/monty-api/*any", gin.WrapH(http.StripPrefix("/monty-api", httputil.NewSingleHostReverseProxy(mgmtUrl))))
 
 	for _, h := range ws.extraHandlers {
 		router.Handle(h.method, h.prefix, h.handler...)

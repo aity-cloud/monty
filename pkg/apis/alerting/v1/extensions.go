@@ -8,11 +8,11 @@ import (
 
 	"slices"
 
+	"github.com/aity-cloud/monty/pkg/alerting/message"
+	alertingSync "github.com/aity-cloud/monty/pkg/alerting/server/sync"
+	"github.com/aity-cloud/monty/pkg/alerting/shared"
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
 	"github.com/google/uuid"
-	"github.com/rancher/opni/pkg/alerting/message"
-	alertingSync "github.com/rancher/opni/pkg/alerting/server/sync"
-	"github.com/rancher/opni/pkg/alerting/shared"
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
 	"github.com/samber/lo"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/durationpb"

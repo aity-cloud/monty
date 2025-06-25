@@ -5,9 +5,9 @@ package controllers
 import (
 	"context"
 
+	corev1beta1 "github.com/aity-cloud/monty/apis/core/v1beta1"
+	"github.com/aity-cloud/monty/pkg/resources/gateway"
 	"github.com/go-logr/logr"
-	corev1beta1 "github.com/rancher/opni/apis/core/v1beta1"
-	"github.com/rancher/opni/pkg/resources/gateway"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -15,14 +15,14 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-// +kubebuilder:rbac:groups=core.opni.io,resources=gateways,verbs=get;list;watch;create;update;patch;delete
-// +kubebuilder:rbac:groups=core.opni.io,resources=gateways/status,verbs=get;update;patch
-// +kubebuilder:rbac:groups=core.opni.io,resources=gateways/finalizers,verbs=update
-// +kubebuilder:rbac:groups=core.opni.io,resources=bootstraptokens,verbs=get;list;watch;create;update;patch;delete
-// +kubebuilder:rbac:groups=core.opni.io,resources=clusters,verbs=get;list;watch;create;update;patch;delete
-// +kubebuilder:rbac:groups=core.opni.io,resources=keyrings,verbs=get;list;watch;create;update;patch;delete
-// +kubebuilder:rbac:groups=core.opni.io,resources=roles,verbs=get;list;watch;create;update;patch;delete
-// +kubebuilder:rbac:groups=core.opni.io,resources=rolebindings,verbs=get;list;watch;create;update;patch;delete
+// +kubebuilder:rbac:groups=core.monty.io,resources=gateways,verbs=get;list;watch;create;update;patch;delete
+// +kubebuilder:rbac:groups=core.monty.io,resources=gateways/status,verbs=get;update;patch
+// +kubebuilder:rbac:groups=core.monty.io,resources=gateways/finalizers,verbs=update
+// +kubebuilder:rbac:groups=core.monty.io,resources=bootstraptokens,verbs=get;list;watch;create;update;patch;delete
+// +kubebuilder:rbac:groups=core.monty.io,resources=clusters,verbs=get;list;watch;create;update;patch;delete
+// +kubebuilder:rbac:groups=core.monty.io,resources=keyrings,verbs=get;list;watch;create;update;patch;delete
+// +kubebuilder:rbac:groups=core.monty.io,resources=roles,verbs=get;list;watch;create;update;patch;delete
+// +kubebuilder:rbac:groups=core.monty.io,resources=rolebindings,verbs=get;list;watch;create;update;patch;delete
 // +kubebuilder:rbac:groups=apps,resources=deployments,verbs=get;list;watch;create;update;patch;delete
 // +kubebuilder:rbac:groups=core,resources=configmaps,verbs=get;list;watch;create;update;patch;delete
 // +kubebuilder:rbac:groups=cert-manager.io,resources=certificates,verbs=get;list;watch;create;update;patch;delete

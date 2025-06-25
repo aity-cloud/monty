@@ -1,8 +1,8 @@
 syntax = "proto3";
-option go_package = "github.com/rancher/opni/plugins/logging/apis/alerting";
+option go_package = "github.com/aity-cloud/monty/plugins/logging/apis/alerting";
 
 import "google/protobuf/empty.proto";
-import "github.com/rancher/opni/pkg/apis/core/v1/core.proto";
+import "github.com/aity-cloud/monty/pkg/apis/core/v1/core.proto";
 import "google/api/annotations.proto";
 
 

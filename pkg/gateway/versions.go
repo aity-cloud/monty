@@ -1,11 +1,11 @@
 package gateway
 
 import (
-	controlv1 "github.com/rancher/opni/pkg/apis/control/v1"
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	"github.com/rancher/opni/pkg/auth/cluster"
-	"github.com/rancher/opni/pkg/storage"
-	"github.com/rancher/opni/pkg/update"
+	controlv1 "github.com/aity-cloud/monty/pkg/apis/control/v1"
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	"github.com/aity-cloud/monty/pkg/auth/cluster"
+	"github.com/aity-cloud/monty/pkg/storage"
+	"github.com/aity-cloud/monty/pkg/update"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"

@@ -5,11 +5,11 @@ import (
 
 	"log/slog"
 
+	corev1beta1 "github.com/aity-cloud/monty/apis/core/v1beta1"
+	"github.com/aity-cloud/monty/pkg/logger"
+	"github.com/aity-cloud/monty/pkg/resources"
+	"github.com/aity-cloud/monty/pkg/util/k8sutil"
 	"github.com/cisco-open/operator-tools/pkg/reconciler"
-	corev1beta1 "github.com/rancher/opni/apis/core/v1beta1"
-	"github.com/rancher/opni/pkg/logger"
-	"github.com/rancher/opni/pkg/resources"
-	"github.com/rancher/opni/pkg/util/k8sutil"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/client-go/util/retry"
 	"sigs.k8s.io/controller-runtime/pkg/client"

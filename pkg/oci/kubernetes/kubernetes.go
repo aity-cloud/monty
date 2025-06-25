@@ -6,9 +6,9 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/rancher/opni/apis"
-	"github.com/rancher/opni/pkg/oci"
-	"github.com/rancher/opni/pkg/versions"
+	"github.com/aity-cloud/monty/apis"
+	"github.com/aity-cloud/monty/pkg/oci"
+	"github.com/aity-cloud/monty/pkg/versions"
 	"k8s.io/client-go/rest"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -73,7 +73,7 @@ func (d *kubernetesResolveImageDriver) GetImage(ctx context.Context, imageType o
 	var image *oci.Image
 	var err error
 	switch imageType {
-	case oci.ImageTypeOpni:
+	case oci.ImageTypeMonty:
 		image, err = d.getOpniImage(ctx)
 	case oci.ImageTypeMinimal:
 		image, err = d.getMinimalImage(ctx)
@@ -94,7 +94,7 @@ func (d *kubernetesResolveImageDriver) GetImage(ctx context.Context, imageType o
 func (d *kubernetesResolveImageDriver) getOpniImage(ctx context.Context) (*oci.Image, error) {
 	imageStr, err := d.getOpniImageString(ctx)
 	if err != nil {
-		return nil, fmt.Errorf("error resolving opni image: %w", err)
+		return nil, fmt.Errorf("error resolving monty image: %w", err)
 	}
 	return oci.Parse(imageStr)
 }

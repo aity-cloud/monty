@@ -14,7 +14,7 @@ export async function loadChoices(parent: Vue, typeAsString: string, typeAsEnum:
 
 export function mapClusterOptions() {
   return {
-    ...mapGetters({ clusters: 'opni/clusters' }),
+    ...mapGetters({ clusters: 'monty/clusters' }),
     clusterOptions() {
       return this.clusters.map((c: Cluster) => ({
         label: c.nameDisplay,

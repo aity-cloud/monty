@@ -10,15 +10,15 @@ import (
 	"log/slog"
 
 	keystore "github.com/99designs/keyring"
-	controlv1 "github.com/rancher/opni/pkg/apis/control/v1"
-	"github.com/rancher/opni/pkg/clients"
-	"github.com/rancher/opni/pkg/config"
-	"github.com/rancher/opni/pkg/config/v1beta1"
-	"github.com/rancher/opni/pkg/ident"
-	"github.com/rancher/opni/pkg/ident/identserver"
-	"github.com/rancher/opni/pkg/keyring"
-	"github.com/rancher/opni/pkg/logger"
-	"github.com/rancher/opni/pkg/machinery"
+	controlv1 "github.com/aity-cloud/monty/pkg/apis/control/v1"
+	"github.com/aity-cloud/monty/pkg/clients"
+	"github.com/aity-cloud/monty/pkg/config"
+	"github.com/aity-cloud/monty/pkg/config/v1beta1"
+	"github.com/aity-cloud/monty/pkg/ident"
+	"github.com/aity-cloud/monty/pkg/ident/identserver"
+	"github.com/aity-cloud/monty/pkg/keyring"
+	"github.com/aity-cloud/monty/pkg/logger"
+	"github.com/aity-cloud/monty/pkg/machinery"
 	"sigs.k8s.io/yaml"
 )
 
@@ -26,7 +26,7 @@ const (
 	dirPermissions  = os.FileMode(0700)
 	filePermissions = os.FileMode(0600)
 
-	serviceName = "opni-support"
+	serviceName = "monty-support"
 	keystoreKey = "keyring"
 	defaultFile = "keyring"
 )
@@ -44,7 +44,7 @@ func MustLoadConfig(configFile string, lg *slog.Logger) *v1beta1.SupportAgentCon
 			configFile = path
 		case errors.Is(err, config.ErrConfigNotFound):
 			wd, _ := os.Getwd()
-			lg.Error(fmt.Sprintf(`could not find a config file in ["%s", "$home/.opni], and --config was not given`, wd))
+			lg.Error(fmt.Sprintf(`could not find a config file in ["%s", "$home/.monty], and --config was not given`, wd))
 			os.Exit(1)
 		default:
 			lg.With(
@@ -90,7 +90,7 @@ func PersistConfig(
 		if err != nil {
 			return err
 		}
-		configFile = filepath.Join(home, ".opni", "support.yaml")
+		configFile = filepath.Join(home, ".monty", "support.yaml")
 		ensureDirExists(configFile)
 	}
 
@@ -172,7 +172,7 @@ func openKeyRingData(pwdFunc keystore.PromptFunc) ([]byte, error) {
 		return []byte{}, err
 	}
 
-	keyringFile := filepath.Join(home, ".opni")
+	keyringFile := filepath.Join(home, ".monty")
 
 	config := keystore.Config{
 		AllowedBackends: []keystore.BackendType{
@@ -202,7 +202,7 @@ func storeKeyRingData(data []byte, storePwdFunc keystore.PromptFunc) error {
 		return err
 	}
 
-	keyringFile := filepath.Join(home, ".opni")
+	keyringFile := filepath.Join(home, ".monty")
 	ensureDirExists(keyringFile)
 
 	config := keystore.Config{

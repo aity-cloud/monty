@@ -3,7 +3,7 @@ syntax = "proto3";
 package querier;
 import "github.com/rancher/opni/internal/codegen/cli/cli.proto";
 import "google/protobuf/duration.proto";
-option go_package = "github.com/rancher/opni/internal/cortex/config/querier";
+option go_package = "github.com/aity-cloud/monty/internal/cortex/config/querier";
 option (cli.generator) = { generate: true, generate_deepcopy: true };
 message Config {
   // The maximum number of concurrent queries.

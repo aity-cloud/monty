@@ -4,9 +4,9 @@ import (
 	"context"
 	"errors"
 
+	"github.com/aity-cloud/monty/pkg/apis/core/v1"
+	"github.com/aity-cloud/monty/pkg/util"
 	"github.com/kralicky/gpkg/sync/atomic"
-	"github.com/rancher/opni/pkg/apis/core/v1"
-	"github.com/rancher/opni/pkg/util"
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"

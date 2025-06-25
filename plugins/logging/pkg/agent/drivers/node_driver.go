@@ -3,8 +3,8 @@ package drivers
 import (
 	"context"
 
-	"github.com/rancher/opni/pkg/plugins/driverutil"
-	"github.com/rancher/opni/plugins/logging/apis/node"
+	"github.com/aity-cloud/monty/pkg/plugins/driverutil"
+	"github.com/aity-cloud/monty/plugins/logging/apis/node"
 )
 
 type LoggingNodeDriver interface {

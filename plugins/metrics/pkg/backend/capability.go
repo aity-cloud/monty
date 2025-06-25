@@ -4,17 +4,17 @@ import (
 	"context"
 	"fmt"
 
-	v1 "github.com/rancher/opni/pkg/apis/capability/v1"
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	"github.com/rancher/opni/pkg/capabilities"
-	"github.com/rancher/opni/pkg/capabilities/wellknown"
-	"github.com/rancher/opni/pkg/logger"
-	"github.com/rancher/opni/pkg/machinery/uninstall"
-	"github.com/rancher/opni/pkg/plugins/driverutil"
-	"github.com/rancher/opni/pkg/storage"
-	"github.com/rancher/opni/pkg/task"
-	"github.com/rancher/opni/pkg/util"
-	"github.com/rancher/opni/plugins/metrics/pkg/gateway/drivers"
+	v1 "github.com/aity-cloud/monty/pkg/apis/capability/v1"
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	"github.com/aity-cloud/monty/pkg/capabilities"
+	"github.com/aity-cloud/monty/pkg/capabilities/wellknown"
+	"github.com/aity-cloud/monty/pkg/logger"
+	"github.com/aity-cloud/monty/pkg/machinery/uninstall"
+	"github.com/aity-cloud/monty/pkg/plugins/driverutil"
+	"github.com/aity-cloud/monty/pkg/storage"
+	"github.com/aity-cloud/monty/pkg/task"
+	"github.com/aity-cloud/monty/pkg/util"
+	"github.com/aity-cloud/monty/plugins/metrics/pkg/gateway/drivers"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/emptypb"
@@ -203,9 +203,9 @@ func (m *MetricsBackend) InstallerTemplate(context.Context, *emptypb.Empty) (*v1
 	m.WaitForInit()
 
 	return &v1.InstallerTemplateResponse{
-		Template: `helm install opni-agent ` +
-			`{{ arg "input" "Namespace" "+omitEmpty" "+default:opni-agent" "+format:-n {{ value }}" }} ` +
-			`oci://docker.io/rancher/opni-agent --version=0.5.4 ` +
+		Template: `helm install monty-agent ` +
+			`{{ arg "input" "Namespace" "+omitEmpty" "+default:monty-agent" "+format:-n {{ value }}" }} ` +
+			`oci://docker.io/rancher/monty-agent --version=0.5.4 ` +
 			`--set monitoring.enabled=true,token={{ .Token }},pin={{ .Pin }},address={{ arg "input" "Gateway Hostname" "+default:{{ .Address }}" }}:{{ arg "input" "Gateway Port" "+default:{{ .Port }}" }} ` +
 			`{{ arg "toggle" "Install Prometheus Operator" "+omitEmpty" "+default:false" "+format:--set kube-prometheus-stack.enabled={{ value }}" }} ` +
 			`--create-namespace`,

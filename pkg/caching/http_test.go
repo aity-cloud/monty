@@ -8,11 +8,11 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/aity-cloud/monty/pkg/caching"
+	"github.com/aity-cloud/monty/pkg/test/freeport"
+	"github.com/aity-cloud/monty/pkg/test/testgrpc"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/rancher/opni/pkg/caching"
-	"github.com/rancher/opni/pkg/test/freeport"
-	"github.com/rancher/opni/pkg/test/testgrpc"
 )
 
 var _ = BuildHttpTransportCaching(

@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/aity-cloud/monty/magefiles/targets"
 	"github.com/magefile/mage/mage"
-	"github.com/rancher/opni/magefiles/targets"
 	"go.opentelemetry.io/otel/trace"
 
 	"go.opentelemetry.io/otel/exporters/jaeger"

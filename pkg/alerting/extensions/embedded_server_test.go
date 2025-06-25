@@ -11,25 +11,25 @@ import (
 	"path"
 	"time"
 
+	"github.com/aity-cloud/monty/pkg/alerting/client"
+	"github.com/aity-cloud/monty/pkg/alerting/drivers/config"
+	"github.com/aity-cloud/monty/pkg/alerting/drivers/routing"
+	"github.com/aity-cloud/monty/pkg/alerting/extensions"
+	"github.com/aity-cloud/monty/pkg/alerting/message"
+	"github.com/aity-cloud/monty/pkg/alerting/shared"
+	alertingv1 "github.com/aity-cloud/monty/pkg/apis/alerting/v1"
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	"github.com/aity-cloud/monty/pkg/test"
+	"github.com/aity-cloud/monty/pkg/test/alerting"
+	"github.com/aity-cloud/monty/pkg/test/freeport"
 	"github.com/google/uuid"
 	"github.com/kralicky/yaml/v3"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	amCfg "github.com/prometheus/alertmanager/config"
-	"github.com/rancher/opni/pkg/alerting/client"
-	"github.com/rancher/opni/pkg/alerting/drivers/config"
-	"github.com/rancher/opni/pkg/alerting/drivers/routing"
-	"github.com/rancher/opni/pkg/alerting/extensions"
-	"github.com/rancher/opni/pkg/alerting/message"
-	"github.com/rancher/opni/pkg/alerting/shared"
-	alertingv1 "github.com/rancher/opni/pkg/apis/alerting/v1"
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	"github.com/rancher/opni/pkg/test"
-	"github.com/rancher/opni/pkg/test/alerting"
-	"github.com/rancher/opni/pkg/test/freeport"
 	"github.com/samber/lo"
 
-	"github.com/rancher/opni/pkg/util"
+	"github.com/aity-cloud/monty/pkg/util"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/types/known/durationpb"
 	"google.golang.org/protobuf/types/known/timestamppb"
@@ -126,7 +126,7 @@ func BuildEmbeddedServerNotificationTests(
 			Expect(err).NotTo(HaveOccurred())
 			Expect(tmpConfigDir).NotTo(Equal(""))
 
-			// start embedded alert manager with config that points to opni embedded server
+			// start embedded alert manager with config that points to monty embedded server
 
 			freeport := freeport.GetFreePort()
 			Expect(freeport).NotTo(BeZero())
@@ -148,7 +148,7 @@ func BuildEmbeddedServerNotificationTests(
 			httpClient = http.DefaultClient
 		})
 
-		When("we use the embedded opni embedded server", func() {
+		When("we use the embedded monty embedded server", func() {
 			It("should handle webhook messages indexed by Opni", func() {
 				Expect(webPort).NotTo(BeZero())
 				Expect(opniPort).NotTo(BeZero())

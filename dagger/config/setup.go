@@ -90,13 +90,13 @@ func RunSetup() {
 		pythonTorchImageName:             &conf.bc.Images.PythonTorch,
 	}
 	imageNames := map[string]string{
-		opniImageName:                    "opni",
-		opniMinimalImageName:             "opni",
+		opniImageName:                    "monty",
+		opniMinimalImageName:             "monty",
 		opensearchImageName:              "opensearch",
 		opensearchDashboardsImageName:    "opensearch-dashboards",
 		opensearchUpdateServiceImageName: "opensearch-update-service",
-		pythonBaseImageName:              "opni-python-base",
-		pythonTorchImageName:             "opni-python-base",
+		pythonBaseImageName:              "monty-python-base",
+		pythonTorchImageName:             "monty-python-base",
 	}
 
 	questions := []*survey.Question{

@@ -38,21 +38,21 @@ The controller will be controlled by multiple CRDs.  The main one will be a `cor
 e.g
 ```yaml
 ---
-apiVersion: core.opni.io/v1beta1
+apiVersion: core.monty.io/v1beta1
 kind: Collector
 metadata:
   name: agent-collector
-  namespace: opni
+  namespace: monty
 spec:
   logging:
     name: logging-config
   metrics: {}
 ---
-apiVersion: logging.opni.io/v1beta1
+apiVersion: logging.monty.io/v1beta1
 kind: CollectorConfig
 metadata:
   name: logging-collector
-  namespace: opni
+  namespace: monty
 spec:
   # Spec will contain logging specific configuration items.
 ```

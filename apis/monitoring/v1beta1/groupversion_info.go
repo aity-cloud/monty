@@ -1,5 +1,5 @@
 // +kubebuilder:object:generate=true
-// +groupName=monitoring.opni.io
+// +groupName=monitoring.monty.io
 package v1beta1
 
 import (
@@ -9,7 +9,7 @@ import (
 
 var (
 	// GroupVersion is group version used to register these objects
-	GroupVersion = schema.GroupVersion{Group: "monitoring.opni.io", Version: "v1beta1"}
+	GroupVersion = schema.GroupVersion{Group: "monitoring.monty.io", Version: "v1beta1"}
 
 	// SchemeBuilder is used to add go types to the GroupVersionKind scheme
 	SchemeBuilder = &scheme.Builder{GroupVersion: GroupVersion}

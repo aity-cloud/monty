@@ -8,21 +8,21 @@ import (
 
 	"log/slog"
 
+	"github.com/aity-cloud/monty/apis"
+	opnicorev1beta1 "github.com/aity-cloud/monty/apis/core/v1beta1"
+	loggingv1beta1 "github.com/aity-cloud/monty/apis/logging/v1beta1"
+	"github.com/aity-cloud/monty/pkg/opensearch/certs"
+	"github.com/aity-cloud/monty/pkg/opensearch/opensearch"
+	"github.com/aity-cloud/monty/pkg/plugins/driverutil"
+	"github.com/aity-cloud/monty/pkg/util"
+	k8sutilerrors "github.com/aity-cloud/monty/pkg/util/errors/k8sutil"
+	"github.com/aity-cloud/monty/pkg/util/k8sutil"
+	opnimeta "github.com/aity-cloud/monty/pkg/util/meta"
+	"github.com/aity-cloud/monty/plugins/logging/apis/loggingadmin"
+	loggingerrors "github.com/aity-cloud/monty/plugins/logging/pkg/errors"
+	"github.com/aity-cloud/monty/plugins/logging/pkg/gateway/drivers/management"
+	loggingutil "github.com/aity-cloud/monty/plugins/logging/pkg/util"
 	"github.com/lestrrat-go/backoff/v2"
-	"github.com/rancher/opni/apis"
-	opnicorev1beta1 "github.com/rancher/opni/apis/core/v1beta1"
-	loggingv1beta1 "github.com/rancher/opni/apis/logging/v1beta1"
-	"github.com/rancher/opni/pkg/opensearch/certs"
-	"github.com/rancher/opni/pkg/opensearch/opensearch"
-	"github.com/rancher/opni/pkg/plugins/driverutil"
-	"github.com/rancher/opni/pkg/util"
-	k8sutilerrors "github.com/rancher/opni/pkg/util/errors/k8sutil"
-	"github.com/rancher/opni/pkg/util/k8sutil"
-	opnimeta "github.com/rancher/opni/pkg/util/meta"
-	"github.com/rancher/opni/plugins/logging/apis/loggingadmin"
-	loggingerrors "github.com/rancher/opni/plugins/logging/pkg/errors"
-	"github.com/rancher/opni/plugins/logging/pkg/gateway/drivers/management"
-	loggingutil "github.com/rancher/opni/plugins/logging/pkg/util"
 	"github.com/samber/lo"
 	corev1 "k8s.io/api/core/v1"
 	storagev1 "k8s.io/api/storage/v1"
@@ -39,12 +39,12 @@ import (
 const (
 	LabelOpsterCluster  = "opster.io/opensearch-cluster"
 	LabelOpsterNodePool = "opster.io/opensearch-nodepool"
-	LabelOpniNodeGroup  = "opni.io/node-group"
+	LabelOpniNodeGroup  = "monty.io/node-group"
 	TopologyKeyK8sHost  = "kubernetes.io/hostname"
 
 	opensearchVersion   = "2.8.0"
 	defaultRepo         = "docker.io/rancher"
-	s3CredentialsSecret = "opni-opensearch-s3"
+	s3CredentialsSecret = "monty-opensearch-s3"
 )
 
 type KubernetesManagerDriver struct {
@@ -89,7 +89,7 @@ func (d *KubernetesManagerDriver) AdminPassword(ctx context.Context) (password [
 	password = util.GenerateRandomString(12)
 	secret := &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "opni-user-password",
+			Name:      "monty-user-password",
 			Namespace: d.OpensearchCluster.Namespace,
 		},
 		Data: map[string][]byte{
@@ -520,7 +520,7 @@ func init() {
 	management.Drivers.Register("kubernetes-manager", func(_ context.Context, opts ...driverutil.Option) (management.ClusterDriver, error) {
 		options := KubernetesManagerDriverOptions{
 			OpensearchCluster: &opnimeta.OpensearchClusterRef{
-				Name:      "opni",
+				Name:      "monty",
 				Namespace: os.Getenv("POD_NAMESPACE"),
 			},
 		}

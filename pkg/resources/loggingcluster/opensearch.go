@@ -4,11 +4,11 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/rancher/opni/pkg/opensearch/certs"
-	opensearchtypes "github.com/rancher/opni/pkg/opensearch/opensearch/types"
-	opensearch "github.com/rancher/opni/pkg/opensearch/reconciler"
-	"github.com/rancher/opni/pkg/resources"
-	"github.com/rancher/opni/pkg/util/meta"
+	"github.com/aity-cloud/monty/pkg/opensearch/certs"
+	opensearchtypes "github.com/aity-cloud/monty/pkg/opensearch/opensearch/types"
+	opensearch "github.com/aity-cloud/monty/pkg/opensearch/reconciler"
+	"github.com/aity-cloud/monty/pkg/resources"
+	"github.com/aity-cloud/monty/pkg/util/meta"
 	"k8s.io/client-go/util/retry"
 	opensearchv1 "opensearch.opster.io/api/v1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -28,7 +28,7 @@ var (
 			{
 				IndexPatterns: []string{
 					"logs*",
-					"ss4o_traces-kubernetes-opni*",
+					"ss4o_traces-kubernetes-monty*",
 				},
 				AllowedActions: []string{
 					"read",

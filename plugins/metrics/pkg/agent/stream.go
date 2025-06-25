@@ -1,13 +1,13 @@
 package agent
 
 import (
-	capabilityv1 "github.com/rancher/opni/pkg/apis/capability/v1"
-	controlv1 "github.com/rancher/opni/pkg/apis/control/v1"
-	"github.com/rancher/opni/pkg/clients"
-	streamext "github.com/rancher/opni/pkg/plugins/apis/apiextensions/stream"
-	"github.com/rancher/opni/plugins/metrics/apis/node"
-	"github.com/rancher/opni/plugins/metrics/apis/remoteread"
-	"github.com/rancher/opni/plugins/metrics/apis/remotewrite"
+	capabilityv1 "github.com/aity-cloud/monty/pkg/apis/capability/v1"
+	controlv1 "github.com/aity-cloud/monty/pkg/apis/control/v1"
+	"github.com/aity-cloud/monty/pkg/clients"
+	streamext "github.com/aity-cloud/monty/pkg/plugins/apis/apiextensions/stream"
+	"github.com/aity-cloud/monty/plugins/metrics/apis/node"
+	"github.com/aity-cloud/monty/plugins/metrics/apis/remoteread"
+	"github.com/aity-cloud/monty/plugins/metrics/apis/remotewrite"
 	"google.golang.org/grpc"
 )
 

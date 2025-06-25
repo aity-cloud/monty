@@ -5,7 +5,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/rancher/opni/pkg/opensearch/opensearch"
+	"github.com/aity-cloud/monty/pkg/opensearch/opensearch"
 )
 
 type AsyncOpensearchClient struct {

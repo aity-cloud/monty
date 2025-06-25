@@ -1,5 +1,5 @@
 syntax = "proto3";
-option go_package = "github.com/rancher/opni/pkg/plugins/apis/apiextensions";
+option go_package = "github.com/aity-cloud/monty/pkg/plugins/apis/apiextensions";
 
 import "google/protobuf/descriptor.proto";
 import "google/protobuf/empty.proto";

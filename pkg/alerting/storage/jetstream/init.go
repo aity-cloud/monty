@@ -1,9 +1,9 @@
 package jetstream
 
 import (
+	"github.com/aity-cloud/monty/pkg/alerting/shared"
+	"github.com/aity-cloud/monty/pkg/util"
 	"github.com/nats-io/nats.go"
-	"github.com/rancher/opni/pkg/alerting/shared"
-	"github.com/rancher/opni/pkg/util"
 )
 
 func NewRouterObjectStore(js nats.JetStreamContext) nats.ObjectStore {

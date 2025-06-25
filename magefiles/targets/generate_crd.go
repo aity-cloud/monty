@@ -39,7 +39,7 @@ func (CRD) CRDGen(ctx context.Context) error {
 		runReplace = true
 		var commands []*exec.Cmd
 		commands = append(commands, exec.Command(mg.GoCmd(), "run", "sigs.k8s.io/kustomize/kustomize/v5@latest",
-			"build", "./config/chart-crds", "-o", "./packages/opni/opni/charts/crds/crds.yaml",
+			"build", "./config/chart-crds", "-o", "./packages/monty/monty/charts/crds/crds.yaml",
 		))
 		for _, cmd := range commands {
 			buf := new(bytes.Buffer)
@@ -68,9 +68,9 @@ func (CRD) CRDGen(ctx context.Context) error {
 
 		e1 := lo.Async(func() error {
 			if yq, err := exec.LookPath("yq"); err == nil {
-				return sh.Run(yq, "-i", expr, "./packages/opni/opni/charts/crds/crds.yaml")
+				return sh.Run(yq, "-i", expr, "./packages/monty/monty/charts/crds/crds.yaml")
 			} else {
-				return sh.Run(mg.GoCmd(), "run", "github.com/mikefarah/yq/v4@latest", "-i", expr, "./packages/opni/opni/charts/crds/crds.yaml")
+				return sh.Run(mg.GoCmd(), "run", "github.com/mikefarah/yq/v4@latest", "-i", expr, "./packages/monty/monty/charts/crds/crds.yaml")
 			}
 		})
 
@@ -79,7 +79,7 @@ func (CRD) CRDGen(ctx context.Context) error {
 		}
 
 		// prepend "---" to each file, otherwise kubernetes will think it's json
-		for _, f := range []string{"./packages/opni/opni/charts/crds/crds.yaml"} {
+		for _, f := range []string{"./packages/monty/monty/charts/crds/crds.yaml"} {
 			if err := prependDocumentSeparator(f); err != nil {
 				return err
 			}
@@ -131,7 +131,7 @@ func (CRD) ReplaceCRDText(ctx context.Context) error {
 	}
 	if runReplace {
 		files := []string{
-			"./packages/opni/opni/charts/crds/crds.yaml",
+			"./packages/monty/monty/charts/crds/crds.yaml",
 		}
 
 		for _, file := range files {
@@ -140,7 +140,7 @@ func (CRD) ReplaceCRDText(ctx context.Context) error {
 				return err
 			}
 
-			firstReplace := bytes.Replace(input, []byte("replace-me/opni-serving-cert"), []byte(`"replace-me/opni-serving-cert"`), -1)
+			firstReplace := bytes.Replace(input, []byte("replace-me/monty-serving-cert"), []byte(`"replace-me/monty-serving-cert"`), -1)
 			output := bytes.Replace(firstReplace, []byte("replace-me"), []byte("{{ .Release.Namespace }}"), -1)
 
 			if err := os.WriteFile(file, output, 0644); err != nil {
@@ -178,5 +178,5 @@ func checkCRDContstraints() (bool, error) {
 		return false, err
 	}
 
-	return target.Dir("packages/opni/opni/charts/crds", crdSources...)
+	return target.Dir("packages/monty/monty/charts/crds", crdSources...)
 }

@@ -6,7 +6,7 @@ metadata:
     controller-gen.kubebuilder.io/version: v0.13.0
   name: natsclusters.core.opni.io
 spec:
-  group: core.opni.io
+  group: core.monty.io
   names:
     kind: NatsCluster
     listKind: NatsClusterList

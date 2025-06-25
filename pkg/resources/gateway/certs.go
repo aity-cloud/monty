@@ -5,10 +5,10 @@ import (
 	"strings"
 	"time"
 
+	"github.com/aity-cloud/monty/pkg/resources"
+	"github.com/aity-cloud/monty/pkg/util/k8sutil"
 	cmv1 "github.com/cert-manager/cert-manager/pkg/apis/certmanager/v1"
 	cmmetav1 "github.com/cert-manager/cert-manager/pkg/apis/meta/v1"
-	"github.com/rancher/opni/pkg/resources"
-	"github.com/rancher/opni/pkg/util/k8sutil"
 	corev1 "k8s.io/api/core/v1"
 	k8serrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -18,8 +18,8 @@ import (
 )
 
 const (
-	gatewayCASecret      = "opni-gateway-ca-keys"
-	gatewayServingSecret = "opni-gateway-serving-cert"
+	gatewayCASecret      = "monty-gateway-ca-keys"
+	gatewayServingSecret = "monty-gateway-serving-cert"
 )
 
 func (r *Reconciler) certs() ([]resources.Resource, error) {
@@ -56,7 +56,7 @@ func (r *Reconciler) certs() ([]resources.Resource, error) {
 func (r *Reconciler) selfsignedIssuer() client.Object {
 	return &cmv1.ClusterIssuer{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "opni-gateway-selfsigned-issuer",
+			Name:      "monty-gateway-selfsigned-issuer",
 			Namespace: r.gw.Namespace,
 		},
 		Spec: cmv1.IssuerSpec{
@@ -70,12 +70,12 @@ func (r *Reconciler) selfsignedIssuer() client.Object {
 func (r *Reconciler) gatewayCA() client.Object {
 	return &cmv1.Certificate{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "opni-gateway-ca",
+			Name:      "monty-gateway-ca",
 			Namespace: r.gw.Namespace,
 		},
 		Spec: cmv1.CertificateSpec{
 			IsCA:       true,
-			CommonName: "opni-gateway-ca",
+			CommonName: "monty-gateway-ca",
 			SecretName: gatewayCASecret,
 			PrivateKey: &cmv1.CertificatePrivateKey{
 				Algorithm: cmv1.Ed25519KeyAlgorithm,
@@ -84,7 +84,7 @@ func (r *Reconciler) gatewayCA() client.Object {
 			IssuerRef: cmmetav1.ObjectReference{
 				Group: "cert-manager.io",
 				Kind:  "ClusterIssuer",
-				Name:  "opni-gateway-selfsigned-issuer",
+				Name:  "monty-gateway-selfsigned-issuer",
 			},
 		},
 	}
@@ -93,7 +93,7 @@ func (r *Reconciler) gatewayCA() client.Object {
 func (r *Reconciler) gatewayCAIssuer() client.Object {
 	return &cmv1.Issuer{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "opni-gateway-ca-issuer",
+			Name:      "monty-gateway-ca-issuer",
 			Namespace: r.gw.Namespace,
 		},
 		Spec: cmv1.IssuerSpec{
@@ -109,7 +109,7 @@ func (r *Reconciler) gatewayCAIssuer() client.Object {
 func (r *Reconciler) gatewayServingCert() client.Object {
 	return &cmv1.Certificate{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "opni-gateway-serving-cert",
+			Name:      "monty-gateway-serving-cert",
 			Namespace: r.gw.Namespace,
 		},
 		Spec: cmv1.CertificateSpec{
@@ -121,14 +121,14 @@ func (r *Reconciler) gatewayServingCert() client.Object {
 			IssuerRef: cmmetav1.ObjectReference{
 				Group: "cert-manager.io",
 				Kind:  "Issuer",
-				Name:  "opni-gateway-ca-issuer",
+				Name:  "monty-gateway-ca-issuer",
 			},
 			DNSNames: []string{
 				r.gw.Spec.Hostname,
-				fmt.Sprintf("opni.%s.svc", r.gw.Namespace),
-				fmt.Sprintf("opni.%s.svc.cluster.local", r.gw.Namespace),
-				fmt.Sprintf("opni-internal.%s.svc", r.gw.Namespace),
-				fmt.Sprintf("opni-internal.%s.svc.cluster.local", r.gw.Namespace),
+				fmt.Sprintf("monty.%s.svc", r.gw.Namespace),
+				fmt.Sprintf("monty.%s.svc.cluster.local", r.gw.Namespace),
+				fmt.Sprintf("monty-internal.%s.svc", r.gw.Namespace),
+				fmt.Sprintf("monty-internal.%s.svc.cluster.local", r.gw.Namespace),
 			},
 			IPAddresses: []string{
 				"127.0.0.1",
@@ -146,11 +146,11 @@ func (r *Reconciler) gatewayServingCert() client.Object {
 func (r *Reconciler) gatewayClientCert() client.Object {
 	return &cmv1.Certificate{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "opni-gateway-client-cert",
+			Name:      "monty-gateway-client-cert",
 			Namespace: r.gw.Namespace,
 		},
 		Spec: cmv1.CertificateSpec{
-			SecretName: "opni-gateway-client-cert",
+			SecretName: "monty-gateway-client-cert",
 			PrivateKey: &cmv1.CertificatePrivateKey{
 				Algorithm: cmv1.Ed25519KeyAlgorithm,
 				Encoding:  cmv1.PKCS1,
@@ -158,10 +158,10 @@ func (r *Reconciler) gatewayClientCert() client.Object {
 			IssuerRef: cmmetav1.ObjectReference{
 				Group: "cert-manager.io",
 				Kind:  "Issuer",
-				Name:  "opni-gateway-ca-issuer",
+				Name:  "monty-gateway-ca-issuer",
 			},
 			DNSNames: []string{
-				"opni-gateway-client",
+				"monty-gateway-client",
 			},
 			Usages: []cmv1.KeyUsage{
 				cmv1.UsageClientAuth,
@@ -191,7 +191,7 @@ func (r *Reconciler) alertingIntermediateCa() client.Object {
 			IssuerRef: cmmetav1.ObjectReference{
 				Group: "cert-manager.io",
 				Kind:  "Issuer",
-				Name:  "opni-gateway-ca-issuer",
+				Name:  "monty-gateway-ca-issuer",
 			},
 		},
 	}
@@ -307,12 +307,12 @@ func (r *Reconciler) alertingServingCert() client.Object {
 			},
 			DNSNames: []string{
 				"localhost",
-				"opni-alerting",
-				"opni-alertmanager",
-				"opni-alertmanager-alerting",
-				"opni-alerting-alertmanager",
-				"*.opni-alerting-alertmanager",
-				"*.opni-alertmanager-alerting",
+				"monty-alerting",
+				"monty-alertmanager",
+				"monty-alertmanager-alerting",
+				"monty-alerting-alertmanager",
+				"*.monty-alerting-alertmanager",
+				"*.monty-alertmanager-alerting",
 			},
 		},
 	}
@@ -337,7 +337,7 @@ func (r *Reconciler) cortexIntermediateCA() client.Object {
 			IssuerRef: cmmetav1.ObjectReference{
 				Group: "cert-manager.io",
 				Kind:  "Issuer",
-				Name:  "opni-gateway-ca-issuer",
+				Name:  "monty-gateway-ca-issuer",
 			},
 		},
 	}
@@ -492,7 +492,7 @@ func (r *Reconciler) etcdIntermediateCA() client.Object {
 			IssuerRef: cmmetav1.ObjectReference{
 				Group: "cert-manager.io",
 				Kind:  "Issuer",
-				Name:  "opni-gateway-ca-issuer",
+				Name:  "monty-gateway-ca-issuer",
 			},
 			Usages: []cmv1.KeyUsage{
 				cmv1.UsageDigitalSignature,

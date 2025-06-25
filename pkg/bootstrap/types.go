@@ -4,9 +4,9 @@ import (
 	"context"
 	"errors"
 
-	"github.com/rancher/opni/pkg/ident"
-	"github.com/rancher/opni/pkg/keyring"
-	"github.com/rancher/opni/pkg/storage"
+	"github.com/aity-cloud/monty/pkg/ident"
+	"github.com/aity-cloud/monty/pkg/keyring"
+	"github.com/aity-cloud/monty/pkg/storage"
 )
 
 type Bootstrapper interface {

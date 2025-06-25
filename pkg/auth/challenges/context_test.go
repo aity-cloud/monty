@@ -3,9 +3,9 @@ package challenges_test
 import (
 	"context"
 
+	"github.com/aity-cloud/monty/pkg/auth/challenges"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/rancher/opni/pkg/auth/challenges"
 	"google.golang.org/grpc/metadata"
 )
 

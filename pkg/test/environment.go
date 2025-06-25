@@ -30,6 +30,41 @@ import (
 
 	"log/slog"
 
+	"github.com/aity-cloud/monty/pkg/agent"
+	agentv2 "github.com/aity-cloud/monty/pkg/agent/v2"
+	"github.com/aity-cloud/monty/pkg/alerting/metrics/naming"
+	"github.com/aity-cloud/monty/pkg/alerting/shared"
+	alertingv1 "github.com/aity-cloud/monty/pkg/apis/alerting/v1"
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	managementv1 "github.com/aity-cloud/monty/pkg/apis/management/v1"
+	streamv1 "github.com/aity-cloud/monty/pkg/apis/stream/v1"
+	"github.com/aity-cloud/monty/pkg/auth/session"
+	"github.com/aity-cloud/monty/pkg/bootstrap"
+	"github.com/aity-cloud/monty/pkg/caching"
+	"github.com/aity-cloud/monty/pkg/clients"
+	"github.com/aity-cloud/monty/pkg/config"
+	"github.com/aity-cloud/monty/pkg/config/meta"
+	"github.com/aity-cloud/monty/pkg/config/v1beta1"
+	"github.com/aity-cloud/monty/pkg/gateway"
+	"github.com/aity-cloud/monty/pkg/ident"
+	"github.com/aity-cloud/monty/pkg/keyring/ephemeral"
+	"github.com/aity-cloud/monty/pkg/logger"
+	"github.com/aity-cloud/monty/pkg/management"
+	"github.com/aity-cloud/monty/pkg/otel"
+	"github.com/aity-cloud/monty/pkg/pkp"
+	"github.com/aity-cloud/monty/pkg/plugins"
+	"github.com/aity-cloud/monty/pkg/plugins/hooks"
+	pluginmeta "github.com/aity-cloud/monty/pkg/plugins/meta"
+	"github.com/aity-cloud/monty/pkg/slo/query"
+	"github.com/aity-cloud/monty/pkg/test/freeport"
+	mock_ident "github.com/aity-cloud/monty/pkg/test/mock/ident"
+	"github.com/aity-cloud/monty/pkg/test/testdata"
+	"github.com/aity-cloud/monty/pkg/test/testlog"
+	"github.com/aity-cloud/monty/pkg/test/testutil"
+	"github.com/aity-cloud/monty/pkg/tokens"
+	"github.com/aity-cloud/monty/pkg/trust"
+	"github.com/aity-cloud/monty/pkg/util"
+	"github.com/aity-cloud/monty/plugins/metrics/pkg/cortex/configutil"
 	"github.com/google/uuid"
 	"github.com/kralicky/totem"
 	natsserver "github.com/nats-io/nats-server/v2/server"
@@ -39,41 +74,6 @@ import (
 	"github.com/onsi/ginkgo/v2"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
-	"github.com/rancher/opni/pkg/agent"
-	agentv2 "github.com/rancher/opni/pkg/agent/v2"
-	"github.com/rancher/opni/pkg/alerting/metrics/naming"
-	"github.com/rancher/opni/pkg/alerting/shared"
-	alertingv1 "github.com/rancher/opni/pkg/apis/alerting/v1"
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	managementv1 "github.com/rancher/opni/pkg/apis/management/v1"
-	streamv1 "github.com/rancher/opni/pkg/apis/stream/v1"
-	"github.com/rancher/opni/pkg/auth/session"
-	"github.com/rancher/opni/pkg/bootstrap"
-	"github.com/rancher/opni/pkg/caching"
-	"github.com/rancher/opni/pkg/clients"
-	"github.com/rancher/opni/pkg/config"
-	"github.com/rancher/opni/pkg/config/meta"
-	"github.com/rancher/opni/pkg/config/v1beta1"
-	"github.com/rancher/opni/pkg/gateway"
-	"github.com/rancher/opni/pkg/ident"
-	"github.com/rancher/opni/pkg/keyring/ephemeral"
-	"github.com/rancher/opni/pkg/logger"
-	"github.com/rancher/opni/pkg/management"
-	"github.com/rancher/opni/pkg/otel"
-	"github.com/rancher/opni/pkg/pkp"
-	"github.com/rancher/opni/pkg/plugins"
-	"github.com/rancher/opni/pkg/plugins/hooks"
-	pluginmeta "github.com/rancher/opni/pkg/plugins/meta"
-	"github.com/rancher/opni/pkg/slo/query"
-	"github.com/rancher/opni/pkg/test/freeport"
-	mock_ident "github.com/rancher/opni/pkg/test/mock/ident"
-	"github.com/rancher/opni/pkg/test/testdata"
-	"github.com/rancher/opni/pkg/test/testlog"
-	"github.com/rancher/opni/pkg/test/testutil"
-	"github.com/rancher/opni/pkg/tokens"
-	"github.com/rancher/opni/pkg/trust"
-	"github.com/rancher/opni/pkg/util"
-	"github.com/rancher/opni/plugins/metrics/pkg/cortex/configutil"
 	"github.com/samber/lo"
 	clientv3 "go.etcd.io/etcd/client/v3"
 	"go.opentelemetry.io/otel/sdk/resource"
@@ -85,11 +85,11 @@ import (
 	"google.golang.org/protobuf/types/known/durationpb"
 	"google.golang.org/protobuf/types/known/emptypb"
 
-	_ "github.com/rancher/opni/pkg/oci/noop"
-	_ "github.com/rancher/opni/pkg/storage/etcd"
-	_ "github.com/rancher/opni/pkg/storage/jetstream"
-	"github.com/rancher/opni/pkg/update/noop"
-	_ "github.com/rancher/opni/pkg/update/noop"
+	_ "github.com/aity-cloud/monty/pkg/oci/noop"
+	_ "github.com/aity-cloud/monty/pkg/storage/etcd"
+	_ "github.com/aity-cloud/monty/pkg/storage/jetstream"
+	"github.com/aity-cloud/monty/pkg/update/noop"
+	_ "github.com/aity-cloud/monty/pkg/update/noop"
 )
 
 var (
@@ -267,7 +267,7 @@ func FindTestBin() (string, error) {
 WALK:
 	for {
 		if wd == "/" {
-			return "", errors.New("could not find go.mod for github.com/rancher/opni")
+			return "", errors.New("could not find go.mod for  github.com/aity-cloud/monty")
 		}
 		if _, err := os.Stat(filepath.Join(wd, "go.mod")); err == nil {
 			// check to make sure it's the right one
@@ -279,7 +279,7 @@ WALK:
 			for scanner.Scan() {
 				line := scanner.Text()
 				if strings.HasPrefix(line, "module") {
-					if line == "module github.com/rancher/opni" {
+					if line == "module  github.com/aity-cloud/monty" {
 						f.Close()
 						break WALK
 					}
@@ -349,7 +349,7 @@ func (e *Environment) Start(opts ...EnvironmentOption) error {
 		return err
 	}
 
-	e.tempDir, err = os.MkdirTemp("", "opni-test-*")
+	e.tempDir, err = os.MkdirTemp("", "monty-test-*")
 	if err != nil {
 		return err
 	}
@@ -682,7 +682,7 @@ func (e *Environment) StartEmbeddedAlertManager(
 	if err := os.MkdirAll(storagePath, 0700); err != nil {
 		panic(err)
 	}
-	amBin := path.Join(e.TestBin, "../../bin/opni")
+	amBin := path.Join(e.TestBin, "../../bin/monty")
 	fPorts := freeport.GetFreePorts(2)
 	ports.ApiPort = fPorts[0]
 	ports.ClusterPort = fPorts[1]
@@ -698,11 +698,11 @@ func (e *Environment) StartEmbeddedAlertManager(
 		"--cluster.peer-timeout=3s",
 		"--cluster.gossip-interval=200ms",
 		"--log.level=debug",
-		"--no-opni.send-k8s",
+		"--no-monty.send-k8s",
 		fmt.Sprintf("--web.config.file=%s", path.Join(e.AlertingDataDir(), "web.yaml")),
 	}
 	if opniPort != nil {
-		defaultArgs = append(defaultArgs, fmt.Sprintf("--opni.listen-address=:%d", *opniPort))
+		defaultArgs = append(defaultArgs, fmt.Sprintf("--monty.listen-address=:%d", *opniPort))
 	}
 	for _, peer := range peers {
 		defaultArgs = append(defaultArgs, fmt.Sprintf("--cluster.peer=%s", peer))
@@ -743,7 +743,7 @@ func (e *Environment) StartEmbeddedAlertManager(
 	}
 	e.Logger.With(
 		"address", fmt.Sprintf("http://localhost:%d", ports.ApiPort),
-		"opni-address", fmt.Sprintf("http://localhost:%d", opniPort)).
+		"monty-address", fmt.Sprintf("http://localhost:%d", opniPort)).
 		Info("AlertManager started")
 	e.addShutdownHook(func() {
 		cmd, _ := session.G()
@@ -879,7 +879,7 @@ func (e *Environment) StartCortex(ctx context.Context, configBuilder func(Cortex
 	os.WriteFile(path.Join(storageDir, "config.yaml"), configBytes, 0644)
 	os.WriteFile(path.Join(storageDir, "runtime_config.yaml"), rtConfigBytes, 0644)
 
-	cortexBin := filepath.Join(e.TestBin, "../../bin/opni")
+	cortexBin := filepath.Join(e.TestBin, "../../bin/monty")
 	defaultArgs := []string{
 		"cortex", fmt.Sprintf("-config.file=%s", path.Join(storageDir, "config.yaml")),
 	}
@@ -1186,7 +1186,7 @@ func (e *Environment) StartOTELCollectorContext(ctx context.Context, opniAgentId
 	// the pattern we use in production is node -> aggregator -> agent
 	nodeCfg := TestNodeConfig{
 		AggregatorAddress: aggregatorOTLP,
-		Instance:          "opni",
+		Instance:          "monty",
 		ReceiverFile:      fmt.Sprintf("%s/receiver.yaml", otelDir),
 		Metrics: otel.MetricsConfig{
 			Enabled:             true,
@@ -1512,7 +1512,7 @@ func StartSinkHTTPServer(ctx context.Context, path string, mut *SinkMutator) (ad
 
 func (e *Environment) SimulateKubeObject(kPort int) {
 	// sample a random phase
-	namespaces := []string{"kube-system", "default", "opni"}
+	namespaces := []string{"kube-system", "default", "monty"}
 	namespace := namespaces[rand.Intn(len(namespaces))]
 	sampleObjects := []string{"pod", "deployment", "statefulset", "daemonset", "job", "cronjob", "service", "ingress"}
 	sampleObject := sampleObjects[rand.Intn(len(sampleObjects))]
@@ -1683,11 +1683,11 @@ func (e *Environment) NewGatewayConfig() *v1beta1.GatewayConfig {
 
 				ConfigMap:             "alertmanager-config",
 				Namespace:             "default",
-				WorkerNodeService:     "opni-alerting",
-				WorkerStatefulSet:     "opni-alerting-internal",
+				WorkerNodeService:     "monty-alerting",
+				WorkerStatefulSet:     "monty-alerting-internal",
 				WorkerPort:            9093,
-				ControllerNodeService: "opni-alerting-controller",
-				ControllerStatefulSet: "opni-alerting-controller-internal",
+				ControllerNodeService: "monty-alerting-controller",
+				ControllerStatefulSet: "monty-alerting-controller-internal",
 				ControllerNodePort:    9093,
 				ControllerClusterPort: 9094,
 				ManagementHookHandler: shared.AlertingDefaultHookName,
@@ -2394,7 +2394,7 @@ func (e *Environment) StartGrafana(extraDockerArgs ...string) {
 				"run",
 				"-q",
 				"--rm",
-				"--name=opni-testenv-grafana",
+				"--name=monty-testenv-grafana",
 				"-v", fmt.Sprintf("%s/provisioning:/etc/grafana/provisioning", baseDir),
 				"-v", fmt.Sprintf("%s/dashboards:/dashboards", baseDir),
 				"-p", "3000:3000",

@@ -1,8 +1,8 @@
 package v1beta1
 
 import (
-	"github.com/rancher/opni/pkg/config/meta"
-	"github.com/rancher/opni/pkg/tokens"
+	"github.com/aity-cloud/monty/pkg/config/meta"
+	"github.com/aity-cloud/monty/pkg/tokens"
 )
 
 type AgentConfig struct {
@@ -50,7 +50,7 @@ type BootstrapSpec struct {
 	InClusterManagementAddress *string `json:"inClusterManagementAddress,omitempty"`
 
 	// An optional display name to assign to the cluster when creating it.
-	// This value corresponds to the label `opni.io/name`, and can be modified
+	// This value corresponds to the label `monty.io/name`, and can be modified
 	// at any time after the cluster is created.
 	FriendlyName *string `json:"friendlyName,omitempty"`
 

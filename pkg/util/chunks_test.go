@@ -4,11 +4,11 @@ import (
 	"runtime"
 	"time"
 
+	"github.com/aity-cloud/monty/pkg/util"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	"github.com/onsi/gomega/gmeasure"
 	"github.com/prometheus/prometheus/prompb"
-	"github.com/rancher/opni/pkg/util"
 	"github.com/samber/lo"
 )
 

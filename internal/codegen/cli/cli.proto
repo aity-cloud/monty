@@ -4,7 +4,7 @@ package cli;
 import "google/protobuf/any.proto";
 import "google/protobuf/descriptor.proto";
 
-option go_package = "github.com/rancher/opni/internal/codegen/cli";
+option go_package = "github.com/aity-cloud/monty/internal/codegen/cli";
 
 extend google.protobuf.FileOptions {
   GeneratorOptions generator = 25600;

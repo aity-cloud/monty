@@ -9,22 +9,22 @@ import (
 
 	"log/slog"
 
+	opnicorev1beta1 "github.com/aity-cloud/monty/apis/core/v1beta1"
+	monitoringv1beta1 "github.com/aity-cloud/monty/apis/monitoring/v1beta1"
+	"github.com/aity-cloud/monty/pkg/config/v1beta1"
+	"github.com/aity-cloud/monty/pkg/logger"
+	"github.com/aity-cloud/monty/pkg/otel"
+	"github.com/aity-cloud/monty/pkg/plugins/driverutil"
+	"github.com/aity-cloud/monty/pkg/rules"
+	"github.com/aity-cloud/monty/pkg/util"
+	"github.com/aity-cloud/monty/pkg/util/k8sutil"
+	opnimeta "github.com/aity-cloud/monty/pkg/util/meta"
+	"github.com/aity-cloud/monty/pkg/util/notifier"
+	"github.com/aity-cloud/monty/plugins/metrics/apis/node"
+	"github.com/aity-cloud/monty/plugins/metrics/apis/remoteread"
+	"github.com/aity-cloud/monty/plugins/metrics/pkg/agent/drivers"
+	reconcilerutil "github.com/aity-cloud/monty/plugins/metrics/pkg/agent/drivers/util"
 	"github.com/lestrrat-go/backoff/v2"
-	opnicorev1beta1 "github.com/rancher/opni/apis/core/v1beta1"
-	monitoringv1beta1 "github.com/rancher/opni/apis/monitoring/v1beta1"
-	"github.com/rancher/opni/pkg/config/v1beta1"
-	"github.com/rancher/opni/pkg/logger"
-	"github.com/rancher/opni/pkg/otel"
-	"github.com/rancher/opni/pkg/plugins/driverutil"
-	"github.com/rancher/opni/pkg/rules"
-	"github.com/rancher/opni/pkg/util"
-	"github.com/rancher/opni/pkg/util/k8sutil"
-	opnimeta "github.com/rancher/opni/pkg/util/meta"
-	"github.com/rancher/opni/pkg/util/notifier"
-	"github.com/rancher/opni/plugins/metrics/apis/node"
-	"github.com/rancher/opni/plugins/metrics/apis/remoteread"
-	"github.com/rancher/opni/plugins/metrics/pkg/agent/drivers"
-	reconcilerutil "github.com/rancher/opni/plugins/metrics/pkg/agent/drivers/util"
 	"github.com/samber/lo"
 	corev1 "k8s.io/api/core/v1"
 	k8serrors "k8s.io/apimachinery/pkg/api/errors"
@@ -111,7 +111,7 @@ BACKOFF:
 			lg.Info("starting collector reconcile...")
 			if err := o.reconcileCollector(deployOTEL); err != nil {
 				lg.With(
-					"object", "opni collector",
+					"object", "monty collector",
 					logger.Err(err),
 				).Error("error reconciling object")
 				continue BACKOFF
@@ -228,7 +228,7 @@ func (o *OTELNodeDriver) getRemoteWriteEndpoint() string {
 	var serviceName string
 	service, err := o.getAgentService()
 	if err != nil || service == nil {
-		serviceName = "opni-agent"
+		serviceName = "monty-agent"
 	} else {
 		serviceName = service.Name
 	}
@@ -240,7 +240,7 @@ func (o *OTELNodeDriver) getAgentService() (*corev1.Service, error) {
 	if err := o.K8sClient.List(context.TODO(), list,
 		client.InNamespace(o.Namespace),
 		client.MatchingLabels{
-			"opni.io/app": "agent",
+			"monty.io/app": "agent",
 		},
 	); err != nil {
 		return nil, err
@@ -253,7 +253,7 @@ func (o *OTELNodeDriver) getAgentService() (*corev1.Service, error) {
 }
 
 func init() {
-	drivers.NodeDrivers.Register("opni-manager-otel", func(_ context.Context, opts ...driverutil.Option) (drivers.MetricsNodeDriver, error) {
+	drivers.NodeDrivers.Register("monty-manager-otel", func(_ context.Context, opts ...driverutil.Option) (drivers.MetricsNodeDriver, error) {
 		options := OTELNodeDriverOptions{
 			Namespace: os.Getenv("POD_NAMESPACE"),
 			Logger:    logger.NewPluginLogger().WithGroup("metrics").WithGroup("otel"),

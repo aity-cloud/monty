@@ -1,8 +1,8 @@
 package gateway
 
 import (
+	"github.com/aity-cloud/monty/pkg/resources"
 	monitoringv1 "github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring/v1"
-	"github.com/rancher/opni/pkg/resources"
 	"github.com/samber/lo"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/intstr"
@@ -14,7 +14,7 @@ func (r *Reconciler) serviceMonitor() resources.Resource {
 	publicSvcLabels["service-type"] = "internal"
 	svcMonitor := &monitoringv1.ServiceMonitor{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "opni-gateway",
+			Name:      "monty-gateway",
 			Namespace: r.gw.Namespace,
 			Labels:    resources.NewGatewayLabels(),
 		},

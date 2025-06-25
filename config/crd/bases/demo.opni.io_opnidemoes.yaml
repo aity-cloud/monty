@@ -8,7 +8,7 @@ metadata:
   creationTimestamp: null
   name: opnidemoes.demo.opni.io
 spec:
-  group: demo.opni.io
+  group: demo.monty.io
   names:
     kind: OpniDemo
     listKind: OpniDemoList
@@ -107,7 +107,7 @@ spec:
                     type: object
                 required:
                 - infra
-                - opni
+                - monty
                 type: object
               createKibanaDashboard:
                 type: boolean

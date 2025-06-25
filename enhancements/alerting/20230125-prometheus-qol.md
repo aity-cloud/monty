@@ -62,7 +62,7 @@ message Reference {
 
 ## Dependencies:
 
-- Condition Status Optimizations https://github.com/rancher/opni/pull/971
+- Condition Status Optimizations https:// github.com/aity-cloud/monty/pull/971
 
 ## Risks and contingencies:
 

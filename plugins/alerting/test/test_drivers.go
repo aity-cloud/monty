@@ -24,25 +24,25 @@ import (
 
 	"log/slog"
 
+	"github.com/aity-cloud/monty/pkg/alerting/client"
+	"github.com/aity-cloud/monty/pkg/alerting/drivers/config"
+	"github.com/aity-cloud/monty/pkg/alerting/drivers/routing"
+	"github.com/aity-cloud/monty/pkg/alerting/extensions"
+	"github.com/aity-cloud/monty/pkg/alerting/shared"
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	"github.com/aity-cloud/monty/pkg/logger"
+	"github.com/aity-cloud/monty/pkg/plugins"
+	"github.com/aity-cloud/monty/pkg/plugins/driverutil"
+	"github.com/aity-cloud/monty/pkg/test"
+	"github.com/aity-cloud/monty/pkg/test/freeport"
+	"github.com/aity-cloud/monty/pkg/test/testutil"
+	"github.com/aity-cloud/monty/pkg/util"
+	"github.com/aity-cloud/monty/plugins/alerting/apis/alertops"
+	node_drivers "github.com/aity-cloud/monty/plugins/alerting/pkg/agent/drivers"
+	alerting_drivers "github.com/aity-cloud/monty/plugins/alerting/pkg/alerting/drivers"
+	"github.com/aity-cloud/monty/plugins/alerting/pkg/apis/node"
+	"github.com/aity-cloud/monty/plugins/alerting/pkg/apis/rules"
 	"github.com/prometheus/common/model"
-	"github.com/rancher/opni/pkg/alerting/client"
-	"github.com/rancher/opni/pkg/alerting/drivers/config"
-	"github.com/rancher/opni/pkg/alerting/drivers/routing"
-	"github.com/rancher/opni/pkg/alerting/extensions"
-	"github.com/rancher/opni/pkg/alerting/shared"
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	"github.com/rancher/opni/pkg/logger"
-	"github.com/rancher/opni/pkg/plugins"
-	"github.com/rancher/opni/pkg/plugins/driverutil"
-	"github.com/rancher/opni/pkg/test"
-	"github.com/rancher/opni/pkg/test/freeport"
-	"github.com/rancher/opni/pkg/test/testutil"
-	"github.com/rancher/opni/pkg/util"
-	"github.com/rancher/opni/plugins/alerting/apis/alertops"
-	node_drivers "github.com/rancher/opni/plugins/alerting/pkg/agent/drivers"
-	alerting_drivers "github.com/rancher/opni/plugins/alerting/pkg/alerting/drivers"
-	"github.com/rancher/opni/plugins/alerting/pkg/apis/node"
-	"github.com/rancher/opni/plugins/alerting/pkg/apis/rules"
 	"github.com/samber/lo"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -336,7 +336,7 @@ func (l *TestEnvAlertingClusterDriver) StartAlertingBackendServer(
 	ctx context.Context,
 	configFilePath string,
 ) AlertingServerUnit {
-	opniBin := path.Join(l.env.TestBin, "../../bin/opni")
+	opniBin := path.Join(l.env.TestBin, "../../bin/monty")
 	webPort := freeport.GetFreePort()
 	opniPort := freeport.GetFreePort()
 	syncerPort := freeport.GetFreePort()
@@ -391,12 +391,12 @@ func (l *TestEnvAlertingClusterDriver) StartAlertingBackendServer(
 	ctxCa, cancelFunc := context.WithCancel(ctx)
 	alertmanagerCmd := exec.CommandContext(ctxCa, opniBin, alertmanagerArgs...)
 	plugins.ConfigureSysProcAttr(alertmanagerCmd)
-	l.logger.Debug("Starting opni alertmanagwer with : " + strings.Join(alertmanagerArgs, " "))
-	l.logger.With("alertmanager-port", webPort, "opni-port", opniPort).Info("Starting AlertManager")
+	l.logger.Debug("Starting monty alertmanagwer with : " + strings.Join(alertmanagerArgs, " "))
+	l.logger.With("alertmanager-port", webPort, "monty-port", opniPort).Info("Starting AlertManager")
 	session, err := testutil.StartCmd(alertmanagerCmd)
 	if err != nil {
 		if !errors.Is(ctx.Err(), context.Canceled) {
-			panic(fmt.Sprintf("%s : opni bin path : %s", err, opniBin))
+			panic(fmt.Sprintf("%s : monty bin path : %s", err, opniBin))
 		} else {
 			panic(err)
 		}
@@ -444,7 +444,7 @@ func (l *TestEnvAlertingClusterDriver) StartAlertingBackendServer(
 	_, err = testutil.StartCmd(syncerCmd)
 	if err != nil {
 		if !errors.Is(ctx.Err(), context.Canceled) {
-			panic(fmt.Sprintf("%s : opni bin path : %s", err, opniBin))
+			panic(fmt.Sprintf("%s : monty bin path : %s", err, opniBin))
 		} else {
 			panic(err)
 		}

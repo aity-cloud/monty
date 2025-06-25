@@ -6,7 +6,7 @@ import (
 	"os"
 	"time"
 
-	corev1beta1 "github.com/rancher/opni/apis/core/v1beta1"
+	corev1beta1 "github.com/aity-cloud/monty/apis/core/v1beta1"
 	"k8s.io/apimachinery/pkg/util/wait"
 	"k8s.io/client-go/util/retry"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -14,7 +14,7 @@ import (
 
 const (
 	minimalImageRefEnv = "OPNI_MINIMAL_IMAGE_REF"
-	gatewayName        = "opni-gateway"
+	gatewayName        = "monty-gateway"
 )
 
 var retryBackoff = wait.Backoff{

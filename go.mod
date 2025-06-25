@@ -1,4 +1,4 @@
-module github.com/rancher/opni
+module github.com/aity-cloud/monty
 
 go 1.21
 

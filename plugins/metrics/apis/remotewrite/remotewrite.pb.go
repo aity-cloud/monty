@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.31.0
 // 	protoc        v1.0.0
-// source: github.com/rancher/opni/plugins/metrics/apis/remotewrite/remotewrite.proto
+// source:  github.com/aity-cloud/monty/plugins/metrics/apis/remotewrite/remotewrite.proto
 
 package remotewrite
 

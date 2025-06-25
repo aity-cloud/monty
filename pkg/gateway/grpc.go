@@ -16,10 +16,10 @@ import (
 	healthv1 "google.golang.org/grpc/health/grpc_health_v1"
 	"google.golang.org/grpc/keepalive"
 
-	agentv1 "github.com/rancher/opni/pkg/agent"
-	streamv1 "github.com/rancher/opni/pkg/apis/stream/v1"
-	"github.com/rancher/opni/pkg/config/v1beta1"
-	"github.com/rancher/opni/pkg/util"
+	agentv1 "github.com/aity-cloud/monty/pkg/agent"
+	streamv1 "github.com/aity-cloud/monty/pkg/apis/stream/v1"
+	"github.com/aity-cloud/monty/pkg/config/v1beta1"
+	"github.com/aity-cloud/monty/pkg/util"
 )
 
 type ConnectionHandler interface {

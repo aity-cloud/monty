@@ -3,20 +3,20 @@ package indices
 import (
 	"fmt"
 
-	opensearchtypes "github.com/rancher/opni/pkg/opensearch/opensearch/types"
+	opensearchtypes "github.com/aity-cloud/monty/pkg/opensearch/opensearch/types"
 )
 
 const (
 	logTemplateIndexName         = "templates"
-	drainStatusPolicyName        = "opni-drain-model-status-policy"
-	drainStatusIndexPrefix       = "opni-drain-model-status-v0.1.3"
-	drainStatusIndexAlias        = "opni-drain-model-status"
-	drainStatusIndexTemplateName = "opni-drain-model-status_rollover_mapping"
-	metricPolicyName             = "opni-metric-policy"
-	metricIndexPrefix            = "opni-metric-v0.3.0"
-	metricIndexAlias             = "opni-metric"
-	metricIndexTemplateName      = "opni-metric_rollover_mapping"
-	normalIntervalIndexName      = "opni-normal-intervals"
+	drainStatusPolicyName        = "monty-drain-model-status-policy"
+	drainStatusIndexPrefix       = "monty-drain-model-status-v0.1.3"
+	drainStatusIndexAlias        = "monty-drain-model-status"
+	drainStatusIndexTemplateName = "monty-drain-model-status_rollover_mapping"
+	metricPolicyName             = "monty-metric-policy"
+	metricIndexPrefix            = "monty-metric-v0.3.0"
+	metricIndexAlias             = "monty-metric"
+	metricIndexTemplateName      = "monty-metric_rollover_mapping"
+	normalIntervalIndexName      = "monty-normal-intervals"
 )
 
 var (
@@ -31,7 +31,7 @@ var (
 			PolicyID:   drainStatusPolicyName,
 			MarshallID: false,
 		},
-		Description:  "A hot-warm-cold-delete workflow for the opni-drain-model-status index.",
+		Description:  "A hot-warm-cold-delete workflow for the monty-drain-model-status index.",
 		DefaultState: "hot",
 		States: []opensearchtypes.StateSpec{
 			{
@@ -136,7 +136,7 @@ var (
 			PolicyID:   drainStatusPolicyName,
 			MarshallID: false,
 		},
-		Description:  "A hot-warm-cold-delete workflow for the opni-drain-model-status index.",
+		Description:  "A hot-warm-cold-delete workflow for the monty-drain-model-status index.",
 		DefaultState: "hot",
 		States: []opensearchtypes.StateSpec{
 			{
@@ -234,7 +234,7 @@ var (
 			PolicyID:   metricPolicyName,
 			MarshallID: false,
 		},
-		Description:  "A hot-warm-cold-delete workflow for the opni-metric index.",
+		Description:  "A hot-warm-cold-delete workflow for the monty-metric index.",
 		DefaultState: "hot",
 		States: []opensearchtypes.StateSpec{
 			{
@@ -340,7 +340,7 @@ var (
 			PolicyID:   metricPolicyName,
 			MarshallID: false,
 		},
-		Description:  "A hot-warm-cold-delete workflow for the opni-metric index.",
+		Description:  "A hot-warm-cold-delete workflow for the monty-metric index.",
 		DefaultState: "hot",
 		States: []opensearchtypes.StateSpec{
 			{

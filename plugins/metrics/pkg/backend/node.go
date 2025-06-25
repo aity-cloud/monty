@@ -3,12 +3,12 @@ package backend
 import (
 	"context"
 
+	capabilityv1 "github.com/aity-cloud/monty/pkg/apis/capability/v1"
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	"github.com/aity-cloud/monty/pkg/capabilities/wellknown"
+	"github.com/aity-cloud/monty/pkg/plugins/apis/apiextensions/stream"
+	"github.com/aity-cloud/monty/plugins/metrics/apis/node"
 	"github.com/google/go-cmp/cmp"
-	capabilityv1 "github.com/rancher/opni/pkg/apis/capability/v1"
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	"github.com/rancher/opni/pkg/capabilities/wellknown"
-	"github.com/rancher/opni/pkg/plugins/apis/apiextensions/stream"
-	"github.com/rancher/opni/plugins/metrics/apis/node"
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/testing/protocmp"
 	"google.golang.org/protobuf/types/known/emptypb"

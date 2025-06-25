@@ -1,7 +1,7 @@
 package gateway
 
 import (
-	"github.com/rancher/opni/pkg/resources"
+	"github.com/aity-cloud/monty/pkg/resources"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -11,7 +11,7 @@ func (r *Reconciler) pluginCachePVC() (*corev1.PersistentVolumeClaim, error) {
 	labels := resources.NewGatewayLabels()
 	return &corev1.PersistentVolumeClaim{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "opni-plugin-cache",
+			Name:      "monty-plugin-cache",
 			Namespace: r.gw.Namespace,
 			Labels:    labels,
 		},

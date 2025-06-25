@@ -11,21 +11,21 @@ import (
 	"strings"
 	"time"
 
+	"github.com/aity-cloud/monty/pkg/alerting/message"
+	alertingv1 "github.com/aity-cloud/monty/pkg/apis/alerting/v1"
+	capabilityv1 "github.com/aity-cloud/monty/pkg/apis/capability/v1"
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	managementv1 "github.com/aity-cloud/monty/pkg/apis/management/v1"
+	"github.com/aity-cloud/monty/pkg/plugins/driverutil"
+	"github.com/aity-cloud/monty/pkg/test"
+	"github.com/aity-cloud/monty/pkg/test/alerting"
+	"github.com/aity-cloud/monty/plugins/alerting/apis/alertops"
+	"github.com/aity-cloud/monty/plugins/metrics/apis/cortexadmin"
+	"github.com/aity-cloud/monty/plugins/metrics/apis/cortexops"
+	_ "github.com/aity-cloud/monty/plugins/metrics/test"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	alertmanagerv2 "github.com/prometheus/alertmanager/api/v2/models"
-	"github.com/rancher/opni/pkg/alerting/message"
-	alertingv1 "github.com/rancher/opni/pkg/apis/alerting/v1"
-	capabilityv1 "github.com/rancher/opni/pkg/apis/capability/v1"
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	managementv1 "github.com/rancher/opni/pkg/apis/management/v1"
-	"github.com/rancher/opni/pkg/plugins/driverutil"
-	"github.com/rancher/opni/pkg/test"
-	"github.com/rancher/opni/pkg/test/alerting"
-	"github.com/rancher/opni/plugins/alerting/apis/alertops"
-	"github.com/rancher/opni/plugins/metrics/apis/cortexadmin"
-	"github.com/rancher/opni/plugins/metrics/apis/cortexops"
-	_ "github.com/rancher/opni/plugins/metrics/test"
 	"github.com/samber/lo"
 	"google.golang.org/protobuf/types/known/durationpb"
 	"google.golang.org/protobuf/types/known/emptypb"
@@ -250,7 +250,7 @@ var _ = Describe("metrics and alerting", Ordered, Label("integration"), func() {
 						return cl.GetId()
 					}),
 					RuleType:        []string{"alerting"},
-					NamespaceRegexp: "opni-alerting",
+					NamespaceRegexp: "monty-alerting",
 				})
 				if err != nil {
 					return err

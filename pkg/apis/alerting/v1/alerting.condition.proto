@@ -1,7 +1,7 @@
 syntax = "proto3";
 package alerting;
 
-option go_package = "github.com/rancher/opni/pkg/apis/alerting/v1";
+option go_package = "github.com/aity-cloud/monty/pkg/apis/alerting/v1";
 
 import "google/protobuf/duration.proto";
 import "google/protobuf/struct.proto";
@@ -12,9 +12,9 @@ import "google/api/http.proto";
 import "google/api/annotations.proto";
 import "google/rpc/status.proto";
 
-import "github.com/rancher/opni/pkg/apis/core/v1/core.proto";
-import "github.com/rancher/opni/pkg/apis/alerting/v1/alerting.proto";
-import "github.com/rancher/opni/pkg/apis/alerting/v1/alerting.endpoint.proto";
+import "github.com/aity-cloud/monty/pkg/apis/core/v1/core.proto";
+import "github.com/aity-cloud/monty/pkg/apis/alerting/v1/alerting.proto";
+import "github.com/aity-cloud/monty/pkg/apis/alerting/v1/alerting.endpoint.proto";
 
 
 // -------- CRUD for alerting conditions -------

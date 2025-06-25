@@ -5,10 +5,10 @@ package controllers
 import (
 	"context"
 
-	loggingv1beta1 "github.com/rancher/opni/apis/logging/v1beta1"
-	"github.com/rancher/opni/pkg/resources"
-	"github.com/rancher/opni/pkg/resources/opniopensearch"
-	"github.com/rancher/opni/pkg/util/k8sutil"
+	loggingv1beta1 "github.com/aity-cloud/monty/apis/logging/v1beta1"
+	"github.com/aity-cloud/monty/pkg/resources"
+	"github.com/aity-cloud/monty/pkg/resources/opniopensearch"
+	"github.com/aity-cloud/monty/pkg/util/k8sutil"
 	"k8s.io/apimachinery/pkg/runtime"
 	opsterv1 "opensearch.opster.io/api/v1"
 	ctrl "sigs.k8s.io/controller-runtime"
@@ -21,9 +21,9 @@ type LoggingOpniOpensearchReconciler struct {
 	Opts   []opniopensearch.ReconcilerOption
 }
 
-// +kubebuilder:rbac:groups=logging.opni.io,resources=opniopensearches,verbs=get;list;watch;create;update;patch;delete
-// +kubebuilder:rbac:groups=logging.opni.io,resources=opniopensearches/status,verbs=get;update;patch
-// +kubebuilder:rbac:groups=logging.opni.io,resources=opniopensearches/finalizers,verbs=update
+// +kubebuilder:rbac:groups=logging.monty.io,resources=opniopensearches,verbs=get;list;watch;create;update;patch;delete
+// +kubebuilder:rbac:groups=logging.monty.io,resources=opniopensearches/status,verbs=get;update;patch
+// +kubebuilder:rbac:groups=logging.monty.io,resources=opniopensearches/finalizers,verbs=update
 // +kubebuilder:rbac:groups=opensearch.opster.io,resources=opensearchclusters,verbs=get;list;watch;create;update;patch;delete
 // +kubebuilder:rbac:groups=opensearch.opster.io,resources=opensearchclusters/status,verbs=get;update;patch
 // +kubebuilder:rbac:groups=opensearch.opster.io,resources=opensearchclusters/finalizers,verbs=update

@@ -1,9 +1,9 @@
 package opnicluster
 
 import (
-	aiv1beta1 "github.com/rancher/opni/apis/ai/v1beta1"
-	"github.com/rancher/opni/pkg/resources"
-	opnimeta "github.com/rancher/opni/pkg/util/meta"
+	aiv1beta1 "github.com/aity-cloud/monty/apis/ai/v1beta1"
+	"github.com/aity-cloud/monty/pkg/resources"
+	opnimeta "github.com/aity-cloud/monty/pkg/util/meta"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 )
@@ -12,14 +12,14 @@ func (r *Reconciler) serviceLabels(service aiv1beta1.ServiceKind) map[string]str
 	return map[string]string{
 		resources.AppNameLabel: service.ServiceName(),
 		resources.ServiceLabel: service.String(),
-		resources.PartOfLabel:  "opni",
+		resources.PartOfLabel:  "monty",
 	}
 }
 
 func (r *Reconciler) natsLabels() map[string]string {
 	return map[string]string{
 		resources.AppNameLabel:    "nats",
-		resources.PartOfLabel:     "opni",
+		resources.PartOfLabel:     "monty",
 		resources.OpniClusterName: r.opniCluster.Name,
 	}
 }

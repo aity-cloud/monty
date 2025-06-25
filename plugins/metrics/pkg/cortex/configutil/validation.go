@@ -13,9 +13,9 @@ import (
 	"golang.org/x/exp/slices"
 	"google.golang.org/protobuf/reflect/protopath"
 
-	storagev1 "github.com/rancher/opni/pkg/apis/storage/v1"
-	"github.com/rancher/opni/pkg/plugins/driverutil"
-	"github.com/rancher/opni/plugins/metrics/apis/cortexops"
+	storagev1 "github.com/aity-cloud/monty/pkg/apis/storage/v1"
+	"github.com/aity-cloud/monty/pkg/plugins/driverutil"
+	"github.com/aity-cloud/monty/plugins/metrics/apis/cortexops"
 )
 
 type errLogger struct {
@@ -61,7 +61,7 @@ func CollectValidationErrorLogs(cfg *cortexops.CortexApplicationConfig, override
 	if err != nil {
 		errs = append(errs, mkerrorf(err.Error()))
 		for _, err := range errs {
-			err.Source = "opni"
+			err.Source = "monty"
 		}
 		return errs
 	}
@@ -90,7 +90,7 @@ func RunCustomValidationRules(cfg *cortexops.CapabilityBackendConfigSpec) []*dri
 		errs = append(errs, rule(cfg)...)
 	}
 	for _, err := range errs {
-		err.Source = "opni"
+		err.Source = "monty"
 	}
 	return errs
 }

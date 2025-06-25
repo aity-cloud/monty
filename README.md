@@ -1,7 +1,7 @@
 # Multi Cluster Observability with AIOps 
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![codecov](https://codecov.io/gh/rancher/opni/branch/main/graph/badge.svg?token=9TYXGQ54FM)](https://codecov.io/gh/rancher/opni)
-[![Go Report Card](https://goreportcard.com/badge/github.com/rancher/opni-monitoring)](https://goreportcard.com/report/github.com/rancher/opni-monitoring)
+[![Go Report Card](https://goreportcard.com/badge/ github.com/aity-cloud/monty-monitoring)](https://goreportcard.com/report/ github.com/aity-cloud/monty-monitoring)
 
 Observability data comes in the form of ***logs, metrics and traces***.
 The collection and storage of observability data is handled by observability backends and agents.
@@ -20,7 +20,6 @@ You can easily create the following with Monty:
 
 Check out the [docs page](https://monty.aity.cloud/) to get started!
 
-[//]: # (![alt text]&#40;https://monty.aity.cloud/high_level_arch.png&#41;)
 ----
 
 

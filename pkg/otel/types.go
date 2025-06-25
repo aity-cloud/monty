@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"fmt"
 
-	"github.com/rancher/opni/pkg/util"
+	"github.com/aity-cloud/monty/pkg/util"
 	"github.com/samber/lo"
 	"go.opentelemetry.io/collector/exporter/otlpexporter"
 	"go.opentelemetry.io/collector/exporter/otlphttpexporter"
@@ -15,10 +15,10 @@ import (
 )
 
 const (
-	CollectorName             = "opni"
-	MetricsCrdName            = "opni-monitoring"
+	CollectorName             = "monty"
+	MetricsCrdName            = "monty-monitoring"
 	MetricsFeatureFlag        = "otel-metrics"
-	MetricsServiceAccountName = "opni-otel-prometheus-agent"
+	MetricsServiceAccountName = "monty-otel-prometheus-agent"
 )
 
 func AgentEndpoint(serviceName string) string {

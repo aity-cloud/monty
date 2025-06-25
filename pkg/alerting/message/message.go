@@ -139,7 +139,7 @@ func (p Properties) GetAlarmName() (string, bool) {
 
 func (p Properties) GetDetails() map[string]string {
 	partition := AssignByPartition(func(key, value string) string {
-		if strings.HasPrefix(strings.ToLower(key), "opni") {
+		if strings.HasPrefix(strings.ToLower(key), "monty") {
 			return NotificationPartitionByProperty
 		}
 		return NotificationPartitionByDetails

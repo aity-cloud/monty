@@ -4,8 +4,8 @@ import (
 	"context"
 	"sync"
 
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	sloapi "github.com/rancher/opni/plugins/slo/apis/slo"
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	sloapi "github.com/aity-cloud/monty/plugins/slo/apis/slo"
 	"log/slog"
 
 	"google.golang.org/protobuf/proto"

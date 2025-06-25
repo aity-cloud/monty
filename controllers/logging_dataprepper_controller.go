@@ -4,10 +4,10 @@ import (
 	"context"
 	"fmt"
 
-	loggingv1beta1 "github.com/rancher/opni/apis/logging/v1beta1"
-	"github.com/rancher/opni/pkg/resources"
-	"github.com/rancher/opni/pkg/resources/dataprepper"
-	"github.com/rancher/opni/pkg/util/k8sutil"
+	loggingv1beta1 "github.com/aity-cloud/monty/apis/logging/v1beta1"
+	"github.com/aity-cloud/monty/pkg/resources"
+	"github.com/aity-cloud/monty/pkg/resources/dataprepper"
+	"github.com/aity-cloud/monty/pkg/util/k8sutil"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -21,9 +21,9 @@ type LoggingDataPrepperReconciler struct {
 	OpniCentral bool
 }
 
-// +kubebuilder:rbac:groups=logging.opni.io,resources=datapreppers,verbs=get;list;watch;create;update;patch;delete
-// +kubebuilder:rbac:groups=logging.opni.io,resources=datapreppers/status,verbs=get;update;patch
-// +kubebuilder:rbac:groups=logging.opni.io,resources=datapreppers/finalizers,verbs=update
+// +kubebuilder:rbac:groups=logging.monty.io,resources=datapreppers,verbs=get;list;watch;create;update;patch;delete
+// +kubebuilder:rbac:groups=logging.monty.io,resources=datapreppers/status,verbs=get;update;patch
+// +kubebuilder:rbac:groups=logging.monty.io,resources=datapreppers/finalizers,verbs=update
 
 func (r *LoggingDataPrepperReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
 	DataPrepper := &loggingv1beta1.DataPrepper{}

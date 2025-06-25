@@ -1,11 +1,11 @@
 package slo_test
 
 import (
+	"github.com/aity-cloud/monty/pkg/logger"
+	"github.com/aity-cloud/monty/plugins/metrics/apis/cortexadmin"
+	"github.com/aity-cloud/monty/plugins/slo/pkg/slo"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/rancher/opni/pkg/logger"
-	"github.com/rancher/opni/plugins/metrics/apis/cortexadmin"
-	"github.com/rancher/opni/plugins/slo/pkg/slo"
 )
 
 var _ = Describe("SLO Filter tests", Ordered, Label("unit", "slow"), func() {

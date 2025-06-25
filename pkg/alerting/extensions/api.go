@@ -8,11 +8,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/rancher/opni/pkg/alerting/cache"
-	"github.com/rancher/opni/pkg/alerting/drivers/config"
-	"github.com/rancher/opni/pkg/alerting/message"
-	alertingv1 "github.com/rancher/opni/pkg/apis/alerting/v1"
-	"github.com/rancher/opni/pkg/logger"
+	"github.com/aity-cloud/monty/pkg/alerting/cache"
+	"github.com/aity-cloud/monty/pkg/alerting/drivers/config"
+	"github.com/aity-cloud/monty/pkg/alerting/message"
+	alertingv1 "github.com/aity-cloud/monty/pkg/apis/alerting/v1"
+	"github.com/aity-cloud/monty/pkg/logger"
 	"github.com/samber/lo"
 	"google.golang.org/protobuf/encoding/protojson"
 )
@@ -43,9 +43,9 @@ func (e *EmbeddedServer) handleWebhook(wr http.ResponseWriter, req *http.Request
 	for _, alert := range wMsg.Alerts {
 		msgMeta := parseAlertToOpniMd(alert)
 		if msgMeta.Uuid == "" {
-			// we assume a non-opni "indexed" source is pushing messages to us
+			// we assume a non-monty "indexed" source is pushing messages to us
 			// we do not persist these as their format is not known
-			e.logger.Debug("received message from non-opni source, ignoring")
+			e.logger.Debug("received message from non-monty source, ignoring")
 			wr.WriteHeader(http.StatusOK)
 			continue
 		}

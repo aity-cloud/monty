@@ -6,7 +6,7 @@ import (
 
 	"log/slog"
 
-	"github.com/rancher/opni/pkg/logger"
+	"github.com/aity-cloud/monty/pkg/logger"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"

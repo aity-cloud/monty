@@ -12,9 +12,9 @@ export function init(plugin: any, store: any) {
     // hideBulkActions,
   } = plugin.DSL(store, NAME);
 
-  // We add this interceptor so we can redirect all opni requests through the k8s proxy when this is being used as an extension
+  // We add this interceptor so we can redirect all monty requests through the k8s proxy when this is being used as an extension
   axios.interceptors.request.use((config: any) => {
-    const prefix = '/opni-api/';
+    const prefix = '/monty-api/';
 
     if (!config.url.includes(prefix)) {
       return;
@@ -24,8 +24,8 @@ export function init(plugin: any, store: any) {
     const clusterId = window.location.search.includes(clusterOverrideSearchParam) ? window.location.search.replace(`?${ clusterOverrideSearchParam }`, '') : 'local';
     const isLocalCluster = clusterId === 'local';
     const clusterPrefix = isLocalCluster ? '' : `/k8s/clusters/${ clusterId }/`;
-    const namespace = 'opni';
-    const serviceName = 'opni-internal';
+    const namespace = 'monty';
+    const serviceName = 'monty-internal';
     const port = 11080;
 
     const proxy = isStandalone() ? '' : `${ clusterPrefix }api/v1/namespaces/${ namespace }/services/http:${ serviceName }:${ port }/proxy/`;
@@ -44,6 +44,6 @@ export function init(plugin: any, store: any) {
     removable:           false,
     showClusterSwitcher: false,
     category:            'global',
-    to:                  { name: 'opni' }
+    to:                  { name: 'monty' }
   });
 }

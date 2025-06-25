@@ -13,13 +13,13 @@ import (
 
 	"log/slog"
 
+	streamv1 "github.com/aity-cloud/monty/pkg/apis/stream/v1"
+	"github.com/aity-cloud/monty/pkg/logger"
+	"github.com/aity-cloud/monty/pkg/plugins/apis/apiextensions"
 	"github.com/google/uuid"
 	"github.com/hashicorp/go-plugin"
 	"github.com/jhump/protoreflect/grpcreflect"
 	"github.com/kralicky/totem"
-	streamv1 "github.com/rancher/opni/pkg/apis/stream/v1"
-	"github.com/rancher/opni/pkg/logger"
-	"github.com/rancher/opni/pkg/plugins/apis/apiextensions"
 	"github.com/samber/lo"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/sdk/resource"

@@ -6,10 +6,10 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/aity-cloud/monty/pkg/storage"
+	"github.com/aity-cloud/monty/pkg/storage/lock"
 	"github.com/google/uuid"
 	"github.com/nats-io/nats.go"
-	"github.com/rancher/opni/pkg/storage"
-	"github.com/rancher/opni/pkg/storage/lock"
 )
 
 func newLease(key string) *nats.StreamConfig {

@@ -11,12 +11,12 @@ import (
 
 	clientv3 "go.etcd.io/etcd/client/v3"
 
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	"github.com/aity-cloud/monty/pkg/config/v1beta1"
+	"github.com/aity-cloud/monty/pkg/logger"
+	"github.com/aity-cloud/monty/pkg/storage"
+	"github.com/aity-cloud/monty/pkg/util"
 	"github.com/lestrrat-go/backoff/v2"
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	"github.com/rancher/opni/pkg/config/v1beta1"
-	"github.com/rancher/opni/pkg/logger"
-	"github.com/rancher/opni/pkg/storage"
-	"github.com/rancher/opni/pkg/util"
 )
 
 var (

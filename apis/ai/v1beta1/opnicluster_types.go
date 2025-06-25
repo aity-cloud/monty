@@ -18,7 +18,7 @@ limitations under the License.
 package v1beta1
 
 import (
-	opnimeta "github.com/rancher/opni/pkg/util/meta"
+	opnimeta "github.com/aity-cloud/monty/pkg/util/meta"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/intstr"
@@ -188,10 +188,10 @@ type S3Spec struct {
 	// Cannot be set at the same time as `internal`.
 	External *ExternalSpec `json:"external,omitempty"`
 	// Bucket used to persist nulog models.  If not set will use
-	// opni-nulog-models.
+	// monty-nulog-models.
 	NulogS3Bucket string `json:"nulogS3Bucket,omitempty"`
 	// Bucket used to persiste drain models.  It not set will use
-	// opni-drain-models
+	// monty-drain-models
 	DrainS3Bucket string `json:"drainS3Bucket,omitempty"`
 }
 

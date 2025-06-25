@@ -4,13 +4,13 @@ import (
 	"context"
 	"os"
 
+	corev1beta1 "github.com/aity-cloud/monty/apis/core/v1beta1"
+	"github.com/aity-cloud/monty/pkg/alerting/shared"
+	cfgv1beta1 "github.com/aity-cloud/monty/pkg/config/v1beta1"
+	"github.com/aity-cloud/monty/pkg/noauth"
 	. "github.com/kralicky/kmatch"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	corev1beta1 "github.com/rancher/opni/apis/core/v1beta1"
-	"github.com/rancher/opni/pkg/alerting/shared"
-	cfgv1beta1 "github.com/rancher/opni/pkg/config/v1beta1"
-	"github.com/rancher/opni/pkg/noauth"
 	"github.com/samber/lo"
 	corev1 "k8s.io/api/core/v1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -90,16 +90,16 @@ var _ = Describe("Alerting Controller", Ordered, Label("controller", "slow"), fu
 					HaveOwner(cl),
 					HaveReplicaCount(1),
 					HaveMatchingContainer(And(
-						HaveName("opni-syncer"),
+						HaveName("monty-syncer"),
 						HavePorts("syncer-port"),
 						HaveEnv("FOO", "BAR"),
-						HaveVolumeMounts("opni-alertmanager-data"),
+						HaveVolumeMounts("monty-alertmanager-data"),
 					)),
 					HaveMatchingContainer(And(
-						HaveName("opni-alertmanager"),
-						HavePorts("opni-port", "web-port", "cluster-port"),
+						HaveName("monty-alertmanager"),
+						HavePorts("monty-port", "web-port", "cluster-port"),
 						HaveEnv("FOO", "BAR"),
-						HaveVolumeMounts("opni-alertmanager-data"),
+						HaveVolumeMounts("monty-alertmanager-data"),
 					)),
 				))
 
@@ -113,7 +113,7 @@ var _ = Describe("Alerting Controller", Ordered, Label("controller", "slow"), fu
 				Expect(List(&appsv1.StatefulSetList{}, &client.ListOptions{
 					Namespace: gateway.Namespace,
 					LabelSelector: labels.SelectorFromSet(labels.Set{
-						"app.kubernetes.io/name": "opni-alerting",
+						"app.kubernetes.io/name": "monty-alerting",
 					}),
 				})()).To(HaveLen(1))
 			})
@@ -155,16 +155,16 @@ var _ = Describe("Alerting Controller", Ordered, Label("controller", "slow"), fu
 					HaveOwner(cl),
 					HaveReplicaCount(3),
 					HaveMatchingContainer(And(
-						HaveName("opni-syncer"),
+						HaveName("monty-syncer"),
 						HavePorts("syncer-port"),
 						HaveEnv("FOO", "BAR"),
-						HaveVolumeMounts("opni-alertmanager-data"),
+						HaveVolumeMounts("monty-alertmanager-data"),
 					)),
 					HaveMatchingContainer(And(
-						HaveName("opni-alertmanager"),
-						HavePorts("opni-port", "web-port", "cluster-port"),
+						HaveName("monty-alertmanager"),
+						HavePorts("monty-port", "web-port", "cluster-port"),
 						HaveEnv("FOO", "BAR"),
-						HaveVolumeMounts("opni-alertmanager-data"),
+						HaveVolumeMounts("monty-alertmanager-data"),
 					)),
 				))
 
@@ -178,7 +178,7 @@ var _ = Describe("Alerting Controller", Ordered, Label("controller", "slow"), fu
 				Expect(List(&appsv1.StatefulSetList{}, &client.ListOptions{
 					Namespace: gateway.Namespace,
 					LabelSelector: labels.SelectorFromSet(labels.Set{
-						"app.kubernetes.io/name": "opni-alerting",
+						"app.kubernetes.io/name": "monty-alerting",
 					}),
 				})()).To(HaveLen(1))
 			})

@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/aity-cloud/monty/pkg/alerting/metrics"
+	"github.com/aity-cloud/monty/pkg/alerting/shared"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/rancher/opni/pkg/alerting/metrics"
-	"github.com/rancher/opni/pkg/alerting/shared"
 )
 
 var _ = Describe("Constructing cortex alerting rules", Label("unit"), func() {

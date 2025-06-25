@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/aity-cloud/monty/pkg/logger"
 	"github.com/dbason/featureflags"
-	"github.com/rancher/opni/pkg/logger"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
 	"k8s.io/component-base/featuregate"

@@ -3,19 +3,19 @@ package cache_test
 import (
 	"time"
 
+	"github.com/aity-cloud/monty/pkg/alerting/cache"
+	"github.com/aity-cloud/monty/pkg/alerting/drivers/config"
+	"github.com/aity-cloud/monty/pkg/alerting/message"
+	alertingv1 "github.com/aity-cloud/monty/pkg/apis/alerting/v1"
 	"github.com/google/uuid"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/rancher/opni/pkg/alerting/cache"
-	"github.com/rancher/opni/pkg/alerting/drivers/config"
-	"github.com/rancher/opni/pkg/alerting/message"
-	alertingv1 "github.com/rancher/opni/pkg/apis/alerting/v1"
 	"github.com/samber/lo"
 )
 
 var _ = Describe("Message caching for alerting", Label("unit"), Ordered, func() {
 	When("we use a frquency based cache", func() {
-		It("should cache alert manager messages while preserving opni metadata", func() {
+		It("should cache alert manager messages while preserving monty metadata", func() {
 			cache := cache.NewLFUMessageCache(50)
 			uuid := uuid.New().String()
 			alert := config.Alert{

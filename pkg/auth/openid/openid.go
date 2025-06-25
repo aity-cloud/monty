@@ -15,14 +15,14 @@ import (
 
 	"log/slog"
 
+	"github.com/aity-cloud/monty/pkg/auth"
+	"github.com/aity-cloud/monty/pkg/config/v1beta1"
+	"github.com/aity-cloud/monty/pkg/logger"
+	"github.com/aity-cloud/monty/pkg/rbac"
+	"github.com/aity-cloud/monty/pkg/util"
 	"github.com/gin-gonic/gin"
 	"github.com/lestrrat-go/backoff/v2"
 	"github.com/lestrrat-go/jwx/jwk"
-	"github.com/rancher/opni/pkg/auth"
-	"github.com/rancher/opni/pkg/config/v1beta1"
-	"github.com/rancher/opni/pkg/logger"
-	"github.com/rancher/opni/pkg/rbac"
-	"github.com/rancher/opni/pkg/util"
 	"golang.org/x/sync/singleflight"
 )
 

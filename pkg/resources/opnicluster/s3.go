@@ -3,9 +3,9 @@ package opnicluster
 import (
 	"fmt"
 
-	opnierrs "github.com/rancher/opni/pkg/errors"
-	"github.com/rancher/opni/pkg/resources"
-	"github.com/rancher/opni/pkg/util"
+	opnierrs "github.com/aity-cloud/monty/pkg/errors"
+	"github.com/aity-cloud/monty/pkg/resources"
+	"github.com/aity-cloud/monty/pkg/util"
 	"github.com/samber/lo"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
@@ -41,7 +41,7 @@ func (r *Reconciler) seaweed() []resources.Resource {
 	}
 	service := &corev1.Service{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "opni-seaweed-s3",
+			Name:      "monty-seaweed-s3",
 			Namespace: r.opniCluster.Namespace,
 			Labels:    labels,
 		},
@@ -60,7 +60,7 @@ func (r *Reconciler) seaweed() []resources.Resource {
 	}
 	workload := &appsv1.StatefulSet{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "opni-seaweed",
+			Name:      "monty-seaweed",
 			Namespace: r.opniCluster.Namespace,
 			Labels:    labels,
 		},
@@ -68,7 +68,7 @@ func (r *Reconciler) seaweed() []resources.Resource {
 			Selector: &metav1.LabelSelector{
 				MatchLabels: labels,
 			},
-			ServiceName: "opni-seaweed-s3",
+			ServiceName: "monty-seaweed-s3",
 			Template: corev1.PodTemplateSpec{
 				ObjectMeta: metav1.ObjectMeta{
 					Labels: labels,
@@ -138,7 +138,7 @@ func (r *Reconciler) seaweed() []resources.Resource {
 			"-s3",
 			"-s3.config=/etc/seaweed/config.json",
 			"-s3.allowEmptyFolder=true",
-			fmt.Sprintf("-s3.domainName=opni-seaweed-s3.%s.svc", r.opniCluster.Namespace),
+			fmt.Sprintf("-s3.domainName=monty-seaweed-s3.%s.svc", r.opniCluster.Namespace),
 			"-s3.port=8333",
 			"-volume.max=0",
 			"-master.volumeSizeLimitMB=512",
@@ -152,7 +152,7 @@ func (r *Reconciler) seaweed() []resources.Resource {
 				ReadOnly:  true,
 			},
 			{
-				Name:      "opni-seaweed-data",
+				Name:      "monty-seaweed-data",
 				MountPath: "/var/lib/seaweed/data",
 			},
 		},
@@ -162,7 +162,7 @@ func (r *Reconciler) seaweed() []resources.Resource {
 			Name: "seaweed-config",
 			VolumeSource: corev1.VolumeSource{
 				Secret: &corev1.SecretVolumeSource{
-					SecretName: "opni-seaweed-config",
+					SecretName: "monty-seaweed-config",
 					Items: []corev1.KeyToPath{
 						{
 							Key:  "config.json",
@@ -181,17 +181,17 @@ func (r *Reconciler) seaweed() []resources.Resource {
 			resourceRequest = resource.MustParse("10Gi")
 		}
 		workload.Spec.Template.Spec.Volumes = append(workload.Spec.Template.Spec.Volumes, corev1.Volume{
-			Name: "opni-seaweed-data",
+			Name: "monty-seaweed-data",
 			VolumeSource: corev1.VolumeSource{
 				PersistentVolumeClaim: &corev1.PersistentVolumeClaimVolumeSource{
-					ClaimName: "opni-seaweed-data",
+					ClaimName: "monty-seaweed-data",
 				},
 			},
 		})
 		workload.Spec.VolumeClaimTemplates = []corev1.PersistentVolumeClaim{
 			{
 				ObjectMeta: metav1.ObjectMeta{
-					Name: "opni-seaweed-data",
+					Name: "monty-seaweed-data",
 				},
 				Spec: corev1.PersistentVolumeClaimSpec{
 					AccessModes:      p.AccessModes,
@@ -207,7 +207,7 @@ func (r *Reconciler) seaweed() []resources.Resource {
 	} else {
 		// Use an emptydir volume
 		workload.Spec.Template.Spec.Volumes = append(workload.Spec.Template.Spec.Volumes, corev1.Volume{
-			Name: "opni-seaweed-data",
+			Name: "monty-seaweed-data",
 			VolumeSource: corev1.VolumeSource{
 				EmptyDir: &corev1.EmptyDirVolumeSource{},
 			},
@@ -227,7 +227,7 @@ func (r *Reconciler) seaweed() []resources.Resource {
 func (r *Reconciler) internalKeySecret() ([]resources.Resource, error) {
 	sec := &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "opni-seaweed-config",
+			Name:      "monty-seaweed-config",
 			Namespace: r.opniCluster.Namespace,
 			Labels: map[string]string{
 				"app": "seaweed",

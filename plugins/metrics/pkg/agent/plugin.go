@@ -6,17 +6,17 @@ import (
 
 	"log/slog"
 
-	healthpkg "github.com/rancher/opni/pkg/health"
-	"github.com/rancher/opni/pkg/logger"
-	httpext "github.com/rancher/opni/pkg/plugins/apis/apiextensions/http"
-	"github.com/rancher/opni/pkg/plugins/apis/apiextensions/stream"
-	"github.com/rancher/opni/pkg/plugins/apis/capability"
-	"github.com/rancher/opni/pkg/plugins/apis/health"
-	"github.com/rancher/opni/pkg/plugins/meta"
-	"github.com/rancher/opni/pkg/rules"
-	"github.com/rancher/opni/pkg/util/notifier"
-	"github.com/rancher/opni/plugins/metrics/apis/node"
-	"github.com/rancher/opni/plugins/metrics/pkg/agent/drivers"
+	healthpkg "github.com/aity-cloud/monty/pkg/health"
+	"github.com/aity-cloud/monty/pkg/logger"
+	httpext "github.com/aity-cloud/monty/pkg/plugins/apis/apiextensions/http"
+	"github.com/aity-cloud/monty/pkg/plugins/apis/apiextensions/stream"
+	"github.com/aity-cloud/monty/pkg/plugins/apis/capability"
+	"github.com/aity-cloud/monty/pkg/plugins/apis/health"
+	"github.com/aity-cloud/monty/pkg/plugins/meta"
+	"github.com/aity-cloud/monty/pkg/rules"
+	"github.com/aity-cloud/monty/pkg/util/notifier"
+	"github.com/aity-cloud/monty/plugins/metrics/apis/node"
+	"github.com/aity-cloud/monty/plugins/metrics/pkg/agent/drivers"
 )
 
 type Plugin struct {

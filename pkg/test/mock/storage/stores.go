@@ -9,10 +9,10 @@ import (
 	reflect "reflect"
 	time "time"
 
-	v1 "github.com/rancher/opni/pkg/apis/core/v1"
-	keyring "github.com/rancher/opni/pkg/keyring"
-	storage "github.com/rancher/opni/pkg/storage"
-	lock "github.com/rancher/opni/pkg/storage/lock"
+	v1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	keyring "github.com/aity-cloud/monty/pkg/keyring"
+	storage "github.com/aity-cloud/monty/pkg/storage"
+	lock "github.com/aity-cloud/monty/pkg/storage/lock"
 	gomock "go.uber.org/mock/gomock"
 )
 
@@ -907,6 +907,18 @@ func (m *MockKeyRevision[T]) Revision() int64 {
 func (mr *MockKeyRevisionMockRecorder[T]) Revision() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Revision", reflect.TypeOf((*MockKeyRevision[T])(nil).Revision))
+}
+
+// SetKey mocks base method.
+func (m *MockKeyRevision[T]) SetKey(arg0 string) {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "SetKey", arg0)
+}
+
+// SetKey indicates an expected call of SetKey.
+func (mr *MockKeyRevisionMockRecorder[T]) SetKey(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetKey", reflect.TypeOf((*MockKeyRevision[T])(nil).SetKey), arg0)
 }
 
 // Timestamp mocks base method.

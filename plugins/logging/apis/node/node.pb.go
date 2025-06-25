@@ -2,13 +2,13 @@
 // versions:
 // 	protoc-gen-go v1.31.0
 // 	protoc        v1.0.0
-// source: github.com/rancher/opni/plugins/logging/apis/node/node.proto
+// source:  github.com/aity-cloud/monty/plugins/logging/apis/node/node.proto
 
 package node
 
 import (
-	_ "github.com/rancher/opni/pkg/apis/capability/v1"
-	_ "github.com/rancher/opni/pkg/config/v1beta1"
+	_ "github.com/aity-cloud/monty/pkg/apis/capability/v1"
+	_ "github.com/aity-cloud/monty/pkg/config/v1beta1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	_ "google.golang.org/protobuf/types/known/emptypb"

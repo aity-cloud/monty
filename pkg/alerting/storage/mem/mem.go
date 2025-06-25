@@ -4,8 +4,8 @@ import (
 	"context"
 	"sync"
 
-	"github.com/rancher/opni/pkg/alerting/drivers/routing"
-	"github.com/rancher/opni/pkg/alerting/storage/opts"
+	"github.com/aity-cloud/monty/pkg/alerting/drivers/routing"
+	"github.com/aity-cloud/monty/pkg/alerting/storage/opts"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )

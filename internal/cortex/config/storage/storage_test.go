@@ -4,10 +4,10 @@ import (
 	"testing"
 	time "time"
 
+	"github.com/aity-cloud/monty/internal/cortex/config/storage"
 	"github.com/cortexproject/cortex/pkg/storage/bucket/http"
 	"github.com/cortexproject/cortex/pkg/storage/bucket/s3"
 	"github.com/cortexproject/cortex/pkg/util/flagext"
-	"github.com/rancher/opni/internal/cortex/config/storage"
 	"github.com/samber/lo"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/types/known/durationpb"

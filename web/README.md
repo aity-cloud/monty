@@ -42,7 +42,7 @@ yarn install
 
 2. Expose the `opni-internal` service.
 ```sh
-kubectl port-forward svc/opni-internal 8888:11080 -n opni
+kubectl port-forward svc/monty-internal 8888:11080 -n monty
 ```
 
 3. Run the dashboard locally.

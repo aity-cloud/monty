@@ -6,7 +6,7 @@ metadata:
     controller-gen.kubebuilder.io/version: v0.12.0
   name: grafanas.grafana.opni.io
 spec:
-  group: grafana.opni.io
+  group: grafana.monty.io
   names:
     kind: Grafana
     listKind: GrafanaList

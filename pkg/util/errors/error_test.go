@@ -4,9 +4,9 @@ import (
 	"errors"
 	"fmt"
 
+	utilerrors "github.com/aity-cloud/monty/pkg/util/errors"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	utilerrors "github.com/rancher/opni/pkg/util/errors"
 	"google.golang.org/grpc/codes"
 )
 

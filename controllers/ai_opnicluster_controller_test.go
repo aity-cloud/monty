@@ -7,11 +7,11 @@ import (
 	"sync"
 	"time"
 
+	opnimeta "github.com/aity-cloud/monty/pkg/util/meta"
 	. "github.com/kralicky/kmatch"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	monitoringv1 "github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring/v1"
-	opnimeta "github.com/rancher/opni/pkg/util/meta"
 	"github.com/samber/lo"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
@@ -23,9 +23,9 @@ import (
 	opsterv1 "opensearch.opster.io/api/v1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	aiv1beta1 "github.com/rancher/opni/apis/ai/v1beta1"
-	opnicorev1beta1 "github.com/rancher/opni/apis/core/v1beta1"
-	"github.com/rancher/opni/pkg/resources"
+	aiv1beta1 "github.com/aity-cloud/monty/apis/ai/v1beta1"
+	opnicorev1beta1 "github.com/aity-cloud/monty/apis/core/v1beta1"
+	"github.com/aity-cloud/monty/pkg/resources"
 )
 
 var _ = Describe("AI OpniCluster Controller", Ordered, Label("controller"), func() {
@@ -89,7 +89,7 @@ var _ = Describe("AI OpniCluster Controller", Ordered, Label("controller"), func
 		)).To(Succeed())
 	}
 
-	It("should create the necessary opni service deployments", func() {
+	It("should create the necessary monty service deployments", func() {
 		By("waiting for the cluster to be created")
 		wg := &sync.WaitGroup{}
 		createCluster(buildAICluster(opniClusterOpts{Name: "test"}))
@@ -118,7 +118,7 @@ var _ = Describe("AI OpniCluster Controller", Ordered, Label("controller"), func
 					HaveLabels(
 						resources.AppNameLabel, kind.ServiceName(),
 						resources.ServiceLabel, kind.String(),
-						resources.PartOfLabel, "opni",
+						resources.PartOfLabel, "monty",
 					),
 					HaveOwner(cluster),
 				))
@@ -151,12 +151,12 @@ var _ = Describe("AI OpniCluster Controller", Ordered, Label("controller"), func
 				HaveName("gpu-service-worker"),
 				HaveVolumeMounts(corev1.VolumeMount{
 					Name:      "data",
-					MountPath: "/var/opni-data",
+					MountPath: "/var/monty-data",
 				}),
 			)),
 		))
 		By("checking that pretrained model services are not created yet")
-		// Identify pretrained model services with the label "opni.io/pretrained-model"
+		// Identify pretrained model services with the label "monty.io/pretrained-model"
 		req, err := labels.NewRequirement(
 			resources.PretrainedModelLabel, selection.Exists, nil)
 		Expect(err).NotTo(HaveOccurred())
@@ -172,7 +172,7 @@ var _ = Describe("AI OpniCluster Controller", Ordered, Label("controller"), func
 		}, "", "  ")
 		Eventually(Object(&corev1.ConfigMap{
 			ObjectMeta: metav1.ObjectMeta{
-				Name:      "opni-nulog-hyperparameters",
+				Name:      "monty-nulog-hyperparameters",
 				Namespace: cluster.Namespace,
 			},
 		})).Should(ExistAnd(
@@ -192,7 +192,7 @@ var _ = Describe("AI OpniCluster Controller", Ordered, Label("controller"), func
 			HaveMatchingContainer(
 				HaveVolumeMounts(corev1.VolumeMount{
 					Name:      "hyperparameters",
-					MountPath: "/etc/opni/hyperparameters.json",
+					MountPath: "/etc/monty/hyperparameters.json",
 					SubPath:   "hyperparameters.json",
 					ReadOnly:  true,
 				}),
@@ -212,7 +212,7 @@ var _ = Describe("AI OpniCluster Controller", Ordered, Label("controller"), func
 				HaveName("gpu-service-worker"),
 				HaveVolumeMounts(corev1.VolumeMount{
 					Name:      "hyperparameters",
-					MountPath: "/etc/opni/hyperparameters.json",
+					MountPath: "/etc/monty/hyperparameters.json",
 					SubPath:   "hyperparameters.json",
 					ReadOnly:  true,
 				}),
@@ -276,7 +276,7 @@ var _ = Describe("AI OpniCluster Controller", Ordered, Label("controller"), func
 			HaveLabels(
 				resources.AppNameLabel, aiv1beta1.MetricsService.ServiceName(),
 				resources.ServiceLabel, aiv1beta1.MetricsService.String(),
-				resources.PartOfLabel, "opni",
+				resources.PartOfLabel, "monty",
 			),
 			HaveOwner(cluster),
 			HaveMatchingVolume(And(
@@ -296,7 +296,7 @@ var _ = Describe("AI OpniCluster Controller", Ordered, Label("controller"), func
 			HaveLabels(
 				resources.AppNameLabel, aiv1beta1.MetricsService.ServiceName(),
 				resources.ServiceLabel, aiv1beta1.MetricsService.String(),
-				resources.PartOfLabel, "opni",
+				resources.PartOfLabel, "monty",
 			),
 			HavePorts("metrics"),
 			HaveOwner(cluster),
@@ -360,12 +360,12 @@ var _ = Describe("AI OpniCluster Controller", Ordered, Label("controller"), func
 		By("checking if an inference service is created")
 		Eventually(Object(&appsv1.Deployment{
 			ObjectMeta: metav1.ObjectMeta{
-				Name:      "opni-inference-test-model",
+				Name:      "monty-inference-test-model",
 				Namespace: ns,
 			},
 		})).Should(ExistAnd(
 			HaveOwner(cluster),
-			HaveLabels("opni.io/pretrained-model", "test-model"),
+			HaveLabels("monty.io/pretrained-model", "test-model"),
 			HaveMatchingInitContainer(HaveImage("docker.io/curlimages/curl:latest")),
 			HaveMatchingContainer(HaveName("inference-service")),
 			HaveMatchingVolume(HaveName("model-volume")),
@@ -377,7 +377,7 @@ var _ = Describe("AI OpniCluster Controller", Ordered, Label("controller"), func
 		By("checking if the inference service is deleted")
 		Eventually(Object(&appsv1.Deployment{
 			ObjectMeta: metav1.ObjectMeta{
-				Name:      "opni-inference-test-model",
+				Name:      "monty-inference-test-model",
 				Namespace: ns,
 			},
 		})).ShouldNot(Exist())
@@ -397,7 +397,7 @@ var _ = Describe("AI OpniCluster Controller", Ordered, Label("controller"), func
 		testBytes, _ := json.MarshalIndent(testData, "", "  ")
 		Eventually(Object(&corev1.ConfigMap{
 			ObjectMeta: metav1.ObjectMeta{
-				Name:      "opni-nulog-hyperparameters",
+				Name:      "monty-nulog-hyperparameters",
 				Namespace: cluster.Namespace,
 			},
 		})).Should(ExistAnd(
@@ -776,23 +776,23 @@ var _ = Describe("AI OpniCluster Controller", Ordered, Label("controller"), func
 		By("checking if the seaweed resources are created")
 		Eventually(Object(&appsv1.StatefulSet{
 			ObjectMeta: metav1.ObjectMeta{
-				Name:      "opni-seaweed",
+				Name:      "monty-seaweed",
 				Namespace: cluster.Namespace,
 			},
 		})).Should(ExistAnd(
 			HaveOwner(cluster),
 			HaveLabels("app", "seaweed"),
 			HaveMatchingContainer(And(
-				HaveVolumeMounts("opni-seaweed-data"),
+				HaveVolumeMounts("monty-seaweed-data"),
 			)),
 			HaveMatchingPersistentVolume(And(
-				HaveName("opni-seaweed-data"),
+				HaveName("monty-seaweed-data"),
 				HaveStorageClass("testing"),
 			)),
 		))
 		Eventually(Object(&corev1.Service{
 			ObjectMeta: metav1.ObjectMeta{
-				Name:      "opni-seaweed-s3",
+				Name:      "monty-seaweed-s3",
 				Namespace: cluster.Namespace,
 			},
 		})).Should(ExistAnd(
@@ -802,7 +802,7 @@ var _ = Describe("AI OpniCluster Controller", Ordered, Label("controller"), func
 		))
 		Eventually(Object(&corev1.Secret{
 			ObjectMeta: metav1.ObjectMeta{
-				Name:      "opni-seaweed-config",
+				Name:      "monty-seaweed-config",
 				Namespace: cluster.Namespace,
 			},
 		})).Should(ExistAnd(
@@ -870,13 +870,13 @@ var _ = Describe("AI OpniCluster Controller", Ordered, Label("controller"), func
 		By("checking that seaweed is not deployed")
 		Consistently(Object(&appsv1.StatefulSet{
 			ObjectMeta: metav1.ObjectMeta{
-				Name:      "opni-seaweed",
+				Name:      "monty-seaweed",
 				Namespace: cluster.Namespace,
 			},
 		})).ShouldNot(Exist())
 		Consistently(Object(&corev1.Service{
 			ObjectMeta: metav1.ObjectMeta{
-				Name:      "opni-seaweed-s3",
+				Name:      "monty-seaweed-s3",
 				Namespace: cluster.Namespace,
 			},
 		})).ShouldNot(Exist())
@@ -901,7 +901,7 @@ var _ = Describe("AI OpniCluster Controller", Ordered, Label("controller"), func
 		By("checking the seaweedfs statefulset is created")
 		Eventually(Object(&appsv1.StatefulSet{
 			ObjectMeta: metav1.ObjectMeta{
-				Name:      "opni-seaweed",
+				Name:      "monty-seaweed",
 				Namespace: cluster.Namespace,
 			},
 		})).Should(ExistAnd(
@@ -911,7 +911,7 @@ var _ = Describe("AI OpniCluster Controller", Ordered, Label("controller"), func
 		By("creating the s3 service")
 		Eventually(Object(&corev1.Service{
 			ObjectMeta: metav1.ObjectMeta{
-				Name:      "opni-seaweed-s3",
+				Name:      "monty-seaweed-s3",
 				Namespace: cluster.Namespace,
 			},
 		})).Should(ExistAnd(

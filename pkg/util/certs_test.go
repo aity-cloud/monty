@@ -1,13 +1,13 @@
 package util_test
 
 import (
+	"github.com/aity-cloud/monty/pkg/test/testdata"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/rancher/opni/pkg/test/testdata"
 	"github.com/samber/lo"
 
-	"github.com/rancher/opni/pkg/config/v1beta1"
-	"github.com/rancher/opni/pkg/util"
+	"github.com/aity-cloud/monty/pkg/config/v1beta1"
+	"github.com/aity-cloud/monty/pkg/util"
 )
 
 var _ = Describe("Cert Utils", Label("unit"), func() {

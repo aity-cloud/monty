@@ -32,19 +32,19 @@ import (
 	"testing"
 	"time"
 
+	"github.com/aity-cloud/monty/apis"
+	"github.com/aity-cloud/monty/controllers"
+	"github.com/aity-cloud/monty/pkg/logger"
+	"github.com/aity-cloud/monty/pkg/resources/opnicluster"
+	"github.com/aity-cloud/monty/pkg/resources/opniopensearch"
+	"github.com/aity-cloud/monty/pkg/resources/preprocessor"
+	"github.com/aity-cloud/monty/pkg/test/freeport"
+	_ "github.com/aity-cloud/monty/pkg/test/setup"
+	"github.com/aity-cloud/monty/pkg/test/testk8s"
+	opnimeta "github.com/aity-cloud/monty/pkg/util/meta"
 	"github.com/kralicky/kmatch"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/rancher/opni/apis"
-	"github.com/rancher/opni/controllers"
-	"github.com/rancher/opni/pkg/logger"
-	"github.com/rancher/opni/pkg/resources/opnicluster"
-	"github.com/rancher/opni/pkg/resources/opniopensearch"
-	"github.com/rancher/opni/pkg/resources/preprocessor"
-	"github.com/rancher/opni/pkg/test/freeport"
-	_ "github.com/rancher/opni/pkg/test/setup"
-	"github.com/rancher/opni/pkg/test/testk8s"
-	opnimeta "github.com/rancher/opni/pkg/util/meta"
 	"github.com/samber/lo"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
@@ -62,7 +62,7 @@ import (
 
 	"github.com/go-logr/logr"
 
-	aiv1beta1 "github.com/rancher/opni/apis/ai/v1beta1"
+	aiv1beta1 "github.com/aity-cloud/monty/apis/ai/v1beta1"
 	// +kubebuilder:scaffold:imports
 )
 

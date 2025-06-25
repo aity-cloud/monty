@@ -1,10 +1,10 @@
 package test
 
 import (
-	"github.com/rancher/opni/pkg/plugins/meta"
-	"github.com/rancher/opni/pkg/test"
-	"github.com/rancher/opni/plugins/logging/pkg/agent"
-	"github.com/rancher/opni/plugins/logging/pkg/gateway"
+	"github.com/aity-cloud/monty/pkg/plugins/meta"
+	"github.com/aity-cloud/monty/pkg/test"
+	"github.com/aity-cloud/monty/plugins/logging/pkg/agent"
+	"github.com/aity-cloud/monty/plugins/logging/pkg/gateway"
 )
 
 func init() {

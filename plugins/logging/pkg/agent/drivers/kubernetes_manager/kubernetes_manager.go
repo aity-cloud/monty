@@ -8,19 +8,19 @@ import (
 	"os"
 	"sync"
 
+	"github.com/aity-cloud/monty/apis"
+	opnicorev1beta1 "github.com/aity-cloud/monty/apis/core/v1beta1"
+	opniloggingv1beta1 "github.com/aity-cloud/monty/apis/logging/v1beta1"
+	"github.com/aity-cloud/monty/pkg/logger"
+	"github.com/aity-cloud/monty/pkg/otel"
+	"github.com/aity-cloud/monty/pkg/plugins/driverutil"
+	"github.com/aity-cloud/monty/pkg/util/k8sutil"
+	"github.com/aity-cloud/monty/pkg/util/k8sutil/provider"
+	opnimeta "github.com/aity-cloud/monty/pkg/util/meta"
+	"github.com/aity-cloud/monty/plugins/logging/apis/node"
+	"github.com/aity-cloud/monty/plugins/logging/pkg/agent/drivers"
 	"github.com/cisco-open/k8s-objectmatcher/patch"
 	"github.com/lestrrat-go/backoff/v2"
-	"github.com/rancher/opni/apis"
-	opnicorev1beta1 "github.com/rancher/opni/apis/core/v1beta1"
-	opniloggingv1beta1 "github.com/rancher/opni/apis/logging/v1beta1"
-	"github.com/rancher/opni/pkg/logger"
-	"github.com/rancher/opni/pkg/otel"
-	"github.com/rancher/opni/pkg/plugins/driverutil"
-	"github.com/rancher/opni/pkg/util/k8sutil"
-	"github.com/rancher/opni/pkg/util/k8sutil/provider"
-	opnimeta "github.com/rancher/opni/pkg/util/meta"
-	"github.com/rancher/opni/plugins/logging/apis/node"
-	"github.com/rancher/opni/plugins/logging/pkg/agent/drivers"
 	"github.com/samber/lo"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
@@ -35,14 +35,14 @@ import (
 )
 
 const (
-	secretName         = "opni-opensearch-auth"
+	secretName         = "monty-opensearch-auth"
 	secretKey          = "password"
-	dataPrepperName    = "opni-shipper"
+	dataPrepperName    = "monty-shipper"
 	dataPrepperVersion = "2.0.1"
-	clusterOutputName  = "opni-output"
-	clusterFlowName    = "opni-flow"
-	loggingConfigName  = "opni-logging"
-	traceConfigName    = "opni-tracing"
+	clusterOutputName  = "monty-output"
+	clusterFlowName    = "monty-flow"
+	loggingConfigName  = "monty-logging"
+	traceConfigName    = "monty-tracing"
 )
 
 type KubernetesManagerDriver struct {
@@ -131,7 +131,7 @@ BACKOFF:
 
 		if err := m.reconcileCollector(config.Enabled); err != nil {
 			m.Logger.With(
-				"object", "opni collector",
+				"object", "monty collector",
 				logger.Err(err),
 			).Error("error reconciling object")
 		}
@@ -150,7 +150,7 @@ BACKOFF:
 func (m *KubernetesManagerDriver) buildLoggingCollectorConfig() *opniloggingv1beta1.CollectorConfig {
 	collectorConfig := &opniloggingv1beta1.CollectorConfig{
 		ObjectMeta: metav1.ObjectMeta{
-			Name: "opni-logging",
+			Name: "monty-logging",
 		},
 		Spec: opniloggingv1beta1.CollectorConfigSpec{
 			Provider: opniloggingv1beta1.LogProvider(m.provider),
@@ -252,7 +252,7 @@ func (m *KubernetesManagerDriver) getAgentSet() (*appsv1.Deployment, error) {
 	if err := m.k8sClient.List(context.TODO(), list,
 		client.InNamespace(m.Namespace),
 		client.MatchingLabels{
-			"opni.io/app": "agent",
+			"monty.io/app": "agent",
 		},
 	); err != nil {
 		return nil, err
@@ -269,7 +269,7 @@ func (m *KubernetesManagerDriver) getAgentService() (*corev1.Service, error) {
 	if err := m.k8sClient.List(context.TODO(), list,
 		client.InNamespace(m.Namespace),
 		client.MatchingLabels{
-			"opni.io/app": "agent",
+			"monty.io/app": "agent",
 		},
 	); err != nil {
 		return nil, err

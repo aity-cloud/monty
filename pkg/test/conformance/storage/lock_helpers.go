@@ -12,8 +12,8 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/rancher/opni/pkg/storage"
-	"github.com/rancher/opni/pkg/storage/lock"
+	"github.com/aity-cloud/monty/pkg/storage"
+	"github.com/aity-cloud/monty/pkg/storage/lock"
 	"github.com/samber/lo"
 )
 

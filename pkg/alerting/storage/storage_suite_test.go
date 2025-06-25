@@ -3,12 +3,12 @@ package storage_test
 import (
 	"testing"
 
+	"github.com/aity-cloud/monty/pkg/test"
+	_ "github.com/aity-cloud/monty/pkg/test/setup"
+	"github.com/aity-cloud/monty/pkg/test/testruntime"
 	"github.com/nats-io/nats.go"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/rancher/opni/pkg/test"
-	_ "github.com/rancher/opni/pkg/test/setup"
-	"github.com/rancher/opni/pkg/test/testruntime"
 )
 
 func TestAlertstorage(t *testing.T) {

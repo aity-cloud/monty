@@ -4,14 +4,14 @@ import (
 	"context"
 	"testing"
 
+	"github.com/aity-cloud/monty/pkg/storage/etcd"
+	"github.com/aity-cloud/monty/pkg/test"
+	. "github.com/aity-cloud/monty/pkg/test/conformance/storage"
+	_ "github.com/aity-cloud/monty/pkg/test/setup"
+	"github.com/aity-cloud/monty/pkg/test/testruntime"
+	"github.com/aity-cloud/monty/pkg/util/future"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/rancher/opni/pkg/storage/etcd"
-	"github.com/rancher/opni/pkg/test"
-	. "github.com/rancher/opni/pkg/test/conformance/storage"
-	_ "github.com/rancher/opni/pkg/test/setup"
-	"github.com/rancher/opni/pkg/test/testruntime"
-	"github.com/rancher/opni/pkg/util/future"
 )
 
 func TestEtcd(t *testing.T) {

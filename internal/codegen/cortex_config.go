@@ -7,6 +7,8 @@ import (
 	"reflect"
 	"strings"
 
+	"github.com/aity-cloud/monty/internal/codegen/cli"
+	"github.com/aity-cloud/monty/internal/codegen/descriptors"
 	"github.com/cortexproject/cortex/pkg/compactor"
 	"github.com/cortexproject/cortex/pkg/cortex"
 	"github.com/cortexproject/cortex/pkg/querier"
@@ -16,27 +18,25 @@ import (
 	"github.com/jhump/protoreflect/desc"
 	"github.com/jhump/protoreflect/desc/builder"
 	"github.com/jhump/protoreflect/desc/protoprint"
-	"github.com/rancher/opni/internal/codegen/cli"
-	"github.com/rancher/opni/internal/codegen/descriptors"
 	"github.com/samber/lo"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/descriptorpb"
 )
 
 func GenCortexConfig() error {
-	if err := generate[bucket.Config]("github.com/rancher/opni/internal/cortex/config/storage/storage.proto"); err != nil {
+	if err := generate[bucket.Config]("github.com/aity-cloud/monty/internal/cortex/config/storage/storage.proto"); err != nil {
 		return err
 	}
-	if err := generate[validation.Limits]("github.com/rancher/opni/internal/cortex/config/validation/limits.proto"); err != nil {
+	if err := generate[validation.Limits]("github.com/aity-cloud/monty/internal/cortex/config/validation/limits.proto"); err != nil {
 		return err
 	}
-	if err := generate[cortex.RuntimeConfigValues]("github.com/rancher/opni/internal/cortex/config/runtimeconfig/runtimeconfig.proto"); err != nil {
+	if err := generate[cortex.RuntimeConfigValues]("github.com/aity-cloud/monty/internal/cortex/config/runtimeconfig/runtimeconfig.proto"); err != nil {
 		return err
 	}
-	if err := generate[compactor.Config]("github.com/rancher/opni/internal/cortex/config/compactor/compactor.proto"); err != nil {
+	if err := generate[compactor.Config]("github.com/aity-cloud/monty/internal/cortex/config/compactor/compactor.proto"); err != nil {
 		return err
 	}
-	if err := generate[querier.Config]("github.com/rancher/opni/internal/cortex/config/querier/querier.proto",
+	if err := generate[querier.Config]("github.com/aity-cloud/monty/internal/cortex/config/querier/querier.proto",
 		func(rf reflect.StructField) bool {
 			if rf.Name == "StoreGatewayAddresses" || rf.Name == "StoreGatewayClient" {
 				return true
@@ -176,7 +176,7 @@ func generate[T any](destFilename string, skipFunc ...func(rf reflect.StructFiel
 		Compact:      true,
 		SortElements: true,
 	}
-	rootDir := strings.TrimPrefix(filepath.Dir(destFilename), "github.com/rancher/opni/")
+	rootDir := strings.TrimPrefix(filepath.Dir(destFilename), "github.com/aity-cloud/monty/")
 	return p.PrintProtoFiles([]*desc.FileDescriptor{fd}, func(name string) (io.WriteCloser, error) {
 		fullPath := filepath.Join(rootDir, filepath.Base(name))
 		dir := filepath.Dir(fullPath)

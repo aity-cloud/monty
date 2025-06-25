@@ -10,12 +10,12 @@ import (
 	"sync"
 	"time"
 
+	"github.com/aity-cloud/monty/pkg/alerting/server"
+	ssync "github.com/aity-cloud/monty/pkg/alerting/server/sync"
+	httpext "github.com/aity-cloud/monty/pkg/plugins/apis/apiextensions/http"
+	"github.com/aity-cloud/monty/pkg/util"
+	"github.com/aity-cloud/monty/pkg/util/future"
 	"github.com/gin-gonic/gin"
-	"github.com/rancher/opni/pkg/alerting/server"
-	ssync "github.com/rancher/opni/pkg/alerting/server/sync"
-	httpext "github.com/rancher/opni/pkg/plugins/apis/apiextensions/http"
-	"github.com/rancher/opni/pkg/util"
-	"github.com/rancher/opni/pkg/util/future"
 )
 
 const proxyPath = "/plugin_alerting/alertmanager"

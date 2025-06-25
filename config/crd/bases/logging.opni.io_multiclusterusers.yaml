@@ -6,7 +6,7 @@ metadata:
     controller-gen.kubebuilder.io/version: v0.13.0
   name: multiclusterusers.logging.opni.io
 spec:
-  group: logging.opni.io
+  group: logging.monty.io
   names:
     kind: MulticlusterUser
     listKind: MulticlusterUserList

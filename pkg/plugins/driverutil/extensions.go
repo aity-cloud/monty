@@ -1,7 +1,7 @@
 package driverutil
 
 import (
-	"github.com/rancher/opni/internal/codegen/cli"
+	"github.com/aity-cloud/monty/internal/codegen/cli"
 	"github.com/ttacon/chalk"
 )
 

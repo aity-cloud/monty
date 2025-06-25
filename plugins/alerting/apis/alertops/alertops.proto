@@ -1,10 +1,10 @@
 syntax = "proto3";
-option go_package = "github.com/rancher/opni/plugins/alerting/apis/alertops";
+option go_package = "github.com/aity-cloud/monty/plugins/alerting/apis/alertops";
 
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
-import "github.com/rancher/opni/pkg/apis/storage/v1/storage.proto";
-import "github.com/rancher/opni/pkg/apis/alerting/v1/sidecar.proto";
+import "github.com/aity-cloud/monty/pkg/apis/storage/v1/storage.proto";
+import "github.com/aity-cloud/monty/pkg/apis/alerting/v1/sidecar.proto";
 import "google/api/annotations.proto";
 
 package alerting.ops;

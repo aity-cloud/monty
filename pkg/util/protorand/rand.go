@@ -6,9 +6,9 @@ import (
 	"math"
 	"math/rand"
 
+	"github.com/aity-cloud/monty/pkg/util"
+	"github.com/aity-cloud/monty/pkg/util/fieldmask"
 	art "github.com/plar/go-adaptive-radix-tree"
-	"github.com/rancher/opni/pkg/util"
-	"github.com/rancher/opni/pkg/util/fieldmask"
 	"github.com/sryoya/protorand"
 	"github.com/zeebo/xxh3"
 	"google.golang.org/protobuf/proto"

@@ -2,7 +2,7 @@ package main
 
 import (
 	//mage:import
-	"github.com/rancher/opni/magefiles/targets"
+	"github.com/aity-cloud/monty/magefiles/targets"
 )
 
 var Default = targets.Default

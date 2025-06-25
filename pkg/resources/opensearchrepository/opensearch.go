@@ -3,10 +3,10 @@ package opensearchrepository
 import (
 	"errors"
 
-	"github.com/rancher/opni/pkg/opensearch/certs"
-	osapi "github.com/rancher/opni/pkg/opensearch/opensearch/types"
-	opensearch "github.com/rancher/opni/pkg/opensearch/reconciler"
-	"github.com/rancher/opni/pkg/util/meta"
+	"github.com/aity-cloud/monty/pkg/opensearch/certs"
+	osapi "github.com/aity-cloud/monty/pkg/opensearch/opensearch/types"
+	opensearch "github.com/aity-cloud/monty/pkg/opensearch/reconciler"
+	"github.com/aity-cloud/monty/pkg/util/meta"
 	"k8s.io/client-go/util/retry"
 	opensearchv1 "opensearch.opster.io/api/v1"
 	"sigs.k8s.io/controller-runtime/pkg/client"

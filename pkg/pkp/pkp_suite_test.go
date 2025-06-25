@@ -5,12 +5,12 @@ import (
 	"encoding/json"
 	"testing"
 
+	"github.com/aity-cloud/monty/pkg/pkp"
+	_ "github.com/aity-cloud/monty/pkg/test/setup"
+	"github.com/aity-cloud/monty/pkg/test/testdata"
+	"github.com/aity-cloud/monty/pkg/util"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/rancher/opni/pkg/pkp"
-	_ "github.com/rancher/opni/pkg/test/setup"
-	"github.com/rancher/opni/pkg/test/testdata"
-	"github.com/rancher/opni/pkg/util"
 )
 
 func TestUtil(t *testing.T) {

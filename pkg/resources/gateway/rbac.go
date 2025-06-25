@@ -3,7 +3,7 @@ package gateway
 import (
 	"fmt"
 
-	"github.com/rancher/opni/pkg/resources"
+	"github.com/aity-cloud/monty/pkg/resources"
 	corev1 "k8s.io/api/core/v1"
 	rbacv1 "k8s.io/api/rbac/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -13,7 +13,7 @@ import (
 func (r *Reconciler) rbac() ([]resources.Resource, error) {
 	serviceAccount := &corev1.ServiceAccount{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "opni",
+			Name:      "monty",
 			Namespace: r.gw.Namespace,
 			Labels:    resources.NewGatewayLabels(),
 		},
@@ -27,7 +27,7 @@ func (r *Reconciler) rbac() ([]resources.Resource, error) {
 		Rules: []rbacv1.PolicyRule{
 			{
 				APIGroups: []string{
-					"opni.io",
+					"monty.io",
 				},
 				Resources: []string{
 					"bootstraptokens",
@@ -53,10 +53,10 @@ func (r *Reconciler) rbac() ([]resources.Resource, error) {
 			},
 			{
 				APIGroups: []string{
-					"logging.opni.io",
-					"monitoring.opni.io",
-					"core.opni.io",
-					"ai.opni.io",
+					"logging.monty.io",
+					"monitoring.monty.io",
+					"core.monty.io",
+					"ai.monty.io",
 				},
 				Resources: []string{
 					"*",
@@ -143,13 +143,13 @@ func (r *Reconciler) rbac() ([]resources.Resource, error) {
 	// TODO: This will leak.  Add a finalizer to fix it up or come up with alternative
 	clusterRoleBinding := &rbacv1.ClusterRoleBinding{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:   fmt.Sprintf("opni-ns-%s", r.gw.Name),
+			Name:   fmt.Sprintf("monty-ns-%s", r.gw.Name),
 			Labels: resources.NewGatewayLabels(),
 		},
 		RoleRef: rbacv1.RoleRef{
 			APIGroup: "rbac.authorization.k8s.io",
 			Kind:     "ClusterRole",
-			Name:     "opni-ns",
+			Name:     "monty-ns",
 		},
 		Subjects: []rbacv1.Subject{
 			{
@@ -161,13 +161,13 @@ func (r *Reconciler) rbac() ([]resources.Resource, error) {
 	}
 	nodeViewerBinding := &rbacv1.ClusterRoleBinding{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:   fmt.Sprintf("opni-node-viewer-%s", r.gw.Name),
+			Name:   fmt.Sprintf("monty-node-viewer-%s", r.gw.Name),
 			Labels: resources.NewGatewayLabels(),
 		},
 		RoleRef: rbacv1.RoleRef{
 			APIGroup: "rbac.authorization.k8s.io",
 			Kind:     "ClusterRole",
-			Name:     "opni-node-viewer",
+			Name:     "monty-node-viewer",
 		},
 		Subjects: []rbacv1.Subject{
 			{

@@ -6,13 +6,13 @@ import (
 
 	"slices"
 
+	"github.com/aity-cloud/monty/pkg/alerting/drivers/config"
+	"github.com/aity-cloud/monty/pkg/alerting/message"
+	"github.com/aity-cloud/monty/pkg/alerting/shared"
+	alertingv1 "github.com/aity-cloud/monty/pkg/apis/alerting/v1"
+	"github.com/aity-cloud/monty/pkg/capabilities/wellknown"
 	"github.com/prometheus/alertmanager/pkg/labels"
 	"github.com/prometheus/common/model"
-	"github.com/rancher/opni/pkg/alerting/drivers/config"
-	"github.com/rancher/opni/pkg/alerting/message"
-	"github.com/rancher/opni/pkg/alerting/shared"
-	alertingv1 "github.com/rancher/opni/pkg/apis/alerting/v1"
-	"github.com/rancher/opni/pkg/capabilities/wellknown"
 	"github.com/samber/lo"
 )
 
@@ -33,7 +33,7 @@ func NotificationSubTreeLabel() string {
 // ! values must be returned sorted in a deterministic order
 //
 // these are used by the router to catch eveyrthing that is not an explicit alarm
-// that is also part of opni, i.e. plain text notifications
+// that is also part of monty, i.e. plain text notifications
 func NotificationSubTreeValues() []RouteValues {
 	// sorted by ascending severity
 	severityKey := lo.Keys(alertingv1.OpniSeverity_name)
@@ -111,7 +111,7 @@ func NewRootNode(cfg *config.WebhookConfig) *config.Config {
 		Route: &config.Route{
 			Receiver: shared.AlertingHookReceiverName,
 			// special character that expands all groups, need to expand labels so they can
-			// be subgrouped to opni-specific subrouting trees and user-synced subrouting trees
+			// be subgrouped to monty-specific subrouting trees and user-synced subrouting trees
 			GroupByStr: []string{"..."},
 			Routes:     []*config.Route{},
 			GroupWait:  DefaultConfig.GlobalConfig.GroupWait,
@@ -141,11 +141,11 @@ func NewOpniSubRoutingTree() (*config.Route, []config.Receiver) {
 	// notification namespace is based on the grpc enum status
 	notificationRouting, recvs := NewNamespaceTree(NotificationSubTreeLabel(), NotificationSubTreeValues()...)
 
-	// rate limits messages pushed from an opni source that itself should decide how to group messages
+	// rate limits messages pushed from an monty source that itself should decide how to group messages
 	opniRoute.Routes = append(opniRoute.Routes, notificationRouting)
 	allRecvs = append(allRecvs, recvs...)
 
-	// must be last to prevent any opni alerts from leaking into the user's production routing tree
+	// must be last to prevent any monty alerts from leaking into the user's production routing tree
 	opniRoute.Routes = append(opniRoute.Routes, newFinalizer(nil, rateLimitingConfig{
 		InitialDelay:       DefaultConfig.FinalizerConfig.InitialDelay,
 		ThrottlingDuration: DefaultConfig.FinalizerConfig.ThrottlingDuration,
@@ -174,7 +174,7 @@ func newFinalizer(optionalNamespace *string, rc rateLimitingConfig) *config.Rout
 
 	finalizerRoute := &config.Route{
 		Matchers: matchers(),
-		Receiver: shared.AlertingHookReceiverName, // assumption : always present in opni embedded server
+		Receiver: shared.AlertingHookReceiverName, // assumption : always present in monty embedded server
 		// set to false to prevent any further routing into unrelated namespace OR
 		// the user's synced production config
 		Continue: false,

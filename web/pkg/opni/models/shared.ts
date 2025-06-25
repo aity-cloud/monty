@@ -1,6 +1,6 @@
 export const LABEL_KEYS = {
-  NAME:    'opni.io/name',
-  VERSION: 'opni.io/agent-version'
+  NAME:    'monty.io/name',
+  VERSION: 'monty.io/agent-version'
 };
 
 export type Labels = { [key: string]: string };

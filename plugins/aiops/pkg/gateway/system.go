@@ -59,7 +59,7 @@ FETCH:
 			s.Logger.Warn("plugin context cancelled before Opensearch object created")
 		case <-b.Next():
 			err := s.k8sClient.Get(s.ctx, types.NamespacedName{
-				Name:      "opni",
+				Name:      "monty",
 				Namespace: s.storageNamespace,
 			}, cluster)
 			if err != nil {

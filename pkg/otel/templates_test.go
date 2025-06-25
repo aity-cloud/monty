@@ -12,14 +12,14 @@ import (
 
 	// "github.com/lightstep/otel-config-validator/validator"
 
+	"github.com/aity-cloud/monty/pkg/otel"
+	"github.com/aity-cloud/monty/pkg/test"
+	"github.com/aity-cloud/monty/pkg/test/testdata"
+	"github.com/aity-cloud/monty/pkg/util"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	"github.com/prometheus/common/model"
 	promcfg "github.com/prometheus/prometheus/config"
-	"github.com/rancher/opni/pkg/otel"
-	"github.com/rancher/opni/pkg/test"
-	"github.com/rancher/opni/pkg/test/testdata"
-	"github.com/rancher/opni/pkg/util"
 	"github.com/samber/lo"
 	"google.golang.org/protobuf/types/known/durationpb"
 	"gopkg.in/yaml.v2"

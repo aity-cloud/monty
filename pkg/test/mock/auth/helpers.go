@@ -3,9 +3,9 @@ package mock_auth
 import (
 	"context"
 
-	"github.com/rancher/opni/pkg/auth/challenges"
-	"github.com/rancher/opni/pkg/auth/cluster"
-	"github.com/rancher/opni/pkg/util/streams"
+	"github.com/aity-cloud/monty/pkg/auth/challenges"
+	"github.com/aity-cloud/monty/pkg/auth/cluster"
+	"github.com/aity-cloud/monty/pkg/util/streams"
 	"google.golang.org/grpc/metadata"
 )
 

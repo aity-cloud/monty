@@ -1,6 +1,6 @@
 package system
 
-import "github.com/rancher/opni/pkg/validation"
+import "github.com/aity-cloud/monty/pkg/validation"
 
 func (pr *PutRequest) Validate() error {
 	if pr.Key == "" {

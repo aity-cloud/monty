@@ -5,16 +5,16 @@ import (
 	"fmt"
 	"os"
 
-	opnicorev1beta1 "github.com/rancher/opni/apis/core/v1beta1"
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	"github.com/rancher/opni/pkg/plugins/driverutil"
-	"github.com/rancher/opni/pkg/storage"
-	"github.com/rancher/opni/pkg/storage/crds"
-	"github.com/rancher/opni/pkg/util/flagutil"
-	"github.com/rancher/opni/pkg/util/k8sutil"
-	"github.com/rancher/opni/plugins/metrics/apis/cortexops"
-	"github.com/rancher/opni/plugins/metrics/pkg/cortex/configutil"
-	"github.com/rancher/opni/plugins/metrics/pkg/gateway/drivers"
+	opnicorev1beta1 "github.com/aity-cloud/monty/apis/core/v1beta1"
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	"github.com/aity-cloud/monty/pkg/plugins/driverutil"
+	"github.com/aity-cloud/monty/pkg/storage"
+	"github.com/aity-cloud/monty/pkg/storage/crds"
+	"github.com/aity-cloud/monty/pkg/util/flagutil"
+	"github.com/aity-cloud/monty/pkg/util/k8sutil"
+	"github.com/aity-cloud/monty/plugins/metrics/apis/cortexops"
+	"github.com/aity-cloud/monty/plugins/metrics/pkg/cortex/configutil"
+	"github.com/aity-cloud/monty/plugins/metrics/pkg/gateway/drivers"
 	"github.com/samber/lo"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -186,7 +186,7 @@ func (k *OpniManager) Status(ctx context.Context, _ *emptypb.Empty) (*driverutil
 		InstallState: driverutil.InstallState_NotInstalled,
 		AppState:     driverutil.ApplicationState_NotRunning,
 		Metadata: map[string]string{
-			"driver": "opni-manager",
+			"driver": "monty-manager",
 		},
 	}
 
@@ -252,11 +252,11 @@ func (k *OpniManager) DryRun(ctx context.Context, req *cortexops.DryRunRequest) 
 }
 
 func init() {
-	drivers.ClusterDrivers.Register("opni-manager", func(_ context.Context, opts ...driverutil.Option) (drivers.ClusterDriver, error) {
+	drivers.ClusterDrivers.Register("monty-manager", func(_ context.Context, opts ...driverutil.Option) (drivers.ClusterDriver, error) {
 		options := OpniManagerClusterDriverOptions{
 			MonitoringCluster: types.NamespacedName{
 				Namespace: os.Getenv("POD_NAMESPACE"),
-				Name:      "opni",
+				Name:      "monty",
 			},
 			GatewayRef: types.NamespacedName{
 				Namespace: os.Getenv("POD_NAMESPACE"),

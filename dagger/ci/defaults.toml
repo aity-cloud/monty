@@ -2,12 +2,12 @@ lint = true
 test = true
 
 [releaser]
-	repo = "github.com/rancher/opni"
+	repo = "github.com/aity-cloud/monty"
 	os = ["darwin", "linux"]
 	arch = ["amd64"]
 
 [charts.git]
-	repo = "github.com/rancher/opni"
+	repo = "github.com/aity-cloud/monty"
 	branch = "charts-repo"
 [charts.git.auth]
 	email = "rancherbot@rancher.com"

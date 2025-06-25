@@ -8,7 +8,7 @@ import (
 
 var ErrInvalidURN = errors.New("invalid URN")
 
-const Namespace = "opni"
+const Namespace = "monty"
 
 type UpdateType string
 

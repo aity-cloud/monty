@@ -1,7 +1,7 @@
 package v1beta1
 
 import (
-	opnimeta "github.com/rancher/opni/pkg/util/meta"
+	opnimeta "github.com/aity-cloud/monty/pkg/util/meta"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -23,7 +23,7 @@ const (
 )
 
 const (
-	IDLabel = "opni.io/multiclusterID"
+	IDLabel = "monty.io/multiclusterID"
 )
 
 // +kubebuilder:object:root=true

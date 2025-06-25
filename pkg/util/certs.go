@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/rancher/opni/pkg/config/v1beta1"
+	"github.com/aity-cloud/monty/pkg/config/v1beta1"
 )
 
 func ParsePEMEncodedCertChain(chain []byte) ([]*x509.Certificate, error) {

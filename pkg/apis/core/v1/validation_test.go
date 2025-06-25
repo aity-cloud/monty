@@ -4,8 +4,8 @@ import (
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	"github.com/rancher/opni/pkg/validation"
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	"github.com/aity-cloud/monty/pkg/validation"
 )
 
 func validateEntry(in validation.Validator, expected error) {
@@ -40,11 +40,11 @@ var _ = Describe("Validation", Label("unit"), func() {
 			},
 		}, validation.ErrInvalidValue),
 		Entry(nil, (&corev1.LabelSelector{
-			MatchLabels: map[string]string{"opni.io/name": "bar"},
+			MatchLabels: map[string]string{"monty.io/name": "bar"},
 		}).WithRestrictInternalLabels(), corev1.ErrInternalLabelInSelector),
 		Entry(nil, (&corev1.LabelSelector{
 			MatchExpressions: []*corev1.LabelSelectorRequirement{
-				{Key: "opni.io/name", Operator: string(corev1.LabelSelectorOpExists)},
+				{Key: "monty.io/name", Operator: string(corev1.LabelSelectorOpExists)},
 			},
 		}).WithRestrictInternalLabels(), corev1.ErrInternalLabelInSelector),
 	)

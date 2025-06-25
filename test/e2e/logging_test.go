@@ -7,10 +7,10 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/aity-cloud/monty/plugins/logging/apis/loggingadmin"
+	"github.com/aity-cloud/monty/plugins/logging/pkg/gateway"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/rancher/opni/plugins/logging/apis/loggingadmin"
-	"github.com/rancher/opni/plugins/logging/pkg/gateway"
 	"github.com/samber/lo"
 	"google.golang.org/protobuf/types/known/emptypb"
 )

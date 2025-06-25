@@ -8,12 +8,12 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/aity-cloud/monty/infra/pkg/aws"
+	"github.com/aity-cloud/monty/infra/pkg/resources"
 	"github.com/pulumi/pulumi-kubernetes/sdk/v3/go/kubernetes"
 	corev1 "github.com/pulumi/pulumi-kubernetes/sdk/v3/go/kubernetes/core/v1"
 	"github.com/pulumi/pulumi-kubernetes/sdk/v3/go/kubernetes/helm/v3"
 	. "github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/rancher/opni/infra/pkg/aws"
-	"github.com/rancher/opni/infra/pkg/resources"
 	"golang.org/x/mod/semver"
 
 	"github.com/pkg/errors"
@@ -82,19 +82,19 @@ func run(ctx *Context) (runErr error) {
 		if opniCrdChart, ok = findLocalChartDir("monty-crd"); !ok {
 			return errors.New("could not find local monty-crd chart")
 		}
-		if opniPrometheusCrdChart, ok = findLocalChartDir("opni-prometheus-crd"); !ok {
-			return errors.New("could not find local opni-prometheus-crd chart")
+		if opniPrometheusCrdChart, ok = findLocalChartDir("monty-prometheus-crd"); !ok {
+			return errors.New("could not find local monty-prometheus-crd chart")
 		}
-		if opniChart, ok = findLocalChartDir("opni"); !ok {
-			return errors.New("could not find local opni chart")
+		if opniChart, ok = findLocalChartDir("monty"); !ok {
+			return errors.New("could not find local monty chart")
 		}
 	} else {
 		chartRepoOpts = &helm.RepositoryOptsArgs{
 			Repo: StringPtr(conf.ChartsRepo),
 		}
 		opniCrdChart = "monty-crd"
-		opniPrometheusCrdChart = "opni-prometheus-crd"
-		opniChart = "opni"
+		opniPrometheusCrdChart = "monty-prometheus-crd"
+		opniChart = "monty"
 	}
 
 	opniServiceLB := mainCluster.Provider.ApplyT(func(k *kubernetes.Provider) (StringOutput, error) {
@@ -102,7 +102,7 @@ func run(ctx *Context) (runErr error) {
 			Chart:          String(opniCrdChart),
 			RepositoryOpts: chartRepoOpts,
 			Version:        StringPtr(conf.ChartVersion),
-			Namespace:      String("opni"),
+			Namespace:      String("monty"),
 			Timeout:        Int(60),
 		}, Provider(k), RetainOnDelete(true))
 		if err != nil {
@@ -112,10 +112,10 @@ func run(ctx *Context) (runErr error) {
 		var opniChartExtraDeps []Resource
 
 		if conf.PrometheusCrdChartMode == "separate" {
-			opniPrometheusCrd, err := helm.NewRelease(ctx, "opni-prometheus-crd", &helm.ReleaseArgs{
+			opniPrometheusCrd, err := helm.NewRelease(ctx, "monty-prometheus-crd", &helm.ReleaseArgs{
 				Chart:          String(opniPrometheusCrdChart),
 				RepositoryOpts: chartRepoOpts,
-				Namespace:      String("opni"),
+				Namespace:      String("monty"),
 				Timeout:        Int(60),
 			}, Provider(k), RetainOnDelete(true))
 			if err != nil {
@@ -124,19 +124,19 @@ func run(ctx *Context) (runErr error) {
 			opniChartExtraDeps = append(opniChartExtraDeps, opniPrometheusCrd)
 		}
 
-		opni, err := helm.NewRelease(ctx, "opni", &helm.ReleaseArgs{
-			Name:           String("opni"),
+		opni, err := helm.NewRelease(ctx, "monty", &helm.ReleaseArgs{
+			Name:           String("monty"),
 			Chart:          String(opniChart),
 			RepositoryOpts: chartRepoOpts,
 			Version:        StringPtr(conf.ChartVersion),
 			SkipCrds:       Bool(true),
-			Namespace:      String("opni"),
+			Namespace:      String("monty"),
 			Values: Map{
 				"image": Map{
 					"repository": String(conf.ImageRepo),
 					"tag":        String(conf.ImageTag),
 				},
-				"opni-prometheus-crd": Map{
+				"monty-prometheus-crd": Map{
 					"enabled": Bool(conf.PrometheusCrdChartMode == "embedded"),
 				},
 				"gateway": Map{
@@ -160,14 +160,14 @@ func run(ctx *Context) (runErr error) {
 						},
 					},
 				},
-				"opni-agent": Map{
+				"monty-agent": Map{
 					"image": Map{
 						"repository": String(conf.ImageRepo),
 						"tag":        String(conf.MinimalImageTag),
 					},
 					"enabled":          Bool(true),
-					"address":          String("opni"),
-					"fullnameOverride": String("opni-agent"),
+					"address":          String("monty"),
+					"fullnameOverride": String("monty-agent"),
 					"bootstrapInCluster": Map{
 						"enabled": Bool(true),
 					},
@@ -192,8 +192,8 @@ func run(ctx *Context) (runErr error) {
 		opniServiceLB := All(opni.Status.Namespace(), opni.Status.Name()).
 			ApplyT(func(args []any) (StringOutput, error) {
 				namespace := args[0].(*string)
-				opniLBSvc, err := corev1.GetService(ctx, "opni", ID(
-					fmt.Sprintf("%s/opni", *namespace),
+				opniLBSvc, err := corev1.GetService(ctx, "monty", ID(
+					fmt.Sprintf("%s/monty", *namespace),
 				), nil, Provider(k), Parent(opni))
 				if err != nil {
 					return StringOutput{}, err

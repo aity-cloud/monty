@@ -14,15 +14,15 @@ import (
 
 	"slices"
 
+	"github.com/aity-cloud/monty/pkg/alerting/drivers/config"
+	"github.com/aity-cloud/monty/pkg/alerting/interfaces"
+	"github.com/aity-cloud/monty/pkg/alerting/shared"
+	alertingv1 "github.com/aity-cloud/monty/pkg/apis/alerting/v1"
+	"github.com/aity-cloud/monty/pkg/capabilities/wellknown"
+	"github.com/aity-cloud/monty/pkg/util"
+	"github.com/aity-cloud/monty/pkg/validation"
 	amCfg "github.com/prometheus/alertmanager/config"
 	"github.com/prometheus/alertmanager/pkg/labels"
-	"github.com/rancher/opni/pkg/alerting/drivers/config"
-	"github.com/rancher/opni/pkg/alerting/interfaces"
-	"github.com/rancher/opni/pkg/alerting/shared"
-	alertingv1 "github.com/rancher/opni/pkg/apis/alerting/v1"
-	"github.com/rancher/opni/pkg/capabilities/wellknown"
-	"github.com/rancher/opni/pkg/util"
-	"github.com/rancher/opni/pkg/validation"
 	"github.com/samber/lo"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -395,7 +395,7 @@ func (o *OpniRouterV1) BuildConfig() (*config.Config, error) {
 		namespacedSubTree, _ := NewNamespaceTree(namespace)
 		for _, routeId := range routeIds {
 			if len(o.NamespacedSpecs[namespace][routeId]) == 0 {
-				// no opni receivers attached, do not build & skip...
+				// no monty receivers attached, do not build & skip...
 				continue
 			}
 			endpointIds := lo.Keys(o.NamespacedSpecs[namespace][routeId]) // needs to be deterministically ordered
@@ -417,7 +417,7 @@ func (o *OpniRouterV1) BuildConfig() (*config.Config, error) {
 		opniRoutes = append(opniRoutes, namespacedSubTree)
 	}
 
-	// add opni subtree dependencies (opni namespaced & metrics)
+	// add monty subtree dependencies (monty namespaced & metrics)
 	for _, subRoute := range root.Route.Routes {
 		for _, m := range subRoute.Matchers {
 			if m.Name == alertingv1.RoutingPropertyDatasource && m.Type == labels.MatchEqual && m.Value == "" { // if isDefaultSubTree() {}

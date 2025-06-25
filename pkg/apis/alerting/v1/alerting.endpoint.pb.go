@@ -2,12 +2,12 @@
 // versions:
 // 	protoc-gen-go v1.31.0
 // 	protoc        v1.0.0
-// source: github.com/rancher/opni/pkg/apis/alerting/v1/alerting.endpoint.proto
+// source:  github.com/aity-cloud/monty/pkg/apis/alerting/v1/alerting.endpoint.proto
 
 package v1
 
 import (
-	v1 "github.com/rancher/opni/pkg/apis/core/v1"
+	v1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	_ "google.golang.org/genproto/googleapis/rpc/status"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -43,7 +43,7 @@ type AlertEndpoint struct {
 	//	*AlertEndpoint_Webhook
 	Endpoint isAlertEndpoint_Endpoint `protobuf_oneof:"endpoint"`
 	// properties are used to flag properties of endpoints, for
-	// example opting into opni notifications
+	// example opting into monty notifications
 	// Properties starting with "_" are private
 	Properties map[string]string `protobuf:"bytes,9,rep,name=properties,proto3" json:"properties,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 	// the following are read only for consumers of the API
@@ -1639,7 +1639,7 @@ func (x *AttachedEndpoint) GetEndpointId() string {
 	return ""
 }
 
-// opni-alerting internal use
+// monty-alerting internal use
 type RoutingNode struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -1695,7 +1695,7 @@ func (x *RoutingNode) GetFullAttachedEndpoints() *FullAttachedEndpoints {
 	return nil
 }
 
-// opni-alerting internal use
+// monty-alerting internal use
 type EndpointRoutingMap struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -1743,7 +1743,7 @@ func (x *EndpointRoutingMap) GetEndpoints() map[string]*EndpointMetadata {
 	return nil
 }
 
-// opni-alerting internal use
+// monty-alerting internal use
 type RoutingRelationships struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -1791,7 +1791,7 @@ func (x *RoutingRelationships) GetConditions() map[string]*EndpointRoutingMap {
 	return nil
 }
 
-// opni-alerting internal use
+// monty-alerting internal use
 type EndpointMetadata struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

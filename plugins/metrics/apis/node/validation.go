@@ -1,8 +1,8 @@
 package node
 
 import (
+	"github.com/aity-cloud/monty/pkg/validation"
 	"github.com/prometheus/common/model"
-	"github.com/rancher/opni/pkg/validation"
 )
 
 func (s *SyncRequest) Validate() error {

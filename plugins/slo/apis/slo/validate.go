@@ -3,9 +3,9 @@ package slo
 import (
 	"time"
 
+	"github.com/aity-cloud/monty/pkg/slo/shared"
+	"github.com/aity-cloud/monty/pkg/validation"
 	prommodel "github.com/prometheus/common/model"
-	"github.com/rancher/opni/pkg/slo/shared"
-	"github.com/rancher/opni/pkg/validation"
 )
 
 var (

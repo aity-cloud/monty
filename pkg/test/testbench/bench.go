@@ -9,14 +9,14 @@ import (
 	"log/slog"
 
 	"emperror.dev/errors"
+	"github.com/aity-cloud/monty/internal/bench"
+	"github.com/aity-cloud/monty/pkg/logger"
+	"github.com/aity-cloud/monty/pkg/test"
 	"github.com/golang/snappy"
 	"github.com/prometheus/common/config"
 	"github.com/prometheus/common/model"
 	"github.com/prometheus/prometheus/prompb"
 	"github.com/prometheus/prometheus/storage/remote"
-	"github.com/rancher/opni/internal/bench"
-	"github.com/rancher/opni/pkg/logger"
-	"github.com/rancher/opni/pkg/test"
 )
 
 // Adapted from cortex benchtool
