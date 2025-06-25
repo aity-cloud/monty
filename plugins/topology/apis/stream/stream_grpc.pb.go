@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.3.0
 // - ragu               v1.0.0
-// source:  github.com/aity-cloud/monty/plugins/topology/apis/stream/stream.proto
+// source: github.com/aity-cloud/monty/plugins/topology/apis/stream/stream.proto
 
 package stream
 

@@ -248,7 +248,7 @@ func getControllerContainer(containers []corev1.Container) *corev1.Container {
 }
 
 func makeEntry(container *corev1.Container, packageType kubernetes.ComponentType) *controlv1.UpdateManifestEntry {
-	entryURN := urn.NewOpniURN(urn.Agent, kubernetes.UpdateStrategy, string(packageType))
+	entryURN := urn.NewMontyURN(urn.Agent, kubernetes.UpdateStrategy, string(packageType))
 	image, err := oci.Parse(container.Image)
 	if err != nil {
 		return nil

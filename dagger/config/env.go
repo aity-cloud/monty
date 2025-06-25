@@ -13,7 +13,7 @@ var (
 	tagRegexp       = regexp.MustCompile(`[\w][\w.-]{0,127}`)
 )
 
-const EnvPrefix = "_OPNI_"
+const EnvPrefix = "_MONTY_"
 
 type SpecialCaseEnv struct {
 	EnvVar    string

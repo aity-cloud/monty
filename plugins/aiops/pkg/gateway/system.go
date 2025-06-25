@@ -43,7 +43,7 @@ func newNatsConnection() (*nats.Conn, error) {
 }
 
 func (s *AIOpsPlugin) setOpensearchConnection() {
-	esEndpoint := fmt.Sprintf("https://opni-opensearch-svc.%s.svc:9200", s.storageNamespace)
+	esEndpoint := fmt.Sprintf("https://monty-opensearch-svc.%s.svc:9200", s.storageNamespace)
 	retrier := backoffv2.Exponential(
 		backoffv2.WithMaxRetries(0),
 		backoffv2.WithMinInterval(5*time.Second),

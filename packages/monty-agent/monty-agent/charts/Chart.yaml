@@ -1,0 +1,15 @@
+annotations:
+  catalog.cattle.io/display-name: Monty Agent
+  catalog.cattle.io/os: linux
+  catalog.cattle.io/namespace: monty
+  catalog.cattle.io/release-name: monty-agent
+apiVersion: v2
+appVersion: 0.12.1
+dependencies:
+- condition: kube-prometheus-stack.enabled
+  name: kube-prometheus-stack
+  repository: file://./charts/kube-prometheus-stack
+description: Monty Agent
+name: monty-agent
+type: application
+version: 0.12.1

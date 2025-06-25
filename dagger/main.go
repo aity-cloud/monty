@@ -304,29 +304,29 @@ func (b *Builder) runInTreeBuilds(ctx context.Context) error {
 		WithExec(yarn([]string{"install", "--frozen-lockfile"})).
 		WithExec(yarn("build"))
 
-	archives := b.opniArchives(generated, "linux", "amd64")
+	archives := b.montyArchives(generated, "linux", "amd64")
 
 	plugins := archives.
 		Pipeline("Build Plugins").
 		WithExec(mage([]string{"build:plugins"}))
 
 	webDist := filepath.Join(b.workdir, "web", "dist")
-	opni := archives.
-		Pipeline("Build Opni").
+	monty := archives.
+		Pipeline("Build Monty").
 		WithMountedDirectory(webDist, nodeBuild.Directory(webDist)).
 		WithExec(mage([]string{"build:monty"})).
 		WithExec([]string{"bin/monty", "completion", "bash"}, dagger.ContainerWithExecOpts{RedirectStdout: "/etc/bash_completion.d/monty"})
 
 	minimal := archives.
-		Pipeline("Build Opni Minimal").
-		WithExec(mage([]string{"build:opniminimal"}))
+		Pipeline("Build Monty Minimal").
+		WithExec(mage([]string{"build:montyminimal"}))
 
 	lint := archives.
 		Pipeline("Run Linter").
 		With(b.caches.GolangciLint).
 		WithExec(mage([]string{"lint"}))
 
-	test := opni.
+	test := monty.
 		WithExec(mage([]string{"test:binconfig"}))
 
 	{ // lint & test
@@ -378,9 +378,9 @@ func (b *Builder) runInTreeBuilds(ctx context.Context) error {
 
 	fullImage := alpineBase.
 		Pipeline("Full Image").
-		WithFile("/usr/bin/monty", opni.File(b.bin("monty"))).
+		WithFile("/usr/bin/monty", monty.File(b.bin("monty"))).
 		WithDirectory("/var/lib/monty/plugins", plugins.Directory(b.bin("plugins"))).
-		WithDirectory("/etc/bash_completion.d", opni.Directory("/etc/bash_completion.d")).
+		WithDirectory("/etc/bash_completion.d", monty.Directory("/etc/bash_completion.d")).
 		WithEntrypoint([]string{"monty"})
 
 	minimalImage := alpineBase.
@@ -422,28 +422,28 @@ func (b *Builder) runInTreeBuilds(ctx context.Context) error {
 
 	eg.Go(func() error {
 		var minimalRef string
-		if b.Images.OpniMinimal.Push {
+		if b.Images.MontyMinimal.Push {
 			var err error
 			minimalRef, err = minimalImage.
-				WithRegistryAuth(b.Images.OpniMinimal.RegistryAuth()).
-				Publish(ctx, b.Images.OpniMinimal.Ref())
+				WithRegistryAuth(b.Images.MontyMinimal.RegistryAuth()).
+				Publish(ctx, b.Images.MontyMinimal.Ref())
 			if err != nil {
-				return fmt.Errorf("failed to publish image %s: %w", b.Images.OpniMinimal.Ref(), err)
+				return fmt.Errorf("failed to publish image %s: %w", b.Images.MontyMinimal.Ref(), err)
 			}
 			fmt.Println("published image:", minimalRef)
 		}
 
-		if b.Images.Opni.Push {
+		if b.Images.Monty.Push {
 			if minimalRef != "" {
 				fullImage = fullImage.
-					WithEnvVariable("OPNI_MINIMAL_IMAGE_REF", minimalRef).
+					WithEnvVariable("MONTY_MINIMAL_IMAGE_REF", minimalRef).
 					WithLabel("monty.io.minimal-image-ref", minimalRef)
 			}
 			ref, err := fullImage.
-				WithRegistryAuth(b.Images.Opni.RegistryAuth()).
-				Publish(ctx, b.Images.Opni.Ref())
+				WithRegistryAuth(b.Images.Monty.RegistryAuth()).
+				Publish(ctx, b.Images.Monty.Ref())
 			if err != nil {
-				return fmt.Errorf("failed to publish image %s: %w", b.Images.Opni.Ref(), err)
+				return fmt.Errorf("failed to publish image %s: %w", b.Images.Monty.Ref(), err)
 			}
 			fmt.Println("published image:", ref)
 		}
@@ -476,12 +476,12 @@ func (b *Builder) runOutOfTreeBuilds(ctx context.Context) error {
 		Pipeline("Opensearch Image").
 		From(fmt.Sprintf("opensearchproject/opensearch:%s", b.Images.Opensearch.Build.OpensearchVersion)).
 		WithExec([]string{"opensearch-plugin", "-s", "install", "-b",
-			fmt.Sprintf("https:// github.com/aity-cloud/monty-ingest-plugin/releases/download/v%s/opnipreprocessing.zip", b.Images.Opensearch.Build.PluginVersion),
+			fmt.Sprintf("https:// github.com/aity-cloud/monty-ingest-plugin/releases/download/v%s/montypreprocessing.zip", b.Images.Opensearch.Build.PluginVersion),
 		}).
 		WithDirectory("/usr/share/opensearch/extensions", b.client.Directory(), dagger.ContainerWithDirectoryOpts{Owner: "1000:1000"})
 
 	pythonBase := b.client.Container().
-		Pipeline("Opni Python Base Image").
+		Pipeline("Monty Python Base Image").
 		From("registry.suse.com/suse/sle15:15.3").
 		WithExec([]string{"zypper", "--non-interactive", "in", "python39", "python39-pip", "python39-devel"})
 
@@ -495,26 +495,26 @@ func (b *Builder) runOutOfTreeBuilds(ctx context.Context) error {
 		WithFile("/requirements-torch.txt", b.sources.File("images/python/requirements-torch.txt")).
 		WithExec([]string{"/opt/venv/bin/pip", "install", "-r", "/requirements-torch.txt"})
 
-	opniPythonBase := pythonBase.
+	montyPythonBase := pythonBase.
 		WithDirectory("/opt/venv", baseBuilder.Directory("/opt/venv")).
 		WithEnvVariable("PATH", "/opt/venv/bin:${PATH}", dagger.ContainerWithEnvVariableOpts{Expand: true})
 
-	opniPythonTorch := opniPythonBase.
+	montyPythonTorch := montyPythonBase.
 		WithDirectory("/opt/venv", torchBuilder.Directory("/opt/venv")).
 		WithEnvVariable("PATH", "/usr/local/nvidia/bin:/usr/local/cuda/bin:${PATH}", dagger.ContainerWithEnvVariableOpts{Expand: true}).
 		WithEnvVariable("LD_LIBRARY_PATH", "/usr/local/nvidia/lib:/usr/local/nvidia/lib64", dagger.ContainerWithEnvVariableOpts{Expand: true}).
 		WithEnvVariable("NVIDIA_VISIBLE_DEVICES", "all").
 		WithEnvVariable("NVIDIA_DRIVER_CAPABILITIES", "compute,utility")
 
-	opensearchUpdateService := opniPythonBase.
+	opensearchUpdateService := montyPythonBase.
 		Pipeline("Opensearch Update Service Image").
 		WithDirectory(".", b.sources.Directory("aiops/")).
 		WithExec([]string{"pip", "install", "-r", "requirements.txt"}).
 		WithEntrypoint([]string{"python", "monty-opensearch-update-service/opensearch-update-service/app/main.py"})
 
 	imageTargets := map[*config.ImageTarget]*dagger.Container{
-		&b.Images.PythonBase:               opniPythonBase,
-		&b.Images.PythonTorch:              opniPythonTorch,
+		&b.Images.PythonBase:               montyPythonBase,
+		&b.Images.PythonTorch:              montyPythonTorch,
 		&b.Images.Opensearch.Opensearch:    opensearch,
 		&b.Images.Opensearch.Dashboards:    opensearchDashboards,
 		&b.Images.Opensearch.UpdateService: opensearchUpdateService,
@@ -540,7 +540,7 @@ func (b *Builder) runOutOfTreeBuilds(ctx context.Context) error {
 	return eg.Wait()
 }
 
-func (b *Builder) opniArchives(build *dagger.Container, os, arch string) *dagger.Container {
+func (b *Builder) montyArchives(build *dagger.Container, os, arch string) *dagger.Container {
 	archives := build.
 		Pipeline("Build Archives").
 		WithEnvVariable("GOOS", os).
@@ -559,18 +559,18 @@ func (b *Builder) releaser(ctx context.Context, build *dagger.Container) error {
 
 			fmt.Printf("building for: %s %s\n", os, arch)
 
-			archives := b.opniArchives(build, os, arch)
-			opni := archives.
-				Pipeline("Build Opni").
-				WithExec(mage([]string{"build:opnireleasecli", platformFileSuffix}))
+			archives := b.montyArchives(build, os, arch)
+			monty := archives.
+				Pipeline("Build Monty").
+				WithExec(mage([]string{"build:montyreleasecli", platformFileSuffix}))
 
-			zippedFile := fmt.Sprintf("opni_%s.tar.gz", platformFileSuffix)
+			zippedFile := fmt.Sprintf("monty_%s.tar.gz", platformFileSuffix)
 			filePath := b.bin(zippedFile)
 
 			releaser := gh.
 				Pipeline("Upload release file").
 				WithSecretVariable("GH_TOKEN", b.Releaser.Auth.Secret).
-				WithFile(filePath, opni.File(filePath)).
+				WithFile(filePath, monty.File(filePath)).
 				WithExec([]string{"gh", "release", "upload",
 					b.Releaser.Tag,
 					filePath,

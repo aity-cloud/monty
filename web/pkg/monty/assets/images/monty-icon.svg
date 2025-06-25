@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 32" width="200" height="267">
+  <!-- Cloud outline -->
+  <path
+    d="M3 15a4 4 0 014-4h1.26a6 6 0 0111.48 0H17a4 4 0 110 8H7a4 4 0 01-4-4z"
+    fill="none"
+    stroke="#D90000"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+
+  <!-- Monitoring bars -->
+  <rect x="8.5" y="15" width="1" height="3" fill="#D90000"/>
+  <rect x="11.5" y="13" width="1" height="5" fill="#D90000"/>
+  <rect x="14.5" y="15" width="1" height="3" fill="#D90000"/>
+
+  <!-- “Heartbeat” indicator -->
+  <circle cx="12" cy="21" r="1" fill="#3498DB"/>
+</svg>

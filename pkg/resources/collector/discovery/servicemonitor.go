@@ -454,13 +454,13 @@ func (s *serviceMonitorScrapeConfigRetriever) generateStaticServiceConfig(
 		dur := parseStrToDuration(string(ep.Interval))
 		cfg.ScrapeInterval = dur
 	} else {
-		cfg.ScrapeInterval = model.Duration(opniDefaultScrapeInterval)
+		cfg.ScrapeInterval = model.Duration(montyDefaultScrapeInterval)
 	}
 	if ep.ScrapeTimeout != "" {
 		dur := parseStrToDuration(string(ep.ScrapeTimeout))
 		cfg.ScrapeTimeout = dur
 	} else {
-		cfg.ScrapeTimeout = model.Duration(opniDefaultScrapeTimeout)
+		cfg.ScrapeTimeout = model.Duration(montyDefaultScrapeTimeout)
 	}
 	if ep.Path != "" {
 		cfg.MetricsPath = ep.Path

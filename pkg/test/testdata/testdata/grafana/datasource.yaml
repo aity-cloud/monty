@@ -19,6 +19,6 @@ datasources:
       +TAFBgMrZXADQQCyIWgBnwzsLUzUC4eZJ8kzrEtZ322XAIpxilhH0erGQUN2QNdI
       H91MK9otHGxreVuO5vSEp97t7+Zsh6cAlesC
       -----END CERTIFICATE-----
-  name: Opni
+  name: Monty
   type: prometheus
   url: {{ .DatasourceUrl }}/api/prom

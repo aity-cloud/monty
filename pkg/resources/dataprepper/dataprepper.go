@@ -79,7 +79,7 @@ func (r *Reconciler) Reconcile() (retResult *reconcile.Result, retErr error) {
 	conditions := []string{}
 
 	defer func() {
-		// When the reconciler is done, figure out what the state of the opnicluster
+		// When the reconciler is done, figure out what the state of the montycluster
 		// is and set it in the state field accordingly.
 		op := k8sutil.LoadResult(retResult, retErr)
 		err := retry.RetryOnConflict(retry.DefaultRetry, func() error {

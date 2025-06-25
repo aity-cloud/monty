@@ -556,7 +556,7 @@ func (c *Client) ListAlerts(ctx context.Context) (alertmanagerv2.AlertGroups, er
 			alerts := []*alertmanagerv2.GettableAlert{}
 			for _, a := range ag.Alerts {
 
-				key := fmt.Sprintf("%s-%s", a.Labels[message.NotificationPropertyOpniUuid], a.Labels[message.NotificationPropertyFingerprint])
+				key := fmt.Sprintf("%s-%s", a.Labels[message.NotificationPropertyMontyUuid], a.Labels[message.NotificationPropertyFingerprint])
 				if _, ok := dedupedAlerts[key]; !ok {
 					dedupedAlerts[key] = struct{}{}
 					alerts = append(alerts, a)
@@ -622,8 +622,8 @@ func (c *Client) PostAlarm(
 	addrs := c.MemberPeers()
 	n := len(addrs)
 	errors := []error{}
-	if _, ok := alarm.Labels[message.NotificationPropertyOpniUuid]; !ok {
-		alarm.Labels[message.NotificationPropertyOpniUuid] = alarm.Id
+	if _, ok := alarm.Labels[message.NotificationPropertyMontyUuid]; !ok {
+		alarm.Labels[message.NotificationPropertyMontyUuid] = alarm.Id
 	}
 	if _, ok := alarm.Annotations[message.NotificationContentAlarmName]; !ok {
 		alarm.Annotations[message.NotificationContentAlarmName] = alarm.Id
@@ -683,8 +683,8 @@ func (c *Client) PostNotification(
 	notifiedInstances := 0
 	errors := []error{}
 	var b bytes.Buffer
-	if _, ok := notification.Labels[message.NotificationPropertyOpniUuid]; !ok {
-		notification.Labels[message.NotificationPropertyOpniUuid] = notification.Id
+	if _, ok := notification.Labels[message.NotificationPropertyMontyUuid]; !ok {
+		notification.Labels[message.NotificationPropertyMontyUuid] = notification.Id
 	}
 	if _, ok := notification.Labels[message.NotificationPropertyFingerprint]; !ok {
 		notification.Labels[message.NotificationPropertyFingerprint] = string(fingerprint.Default())
@@ -740,8 +740,8 @@ func (c *Client) ResolveAlert(ctx context.Context, alertObject AlertObject) erro
 	resolvedInstances := 0
 	errors := []error{}
 	var b bytes.Buffer
-	if _, ok := alertObject.Labels[message.NotificationPropertyOpniUuid]; !ok {
-		alertObject.Labels[message.NotificationPropertyOpniUuid] = alertObject.Id
+	if _, ok := alertObject.Labels[message.NotificationPropertyMontyUuid]; !ok {
+		alertObject.Labels[message.NotificationPropertyMontyUuid] = alertObject.Id
 	}
 	t := time.Now()
 	for _, addr := range addrs {
@@ -904,15 +904,15 @@ func (c *Client) PostSilence(ctx context.Context, alertingObjectId string, dur t
 		reqBody := alertmanagerv2.PostableSilence{
 			ID: lo.FromPtrOr(incomingSilenceId, ""),
 			Silence: alertmanagerv2.Silence{
-				Comment:   lo.ToPtr("Silence created by Opni Admin"),
-				CreatedBy: lo.ToPtr("Opni admin"),
+				Comment:   lo.ToPtr("Silence created by Monty Admin"),
+				CreatedBy: lo.ToPtr("Monty admin"),
 				StartsAt:  lo.ToPtr(ToOpenApiTime(t)),
 				EndsAt:    lo.ToPtr(ToOpenApiTime(t.Add(dur))),
 				Matchers: alertmanagerv2.Matchers{
 					{
 						IsEqual: lo.ToPtr(true),
 						IsRegex: lo.ToPtr(false),
-						Name:    lo.ToPtr(message.NotificationPropertyOpniUuid),
+						Name:    lo.ToPtr(message.NotificationPropertyMontyUuid),
 						Value:   lo.ToPtr(alertingObjectId),
 					},
 				},
@@ -1010,10 +1010,10 @@ func (c *Client) ListAlarmMessages(ctx context.Context, listReq *alertingv1.List
 			if msg.Notification == nil {
 				continue
 			}
-			if _, ok := msg.Notification.GetProperties()[message.NotificationPropertyOpniUuid]; !ok {
+			if _, ok := msg.Notification.GetProperties()[message.NotificationPropertyMontyUuid]; !ok {
 				continue
 			}
-			id = msg.Notification.GetProperties()[message.NotificationPropertyOpniUuid]
+			id = msg.Notification.GetProperties()[message.NotificationPropertyMontyUuid]
 			if curMsg, ok := mappedMsgs[id]; !ok {
 				mappedMsgs[id] = msg
 			} else {
@@ -1079,10 +1079,10 @@ func (c *Client) ListNotificationMessages(
 			if msg.Notification == nil {
 				continue
 			}
-			if _, ok := msg.Notification.GetProperties()[message.NotificationPropertyOpniUuid]; !ok {
+			if _, ok := msg.Notification.GetProperties()[message.NotificationPropertyMontyUuid]; !ok {
 				continue
 			}
-			id = msg.Notification.GetProperties()[message.NotificationPropertyOpniUuid]
+			id = msg.Notification.GetProperties()[message.NotificationPropertyMontyUuid]
 			if curMsg, ok := mappedMsgs[id]; !ok {
 				mappedMsgs[id] = msg
 			} else {

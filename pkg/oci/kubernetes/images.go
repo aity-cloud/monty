@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	minimalImageRefEnv = "OPNI_MINIMAL_IMAGE_REF"
+	minimalImageRefEnv = "MONTY_MINIMAL_IMAGE_REF"
 	gatewayName        = "monty-gateway"
 )
 
@@ -24,7 +24,7 @@ var retryBackoff = wait.Backoff{
 	Jitter:   0.1,
 }
 
-func (d *kubernetesResolveImageDriver) getOpniImageString(ctx context.Context) (string, error) {
+func (d *kubernetesResolveImageDriver) getMontyImageString(ctx context.Context) (string, error) {
 	gateway := &corev1beta1.Gateway{}
 	retryFunc := func() error {
 		err := d.k8sClient.Get(ctx, client.ObjectKey{

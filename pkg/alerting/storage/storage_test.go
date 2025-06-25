@@ -63,7 +63,7 @@ type TestJetstreamAlertStorage struct {
 	spec.AlertingStorage[*testgrpc.TestSecret]
 }
 
-type TestJetstreamRouterStore[T routing.OpniRouting] struct {
+type TestJetstreamRouterStore[T routing.MontyRouting] struct {
 	spec.RouterStorage
 }
 
@@ -383,7 +383,7 @@ func BuildAlertingIncidentTrackerTestSuite(
 func BuildAlertRouterStorageTestSuite(
 	name string,
 	routerStoreConstructor func() spec.RouterStorage,
-	defaultRouter routing.OpniRouting,
+	defaultRouter routing.MontyRouting,
 ) bool {
 	return Describe(name, Ordered, Label("integration"), func() {
 		ctx, ca := context.WithCancel(context.Background())
@@ -398,7 +398,7 @@ func BuildAlertRouterStorageTestSuite(
 			Expect(routerStore).NotTo(BeNil())
 		})
 
-		var originalRouter routing.OpniRouting
+		var originalRouter routing.MontyRouting
 
 		When("we want to store a router object", func() {
 			It("should be able to put a default router and get it back", func() {
@@ -547,7 +547,7 @@ func BuildStorageClientSetSuite(
 							Description: "sample description",
 							Id:          id1Condition,
 							LastUpdated: timestamppb.Now(),
-							Severity:    alertingv1.OpniSeverity_Info,
+							Severity:    alertingv1.MontySeverity_Info,
 							AttachedEndpoints: &alertingv1.AttachedEndpoints{
 								Items: []*alertingv1.AttachedEndpoint{
 									{
@@ -569,7 +569,7 @@ func BuildStorageClientSetSuite(
 							Id:          id2Condition,
 							GroupId:     "test-group",
 							LastUpdated: timestamppb.Now(),
-							Severity:    alertingv1.OpniSeverity_Info,
+							Severity:    alertingv1.MontySeverity_Info,
 							AttachedEndpoints: &alertingv1.AttachedEndpoints{
 								Items: []*alertingv1.AttachedEndpoint{
 									{
@@ -590,7 +590,7 @@ func BuildStorageClientSetSuite(
 							Description: "sample description",
 							Id:          id1Condition,
 							LastUpdated: timestamppb.Now(),
-							Severity:    alertingv1.OpniSeverity_Info,
+							Severity:    alertingv1.MontySeverity_Info,
 							AttachedEndpoints: &alertingv1.AttachedEndpoints{
 								Items: []*alertingv1.AttachedEndpoint{
 									{
@@ -611,7 +611,7 @@ func BuildStorageClientSetSuite(
 							Description: "sample description",
 							Id:          id2Condition,
 							LastUpdated: timestamppb.Now(),
-							Severity:    alertingv1.OpniSeverity_Info,
+							Severity:    alertingv1.MontySeverity_Info,
 							AttachedEndpoints: &alertingv1.AttachedEndpoints{
 								Items: []*alertingv1.AttachedEndpoint{
 									{
@@ -632,7 +632,7 @@ func BuildStorageClientSetSuite(
 							Description: "sample description",
 							Id:          id1Condition,
 							LastUpdated: timestamppb.Now(),
-							Severity:    alertingv1.OpniSeverity_Info,
+							Severity:    alertingv1.MontySeverity_Info,
 							AttachedEndpoints: &alertingv1.AttachedEndpoints{
 								Items: []*alertingv1.AttachedEndpoint{
 									{
@@ -825,7 +825,7 @@ func BuildStorageClientSetSuite(
 				err := s.Conditions().Group("").Put(ctx, conditionId, &alertingv1.AlertCondition{
 					Name:        "sample condition",
 					Description: "sample condition",
-					Severity:    alertingv1.OpniSeverity_Info,
+					Severity:    alertingv1.MontySeverity_Info,
 					Id:          conditionId,
 					AlertType: &alertingv1.AlertTypeDetails{
 						Type: &alertingv1.AlertTypeDetails_PrometheusQuery{
@@ -877,12 +877,12 @@ func BuildStorageClientSetSuite(
 
 //var _ = BuildAlertRouterStorageTestSuite(
 //	"Alerting RouterV1 Jetstream Storage Test",
-//	func() spec.RouterStorage[*routing.OpniRouterV1] {
-//		return &TestJetstreamRouterStore[*routing.OpniRouterV1]{
+//	func() spec.RouterStorage[*routing.MontyRouterV1] {
+//		return &TestJetstreamRouterStore[*routing.MontyRouterV1]{
 //			RouterStorage: spec.NewJetstreamRouterStore(testObj, "/router"),
 //		}
 //	},
-//	routing.NewOpniRouterV1("http://localhost:3000"),
+//	routing.NewMontyRouterV1("http://localhost:3000"),
 //)
 
 var _ = BuildAlertRouterStorageTestSuite(
@@ -890,7 +890,7 @@ var _ = BuildAlertRouterStorageTestSuite(
 	func() spec.RouterStorage {
 		return mem.NewInMemoryRouterStore()
 	},
-	routing.NewDefaultOpniRouting(),
+	routing.NewDefaultMontyRouting(),
 )
 
 var _ = BuildAlertStorageTestSuite(

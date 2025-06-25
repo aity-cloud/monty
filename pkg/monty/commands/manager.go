@@ -78,8 +78,8 @@ func BuildManagerCmd() *cobra.Command {
 			defer upgradeChecker.Stop()
 		}
 
-		if err = (&controllers.AIOpniClusterReconciler{}).SetupWithManager(mgr); err != nil {
-			setupLog.Error(err, "unable to create controller", "controller", "AI OpniCluster")
+		if err = (&controllers.AIMontyClusterReconciler{}).SetupWithManager(mgr); err != nil {
+			setupLog.Error(err, "unable to create controller", "controller", "AI MontyCluster")
 			return err
 		}
 
@@ -187,9 +187,9 @@ func BuildManagerCmd() *cobra.Command {
 		features.PopulateFeatures(ctx, ctrl.GetConfigOrDie())
 		features.FeatureList.WatchConfigMap()
 
-		if err = (&controllers.LoggingOpniOpensearchReconciler{}).SetupWithManager(mgr); err != nil {
+		if err = (&controllers.LoggingMontyOpensearchReconciler{}).SetupWithManager(mgr); err != nil {
 			defer cancel()
-			setupLog.Error(err, "unable to create controller", "controller", "Logging OpniOpensearch")
+			setupLog.Error(err, "unable to create controller", "controller", "Logging MontyOpensearch")
 			return err
 		}
 
@@ -224,7 +224,7 @@ func BuildManagerCmd() *cobra.Command {
 
 	cmd := &cobra.Command{
 		Use:   "manager",
-		Short: "Run the Opni Manager",
+		Short: "Run the Monty Manager",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			signalCtx := ctrl.SetupSignalHandler()
 			for {
@@ -248,5 +248,5 @@ func BuildManagerCmd() *cobra.Command {
 }
 
 func init() {
-	AddCommandsToGroup(OpniComponents, BuildManagerCmd())
+	AddCommandsToGroup(MontyComponents, BuildManagerCmd())
 }

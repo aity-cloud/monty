@@ -21,7 +21,7 @@
       }
     ]
   },
-  "description": "Detailed breakdown of Opni SLOs",
+  "description": "Detailed breakdown of Monty SLOs",
   "editable": true,
   "fiscalYearStartMonth": 0,
   "gnetId": 14348,
@@ -182,8 +182,8 @@
           "options": {
             "include": {
               "names": [
-                "slo_opni_service",
-                "slo_opni_name",
+                "slo_monty_service",
+                "slo_monty_name",
                 "Value"
               ]
             }
@@ -199,14 +199,14 @@
         {
           "id": "renameByRegex",
           "options": {
-            "regex": "slo_opni_service",
+            "regex": "slo_monty_service",
             "renamePattern": "Service"
           }
         },
         {
           "id": "renameByRegex",
           "options": {
-            "regex": "slo_opni_name",
+            "regex": "slo_monty_name",
             "renamePattern": "SLO"
           }
         }
@@ -304,7 +304,7 @@
           "exemplar": true,
           "expr": "slo:current_burn_rate:ratio{__tenant_id__=\"${clusterId}\"} > ${min_burning_rate}",
           "interval": "",
-          "legendFormat": "{{slo_opni_name}}",
+          "legendFormat": "{{slo_monty_name}}",
           "queryType": "randomWalk",
           "range": true,
           "refId": "A"
@@ -398,11 +398,11 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "slo:objective:ratio{slo_opni_name=\"$slo\", __tenant_id__=\"$clusterId\", slo_opni_service=\"$service\"}",
+          "expr": "slo:objective:ratio{slo_monty_name=\"$slo\", __tenant_id__=\"$clusterId\", slo_monty_service=\"$service\"}",
           "format": "time_series",
           "instant": true,
           "interval": "",
-          "legendFormat": "{{slo_opni_name}}",
+          "legendFormat": "{{slo_monty_name}}",
           "queryType": "randomWalk",
           "range": false,
           "refId": "A"
@@ -535,7 +535,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "1 - (max(slo:sli_error:ratio_rate${sli_window}{slo_opni_name=\"$slo\", __tenant_id__=\"$clusterId\", slo_opni_service=\"$service\"}) OR on() vector(0))",
+          "expr": "1 - (max(slo:sli_error:ratio_rate${sli_window}{slo_monty_name=\"$slo\", __tenant_id__=\"$clusterId\", slo_monty_service=\"$service\"}) OR on() vector(0))",
           "interval": "",
           "legendFormat": "SLI",
           "queryType": "randomWalk",
@@ -549,7 +549,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "slo:objective:ratio{slo_opni_name=\"$slo\", __tenant_id__=\"$clusterId\", slo_opni_service=\"$service\"}",
+          "expr": "slo:objective:ratio{slo_monty_name=\"$slo\", __tenant_id__=\"$clusterId\", slo_monty_service=\"$service\"}",
           "hide": false,
           "instant": false,
           "interval": "",
@@ -619,7 +619,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "slo:objective:ratio{slo_opni_name=\"$slo\", __tenant_id__=\"$clusterId\", slo_opni_service=\"$service\"}",
+          "expr": "slo:objective:ratio{slo_monty_name=\"$slo\", __tenant_id__=\"$clusterId\", slo_monty_service=\"$service\"}",
           "instant": true,
           "interval": "",
           "legendFormat": "Objective",
@@ -695,7 +695,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "slo:current_burn_rate:ratio{__tenant_id__=\"$clusterId\", slo_opni_service=\"$service\", slo_opni_name=\"$slo\"} or on() vector(0)",
+          "expr": "slo:current_burn_rate:ratio{__tenant_id__=\"$clusterId\", slo_monty_service=\"$service\", slo_monty_name=\"$slo\"} or on() vector(0)",
           "instant": true,
           "interval": "",
           "legendFormat": "Current burning budget %",
@@ -771,7 +771,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "1-(\n  sum_over_time(\n    (\n       slo:sli_error:ratio_rate1h{slo_opni_name=\"$slo\", __tenant_id__=\"$clusterId\", slo_opni_service=\"$service\"}\n       * on() group_left() (\n         month() == bool vector(${__to:date:M})\n       )\n    )[32d:1h]\n  )\n  / on(slo_opni_id)\n  (\n    slo:error_budget:ratio{slo_opni_name=\"$slo\", __tenant_id__=\"$clusterId\", slo_opni_service=\"$service\"} * on() group_left() (24 * days_in_month())\n  )\n)",
+          "expr": "1-(\n  sum_over_time(\n    (\n       slo:sli_error:ratio_rate1h{slo_monty_name=\"$slo\", __tenant_id__=\"$clusterId\", slo_monty_service=\"$service\"}\n       * on() group_left() (\n         month() == bool vector(${__to:date:M})\n       )\n    )[32d:1h]\n  )\n  / on(slo_monty_id)\n  (\n    slo:error_budget:ratio{slo_monty_name=\"$slo\", __tenant_id__=\"$clusterId\", slo_monty_service=\"$service\"} * on() group_left() (24 * days_in_month())\n  )\n)",
           "instant": true,
           "interval": "1h",
           "legendFormat": "Remaining error budget (month)",
@@ -847,7 +847,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "slo:period_error_budget_remaining:ratio{slo_opni_name=\"$slo\", __tenant_id__=\"$clusterId\", slo_opni_service=\"$service\"} or on() vector(1)",
+          "expr": "slo:period_error_budget_remaining:ratio{slo_monty_name=\"$slo\", __tenant_id__=\"$clusterId\", slo_monty_service=\"$service\"} or on() vector(1)",
           "instant": true,
           "interval": "",
           "legendFormat": "Projected remaining error budget (30d window)",
@@ -987,7 +987,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "1-(\n  sum_over_time(\n    (\n       slo:sli_error:ratio_rate1h{slo_opni_name=\"$slo\", __tenant_id__=\"$clusterId\", slo_opni_service=\"$service\"}\n       * on() group_left() (\n         month() == bool vector(${__to:date:M})\n       )\n    )[32d:1h]\n  )\n  / on(slo_opni_id)\n  (\n    slo:error_budget:ratio{slo_opni_name=\"$slo\", __tenant_id__=\"$clusterId\", slo_opni_service=\"$service\"} *on() group_left() (24 * days_in_month())\n  )\n)",
+          "expr": "1-(\n  sum_over_time(\n    (\n       slo:sli_error:ratio_rate1h{slo_monty_name=\"$slo\", __tenant_id__=\"$clusterId\", slo_monty_service=\"$service\"}\n       * on() group_left() (\n         month() == bool vector(${__to:date:M})\n       )\n    )[32d:1h]\n  )\n  / on(slo_monty_id)\n  (\n    slo:error_budget:ratio{slo_monty_name=\"$slo\", __tenant_id__=\"$clusterId\", slo_monty_service=\"$service\"} *on() group_left() (24 * days_in_month())\n  )\n)",
           "hide": false,
           "interval": "1h",
           "legendFormat": "Remaining error budget",
@@ -1104,7 +1104,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "slo:current_burn_rate:ratio{slo_opni_name=\"$slo\", __tenant_id__=\"$clusterId\", slo_opni_service=\"$service\"} > 0",
+          "expr": "slo:current_burn_rate:ratio{slo_monty_name=\"$slo\", __tenant_id__=\"$clusterId\", slo_monty_service=\"$service\"} > 0",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -1211,7 +1211,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "max(ALERTS{__tenant_id__=\"$clusterId\", alertname=\"slo_alert_page\", slo_opni_service=\"$service\", slo_opni_name=\"$slo\"}) OR on() vector(0)",
+          "expr": "max(ALERTS{__tenant_id__=\"$clusterId\", alertname=\"slo_alert_page\", slo_monty_service=\"$service\", slo_monty_name=\"$slo\"}) OR on() vector(0)",
           "instant": true,
           "interval": "",
           "legendFormat": "Warning alert",
@@ -1301,7 +1301,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "max(ALERTS{__tenant_id__=\"$clusterId\", slo_severity=\"ticket\", slo_opni_service=\"$service\", slo_opni_name=\"$slo\"}) OR on() vector(0)",
+          "expr": "max(ALERTS{__tenant_id__=\"$clusterId\", slo_severity=\"ticket\", slo_monty_service=\"$service\", slo_monty_name=\"$slo\"}) OR on() vector(0)",
           "instant": true,
           "interval": "",
           "legendFormat": "Critical alert",
@@ -1319,7 +1319,7 @@
     "service levels",
     "sli",
     "slo",
-    "opni"
+    "monty"
   ],
   "templating": {
     "list": [
@@ -1353,8 +1353,8 @@
       {
         "current": {
           "selected": false,
-          "text": "Opni",
-          "value": "Opni"
+          "text": "Monty",
+          "value": "Monty"
         },
         "hide": 0,
         "includeAll": false,
@@ -1378,14 +1378,14 @@
           "type": "prometheus",
           "uid": "${DS_PROMETHEUS}"
         },
-        "definition": "label_values(slo:objective:ratio{__tenant_id__=\"$clusterId\"}, slo_opni_service)",
+        "definition": "label_values(slo:objective:ratio{__tenant_id__=\"$clusterId\"}, slo_monty_service)",
         "hide": 0,
         "includeAll": true,
         "multi": true,
         "name": "service",
         "options": [],
         "query": {
-          "query": "label_values(slo:objective:ratio{__tenant_id__=\"$clusterId\"}, slo_opni_service)",
+          "query": "label_values(slo:objective:ratio{__tenant_id__=\"$clusterId\"}, slo_monty_service)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 2,
@@ -1411,14 +1411,14 @@
           "type": "prometheus",
           "uid": "${DS_PROMETHEUS}"
         },
-        "definition": "label_values(slo:objective:ratio{slo_opni_service=\"${service}\", __tenant_id__=\"$clusterId\"}, slo_opni_name)",
+        "definition": "label_values(slo:objective:ratio{slo_monty_service=\"${service}\", __tenant_id__=\"$clusterId\"}, slo_monty_name)",
         "hide": 0,
         "includeAll": true,
         "multi": true,
         "name": "slo",
         "options": [],
         "query": {
-          "query": "label_values(slo:objective:ratio{slo_opni_service=\"${service}\", __tenant_id__=\"$clusterId\"}, slo_opni_name)",
+          "query": "label_values(slo:objective:ratio{slo_monty_service=\"${service}\", __tenant_id__=\"$clusterId\"}, slo_monty_name)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 2,
@@ -1520,8 +1520,8 @@
   },
   "timepicker": {},
   "timezone": "",
-  "title": "Opni Detailed Slos",
-  "uid": "opni-slo",
+  "title": "Monty Detailed Slos",
+  "uid": "monty-slo",
   "version": 9,
   "weekStart": ""
 }

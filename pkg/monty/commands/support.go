@@ -41,7 +41,7 @@ func BuildSupportCmd() *cobra.Command {
 	supportCmd := &cobra.Command{
 		Use:     "support",
 		Aliases: []string{"support-agent"},
-		Short:   "Opni support agent",
+		Short:   "Monty support agent",
 	}
 
 	supportCmd.AddCommand(BuildSupportBootstrapCmd())
@@ -250,7 +250,7 @@ func BuildSupportShipCmd() *cobra.Command {
 
 	shipCmd := &cobra.Command{
 		Use:   "ship",
-		Short: "Ship support logs to Opni",
+		Short: "Ship support logs to Monty",
 		ValidArgs: []string{
 			string(RKE),
 			string(K3S),

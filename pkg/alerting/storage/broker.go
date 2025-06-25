@@ -10,7 +10,7 @@ import (
 	alertingv1 "github.com/aity-cloud/monty/pkg/apis/alerting/v1"
 )
 
-var _ spec.RouterStorage = (*jetstream.JetstreamRouterStore[routing.OpniRouting])(nil)
+var _ spec.RouterStorage = (*jetstream.JetstreamRouterStore[routing.MontyRouting])(nil)
 var _ spec.AlertingStorage[interfaces.AlertingSecret] = (*jetstream.JetStreamAlertingStorage[interfaces.AlertingSecret])(nil)
 var _ spec.AlertingStateCache[*alertingv1.CachedState] = (*jetstream.JetStreamAlertingStateCache)(nil)
 var _ spec.AlertingIncidentTracker[*alertingv1.IncidentIntervals] = (*jetstream.JetStreamAlertingIncidentTracker)(nil)

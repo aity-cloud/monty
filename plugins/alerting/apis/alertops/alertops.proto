@@ -110,7 +110,7 @@ message InstallStatus {
 }
 
 message ClusterConfiguration {
-    // number of replicas for the opni-alerting (odd-number for HA)
+    // number of replicas for the monty-alerting (odd-number for HA)
     int32 numReplicas = 2;
 
     // Maximum time to wait for cluster

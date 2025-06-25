@@ -8,7 +8,7 @@ import (
 )
 
 var (
-	defaultSeverity = alertingv1.OpniSeverity_Info.String()
+	defaultSeverity = alertingv1.MontySeverity_Info.String()
 )
 
 const (

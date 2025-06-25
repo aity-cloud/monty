@@ -26,7 +26,7 @@ import (
 	corev1 "k8s.io/api/core/v1"
 )
 
-const defaultOpniVersion = "0.12.1"
+const defaultMontyVersion = "0.12.1"
 
 type ClusterStatus int
 
@@ -128,7 +128,7 @@ func (m *LoggingManagerV2) CreateOrUpdateOpensearchCluster(ctx context.Context, 
 
 	version := strings.TrimPrefix(versions.Version, "v")
 	if version == "unversioned" {
-		version = defaultOpniVersion
+		version = defaultMontyVersion
 	}
 
 	err := m.managementDriver.CreateOrUpdateCluster(ctx, cluster, version, m.natsRef.Name)
@@ -143,7 +143,7 @@ func (m *LoggingManagerV2) CreateOrUpdateOpensearchCluster(ctx context.Context, 
 func (m *LoggingManagerV2) UpgradeAvailable(ctx context.Context, _ *emptypb.Empty) (*loggingadmin.UpgradeAvailableResponse, error) {
 	version := strings.TrimPrefix(versions.Version, "v")
 	if version == "unversioned" {
-		version = defaultOpniVersion
+		version = defaultMontyVersion
 	}
 
 	upgrade, err := m.managementDriver.UpgradeAvailable(ctx, version)
@@ -159,7 +159,7 @@ func (m *LoggingManagerV2) UpgradeAvailable(ctx context.Context, _ *emptypb.Empt
 func (m *LoggingManagerV2) DoUpgrade(ctx context.Context, options *loggingadmin.UpgradeOptions) (*emptypb.Empty, error) {
 	version := strings.TrimPrefix(versions.Version, "v")
 	if version == "unversioned" {
-		version = defaultOpniVersion
+		version = defaultMontyVersion
 	}
 
 	if options.SnapshotCluster {

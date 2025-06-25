@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	OpniVersionBuildInfoKey = "monty.version"
+	MontyVersionBuildInfoKey = "monty.version"
 )
 
 func ReadBuildInfo() (*corev1.BuildInfo, bool) {
@@ -28,7 +28,7 @@ func ReadBuildInfo() (*corev1.BuildInfo, bool) {
 
 	protoBuildInfo.Settings = append(protoBuildInfo.Settings,
 		&corev1.BuildSetting{
-			Key:   OpniVersionBuildInfoKey,
+			Key:   MontyVersionBuildInfoKey,
 			Value: Version,
 		},
 	)

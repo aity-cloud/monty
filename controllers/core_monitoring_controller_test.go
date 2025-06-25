@@ -37,8 +37,8 @@ var _ = Describe("Monitoring Controller", Ordered, Label("controller", "slow"), 
 	testImage := "monitoring-controller-test:latest"
 	volumeMounts := []any{"data", "config", "runtime-config", "client-certs", "server-certs", "etcd-client-certs", "etcd-server-cacert"}
 	BeforeAll(func() {
-		os.Setenv("OPNI_DEBUG_MANAGER_IMAGE", testImage)
-		DeferCleanup(os.Unsetenv, "OPNI_DEBUG_MANAGER_IMAGE")
+		os.Setenv("MONTY_DEBUG_MANAGER_IMAGE", testImage)
+		DeferCleanup(os.Unsetenv, "MONTY_DEBUG_MANAGER_IMAGE")
 	})
 
 	BeforeEach(func() {

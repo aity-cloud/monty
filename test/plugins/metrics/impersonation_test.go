@@ -129,7 +129,7 @@ var _ = Describe("Tenant Impersonation", Ordered, Label("integration"), func() {
 							Timeseries: []prompb.TimeSeries{
 								{
 									Labels: []prompb.Label{
-										{Name: "__name__", Value: "opni_test_metric_1"},
+										{Name: "__name__", Value: "monty_test_metric_1"},
 										{Name: "example", Value: "a"},
 										{Name: metrics.LabelImpersonateAs, Value: "agent1"},
 									},
@@ -137,7 +137,7 @@ var _ = Describe("Tenant Impersonation", Ordered, Label("integration"), func() {
 								},
 								{
 									Labels: []prompb.Label{
-										{Name: "__name__", Value: "opni_test_metric_2"},
+										{Name: "__name__", Value: "monty_test_metric_2"},
 										{Name: "example", Value: "b"},
 										// {Name: metrics.LabelImpersonateAs, Value: "agent1"}, // no impersonation label
 									},
@@ -146,7 +146,7 @@ var _ = Describe("Tenant Impersonation", Ordered, Label("integration"), func() {
 
 								{
 									Labels: []prompb.Label{
-										{Name: "__name__", Value: "opni_test_metric_1"},
+										{Name: "__name__", Value: "monty_test_metric_1"},
 										{Name: "example", Value: "b"},
 										{Name: metrics.LabelImpersonateAs, Value: "agent2"},
 									},
@@ -154,7 +154,7 @@ var _ = Describe("Tenant Impersonation", Ordered, Label("integration"), func() {
 								},
 								{
 									Labels: []prompb.Label{
-										{Name: "__name__", Value: "opni_test_metric_2"},
+										{Name: "__name__", Value: "monty_test_metric_2"},
 										{Name: "example", Value: "b"},
 										{Name: metrics.LabelImpersonateAs, Value: "agent2"},
 									},
@@ -163,7 +163,7 @@ var _ = Describe("Tenant Impersonation", Ordered, Label("integration"), func() {
 
 								{
 									Labels: []prompb.Label{
-										{Name: "__name__", Value: "opni_test_metric_1"},
+										{Name: "__name__", Value: "monty_test_metric_1"},
 										{Name: "example", Value: "c"},
 										{Name: metrics.LabelImpersonateAs, Value: "agent3"}, // note: agent3 does not exist (this is ok)
 									},
@@ -176,7 +176,7 @@ var _ = Describe("Tenant Impersonation", Ordered, Label("integration"), func() {
 					_ = agent2RwClient
 
 					Eventually(func() error {
-						vec, err := queryVec([]string{"agent1"}, "opni_test_metric_1")
+						vec, err := queryVec([]string{"agent1"}, "monty_test_metric_1")
 						if err != nil {
 							return err
 						}
@@ -185,7 +185,7 @@ var _ = Describe("Tenant Impersonation", Ordered, Label("integration"), func() {
 						}
 						Expect(vec).To(HaveLen(1))
 						Expect(vec[0].Metric).To(BeEquivalentTo(model.Metric{
-							"__name__":      "opni_test_metric_1",
+							"__name__":      "monty_test_metric_1",
 							"__tenant_id__": "agent1",
 							"example":       "a",
 						}))
@@ -195,7 +195,7 @@ var _ = Describe("Tenant Impersonation", Ordered, Label("integration"), func() {
 					}).Should(Succeed())
 
 					Eventually(func() error {
-						vec, err := queryVec([]string{"agent1"}, "opni_test_metric_2")
+						vec, err := queryVec([]string{"agent1"}, "monty_test_metric_2")
 						if err != nil {
 							return err
 						}
@@ -204,7 +204,7 @@ var _ = Describe("Tenant Impersonation", Ordered, Label("integration"), func() {
 						}
 						Expect(vec).To(HaveLen(1))
 						Expect(vec[0].Metric).To(BeEquivalentTo(model.Metric{
-							"__name__":      "opni_test_metric_2",
+							"__name__":      "monty_test_metric_2",
 							"__tenant_id__": "agent1",
 							"example":       "b",
 						}))
@@ -214,7 +214,7 @@ var _ = Describe("Tenant Impersonation", Ordered, Label("integration"), func() {
 					}).Should(Succeed())
 
 					Eventually(func() error {
-						vec, err := queryVec([]string{"agent2"}, "opni_test_metric_1")
+						vec, err := queryVec([]string{"agent2"}, "monty_test_metric_1")
 						if err != nil {
 							return err
 						}
@@ -223,7 +223,7 @@ var _ = Describe("Tenant Impersonation", Ordered, Label("integration"), func() {
 						}
 						Expect(vec).To(HaveLen(1))
 						Expect(vec[0].Metric).To(BeEquivalentTo(model.Metric{
-							"__name__":      "opni_test_metric_1",
+							"__name__":      "monty_test_metric_1",
 							"__tenant_id__": "agent2",
 							"example":       "b",
 						}))
@@ -233,7 +233,7 @@ var _ = Describe("Tenant Impersonation", Ordered, Label("integration"), func() {
 					}).Should(Succeed())
 
 					Eventually(func() error {
-						vec, err := queryVec([]string{"agent2"}, "opni_test_metric_2")
+						vec, err := queryVec([]string{"agent2"}, "monty_test_metric_2")
 						if err != nil {
 							return err
 						}
@@ -242,7 +242,7 @@ var _ = Describe("Tenant Impersonation", Ordered, Label("integration"), func() {
 						}
 						Expect(vec).To(HaveLen(1))
 						Expect(vec[0].Metric).To(BeEquivalentTo(model.Metric{
-							"__name__":      "opni_test_metric_2",
+							"__name__":      "monty_test_metric_2",
 							"__tenant_id__": "agent2",
 							"example":       "b",
 						}))
@@ -252,7 +252,7 @@ var _ = Describe("Tenant Impersonation", Ordered, Label("integration"), func() {
 					}).Should(Succeed())
 
 					Eventually(func() error {
-						vec, err := queryVec([]string{"agent3"}, "opni_test_metric_1")
+						vec, err := queryVec([]string{"agent3"}, "monty_test_metric_1")
 						if err != nil {
 							return err
 						}
@@ -261,7 +261,7 @@ var _ = Describe("Tenant Impersonation", Ordered, Label("integration"), func() {
 						}
 						Expect(vec).To(HaveLen(1))
 						Expect(vec[0].Metric).To(BeEquivalentTo(model.Metric{
-							"__name__":      "opni_test_metric_1",
+							"__name__":      "monty_test_metric_1",
 							"__tenant_id__": "agent3",
 							"example":       "c",
 						}))
@@ -279,7 +279,7 @@ var _ = Describe("Tenant Impersonation", Ordered, Label("integration"), func() {
 						Timeseries: []prompb.TimeSeries{
 							{
 								Labels: []prompb.Label{
-									{Name: "__name__", Value: "opni_test_metric_3"},
+									{Name: "__name__", Value: "monty_test_metric_3"},
 									{Name: "example", Value: "a"},
 								},
 								Samples: []prompb.Sample{{Value: 1, Timestamp: now}},
@@ -289,7 +289,7 @@ var _ = Describe("Tenant Impersonation", Ordered, Label("integration"), func() {
 					Expect(err).NotTo(HaveOccurred())
 
 					Eventually(func() error {
-						vec, err := queryVec([]string{"agent1"}, "opni_test_metric_3")
+						vec, err := queryVec([]string{"agent1"}, "monty_test_metric_3")
 						if err != nil {
 							return err
 						}
@@ -298,7 +298,7 @@ var _ = Describe("Tenant Impersonation", Ordered, Label("integration"), func() {
 						}
 						Expect(vec).To(HaveLen(1))
 						Expect(vec[0].Metric).To(BeEquivalentTo(model.Metric{
-							"__name__":      "opni_test_metric_3",
+							"__name__":      "monty_test_metric_3",
 							"__tenant_id__": "agent1",
 							"example":       "a",
 						}))
@@ -317,7 +317,7 @@ var _ = Describe("Tenant Impersonation", Ordered, Label("integration"), func() {
 						Timeseries: []prompb.TimeSeries{
 							{
 								Labels: []prompb.Label{
-									{Name: "__name__", Value: "opni_test_metric_4"},
+									{Name: "__name__", Value: "monty_test_metric_4"},
 									{Name: "example", Value: "a"},
 									{Name: metrics.LabelImpersonateAs, Value: "agent1"},
 								},
@@ -325,7 +325,7 @@ var _ = Describe("Tenant Impersonation", Ordered, Label("integration"), func() {
 							},
 							{
 								Labels: []prompb.Label{
-									{Name: "__name__", Value: "opni_test_metric_4"},
+									{Name: "__name__", Value: "monty_test_metric_4"},
 									{Name: "example", Value: "b"},
 								},
 								Samples: []prompb.Sample{{Value: 1, Timestamp: now}},
@@ -336,7 +336,7 @@ var _ = Describe("Tenant Impersonation", Ordered, Label("integration"), func() {
 				})
 				It("should drop the metric due to monty default relabeling rules", func() {
 					Eventually(func() error {
-						vec, err := queryVec([]string{"agent2"}, "opni_test_metric_4")
+						vec, err := queryVec([]string{"agent2"}, "monty_test_metric_4")
 						if err != nil {
 							return err
 						}
@@ -345,7 +345,7 @@ var _ = Describe("Tenant Impersonation", Ordered, Label("integration"), func() {
 						}
 						Expect(vec).To(HaveLen(1))
 						Expect(vec[0].Metric).To(BeEquivalentTo(model.Metric{
-							"__name__":      "opni_test_metric_4",
+							"__name__":      "monty_test_metric_4",
 							"__tenant_id__": "agent2",
 							"example":       "b",
 						}))
@@ -363,19 +363,19 @@ var _ = Describe("Tenant Impersonation", Ordered, Label("integration"), func() {
 				Timeseries: []prompb.TimeSeries{},
 				Metadata: []prompb.MetricMetadata{
 					{
-						MetricFamilyName: "opni_test_metric_1",
+						MetricFamilyName: "monty_test_metric_1",
 						Type:             prompb.MetricMetadata_GAUGE,
 						Help:             "test metric 1",
 						Unit:             "units",
 					},
 					{
-						MetricFamilyName: "opni_test_metric_2",
+						MetricFamilyName: "monty_test_metric_2",
 						Type:             prompb.MetricMetadata_GAUGE,
 						Help:             "test metric 2",
 						Unit:             "units",
 					},
 					{
-						MetricFamilyName: "opni_test_metric_3",
+						MetricFamilyName: "monty_test_metric_3",
 						Type:             prompb.MetricMetadata_GAUGE,
 						Help:             "test metric 3",
 						Unit:             "units",
@@ -387,36 +387,36 @@ var _ = Describe("Tenant Impersonation", Ordered, Label("integration"), func() {
 			Eventually(func() error {
 				md, err := cortexAdminClient.GetMetricMetadata(context.Background(), &cortexadmin.MetricMetadataRequest{
 					Tenants:    []string{"agent1"},
-					MetricName: "opni_test_metric_1",
+					MetricName: "monty_test_metric_1",
 				})
 				if err != nil {
 					return err
 				}
-				Expect(md.MetricFamilyName).To(Equal("opni_test_metric_1"))
+				Expect(md.MetricFamilyName).To(Equal("monty_test_metric_1"))
 				Expect(md.Help).To(Equal("test metric 1"))
 				Expect(md.Type).To(Equal(cortexadmin.MetricMetadata_GAUGE))
 				Expect(md.Unit).To(Equal("units"))
 
 				md, err = cortexAdminClient.GetMetricMetadata(context.Background(), &cortexadmin.MetricMetadataRequest{
 					Tenants:    []string{"agent2"},
-					MetricName: "opni_test_metric_2",
+					MetricName: "monty_test_metric_2",
 				})
 				if err != nil {
 					return err
 				}
-				Expect(md.MetricFamilyName).To(Equal("opni_test_metric_2"))
+				Expect(md.MetricFamilyName).To(Equal("monty_test_metric_2"))
 				Expect(md.Help).To(Equal("test metric 2"))
 				Expect(md.Type).To(Equal(cortexadmin.MetricMetadata_GAUGE))
 				Expect(md.Unit).To(Equal("units"))
 
 				md, err = cortexAdminClient.GetMetricMetadata(context.Background(), &cortexadmin.MetricMetadataRequest{
 					Tenants:    []string{"agent3"},
-					MetricName: "opni_test_metric_1",
+					MetricName: "monty_test_metric_1",
 				})
 				if err != nil {
 					return err
 				}
-				Expect(md.MetricFamilyName).To(Equal("opni_test_metric_1"))
+				Expect(md.MetricFamilyName).To(Equal("monty_test_metric_1"))
 				Expect(md.Help).To(Equal("test metric 1"))
 				Expect(md.Type).To(Equal(cortexadmin.MetricMetadata_GAUGE))
 				Expect(md.Unit).To(Equal("units"))

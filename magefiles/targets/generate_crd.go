@@ -38,7 +38,8 @@ func (CRD) CRDGen(ctx context.Context) error {
 	if ok {
 		runReplace = true
 		var commands []*exec.Cmd
-		commands = append(commands, exec.Command(mg.GoCmd(), "run", "sigs.k8s.io/kustomize/kustomize/v5@latest",
+
+		commands = append(commands, exec.Command(mg.GoCmd(), "run", "sigs.k8s.io/kustomize/kustomize/v5@v5.0.3",
 			"build", "./config/chart-crds", "-o", "./packages/monty/monty/charts/crds/crds.yaml",
 		))
 		for _, cmd := range commands {

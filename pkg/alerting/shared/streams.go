@@ -8,12 +8,12 @@ const (
 	AgentClusterHealthStatusDurableReplay = "agent-cluster-health-status-consumer"
 
 	//streams
-	AgentDisconnectStream         = "opni_alerting_agent"
-	AgentDisconnectStreamSubjects = "opni_alerting_agent.*"
-	AgentHealthStream             = "opni_alerting_health"
-	AgentHealthStreamSubjects     = "opni_alerting_health.*"
-	CortexStatusStream            = "opni_alerting_cortex_status"
-	CortexStatusStreamSubjects    = "opni_alerting_cortex_status.*"
+	AgentDisconnectStream         = "monty_alerting_agent"
+	AgentDisconnectStreamSubjects = "monty_alerting_agent.*"
+	AgentHealthStream             = "monty_alerting_health"
+	AgentHealthStreamSubjects     = "monty_alerting_health.*"
+	CortexStatusStream            = "monty_alerting_cortex_status"
+	CortexStatusStreamSubjects    = "monty_alerting_cortex_status.*"
 	// buckets
 	AlertingConditionBucket            = "monty-alerting-condition-bucket"
 	AlertingEndpointBucket             = "monty-alerting-endpoint-bucket"

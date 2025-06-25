@@ -28,7 +28,7 @@ func init() {
 		sharedEndpointSet = make(map[string]*alertingv1.FullAttachedEndpoint)
 		sharedEndpointSet = alerting.CreateRandomSetOfEndpoints()
 		var _ = BuildRoutingTreeSuiteTest(
-			routing.NewDefaultOpniRouting(),
+			routing.NewDefaultMontyRouting(),
 			alerting.CreateRandomNamespacedTestCases(45, sharedEndpointSet),
 			alerting.CreateRandomDefaultNamespacedTestcases(sharedEndpointSet),
 			alerting.CreateRandomIndividualEndpointTestcases(sharedEndpointSet),
@@ -71,7 +71,7 @@ var _ = Describe("Alerting Router defaults", Ordered, Serial, Label("integration
 				},
 			}
 			route := routing.NewRootNode(&cfg)
-			subtree, recvs := routing.NewOpniSubRoutingTree()
+			subtree, recvs := routing.NewMontySubRoutingTree()
 			route.Route.Routes = append(route.Route.Routes, subtree)
 			route.Receivers = append(route.Receivers, recvs...)
 			alerting.ExpectAlertManagerConfigToBeValid(env.Context(), env, tmpConfigDir, "routingSubtree.yaml", route, fp)
@@ -94,7 +94,7 @@ var _ = Describe("Alerting Router defaults", Ordered, Serial, Label("integration
 })
 
 func BuildRoutingTreeSuiteTest(
-	router routing.OpniRouting,
+	router routing.MontyRouting,
 	conditionSubtreeTestcases []alerting.NamespaceSubTreeTestcase,
 	broadcastSubtreeTestcases []alerting.DefaultNamespaceSubTreeTestcase,
 	individualEndpointTestcases []alerting.IndividualEndpointTestcase,

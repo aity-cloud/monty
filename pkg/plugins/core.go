@@ -25,7 +25,7 @@ var (
 
 var Handshake = plugin.HandshakeConfig{
 	ProtocolVersion:  plugin.CoreProtocolVersion,
-	MagicCookieKey:   "OPNI_MAGIC_COOKIE",
+	MagicCookieKey:   "MONTY_MAGIC_COOKIE",
 	MagicCookieValue: "monty",
 }
 

@@ -131,5 +131,5 @@ func BuildAlertManager() *cobra.Command {
 }
 
 func init() {
-	AddCommandsToGroup(OpniComponents, BuildAlertingComponents())
+	AddCommandsToGroup(MontyComponents, BuildAlertingComponents())
 }

@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.31.0
 // 	protoc        v1.0.0
-// source:  github.com/aity-cloud/monty/plugins/example/pkg/example/example.proto
+// source: github.com/aity-cloud/monty/plugins/example/pkg/example/example.proto
 
 package example
 
@@ -37,7 +37,7 @@ type EchoRequest struct {
 func (x *EchoRequest) Reset() {
 	*x = EchoRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_msgTypes[0]
+		mi := &file_github_com_aity_cloud_monty_plugins_example_pkg_example_example_proto_msgTypes[0]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -50,7 +50,7 @@ func (x *EchoRequest) String() string {
 func (*EchoRequest) ProtoMessage() {}
 
 func (x *EchoRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_msgTypes[0]
+	mi := &file_github_com_aity_cloud_monty_plugins_example_pkg_example_example_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -63,7 +63,7 @@ func (x *EchoRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EchoRequest.ProtoReflect.Descriptor instead.
 func (*EchoRequest) Descriptor() ([]byte, []int) {
-	return file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_rawDescGZIP(), []int{0}
+	return file_github_com_aity_cloud_monty_plugins_example_pkg_example_example_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *EchoRequest) GetMessage() string {
@@ -84,7 +84,7 @@ type EchoResponse struct {
 func (x *EchoResponse) Reset() {
 	*x = EchoResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_msgTypes[1]
+		mi := &file_github_com_aity_cloud_monty_plugins_example_pkg_example_example_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -97,7 +97,7 @@ func (x *EchoResponse) String() string {
 func (*EchoResponse) ProtoMessage() {}
 
 func (x *EchoResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_msgTypes[1]
+	mi := &file_github_com_aity_cloud_monty_plugins_example_pkg_example_example_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -110,7 +110,7 @@ func (x *EchoResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EchoResponse.ProtoReflect.Descriptor instead.
 func (*EchoResponse) Descriptor() ([]byte, []int) {
-	return file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_rawDescGZIP(), []int{1}
+	return file_github_com_aity_cloud_monty_plugins_example_pkg_example_example_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *EchoResponse) GetMessage() string {
@@ -137,7 +137,7 @@ type ConfigSpec struct {
 func (x *ConfigSpec) Reset() {
 	*x = ConfigSpec{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_msgTypes[2]
+		mi := &file_github_com_aity_cloud_monty_plugins_example_pkg_example_example_proto_msgTypes[2]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -150,7 +150,7 @@ func (x *ConfigSpec) String() string {
 func (*ConfigSpec) ProtoMessage() {}
 
 func (x *ConfigSpec) ProtoReflect() protoreflect.Message {
-	mi := &file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_msgTypes[2]
+	mi := &file_github_com_aity_cloud_monty_plugins_example_pkg_example_example_proto_msgTypes[2]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -163,7 +163,7 @@ func (x *ConfigSpec) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ConfigSpec.ProtoReflect.Descriptor instead.
 func (*ConfigSpec) Descriptor() ([]byte, []int) {
-	return file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_rawDescGZIP(), []int{2}
+	return file_github_com_aity_cloud_monty_plugins_example_pkg_example_example_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *ConfigSpec) GetEnabled() bool {
@@ -227,7 +227,7 @@ type ResetRequest struct {
 func (x *ResetRequest) Reset() {
 	*x = ResetRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_msgTypes[3]
+		mi := &file_github_com_aity_cloud_monty_plugins_example_pkg_example_example_proto_msgTypes[3]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -240,7 +240,7 @@ func (x *ResetRequest) String() string {
 func (*ResetRequest) ProtoMessage() {}
 
 func (x *ResetRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_msgTypes[3]
+	mi := &file_github_com_aity_cloud_monty_plugins_example_pkg_example_example_proto_msgTypes[3]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -253,7 +253,7 @@ func (x *ResetRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ResetRequest.ProtoReflect.Descriptor instead.
 func (*ResetRequest) Descriptor() ([]byte, []int) {
-	return file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_rawDescGZIP(), []int{3}
+	return file_github_com_aity_cloud_monty_plugins_example_pkg_example_example_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *ResetRequest) GetMask() *fieldmaskpb.FieldMask {
@@ -286,7 +286,7 @@ type DryRunRequest struct {
 func (x *DryRunRequest) Reset() {
 	*x = DryRunRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_msgTypes[4]
+		mi := &file_github_com_aity_cloud_monty_plugins_example_pkg_example_example_proto_msgTypes[4]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -299,7 +299,7 @@ func (x *DryRunRequest) String() string {
 func (*DryRunRequest) ProtoMessage() {}
 
 func (x *DryRunRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_msgTypes[4]
+	mi := &file_github_com_aity_cloud_monty_plugins_example_pkg_example_example_proto_msgTypes[4]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -312,7 +312,7 @@ func (x *DryRunRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DryRunRequest.ProtoReflect.Descriptor instead.
 func (*DryRunRequest) Descriptor() ([]byte, []int) {
-	return file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_rawDescGZIP(), []int{4}
+	return file_github_com_aity_cloud_monty_plugins_example_pkg_example_example_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *DryRunRequest) GetTarget() driverutil.Target {
@@ -370,7 +370,7 @@ type DryRunResponse struct {
 func (x *DryRunResponse) Reset() {
 	*x = DryRunResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_msgTypes[5]
+		mi := &file_github_com_aity_cloud_monty_plugins_example_pkg_example_example_proto_msgTypes[5]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -383,7 +383,7 @@ func (x *DryRunResponse) String() string {
 func (*DryRunResponse) ProtoMessage() {}
 
 func (x *DryRunResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_msgTypes[5]
+	mi := &file_github_com_aity_cloud_monty_plugins_example_pkg_example_example_proto_msgTypes[5]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -396,7 +396,7 @@ func (x *DryRunResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DryRunResponse.ProtoReflect.Descriptor instead.
 func (*DryRunResponse) Descriptor() ([]byte, []int) {
-	return file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_rawDescGZIP(), []int{5}
+	return file_github_com_aity_cloud_monty_plugins_example_pkg_example_example_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *DryRunResponse) GetCurrent() *ConfigSpec {
@@ -431,7 +431,7 @@ type HistoryResponse struct {
 func (x *HistoryResponse) Reset() {
 	*x = HistoryResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_msgTypes[6]
+		mi := &file_github_com_aity_cloud_monty_plugins_example_pkg_example_example_proto_msgTypes[6]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -444,7 +444,7 @@ func (x *HistoryResponse) String() string {
 func (*HistoryResponse) ProtoMessage() {}
 
 func (x *HistoryResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_msgTypes[6]
+	mi := &file_github_com_aity_cloud_monty_plugins_example_pkg_example_example_proto_msgTypes[6]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -457,7 +457,7 @@ func (x *HistoryResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use HistoryResponse.ProtoReflect.Descriptor instead.
 func (*HistoryResponse) Descriptor() ([]byte, []int) {
-	return file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_rawDescGZIP(), []int{6}
+	return file_github_com_aity_cloud_monty_plugins_example_pkg_example_example_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *HistoryResponse) GetEntries() []*ConfigSpec {
@@ -479,7 +479,7 @@ type Message struct {
 func (x *Message) Reset() {
 	*x = Message{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_msgTypes[7]
+		mi := &file_github_com_aity_cloud_monty_plugins_example_pkg_example_example_proto_msgTypes[7]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -492,7 +492,7 @@ func (x *Message) String() string {
 func (*Message) ProtoMessage() {}
 
 func (x *Message) ProtoReflect() protoreflect.Message {
-	mi := &file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_msgTypes[7]
+	mi := &file_github_com_aity_cloud_monty_plugins_example_pkg_example_example_proto_msgTypes[7]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -505,7 +505,7 @@ func (x *Message) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Message.ProtoReflect.Descriptor instead.
 func (*Message) Descriptor() ([]byte, []int) {
-	return file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_rawDescGZIP(), []int{7}
+	return file_github_com_aity_cloud_monty_plugins_example_pkg_example_example_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *Message) GetStringSliceVar() []string {
@@ -522,23 +522,24 @@ func (x *Message) GetStringMapVar() map[string]string {
 	return nil
 }
 
-var File_github_com_rancher_opni_plugins_example_pkg_example_example_proto protoreflect.FileDescriptor
+var File_github_com_aity_cloud_monty_plugins_example_pkg_example_example_proto protoreflect.FileDescriptor
 
-var file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_rawDesc = []byte{
-	0x0a, 0x41, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x72, 0x61, 0x6e,
-	0x63, 0x68, 0x65, 0x72, 0x2f, 0x6f, 0x70, 0x6e, 0x69, 0x2f, 0x70, 0x6c, 0x75, 0x67, 0x69, 0x6e,
-	0x73, 0x2f, 0x65, 0x78, 0x61, 0x6d, 0x70, 0x6c, 0x65, 0x2f, 0x70, 0x6b, 0x67, 0x2f, 0x65, 0x78,
-	0x61, 0x6d, 0x70, 0x6c, 0x65, 0x2f, 0x65, 0x78, 0x61, 0x6d, 0x70, 0x6c, 0x65, 0x2e, 0x70, 0x72,
-	0x6f, 0x74, 0x6f, 0x12, 0x07, 0x65, 0x78, 0x61, 0x6d, 0x70, 0x6c, 0x65, 0x1a, 0x36, 0x67, 0x69,
-	0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x72, 0x61, 0x6e, 0x63, 0x68, 0x65, 0x72,
-	0x2f, 0x6f, 0x70, 0x6e, 0x69, 0x2f, 0x69, 0x6e, 0x74, 0x65, 0x72, 0x6e, 0x61, 0x6c, 0x2f, 0x63,
-	0x6f, 0x64, 0x65, 0x67, 0x65, 0x6e, 0x2f, 0x63, 0x6c, 0x69, 0x2f, 0x63, 0x6c, 0x69, 0x2e, 0x70,
-	0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x33, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d,
-	0x2f, 0x72, 0x61, 0x6e, 0x63, 0x68, 0x65, 0x72, 0x2f, 0x6f, 0x70, 0x6e, 0x69, 0x2f, 0x70, 0x6b,
-	0x67, 0x2f, 0x61, 0x70, 0x69, 0x73, 0x2f, 0x63, 0x6f, 0x72, 0x65, 0x2f, 0x76, 0x31, 0x2f, 0x63,
-	0x6f, 0x72, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x3a, 0x67, 0x69, 0x74, 0x68, 0x75,
-	0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x72, 0x61, 0x6e, 0x63, 0x68, 0x65, 0x72, 0x2f, 0x6f, 0x70,
-	0x6e, 0x69, 0x2f, 0x70, 0x6b, 0x67, 0x2f, 0x70, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0x73, 0x2f, 0x64,
+var file_github_com_aity_cloud_monty_plugins_example_pkg_example_example_proto_rawDesc = []byte{
+	0x0a, 0x45, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x61, 0x69, 0x74,
+	0x79, 0x2d, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2f, 0x6d, 0x6f, 0x6e, 0x74, 0x79, 0x2f, 0x70, 0x6c,
+	0x75, 0x67, 0x69, 0x6e, 0x73, 0x2f, 0x65, 0x78, 0x61, 0x6d, 0x70, 0x6c, 0x65, 0x2f, 0x70, 0x6b,
+	0x67, 0x2f, 0x65, 0x78, 0x61, 0x6d, 0x70, 0x6c, 0x65, 0x2f, 0x65, 0x78, 0x61, 0x6d, 0x70, 0x6c,
+	0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x07, 0x65, 0x78, 0x61, 0x6d, 0x70, 0x6c, 0x65,
+	0x1a, 0x3a, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x61, 0x69, 0x74,
+	0x79, 0x2d, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2f, 0x6d, 0x6f, 0x6e, 0x74, 0x79, 0x2f, 0x69, 0x6e,
+	0x74, 0x65, 0x72, 0x6e, 0x61, 0x6c, 0x2f, 0x63, 0x6f, 0x64, 0x65, 0x67, 0x65, 0x6e, 0x2f, 0x63,
+	0x6c, 0x69, 0x2f, 0x63, 0x6c, 0x69, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x37, 0x67, 0x69,
+	0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x61, 0x69, 0x74, 0x79, 0x2d, 0x63, 0x6c,
+	0x6f, 0x75, 0x64, 0x2f, 0x6d, 0x6f, 0x6e, 0x74, 0x79, 0x2f, 0x70, 0x6b, 0x67, 0x2f, 0x61, 0x70,
+	0x69, 0x73, 0x2f, 0x63, 0x6f, 0x72, 0x65, 0x2f, 0x76, 0x31, 0x2f, 0x63, 0x6f, 0x72, 0x65, 0x2e,
+	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x3e, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f,
+	0x6d, 0x2f, 0x61, 0x69, 0x74, 0x79, 0x2d, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2f, 0x6d, 0x6f, 0x6e,
+	0x74, 0x79, 0x2f, 0x70, 0x6b, 0x67, 0x2f, 0x70, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0x73, 0x2f, 0x64,
 	0x72, 0x69, 0x76, 0x65, 0x72, 0x75, 0x74, 0x69, 0x6c, 0x2f, 0x74, 0x79, 0x70, 0x65, 0x73, 0x2e,
 	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x1c, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2f, 0x61, 0x70,
 	0x69, 0x2f, 0x61, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x2e, 0x70, 0x72,
@@ -688,27 +689,27 @@ var file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_rawDe
 	0x6f, 0x72, 0x79, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x18, 0x2e, 0x65, 0x78, 0x61,
 	0x6d, 0x70, 0x6c, 0x65, 0x2e, 0x48, 0x69, 0x73, 0x74, 0x6f, 0x72, 0x79, 0x52, 0x65, 0x73, 0x70,
 	0x6f, 0x6e, 0x73, 0x65, 0x22, 0x0f, 0x82, 0xc0, 0x0c, 0x0b, 0x8a, 0xc0, 0x0c, 0x07, 0x68, 0x69,
-	0x73, 0x74, 0x6f, 0x72, 0x79, 0x42, 0x3b, 0x82, 0xc0, 0x0c, 0x02, 0x08, 0x01, 0x5a, 0x33, 0x67,
-	0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x72, 0x61, 0x6e, 0x63, 0x68, 0x65,
-	0x72, 0x2f, 0x6f, 0x70, 0x6e, 0x69, 0x2f, 0x70, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0x73, 0x2f, 0x65,
-	0x78, 0x61, 0x6d, 0x70, 0x6c, 0x65, 0x2f, 0x70, 0x6b, 0x67, 0x2f, 0x65, 0x78, 0x61, 0x6d, 0x70,
-	0x6c, 0x65, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x73, 0x74, 0x6f, 0x72, 0x79, 0x42, 0x3f, 0x82, 0xc0, 0x0c, 0x02, 0x08, 0x01, 0x5a, 0x37, 0x67,
+	0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x61, 0x69, 0x74, 0x79, 0x2d, 0x63,
+	0x6c, 0x6f, 0x75, 0x64, 0x2f, 0x6d, 0x6f, 0x6e, 0x74, 0x79, 0x2f, 0x70, 0x6c, 0x75, 0x67, 0x69,
+	0x6e, 0x73, 0x2f, 0x65, 0x78, 0x61, 0x6d, 0x70, 0x6c, 0x65, 0x2f, 0x70, 0x6b, 0x67, 0x2f, 0x65,
+	0x78, 0x61, 0x6d, 0x70, 0x6c, 0x65, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
-	file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_rawDescOnce sync.Once
-	file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_rawDescData = file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_rawDesc
+	file_github_com_aity_cloud_monty_plugins_example_pkg_example_example_proto_rawDescOnce sync.Once
+	file_github_com_aity_cloud_monty_plugins_example_pkg_example_example_proto_rawDescData = file_github_com_aity_cloud_monty_plugins_example_pkg_example_example_proto_rawDesc
 )
 
-func file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_rawDescGZIP() []byte {
-	file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_rawDescOnce.Do(func() {
-		file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_rawDescData = protoimpl.X.CompressGZIP(file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_rawDescData)
+func file_github_com_aity_cloud_monty_plugins_example_pkg_example_example_proto_rawDescGZIP() []byte {
+	file_github_com_aity_cloud_monty_plugins_example_pkg_example_example_proto_rawDescOnce.Do(func() {
+		file_github_com_aity_cloud_monty_plugins_example_pkg_example_example_proto_rawDescData = protoimpl.X.CompressGZIP(file_github_com_aity_cloud_monty_plugins_example_pkg_example_example_proto_rawDescData)
 	})
-	return file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_rawDescData
+	return file_github_com_aity_cloud_monty_plugins_example_pkg_example_example_proto_rawDescData
 }
 
-var file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
-var file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_goTypes = []interface{}{
+var file_github_com_aity_cloud_monty_plugins_example_pkg_example_example_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
+var file_github_com_aity_cloud_monty_plugins_example_pkg_example_example_proto_goTypes = []interface{}{
 	(*EchoRequest)(nil),                            // 0: example.EchoRequest
 	(*EchoResponse)(nil),                           // 1: example.EchoResponse
 	(*ConfigSpec)(nil),                             // 2: example.ConfigSpec
@@ -727,7 +728,7 @@ var file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_goTyp
 	(*driverutil.GetRequest)(nil),                  // 15: driverutil.GetRequest
 	(*driverutil.ConfigurationHistoryRequest)(nil), // 16: driverutil.ConfigurationHistoryRequest
 }
-var file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_depIdxs = []int32{
+var file_github_com_aity_cloud_monty_plugins_example_pkg_example_example_proto_depIdxs = []int32{
 	9,  // 0: example.ConfigSpec.revision:type_name -> core.Revision
 	7,  // 1: example.ConfigSpec.messageVar:type_name -> example.Message
 	10, // 2: example.ResetRequest.mask:type_name -> google.protobuf.FieldMask
@@ -772,13 +773,13 @@ var file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_depId
 	0,  // [0:15] is the sub-list for field type_name
 }
 
-func init() { file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_init() }
-func file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_init() {
-	if File_github_com_rancher_opni_plugins_example_pkg_example_example_proto != nil {
+func init() { file_github_com_aity_cloud_monty_plugins_example_pkg_example_example_proto_init() }
+func file_github_com_aity_cloud_monty_plugins_example_pkg_example_example_proto_init() {
+	if File_github_com_aity_cloud_monty_plugins_example_pkg_example_example_proto != nil {
 		return
 	}
 	if !protoimpl.UnsafeEnabled {
-		file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
+		file_github_com_aity_cloud_monty_plugins_example_pkg_example_example_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*EchoRequest); i {
 			case 0:
 				return &v.state
@@ -790,7 +791,7 @@ func file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_init
 				return nil
 			}
 		}
-		file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
+		file_github_com_aity_cloud_monty_plugins_example_pkg_example_example_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*EchoResponse); i {
 			case 0:
 				return &v.state
@@ -802,7 +803,7 @@ func file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_init
 				return nil
 			}
 		}
-		file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
+		file_github_com_aity_cloud_monty_plugins_example_pkg_example_example_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*ConfigSpec); i {
 			case 0:
 				return &v.state
@@ -814,7 +815,7 @@ func file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_init
 				return nil
 			}
 		}
-		file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
+		file_github_com_aity_cloud_monty_plugins_example_pkg_example_example_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*ResetRequest); i {
 			case 0:
 				return &v.state
@@ -826,7 +827,7 @@ func file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_init
 				return nil
 			}
 		}
-		file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
+		file_github_com_aity_cloud_monty_plugins_example_pkg_example_example_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*DryRunRequest); i {
 			case 0:
 				return &v.state
@@ -838,7 +839,7 @@ func file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_init
 				return nil
 			}
 		}
-		file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
+		file_github_com_aity_cloud_monty_plugins_example_pkg_example_example_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*DryRunResponse); i {
 			case 0:
 				return &v.state
@@ -850,7 +851,7 @@ func file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_init
 				return nil
 			}
 		}
-		file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
+		file_github_com_aity_cloud_monty_plugins_example_pkg_example_example_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*HistoryResponse); i {
 			case 0:
 				return &v.state
@@ -862,7 +863,7 @@ func file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_init
 				return nil
 			}
 		}
-		file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
+		file_github_com_aity_cloud_monty_plugins_example_pkg_example_example_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*Message); i {
 			case 0:
 				return &v.state
@@ -875,23 +876,23 @@ func file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_init
 			}
 		}
 	}
-	file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_msgTypes[2].OneofWrappers = []interface{}{}
+	file_github_com_aity_cloud_monty_plugins_example_pkg_example_example_proto_msgTypes[2].OneofWrappers = []interface{}{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_rawDesc,
+			RawDescriptor: file_github_com_aity_cloud_monty_plugins_example_pkg_example_example_proto_rawDesc,
 			NumEnums:      0,
 			NumMessages:   9,
 			NumExtensions: 0,
 			NumServices:   3,
 		},
-		GoTypes:           file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_goTypes,
-		DependencyIndexes: file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_depIdxs,
-		MessageInfos:      file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_msgTypes,
+		GoTypes:           file_github_com_aity_cloud_monty_plugins_example_pkg_example_example_proto_goTypes,
+		DependencyIndexes: file_github_com_aity_cloud_monty_plugins_example_pkg_example_example_proto_depIdxs,
+		MessageInfos:      file_github_com_aity_cloud_monty_plugins_example_pkg_example_example_proto_msgTypes,
 	}.Build()
-	File_github_com_rancher_opni_plugins_example_pkg_example_example_proto = out.File
-	file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_rawDesc = nil
-	file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_goTypes = nil
-	file_github_com_rancher_opni_plugins_example_pkg_example_example_proto_depIdxs = nil
+	File_github_com_aity_cloud_monty_plugins_example_pkg_example_example_proto = out.File
+	file_github_com_aity_cloud_monty_plugins_example_pkg_example_example_proto_rawDesc = nil
+	file_github_com_aity_cloud_monty_plugins_example_pkg_example_example_proto_goTypes = nil
+	file_github_com_aity_cloud_monty_plugins_example_pkg_example_example_proto_depIdxs = nil
 }

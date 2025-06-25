@@ -8,14 +8,14 @@ const config = require('@rancher/shell/vue.config');
 const webpack = require('webpack');
 
 const isStandalone = process.env.IS_STANDALONE === 'true';
-let opniApi = process.env.OPNI_API || 'http://localhost:8888';
+let montyApi = process.env.MONTY_API || 'http://localhost:8888';
 
-if (opniApi && !opniApi.startsWith('http')) {
-  opniApi = `http://${ opniApi }`;
+if (montyApi && !montyApi.startsWith('http')) {
+  montyApi = `http://${ montyApi }`;
 }
 
-if (opniApi) {
-  console.log(`OPNI API: ${ opniApi }`); // eslint-disable-line no-console
+if (montyApi) {
+  console.log(`MONTY API: ${ montyApi }`); // eslint-disable-line no-console
 }
 
 console.log(`IS STANDALONE`, isStandalone); // eslint-disable-line no-console
@@ -23,10 +23,10 @@ console.log(`IS STANDALONE`, isStandalone); // eslint-disable-line no-console
 const baseConfig = config(__dirname, {
   excludes: [],
   proxies:  {
-    '/opni-api': {
+    '/monty-api': {
       secure:       false,
-      target:       opniApi,
-      pathRewrite:  { '^/opni-api': '' },
+      target:       montyApi,
+      pathRewrite:  { '^/monty-api': '' },
       ws:           true,
       changeOrigin: true,
     }
@@ -37,10 +37,10 @@ const baseConfig = config(__dirname, {
 const baseConfigureWebpack = baseConfig.configureWebpack;
 
 baseConfig.devServer.proxy = {
-  '/opni-api': {
+  '/monty-api': {
     secure:       false,
-    target:       opniApi,
-    pathRewrite:  { '^/opni-api': '' },
+    target:       montyApi,
+    pathRewrite:  { '^/monty-api': '' },
     ws:           true,
     changeOrigin: true,
   },

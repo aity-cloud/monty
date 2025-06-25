@@ -141,7 +141,7 @@ func generate[T any](destFilename string, skipFunc ...func(rf reflect.StructFiel
 		},
 		CustomFieldTypes: customFieldTypes,
 	})
-	cliImport, _ := desc.WrapFile(cli.File_github_com_rancher_opni_internal_codegen_cli_cli_proto)
+	cliImport, _ := desc.WrapFile(cli.File_github_com_aity_cloud_monty_internal_codegen_cli_cli_proto)
 	f := builder.NewFile(destFilename).
 		SetProto3(true).
 		SetPackageName(filepath.Base(filepath.Dir(destFilename))).

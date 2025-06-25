@@ -1,12 +1,12 @@
 # Title:
 
-Opni Alerting uses Cortex AlertManager as a notification system
+Monty Alerting uses Cortex AlertManager as a notification system
 
 ## Summary:
 
-Opni Alerting builds a single big routing configuration file for AlertManager based on the user's settings. Building these big files eventually becomes a performance bottleneck for the Alerting OpsServer. The server requires building the monolith file whenever the configuration changes on any cluster.
+Monty Alerting builds a single big routing configuration file for AlertManager based on the user's settings. Building these big files eventually becomes a performance bottleneck for the Alerting OpsServer. The server requires building the monolith file whenever the configuration changes on any cluster.
 
-Therefore, Opni-Alerting should seek to build smaller configuration files, namely by building configuration files specific to each cluster and applying them to a multi-tenant AlertManager solution : Cortex-AlertManager
+Therefore, Monty-Alerting should seek to build smaller configuration files, namely by building configuration files specific to each cluster and applying them to a multi-tenant AlertManager solution : Cortex-AlertManager
 
 ## Use case:
 
@@ -18,19 +18,19 @@ Therefore, Opni-Alerting should seek to build smaller configuration files, namel
 ### User Benefits
 
 - Performance & scalability optimizations
-- Separating opni clusters logically and physically in the notification system -- improves fault tolerance
+- Separating monty clusters logically and physically in the notification system -- improves fault tolerance
   - In our current cluster if the process running AlertManager crashes then the messaging system breaks for all clusters
 
 ### Developer Benefits
 
-- Less dependency management headaches for main Opni repository
+- Less dependency management headaches for main Monty repository
 - many cortex native improvements to AlertManager
   - Memberlist management, cluster meshing & API aggregations made easy
 - Better & easier integration with Metrics' Cortex cluster
 
 ## Impact:
 
-- Cortex AlertManager uses an eventual consistency model, increasing the median time of propagating configuration updates to any Opni-Alerting Component in a reconciler loop from ~30 seconds, minus opni router build time, to approximately 1 to 2 minutes.
+- Cortex AlertManager uses an eventual consistency model, increasing the median time of propagating configuration updates to any Monty-Alerting Component in a reconciler loop from ~30 seconds, minus monty router build time, to approximately 1 to 2 minutes.
 - Cortex AlertManager on a filesystem `storage backend` may become less than ideal when compared to Vanilla AlertManager, so
   having an S3 configuration available is a good idea.
 - Cortex AlertManager has some limitations around embedding user template, API key & cert files
@@ -40,7 +40,7 @@ Therefore, Opni-Alerting should seek to build smaller configuration files, namel
 
 ### Compute
 
-- Opni Alerting uses the existing embedded cortex binary to run cortex AlertManager
+- Monty Alerting uses the existing embedded cortex binary to run cortex AlertManager
 - A new AlertingAdmin server v2 deploys cortex AlertManager's as the Alerting Cluster unit
 - Alerting Cluster deployments are controlled via an `Alerting Cluster` CRD separated from the gateway CRD
 
@@ -50,9 +50,9 @@ Therefore, Opni-Alerting should seek to build smaller configuration files, namel
 
 ### Logic
 
-- Build Opni-routing configuration on a per cluster basis, with keys matching cluster id. Currently, a global key builds the router configuration.
+- Build Monty-routing configuration on a per cluster basis, with keys matching cluster id. Currently, a global key builds the router configuration.
 
-- Ops Server sync stream, responsible for syncing Opni-Alerting configurations to the AlertingCluster, uses `(key, config)`, where key is an opni cluster id instead of a global key
+- Ops Server sync stream, responsible for syncing Monty-Alerting configurations to the AlertingCluster, uses `(key, config)`, where key is an monty cluster id instead of a global key
 - `Sidecar Syncer` server v2 applies configuration changes via the cortex API
 - AlertManager adapters must be modified with an `AlertManagerApiOption` that handles `proxying` to underlying cortex AlertManager instances : for example, moving `/api/v2/status` to `/<tenant>/prom/alertmanager/api/v2/status` when enabled
 
@@ -68,7 +68,7 @@ Therefore, Opni-Alerting should seek to build smaller configuration files, namel
 
 ## Acceptance criteria:
 
-- [ ] Opni Alerting deploys a CortexAlertManager cluster
+- [ ] Monty Alerting deploys a CortexAlertManager cluster
 - [ ] Guarantee HA state is consistent
 - [ ] Alerts & messages are dispatched on a per-cluster basis
 - [ ] Router configurations are built on a per-cluster basis
@@ -93,4 +93,4 @@ Therefore, Opni-Alerting should seek to build smaller configuration files, namel
 
 ## Resources:
 
-1 Opni upstream cluster & 2 Opni downstream cluster
+1 Monty upstream cluster & 2 Monty downstream cluster

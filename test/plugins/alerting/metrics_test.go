@@ -156,7 +156,7 @@ var _ = Describe("metrics and alerting", Ordered, Label("integration"), func() {
 
 			promConds, err := alertConditionsClient.ListAlertConditions(env.Context(), &alertingv1.ListAlertConditionRequest{
 				Clusters:   agents,
-				Severities: []alertingv1.OpniSeverity{},
+				Severities: []alertingv1.MontySeverity{},
 				Labels:     []string{},
 				AlertTypes: []alertingv1.AlertType{
 					alertingv1.AlertType_PrometheusQuery,
@@ -176,7 +176,7 @@ var _ = Describe("metrics and alerting", Ordered, Label("integration"), func() {
 					},
 					ItemFilter: &alertingv1.ListAlertConditionRequest{
 						Clusters:   agents,
-						Severities: []alertingv1.OpniSeverity{},
+						Severities: []alertingv1.MontySeverity{},
 						Labels:     []string{},
 						AlertTypes: []alertingv1.AlertType{
 							alertingv1.AlertType_PrometheusQuery,
@@ -214,7 +214,7 @@ var _ = Describe("metrics and alerting", Ordered, Label("integration"), func() {
 					States: []alertingv1.AlertConditionState{},
 					ItemFilter: &alertingv1.ListAlertConditionRequest{
 						Clusters:   agents,
-						Severities: []alertingv1.OpniSeverity{},
+						Severities: []alertingv1.MontySeverity{},
 						Labels:     []string{},
 						AlertTypes: []alertingv1.AlertType{
 							alertingv1.AlertType_PrometheusQuery,
@@ -230,7 +230,7 @@ var _ = Describe("metrics and alerting", Ordered, Label("integration"), func() {
 					},
 					ItemFilter: &alertingv1.ListAlertConditionRequest{
 						Clusters:   agents,
-						Severities: []alertingv1.OpniSeverity{},
+						Severities: []alertingv1.MontySeverity{},
 						Labels:     []string{},
 						AlertTypes: []alertingv1.AlertType{
 							alertingv1.AlertType_PrometheusQuery,
@@ -332,7 +332,7 @@ var _ = Describe("metrics and alerting", Ordered, Label("integration"), func() {
 					attachedEndpoints := cond.GetAlertCondition().GetAttachedEndpoints().GetItems()
 					for _, ag := range res {
 						for _, alert := range ag.Alerts {
-							uuid, ok := alert.Labels[message.NotificationPropertyOpniUuid]
+							uuid, ok := alert.Labels[message.NotificationPropertyMontyUuid]
 							if ok && uuid == condId {
 								foundMatchingRecv := true
 								if len(attachedEndpoints) > 0 {

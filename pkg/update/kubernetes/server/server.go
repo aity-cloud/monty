@@ -12,7 +12,7 @@ import (
 	"github.com/aity-cloud/monty/pkg/update"
 	"github.com/aity-cloud/monty/pkg/update/kubernetes"
 	"github.com/aity-cloud/monty/pkg/urn"
-	opniurn "github.com/aity-cloud/monty/pkg/urn"
+	MontyURN "github.com/aity-cloud/monty/pkg/urn"
 	"github.com/prometheus/client_golang/prometheus"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
@@ -86,7 +86,7 @@ func (k *kubernetesSyncServer) CalculateUpdate(
 	}
 
 	switch updateType {
-	case opniurn.Agent:
+	case MontyURN.Agent:
 		return k.calculateAgentUpdate(ctx, manifest)
 	default:
 		return nil, status.Error(codes.Unimplemented, kubernetes.ErrUnhandledUpdateType(string(updateType)).Error())
@@ -94,7 +94,7 @@ func (k *kubernetesSyncServer) CalculateUpdate(
 }
 
 func (k *kubernetesSyncServer) CalculateExpectedManifest(ctx context.Context, updateType urn.UpdateType) (*controlv1.UpdateManifest, error) {
-	if updateType != opniurn.Agent {
+	if updateType != MontyURN.Agent {
 		return nil, status.Error(codes.Unimplemented, kubernetes.ErrUnhandledUpdateType(string(updateType)).Error())
 	}
 	expectedManifest := &controlv1.UpdateManifest{}
@@ -111,7 +111,7 @@ func (k *kubernetesSyncServer) CalculateExpectedManifest(ctx context.Context, up
 			return nil, status.Error(codes.Internal, err.Error())
 		}
 		newEntry := &controlv1.UpdateManifestEntry{
-			Package: urn.NewOpniURN(opniurn.Agent, strategy[0], string(component)).String(),
+			Package: urn.NewMontyURN(MontyURN.Agent, strategy[0], string(component)).String(),
 			Path:    image.Path(),
 			Digest:  image.Digest.String(),
 		}
@@ -126,14 +126,14 @@ func (k *kubernetesSyncServer) calculateAgentUpdate(
 ) (*controlv1.PatchList, error) {
 	patches := []*controlv1.PatchSpec{}
 
-	expected, err := k.CalculateExpectedManifest(ctx, opniurn.Agent)
+	expected, err := k.CalculateExpectedManifest(ctx, MontyURN.Agent)
 	if err != nil {
 		return nil, err
 	}
 
 	expectedItems := map[string]*controlv1.UpdateManifestEntry{}
 	for _, entry := range expected.GetItems() {
-		urn, err := opniurn.ParseString(entry.GetPackage())
+		urn, err := MontyURN.ParseString(entry.GetPackage())
 		if err != nil {
 			return nil, err
 		}
@@ -141,7 +141,7 @@ func (k *kubernetesSyncServer) calculateAgentUpdate(
 	}
 
 	for _, item := range current.GetItems() {
-		urn, err := opniurn.ParseString(item.GetPackage())
+		urn, err := MontyURN.ParseString(item.GetPackage())
 		if err != nil {
 			return nil, err
 		}
@@ -164,7 +164,7 @@ func (k *kubernetesSyncServer) imageForEntry(
 	ctx context.Context,
 	entry *controlv1.UpdateManifestEntry,
 ) (*oci.Image, error) {
-	urn, err := opniurn.ParseString(entry.GetPackage())
+	urn, err := MontyURN.ParseString(entry.GetPackage())
 	if err != nil {
 		return nil, err
 	}

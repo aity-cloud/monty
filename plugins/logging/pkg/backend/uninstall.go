@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	capabilityv1 "github.com/aity-cloud/monty/pkg/apis/capability/v1"
-	opnicorev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	montycorev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
 	"github.com/aity-cloud/monty/pkg/capabilities/wellknown"
 	"github.com/aity-cloud/monty/pkg/machinery/uninstall"
 	"github.com/aity-cloud/monty/pkg/task"
@@ -66,7 +66,7 @@ func (b *LoggingBackend) Uninstall(ctx context.Context, req *capabilityv1.Uninst
 	}
 
 	now := timestamppb.Now()
-	_, err = b.StorageBackend.UpdateCluster(ctx, cluster.Reference(), func(c *opnicorev1.Cluster) {
+	_, err = b.StorageBackend.UpdateCluster(ctx, cluster.Reference(), func(c *montycorev1.Cluster) {
 		for _, cap := range c.Metadata.Capabilities {
 			if cap.Name == wellknown.CapabilityLogs {
 				cap.DeletionTimestamp = now
@@ -92,12 +92,12 @@ func (b *LoggingBackend) Uninstall(ctx context.Context, req *capabilityv1.Uninst
 	return &emptypb.Empty{}, nil
 }
 
-func (b *LoggingBackend) UninstallStatus(_ context.Context, cluster *opnicorev1.Reference) (*opnicorev1.TaskStatus, error) {
+func (b *LoggingBackend) UninstallStatus(_ context.Context, cluster *montycorev1.Reference) (*montycorev1.TaskStatus, error) {
 	b.WaitForInit()
 	return b.UninstallController.TaskStatus(cluster.Id)
 }
 
-func (b *LoggingBackend) CancelUninstall(_ context.Context, cluster *opnicorev1.Reference) (*emptypb.Empty, error) {
+func (b *LoggingBackend) CancelUninstall(_ context.Context, cluster *montycorev1.Reference) (*emptypb.Empty, error) {
 	b.WaitForInit()
 	b.UninstallController.CancelTask(cluster.Id)
 	return &emptypb.Empty{}, nil

@@ -6,18 +6,18 @@ import (
 	"github.com/prometheus/common/model"
 )
 
-var OpniMetricsSubRoutingTreeId config.Matchers = []*labels.Matcher{
-	OpniMetricsSubRoutingTreeMatcher,
+var MontyMetricsSubRoutingTreeId config.Matchers = []*labels.Matcher{
+	MontyMetricsSubRoutingTreeMatcher,
 }
 
 // this subtree connects to cortex
-func NewOpniMetricsSubtree() *config.Route {
+func NewMontyMetricsSubtree() *config.Route {
 	metricsRoute := &config.Route{
 		// expand all labels in case our default grouping overshadows some of the user's configs
 		GroupBy: []model.LabelName{
 			"...",
 		},
-		Matchers: OpniMetricsSubRoutingTreeId,
+		Matchers: MontyMetricsSubRoutingTreeId,
 		Routes:   []*config.Route{},
 		Continue: true, // want to expand the subtree
 	}

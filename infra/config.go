@@ -107,7 +107,7 @@ func (c *Config) LoadDefaults() {
 		c.MinimalImageTag = "latest-minimal"
 	}
 	if c.ChartsRepo == "" {
-		c.ChartsRepo = "https://raw.githubusercontent.com/rancher/opni/charts-repo/"
+		c.ChartsRepo = "https://raw.githubusercontent.com/rancher/monty/charts-repo/"
 	}
 	if c.PrometheusCrdChartMode == "" {
 		c.PrometheusCrdChartMode = "separate"

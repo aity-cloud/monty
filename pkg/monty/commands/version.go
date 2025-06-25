@@ -37,7 +37,7 @@ func BuildVersionCmd() *cobra.Command {
 				fmt.Println(version)
 				return
 			}
-			fmt.Printf("Opni, %s %s\n", noun, version)
+			fmt.Printf("Monty, %s %s\n", noun, version)
 			fmt.Printf("  go version: %s\n", info.GoVersion)
 		},
 	}

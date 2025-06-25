@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	opnicorev1beta1 "github.com/aity-cloud/monty/apis/core/v1beta1"
+	montycorev1beta1 "github.com/aity-cloud/monty/apis/core/v1beta1"
 	monitoringv1beta1 "github.com/aity-cloud/monty/apis/monitoring/v1beta1"
 	"github.com/aity-cloud/monty/pkg/storage"
 	"github.com/aity-cloud/monty/pkg/storage/crds"
@@ -82,7 +82,7 @@ func sanitizeKey(key string) string {
 }
 
 // FillConfigFromObject implements crds.ValueStoreMethods.
-func (methods) FillConfigFromObject(obj *opnicorev1beta1.MonitoringCluster, conf *cortexops.CapabilityBackendConfigSpec) {
+func (methods) FillConfigFromObject(obj *montycorev1beta1.MonitoringCluster, conf *cortexops.CapabilityBackendConfigSpec) {
 	conf.Enabled = obj.Spec.Cortex.Enabled
 	conf.CortexConfig = obj.Spec.Cortex.CortexConfig
 	conf.CortexWorkloads = obj.Spec.Cortex.CortexWorkloads
@@ -90,10 +90,10 @@ func (methods) FillConfigFromObject(obj *opnicorev1beta1.MonitoringCluster, conf
 }
 
 // FillObjectFromConfig implements crds.ValueStoreMethods.
-func (methods) FillObjectFromConfig(obj *opnicorev1beta1.MonitoringCluster, conf *cortexops.CapabilityBackendConfigSpec) {
+func (methods) FillObjectFromConfig(obj *montycorev1beta1.MonitoringCluster, conf *cortexops.CapabilityBackendConfigSpec) {
 	if conf == nil {
-		obj.Spec.Cortex = opnicorev1beta1.CortexSpec{}
-		obj.Spec.Grafana = opnicorev1beta1.GrafanaSpec{}
+		obj.Spec.Cortex = montycorev1beta1.CortexSpec{}
+		obj.Spec.Grafana = montycorev1beta1.GrafanaSpec{}
 		return
 	}
 	obj.Spec.Cortex.Enabled = conf.Enabled
@@ -115,14 +115,14 @@ func newObject(seed ...int64) *cortexops.CapabilityBackendConfigSpec {
 	return out
 }
 
-var _ crds.ValueStoreMethods[*opnicorev1beta1.MonitoringCluster, *cortexops.CapabilityBackendConfigSpec] = methods{}
+var _ crds.ValueStoreMethods[*montycorev1beta1.MonitoringCluster, *cortexops.CapabilityBackendConfigSpec] = methods{}
 
 var _ = BeforeSuite(func() {
 	// sanity-check the valuestoremethods impl
 	conf := protorand.New[*cortexops.CapabilityBackendConfigSpec]().MustGen()
 	conf.Revision = nil
 
-	var obj opnicorev1beta1.MonitoringCluster
+	var obj montycorev1beta1.MonitoringCluster
 	methods{}.FillObjectFromConfig(&obj, conf.DeepCopy())
 
 	conf2 := util.NewMessage[*cortexops.CapabilityBackendConfigSpec]()
@@ -133,7 +133,7 @@ var _ = BeforeSuite(func() {
 	testruntime.IfLabelFilterMatches(Label("integration", "slow"), func() {
 		ctx, ca := context.WithCancel(context.Background())
 		s := scheme.Scheme
-		opnicorev1beta1.AddToScheme(s)
+		montycorev1beta1.AddToScheme(s)
 		monitoringv1beta1.AddToScheme(s)
 		config, _, err := testk8s.StartK8s(ctx, []string{"../../../config/crd/bases"}, s)
 		Expect(err).NotTo(HaveOccurred())

@@ -41,7 +41,7 @@ func (d *KubernetesManagerDriver) generateNodePools(cluster *loggingadmin.Opense
 		Component: "data",
 		Replicas:  lo.FromPtrOr(cluster.DataNodes.Replicas, 1),
 		Labels: map[string]string{
-			LabelOpniNodeGroup: "data",
+			LabelMontyNodeGroup: "data",
 		},
 		DiskSize:     cluster.GetDataNodes().GetDiskSize(),
 		NodeSelector: cluster.GetDataNodes().GetNodeSelector(),
@@ -120,7 +120,7 @@ func (d *KubernetesManagerDriver) generateNodePools(cluster *loggingadmin.Opense
 				"master",
 			},
 			Labels: map[string]string{
-				LabelOpniNodeGroup: "data",
+				LabelMontyNodeGroup: "data",
 			},
 			DiskSize:     "5Gi",
 			NodeSelector: cluster.DataNodes.NodeSelector,
@@ -168,7 +168,7 @@ func (d *KubernetesManagerDriver) generateNodePools(cluster *loggingadmin.Opense
 	return
 }
 
-func (d *KubernetesManagerDriver) generateAntiAffinity(opniRole string) *corev1.Affinity {
+func (d *KubernetesManagerDriver) generateAntiAffinity(montyRole string) *corev1.Affinity {
 	return &corev1.Affinity{
 		PodAntiAffinity: &corev1.PodAntiAffinity{
 			PreferredDuringSchedulingIgnoredDuringExecution: []corev1.WeightedPodAffinityTerm{
@@ -177,8 +177,8 @@ func (d *KubernetesManagerDriver) generateAntiAffinity(opniRole string) *corev1.
 					PodAffinityTerm: corev1.PodAffinityTerm{
 						LabelSelector: &metav1.LabelSelector{
 							MatchLabels: map[string]string{
-								LabelOpsterCluster: d.OpensearchCluster.Name,
-								LabelOpniNodeGroup: opniRole,
+								LabelOpsterCluster:  d.OpensearchCluster.Name,
+								LabelMontyNodeGroup: montyRole,
 							},
 						},
 						TopologyKey: TopologyKeyK8sHost,
@@ -206,7 +206,7 @@ func (d *KubernetesManagerDriver) convertIngestDetails(details *loggingadmin.Ing
 		},
 		Replicas: lo.FromPtrOr(details.Replicas, 1),
 		Labels: map[string]string{
-			LabelOpniNodeGroup: "ingest",
+			LabelMontyNodeGroup: "ingest",
 		},
 		DiskSize:     "5Gi",
 		NodeSelector: details.NodeSelector,
@@ -261,7 +261,7 @@ func (d *KubernetesManagerDriver) convertControlplaneDetails(details *loggingadm
 		},
 		Replicas: lo.FromPtrOr(details.Replicas, 3),
 		Labels: map[string]string{
-			LabelOpniNodeGroup: "controlplane",
+			LabelMontyNodeGroup: "controlplane",
 		},
 		DiskSize:     "5Gi",
 		NodeSelector: details.NodeSelector,
@@ -285,19 +285,19 @@ func (d *KubernetesManagerDriver) convertControlplaneDetails(details *loggingadm
 
 func convertProtobufToDashboards(
 	dashboard *loggingadmin.DashboardsDetails,
-	cluster *loggingv1beta1.OpniOpensearch,
-	opniVersion string,
+	cluster *loggingv1beta1.MontyOpensearch,
+	montyVersion string,
 ) opsterv1.DashboardsConfig {
 	var osVersion string
 	var version string
 	if cluster == nil {
 		osVersion = opensearchVersion
-		version = opniVersion
+		version = montyVersion
 	} else {
 		if cluster.Status.Version != nil {
 			version = *cluster.Status.Version
 		} else {
-			version = opniVersion
+			version = montyVersion
 		}
 		if cluster.Status.OpensearchVersion != nil {
 			osVersion = *cluster.Status.OpensearchVersion
@@ -369,12 +369,12 @@ func convertProtobufToDashboards(
 			Generate: true,
 		},
 		AdditionalConfig: map[string]string{
-			"opensearchDashboards.branding.applicationTitle":        "Opni Logging",
-			"opensearchDashboards.branding.faviconUrl":              "https://raw.githubusercontent.com/rancher/opni/main/branding/favicon.png",
-			"opensearchDashboards.branding.loadingLogo.darkModeUrl": "https://raw.githubusercontent.com/rancher/opni/main/branding/monty-loading-dark.svg",
-			"opensearchDashboards.branding.loadingLogo.defaultUrl":  "https://raw.githubusercontent.com/rancher/opni/main/branding/monty-loading.svg",
-			"opensearchDashboards.branding.logo.defaultUrl":         "https://raw.githubusercontent.com/rancher/opni/main/branding/monty-logo-dark.svg",
-			"opensearchDashboards.branding.mark.defaultUrl":         "https://raw.githubusercontent.com/rancher/opni/main/branding/monty-mark.svg",
+			"opensearchDashboards.branding.applicationTitle":        "Monty Logging",
+			"opensearchDashboards.branding.faviconUrl":              "https://raw.githubusercontent.com/rancher/monty/main/branding/favicon.png",
+			"opensearchDashboards.branding.loadingLogo.darkModeUrl": "https://raw.githubusercontent.com/rancher/monty/main/branding/monty-loading-dark.svg",
+			"opensearchDashboards.branding.loadingLogo.defaultUrl":  "https://raw.githubusercontent.com/rancher/monty/main/branding/monty-loading.svg",
+			"opensearchDashboards.branding.logo.defaultUrl":         "https://raw.githubusercontent.com/rancher/monty/main/branding/monty-logo-dark.svg",
+			"opensearchDashboards.branding.mark.defaultUrl":         "https://raw.githubusercontent.com/rancher/monty/main/branding/monty-mark.svg",
 		},
 	}
 }

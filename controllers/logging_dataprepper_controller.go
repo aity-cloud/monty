@@ -17,8 +17,8 @@ import (
 
 type LoggingDataPrepperReconciler struct {
 	client.Client
-	scheme      *runtime.Scheme
-	OpniCentral bool
+	scheme       *runtime.Scheme
+	MontyCentral bool
 }
 
 // +kubebuilder:rbac:groups=logging.monty.io,resources=datapreppers,verbs=get;list;watch;create;update;patch;delete
@@ -34,9 +34,9 @@ func (r *LoggingDataPrepperReconciler) Reconcile(ctx context.Context, req ctrl.R
 
 	var opts []dataprepper.ReconcilerOption
 
-	if r.OpniCentral {
+	if r.MontyCentral {
 		opts = append(opts, dataprepper.WithForceInsecure())
-		opts = append(opts, dataprepper.WithURLOverride(fmt.Sprintf("https://opni-opensearch-svc.%s:9200", req.Namespace)))
+		opts = append(opts, dataprepper.WithURLOverride(fmt.Sprintf("https://monty-opensearch-svc.%s:9200", req.Namespace)))
 	}
 
 	DataPrepperReconciler := dataprepper.NewReconciler(ctx, DataPrepper, r.Client, opts...)

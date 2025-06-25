@@ -40,7 +40,7 @@ var _ = Describe("URN", Label("unit"), func() {
 	})
 	Context("String construction", func() {
 		Specify("should return a correct string", func() {
-			u := urn.NewOpniURN(urn.Agent, "foo", "bar")
+			u := urn.NewMontyURN(urn.Agent, "foo", "bar")
 			Expect(u.String()).To(Equal("urn:monty:agent:foo:bar"))
 		})
 	})

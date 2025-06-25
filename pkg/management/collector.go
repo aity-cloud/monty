@@ -14,25 +14,25 @@ import (
 
 var (
 	clusterInfo = prometheus.NewDesc(
-		"opni_cluster_info",
+		"monty_cluster_info",
 		"Cluster information",
 		[]string{metrics.LabelImpersonateAs, "friendly_name"},
 		prometheus.Labels{},
 	)
 	agentUp = prometheus.NewDesc(
-		"opni_agent_up",
+		"monty_agent_up",
 		"Agent connection status",
 		[]string{metrics.LabelImpersonateAs},
 		prometheus.Labels{},
 	)
 	agentReady = prometheus.NewDesc(
-		"opni_agent_ready",
+		"monty_agent_ready",
 		"Agent readiness status",
 		[]string{metrics.LabelImpersonateAs, "conditions"},
 		prometheus.Labels{},
 	)
 	agentSummary = prometheus.NewDesc(
-		"opni_agent_status_summary",
+		"monty_agent_status_summary",
 		"Agent status summary",
 		[]string{metrics.LabelImpersonateAs, "summary"},
 		prometheus.Labels{},

@@ -10,7 +10,7 @@ import (
 	"strings"
 
 	"github.com/aity-cloud/monty/apis"
-	opnicorev1beta1 "github.com/aity-cloud/monty/apis/core/v1beta1"
+	montycorev1beta1 "github.com/aity-cloud/monty/apis/core/v1beta1"
 	loggingv1beta1 "github.com/aity-cloud/monty/apis/logging/v1beta1"
 	monitoringv1beta1 "github.com/aity-cloud/monty/apis/monitoring/v1beta1"
 	"github.com/aity-cloud/monty/controllers"
@@ -38,7 +38,7 @@ var (
 )
 
 const (
-	upgradeResponderAddress = "https://upgrades.opni-upgrade-responder.livestock.rancher.io/v1/checkupgrade"
+	upgradeResponderAddress = "https://upgrades.monty-upgrade-responder.livestock.rancher.io/v1/checkupgrade"
 )
 
 type crdFunc func() (*crd.CRD, error)
@@ -54,12 +54,12 @@ func BuildClientCmd() *cobra.Command {
 		disableUsage bool
 		echoVersion  bool
 		logLevel     string
-		opniCentral  bool
+		montyCentral bool
 	)
 
 	cmd := &cobra.Command{
 		Use:   "client",
-		Short: "Run the Opni Client Manager",
+		Short: "Run the Monty Client Manager",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			tracing.Configure("client")
 
@@ -112,10 +112,10 @@ func BuildClientCmd() *cobra.Command {
 			// Apply CRDs
 			crds := []crd.CRD{}
 			for _, crdFunc := range []crdFunc{
-				opnicorev1beta1.CollectorCRD,
+				montycorev1beta1.CollectorCRD,
 				loggingv1beta1.CollectorConfigCRD,
 				monitoringv1beta1.CollectorConfigCRD,
-				opnicorev1beta1.KeyringCRD,
+				montycorev1beta1.KeyringCRD,
 			} {
 				crd, err := crdFunc()
 				if err != nil {
@@ -184,7 +184,7 @@ func BuildClientCmd() *cobra.Command {
 	cmd.Flags().StringVar(&logLevel, "log-level", "info", "log level (debug, info, warning, error)")
 	cmd.Flags().StringVar(&metricsAddr, "metrics-bind-address", ":7080", "The address the metric endpoint binds to.")
 	cmd.Flags().StringVar(&probeAddr, "health-probe-bind-address", ":7081", "The address the probe endpoint binds to.")
-	cmd.Flags().BoolVarP(&opniCentral, "central", "c", false, "run controllers in Opni central cluster mode")
+	cmd.Flags().BoolVarP(&montyCentral, "central", "c", false, "run controllers in Monty central cluster mode")
 	cmd.Flags().BoolVarP(&echoVersion, "version", "v", false, "print the version and exit")
 	features.DefaultMutableFeatureGate.AddFlag(cmd.Flags())
 
@@ -192,5 +192,5 @@ func BuildClientCmd() *cobra.Command {
 }
 
 func init() {
-	AddCommandsToGroup(OpniComponents, BuildClientCmd())
+	AddCommandsToGroup(MontyComponents, BuildClientCmd())
 }

@@ -24,5 +24,5 @@ func BuildCortexCmd() *cobra.Command {
 }
 
 func init() {
-	AddCommandsToGroup(OpniComponents, BuildCortexCmd())
+	AddCommandsToGroup(MontyComponents, BuildCortexCmd())
 }

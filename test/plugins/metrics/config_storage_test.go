@@ -5,7 +5,7 @@ import (
 	"net"
 
 	"github.com/aity-cloud/monty/apis"
-	opnicorev1beta1 "github.com/aity-cloud/monty/apis/core/v1beta1"
+	montycorev1beta1 "github.com/aity-cloud/monty/apis/core/v1beta1"
 	"github.com/aity-cloud/monty/pkg/config/v1beta1"
 	"github.com/aity-cloud/monty/pkg/machinery"
 	"github.com/aity-cloud/monty/pkg/plugins/apis/system"
@@ -136,7 +136,7 @@ func (m methods) ControllerReference() (client.Object, bool) {
 }
 
 // FillConfigFromObject implements crds.ValueStoreMethods.
-func (methods) FillConfigFromObject(obj *opnicorev1beta1.MonitoringCluster, conf *cortexops.CapabilityBackendConfigSpec) {
+func (methods) FillConfigFromObject(obj *montycorev1beta1.MonitoringCluster, conf *cortexops.CapabilityBackendConfigSpec) {
 	conf.Enabled = obj.Spec.Cortex.Enabled
 	conf.CortexConfig = obj.Spec.Cortex.CortexConfig
 	conf.CortexWorkloads = obj.Spec.Cortex.CortexWorkloads
@@ -144,7 +144,7 @@ func (methods) FillConfigFromObject(obj *opnicorev1beta1.MonitoringCluster, conf
 }
 
 // FillObjectFromConfig implements crds.ValueStoreMethods.
-func (methods) FillObjectFromConfig(obj *opnicorev1beta1.MonitoringCluster, conf *cortexops.CapabilityBackendConfigSpec) {
+func (methods) FillObjectFromConfig(obj *montycorev1beta1.MonitoringCluster, conf *cortexops.CapabilityBackendConfigSpec) {
 	obj.Spec.Cortex.Enabled = conf.Enabled
 	obj.Spec.Cortex.CortexConfig = conf.CortexConfig
 	obj.Spec.Cortex.CortexWorkloads = conf.CortexWorkloads

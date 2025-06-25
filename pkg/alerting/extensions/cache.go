@@ -7,11 +7,11 @@ import (
 )
 
 func (e *EmbeddedServer) cacheAlarm(msgMeta cache.MessageMetadata, alert config.Alert) error {
-	e.alarmCache.Set(alertingv1.OpniSeverity(msgMeta.Severity), e.alarmCache.Key(msgMeta), alert)
+	e.alarmCache.Set(alertingv1.MontySeverity(msgMeta.Severity), e.alarmCache.Key(msgMeta), alert)
 	return nil
 }
 
 func (e *EmbeddedServer) cacheNotification(msgMeta cache.MessageMetadata, alert config.Alert) error {
-	e.notificationCache.Set(alertingv1.OpniSeverity(msgMeta.Severity), e.notificationCache.Key(msgMeta), alert)
+	e.notificationCache.Set(alertingv1.MontySeverity(msgMeta.Severity), e.notificationCache.Key(msgMeta), alert)
 	return nil
 }

@@ -416,7 +416,7 @@ func main() {
 					_, err = conditionsClient.CreateAlertCondition(environment.Context(), &alertingv1.AlertCondition{
 						Name:        "sanity metrics",
 						Description: "Metrics watchdog : fires when metrics agent is receiving metrics",
-						Severity:    alertingv1.OpniSeverity_Info,
+						Severity:    alertingv1.MontySeverity_Info,
 						AlertType: &alertingv1.AlertTypeDetails{
 							Type: &alertingv1.AlertTypeDetails_PrometheusQuery{
 								PrometheusQuery: &alertingv1.AlertConditionPrometheusQuery{

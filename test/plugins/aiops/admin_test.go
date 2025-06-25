@@ -54,7 +54,7 @@ var _ = Describe("AI Admin", Ordered, Label("integration"), func() {
 		)
 	})
 
-	When("opnicluster does not exist", func() {
+	When("montycluster does not exist", func() {
 		Specify("get should return 404", func() {
 			_, err := plugin.GetAISettings(context.Background(), &emptypb.Empty{})
 			Expect(err).To(testutil.MatchStatusCode(codes.NotFound))
@@ -80,9 +80,9 @@ var _ = Describe("AI Admin", Ordered, Label("integration"), func() {
 					Expect(err).NotTo(HaveOccurred())
 				})
 				It("should create an monty cluster", func() {
-					cluster := &aiv1beta1.OpniCluster{}
+					cluster := &aiv1beta1.MontyCluster{}
 					Eventually(k8sClient.Get(context.Background(), types.NamespacedName{
-						Name:      OpniServicesName,
+						Name:      MontyServicesName,
 						Namespace: namespace,
 					}, cluster)).Should(Succeed())
 					Expect(len(cluster.Spec.Services.Inference.PretrainedModels)).To(BeNumerically("==", 0))
@@ -109,9 +109,9 @@ var _ = Describe("AI Admin", Ordered, Label("integration"), func() {
 					Expect(err).NotTo(HaveOccurred())
 					Eventually(func() bool {
 						err := k8sClient.Get(context.Background(), types.NamespacedName{
-							Name:      OpniServicesName,
+							Name:      MontyServicesName,
 							Namespace: namespace,
-						}, &aiv1beta1.OpniCluster{})
+						}, &aiv1beta1.MontyCluster{})
 						if err == nil {
 							return false
 						}
@@ -128,9 +128,9 @@ var _ = Describe("AI Admin", Ordered, Label("integration"), func() {
 					Expect(err).NotTo(HaveOccurred())
 				})
 				It("should create an monty cluster", func() {
-					cluster := &aiv1beta1.OpniCluster{}
+					cluster := &aiv1beta1.MontyCluster{}
 					Eventually(k8sClient.Get(context.Background(), types.NamespacedName{
-						Name:      OpniServicesName,
+						Name:      MontyServicesName,
 						Namespace: namespace,
 					}, cluster)).Should(Succeed())
 					Expect(len(cluster.Spec.Services.Inference.PretrainedModels)).To(BeNumerically("==", 1))
@@ -164,9 +164,9 @@ var _ = Describe("AI Admin", Ordered, Label("integration"), func() {
 					Expect(err).NotTo(HaveOccurred())
 					Eventually(func() bool {
 						err := k8sClient.Get(context.Background(), types.NamespacedName{
-							Name:      OpniServicesName,
+							Name:      MontyServicesName,
 							Namespace: namespace,
-						}, &aiv1beta1.OpniCluster{})
+						}, &aiv1beta1.MontyCluster{})
 						if err == nil {
 							return false
 						}
@@ -193,9 +193,9 @@ var _ = Describe("AI Admin", Ordered, Label("integration"), func() {
 					Expect(err).NotTo(HaveOccurred())
 				})
 				It("should create an monty cluster", func() {
-					cluster := &aiv1beta1.OpniCluster{}
+					cluster := &aiv1beta1.MontyCluster{}
 					Eventually(k8sClient.Get(context.Background(), types.NamespacedName{
-						Name:      OpniServicesName,
+						Name:      MontyServicesName,
 						Namespace: namespace,
 					}, cluster)).Should(Succeed())
 					Expect(len(cluster.Spec.Services.Inference.PretrainedModels)).To(BeNumerically("==", 1))
@@ -234,9 +234,9 @@ var _ = Describe("AI Admin", Ordered, Label("integration"), func() {
 					Expect(err).NotTo(HaveOccurred())
 					Eventually(func() bool {
 						err := k8sClient.Get(context.Background(), types.NamespacedName{
-							Name:      OpniServicesName,
+							Name:      MontyServicesName,
 							Namespace: namespace,
-						}, &aiv1beta1.OpniCluster{})
+						}, &aiv1beta1.MontyCluster{})
 						if err == nil {
 							return false
 						}
@@ -261,9 +261,9 @@ var _ = Describe("AI Admin", Ordered, Label("integration"), func() {
 					Expect(err).NotTo(HaveOccurred())
 				})
 				It("should create an monty cluster", func() {
-					cluster := &aiv1beta1.OpniCluster{}
+					cluster := &aiv1beta1.MontyCluster{}
 					Eventually(k8sClient.Get(context.Background(), types.NamespacedName{
-						Name:      OpniServicesName,
+						Name:      MontyServicesName,
 						Namespace: namespace,
 					}, cluster)).Should(Succeed())
 					Expect(len(cluster.Spec.Services.Inference.PretrainedModels)).To(BeNumerically("==", 1))
@@ -297,9 +297,9 @@ var _ = Describe("AI Admin", Ordered, Label("integration"), func() {
 					Expect(err).NotTo(HaveOccurred())
 					Eventually(func() bool {
 						err := k8sClient.Get(context.Background(), types.NamespacedName{
-							Name:      OpniServicesName,
+							Name:      MontyServicesName,
 							Namespace: namespace,
-						}, &aiv1beta1.OpniCluster{})
+						}, &aiv1beta1.MontyCluster{})
 						if err == nil {
 							return false
 						}
@@ -326,9 +326,9 @@ var _ = Describe("AI Admin", Ordered, Label("integration"), func() {
 					Expect(err).NotTo(HaveOccurred())
 				})
 				It("should create an monty cluster", func() {
-					cluster := &aiv1beta1.OpniCluster{}
+					cluster := &aiv1beta1.MontyCluster{}
 					Eventually(k8sClient.Get(context.Background(), types.NamespacedName{
-						Name:      OpniServicesName,
+						Name:      MontyServicesName,
 						Namespace: namespace,
 					}, cluster)).Should(Succeed())
 					Expect(len(cluster.Spec.Services.Inference.PretrainedModels)).To(BeNumerically("==", 1))
@@ -367,9 +367,9 @@ var _ = Describe("AI Admin", Ordered, Label("integration"), func() {
 					Expect(err).NotTo(HaveOccurred())
 					Eventually(func() bool {
 						err := k8sClient.Get(context.Background(), types.NamespacedName{
-							Name:      OpniServicesName,
+							Name:      MontyServicesName,
 							Namespace: namespace,
-						}, &aiv1beta1.OpniCluster{})
+						}, &aiv1beta1.MontyCluster{})
 						if err == nil {
 							return false
 						}
@@ -394,9 +394,9 @@ var _ = Describe("AI Admin", Ordered, Label("integration"), func() {
 					Expect(err).NotTo(HaveOccurred())
 				})
 				It("should create an monty cluster", func() {
-					cluster := &aiv1beta1.OpniCluster{}
+					cluster := &aiv1beta1.MontyCluster{}
 					Eventually(k8sClient.Get(context.Background(), types.NamespacedName{
-						Name:      OpniServicesName,
+						Name:      MontyServicesName,
 						Namespace: namespace,
 					}, cluster)).Should(Succeed())
 					Expect(len(cluster.Spec.Services.Inference.PretrainedModels)).To(BeNumerically("==", 1))
@@ -430,9 +430,9 @@ var _ = Describe("AI Admin", Ordered, Label("integration"), func() {
 					Expect(err).NotTo(HaveOccurred())
 					Eventually(func() bool {
 						err := k8sClient.Get(context.Background(), types.NamespacedName{
-							Name:      OpniServicesName,
+							Name:      MontyServicesName,
 							Namespace: namespace,
-						}, &aiv1beta1.OpniCluster{})
+						}, &aiv1beta1.MontyCluster{})
 						if err == nil {
 							return false
 						}
@@ -457,9 +457,9 @@ var _ = Describe("AI Admin", Ordered, Label("integration"), func() {
 					Expect(err).NotTo(HaveOccurred())
 				})
 				It("should create an monty cluster", func() {
-					cluster := &aiv1beta1.OpniCluster{}
+					cluster := &aiv1beta1.MontyCluster{}
 					Eventually(k8sClient.Get(context.Background(), types.NamespacedName{
-						Name:      OpniServicesName,
+						Name:      MontyServicesName,
 						Namespace: namespace,
 					}, cluster)).Should(Succeed())
 					Expect(cluster.Spec.S3).To(Equal(aiv1beta1.S3Spec{
@@ -480,9 +480,9 @@ var _ = Describe("AI Admin", Ordered, Label("integration"), func() {
 					Expect(err).NotTo(HaveOccurred())
 					Eventually(func() bool {
 						err := k8sClient.Get(context.Background(), types.NamespacedName{
-							Name:      OpniServicesName,
+							Name:      MontyServicesName,
 							Namespace: namespace,
-						}, &aiv1beta1.OpniCluster{})
+						}, &aiv1beta1.MontyCluster{})
 						if err == nil {
 							return false
 						}
@@ -510,9 +510,9 @@ var _ = Describe("AI Admin", Ordered, Label("integration"), func() {
 		Specify("setup", func() {
 			_, err := plugin.PutAISettings(context.Background(), request)
 			Expect(err).NotTo(HaveOccurred())
-			cluster := &aiv1beta1.OpniCluster{}
+			cluster := &aiv1beta1.MontyCluster{}
 			Eventually(k8sClient.Get(context.Background(), types.NamespacedName{
-				Name:      OpniServicesName,
+				Name:      MontyServicesName,
 				Namespace: namespace,
 			}, cluster)).Should(Succeed())
 			Expect(len(cluster.Spec.Services.Inference.PretrainedModels)).To(BeNumerically("==", 1))
@@ -541,9 +541,9 @@ var _ = Describe("AI Admin", Ordered, Label("integration"), func() {
 					Expect(err).NotTo(HaveOccurred())
 				})
 				It("should update the monty cluster but not the version", func() {
-					cluster := &aiv1beta1.OpniCluster{}
+					cluster := &aiv1beta1.MontyCluster{}
 					Eventually(k8sClient.Get(context.Background(), types.NamespacedName{
-						Name:      OpniServicesName,
+						Name:      MontyServicesName,
 						Namespace: namespace,
 					}, cluster)).Should(Succeed())
 					Expect(len(cluster.Spec.Services.Inference.PretrainedModels)).To(BeNumerically("==", 2))
@@ -564,9 +564,9 @@ var _ = Describe("AI Admin", Ordered, Label("integration"), func() {
 			Specify("upgrade should update the cluster", func() {
 				_, err := plugin.DoUpgrade(context.Background(), &emptypb.Empty{})
 				Expect(err).NotTo(HaveOccurred())
-				cluster := &aiv1beta1.OpniCluster{}
+				cluster := &aiv1beta1.MontyCluster{}
 				Eventually(k8sClient.Get(context.Background(), types.NamespacedName{
-					Name:      OpniServicesName,
+					Name:      MontyServicesName,
 					Namespace: namespace,
 				}, cluster)).Should(Succeed())
 				Expect(cluster.Spec.Version).To(Equal("v0.12.1"))

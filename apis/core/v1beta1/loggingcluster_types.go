@@ -1,7 +1,7 @@
 package v1beta1
 
 import (
-	opnimeta "github.com/aity-cloud/monty/pkg/util/meta"
+	montymeta "github.com/aity-cloud/monty/pkg/util/meta"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -38,7 +38,7 @@ type LoggingCluster struct {
 }
 
 type LoggingClusterSpec struct {
-	OpensearchClusterRef *opnimeta.OpensearchClusterRef `json:"opensearchCluster,omitempty"`
+	OpensearchClusterRef *montymeta.OpensearchClusterRef `json:"opensearchCluster,omitempty"`
 	// Deprecated: individual auth users are no longer requried
 	IndexUserSecret *corev1.LocalObjectReference `json:"indexUser,omitempty"`
 	FriendlyName    string                       `json:"friendlyName,omitempty"`

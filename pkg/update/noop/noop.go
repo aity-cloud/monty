@@ -43,7 +43,7 @@ func (n *pluginSyncHandler) GetCurrentManifest(_ context.Context) (*controlv1.Up
 	return &controlv1.UpdateManifest{
 		Items: []*controlv1.UpdateManifestEntry{
 			{
-				Package: urn.NewOpniURN(urn.Plugin, updateStrategy, "unmanaged").String(),
+				Package: urn.NewMontyURN(urn.Plugin, updateStrategy, "unmanaged").String(),
 				Path:    "unmanaged",
 				Digest:  emptyDigest,
 			},
@@ -55,7 +55,7 @@ func (n *agentSyncHandler) GetCurrentManifest(_ context.Context) (*controlv1.Upd
 	return &controlv1.UpdateManifest{
 		Items: []*controlv1.UpdateManifestEntry{
 			{
-				Package: urn.NewOpniURN(urn.Agent, updateStrategy, "unmanaged").String(),
+				Package: urn.NewMontyURN(urn.Agent, updateStrategy, "unmanaged").String(),
 				Path:    "unmanaged",
 				Digest:  emptyDigest,
 			},

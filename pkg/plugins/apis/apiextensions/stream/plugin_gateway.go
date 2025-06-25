@@ -77,7 +77,7 @@ func NewGatewayPlugin(p StreamAPIExtension, opts ...GatewayStreamApiExtensionPlu
 			ext.meterProvider = metric.NewMeterProvider(metric.WithReader(options.metricsConfig.Reader),
 				metric.WithResource(resource.NewSchemaless(
 					attribute.Key("plugin").String(name),
-					attribute.String("system", "opni_gateway"),
+					attribute.String("system", "monty_gateway"),
 				)),
 			)
 		}

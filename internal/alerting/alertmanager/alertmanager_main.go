@@ -243,8 +243,8 @@ func run(args []string) int {
 		label                  = kingpin.Flag("cluster.label", "The cluster label is an optional string to include on each packet and stream. It uniquely identifies the cluster and prevents cross-communication issues when sending gossip messages.").Default("").String()
 
 		// monty
-		opniAddr    = kingpin.Flag("monty.listen-address", "Listen address for the monty embedded server").String()
-		opniSendK8s = kingpin.Flag("monty.send-k8s", "Send alerts to k8s").Bool()
+		montyAddr    = kingpin.Flag("monty.listen-address", "Listen address for the monty embedded server").String()
+		montySendK8s = kingpin.Flag("monty.send-k8s", "Send alerts to k8s").Bool()
 	)
 
 	promlogflag.AddFlags(kingpin.CommandLine, &promlogConfig)
@@ -255,8 +255,8 @@ func run(args []string) int {
 	kingpin.Parse()
 	ctxCa, cancelCa := context.WithCancel(context.Background())
 	defer cancelCa()
-	if opniAddr != nil && *opniAddr != "" {
-		extensions.StartOpniEmbeddedServer(ctxCa, *opniAddr, lo.FromPtrOr(opniSendK8s, false))
+	if montyAddr != nil && *montyAddr != "" {
+		extensions.StartMontyEmbeddedServer(ctxCa, *montyAddr, lo.FromPtrOr(montySendK8s, false))
 	}
 
 	logger := promlog.New(&promlogConfig)

@@ -69,7 +69,7 @@ var _ = Describe("Collector", Ordered, Label("unit"), func() {
 			}
 			Expect(descs).To(ConsistOf(
 				descriptorString(
-					"opni_cluster_info",
+					"monty_cluster_info",
 					"Cluster information",
 					[]string{},
 					[]prometheus.ConstrainedLabel{
@@ -82,7 +82,7 @@ var _ = Describe("Collector", Ordered, Label("unit"), func() {
 					},
 				),
 				descriptorString(
-					"opni_agent_up",
+					"monty_agent_up",
 					"Agent connection status",
 					[]string{},
 					[]prometheus.ConstrainedLabel{
@@ -92,7 +92,7 @@ var _ = Describe("Collector", Ordered, Label("unit"), func() {
 					},
 				),
 				descriptorString(
-					"opni_agent_ready",
+					"monty_agent_ready",
 					"Agent readiness status",
 					[]string{},
 					[]prometheus.ConstrainedLabel{
@@ -105,7 +105,7 @@ var _ = Describe("Collector", Ordered, Label("unit"), func() {
 					},
 				),
 				descriptorString(
-					"opni_agent_status_summary",
+					"monty_agent_status_summary",
 					"Agent status summary",
 					[]string{},
 					[]prometheus.ConstrainedLabel{

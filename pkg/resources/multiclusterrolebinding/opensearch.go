@@ -87,8 +87,8 @@ func (r *Reconciler) ReconcileOpensearchObjects(opensearchCluster *opensearchv1.
 	}
 
 	templates := []opensearchtypes.IndexTemplateSpec{
-		OpniLogTemplate,
-		OpniSpanTemplate,
+		MontyLogTemplate,
+		MontySpanTemplate,
 	}
 
 	for _, template := range templates {
@@ -129,7 +129,7 @@ func (r *Reconciler) ReconcileOpensearchObjects(opensearchCluster *opensearchv1.
 	}
 
 	mappings := map[string]opensearchtypes.TemplateMappingsSpec{
-		"mappings": opniServiceMapTemplate.Template.Mappings,
+		"mappings": montyServiceMapTemplate.Template.Mappings,
 	}
 	retErr = reconciler.MaybeCreateIndex(serviceMapIndexName, mappings)
 	if retErr != nil {

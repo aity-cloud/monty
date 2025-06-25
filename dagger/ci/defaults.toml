@@ -16,11 +16,11 @@ test = true
 [charts.oci]
 	repo = "docker.io/rancher"
 
-[images.opni]
-	repo = "docker.io/rancher/opni"
+[images.monty]
+	repo = "docker.io/rancher/monty"
 
 [images.minimal]
-	repo = "docker.io/rancher/opni"
+	repo = "docker.io/rancher/monty"
 	tag-suffix = "-minimal"
 
 [images.opensearch.build]
@@ -37,13 +37,13 @@ test = true
 	tag-suffix = "-2.8.0"
 
 [images.opensearch.update-service]
-	repo = "docker.io/rancher/opni-opensearch-update-service"
+	repo = "docker.io/rancher/monty-opensearch-update-service"
 
 [images.python-base]
-	repo = "docker.io/rancher/opni-python-base"
+	repo = "docker.io/rancher/monty-python-base"
 	tag = "3.9"
 
 [images.python-torch]
-	repo = "docker.io/rancher/opni-python-base"
+	repo = "docker.io/rancher/monty-python-base"
 	tag = "3.9"
 	tag-suffix = "-torch"

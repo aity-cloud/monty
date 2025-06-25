@@ -6,12 +6,12 @@ Currently when the agent connects to a gateway there is a handshake and update o
 Instead we should use OCI images as immutable objects to update the agent components.  This would work similarly to how Rancher agents are updated; the deployment spec is updated which will result in an updated rollout.
 
 ## Use case: 
-This would impact updating Opni.  Currently if there are changes to the controllers users are expected to manually update the CRDs and agent (using a helm chart) in each downstream cluster.  To improve the usability this should be automated.
+This would impact updating Monty.  Currently if there are changes to the controllers users are expected to manually update the CRDs and agent (using a helm chart) in each downstream cluster.  To improve the usability this should be automated.
 
 Likewise when we update the agent (for example v0.9.0 had agent changes) it should be updated.
 
 ## Benefits: 
-* Significantly reduce the burden to upgrading Opni, particularlly in large deployments
+* Significantly reduce the burden to upgrading Monty, particularlly in large deployments
 * Reduce the scope for contract mismatches between the agent and the gateway
 * Increase the discoverabilty of agent upgrades and allow limited self servicing
 

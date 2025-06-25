@@ -126,10 +126,10 @@ func GetFilesystemPlugins(dc plugins.DiscoveryConfig) (*controlv1.PluginArchive,
 				return
 			}
 			sum := hex.EncodeToString(hash.Sum(nil))
-			opniURN := urn.NewOpniURN(urn.Plugin, UpdateStrategy, md.Module)
+			MontyURN := urn.NewMontyURN(urn.Plugin, UpdateStrategy, md.Module)
 			res.Items[i] = &controlv1.PluginArchiveEntry{
 				Metadata: &controlv1.UpdateManifestEntry{
-					Package: opniURN.String(),
+					Package: MontyURN.String(),
 					Path:    filepath.Base(md.BinaryPath),
 					Digest:  sum,
 				},

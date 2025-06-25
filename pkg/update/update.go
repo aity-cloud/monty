@@ -72,13 +72,13 @@ func GetType[T entry](entries []T) (urn.UpdateType, error) {
 		return "", ErrNoEntries
 	}
 	for _, entry := range entries {
-		opniURN, err := urn.ParseString(entry.GetPackage())
+		MontyURN, err := urn.ParseString(entry.GetPackage())
 		if err != nil {
 			return "", err
 		}
 		//Validate the URN
 		switch {
-		case opniURN.Type == urn.Plugin:
+		case MontyURN.Type == urn.Plugin:
 			// If update type is not empty or plugin, return error
 			switch updateType {
 			case "":
@@ -87,7 +87,7 @@ func GetType[T entry](entries []T) (urn.UpdateType, error) {
 			default:
 				return "", ErrMultipleTypes
 			}
-		case opniURN.Type == urn.Agent:
+		case MontyURN.Type == urn.Agent:
 			// If update type is not empty or agent, return error
 			switch updateType {
 			case "":
@@ -109,14 +109,14 @@ func getStrategy[T entry](entries []T) (string, error) {
 		return "", ErrNoEntries
 	}
 	for _, entry := range entries {
-		opniURN, err := urn.ParseString(entry.GetPackage())
+		MontyURN, err := urn.ParseString(entry.GetPackage())
 		if err != nil {
 			return "", err
 		}
 		switch strategy {
 		case "":
-			strategy = opniURN.Strategy
-		case opniURN.Strategy:
+			strategy = MontyURN.Strategy
+		case MontyURN.Strategy:
 		default:
 			return "", ErrMultipleStrategies
 		}

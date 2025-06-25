@@ -507,7 +507,7 @@ func (a *AlarmServerComponent) Timeline(ctx context.Context, req *alertingv1.Tim
 				if alertingv1.IsMetricsCondition(cond) {
 					res, err := adminClient.QueryRange(ctx, &cortexadmin.QueryRangeRequest{
 						Tenants: []string{cond.GetClusterId().GetId()},
-						Query:   fmt.Sprintf("ALERTS_FOR_STATE{opni_uuid=\"%s\"}", cond.Id),
+						Query:   fmt.Sprintf("ALERTS_FOR_STATE{monty_uuid=\"%s\"}", cond.Id),
 						Start:   start,
 						End:     end,
 						Step:    durationpb.New(time.Minute * 1),

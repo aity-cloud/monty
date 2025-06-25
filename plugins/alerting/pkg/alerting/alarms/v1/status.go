@@ -238,7 +238,7 @@ func (a *AlarmServerComponent) loadMetricsInfo(ctx context.Context) (*metricsInf
 				return cl.Id
 			}),
 			RuleType:        []string{string(promClient.RuleTypeAlerting)},
-			NamespaceRegexp: shared.OpniAlertingCortexNamespace,
+			NamespaceRegexp: shared.MontyAlertingCortexNamespace,
 		})
 		if err != nil {
 			return nil, err
@@ -288,7 +288,7 @@ type metricsInfo struct {
 }
 
 type alertingInfo struct {
-	router          routing.OpniRouting
+	router          routing.MontyRouting
 	alertGroup      models.AlertGroups
 	loadedReceivers []string
 }

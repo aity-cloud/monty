@@ -9,14 +9,14 @@ import (
 	"sync"
 
 	"github.com/aity-cloud/monty/apis"
-	opnicorev1beta1 "github.com/aity-cloud/monty/apis/core/v1beta1"
-	opniloggingv1beta1 "github.com/aity-cloud/monty/apis/logging/v1beta1"
+	montycorev1beta1 "github.com/aity-cloud/monty/apis/core/v1beta1"
+	montyloggingv1beta1 "github.com/aity-cloud/monty/apis/logging/v1beta1"
 	"github.com/aity-cloud/monty/pkg/logger"
 	"github.com/aity-cloud/monty/pkg/otel"
 	"github.com/aity-cloud/monty/pkg/plugins/driverutil"
 	"github.com/aity-cloud/monty/pkg/util/k8sutil"
 	"github.com/aity-cloud/monty/pkg/util/k8sutil/provider"
-	opnimeta "github.com/aity-cloud/monty/pkg/util/meta"
+	montymeta "github.com/aity-cloud/monty/pkg/util/meta"
 	"github.com/aity-cloud/monty/plugins/logging/apis/node"
 	"github.com/aity-cloud/monty/plugins/logging/pkg/agent/drivers"
 	"github.com/cisco-open/k8s-objectmatcher/patch"
@@ -147,14 +147,14 @@ BACKOFF:
 	}
 }
 
-func (m *KubernetesManagerDriver) buildLoggingCollectorConfig() *opniloggingv1beta1.CollectorConfig {
-	collectorConfig := &opniloggingv1beta1.CollectorConfig{
+func (m *KubernetesManagerDriver) buildLoggingCollectorConfig() *montyloggingv1beta1.CollectorConfig {
+	collectorConfig := &montyloggingv1beta1.CollectorConfig{
 		ObjectMeta: metav1.ObjectMeta{
 			Name: "monty-logging",
 		},
-		Spec: opniloggingv1beta1.CollectorConfigSpec{
-			Provider: opniloggingv1beta1.LogProvider(m.provider),
-			KubeAuditLogs: &opniloggingv1beta1.KubeAuditLogsSpec{
+		Spec: montyloggingv1beta1.CollectorConfigSpec{
+			Provider: montyloggingv1beta1.LogProvider(m.provider),
+			KubeAuditLogs: &montyloggingv1beta1.KubeAuditLogsSpec{
 				Enabled: false,
 			},
 		},
@@ -203,7 +203,7 @@ func (m *KubernetesManagerDriver) reconcileObject(desired client.Object, shouldE
 }
 
 func (m *KubernetesManagerDriver) reconcileCollector(shouldExist bool) error {
-	coll := &opnicorev1beta1.Collector{
+	coll := &montycorev1beta1.Collector{
 		ObjectMeta: metav1.ObjectMeta{
 			Name: otel.CollectorName,
 		},
@@ -317,24 +317,24 @@ func (m *KubernetesManagerDriver) patchObject(current client.Object, desired cli
 	return m.k8sClient.Update(context.TODO(), desired)
 }
 
-func (m *KubernetesManagerDriver) buildEmptyCollector() *opnicorev1beta1.Collector {
+func (m *KubernetesManagerDriver) buildEmptyCollector() *montycorev1beta1.Collector {
 	var serviceName string
 	service, err := m.getAgentService()
 	if err == nil {
 		serviceName = service.Name
 	}
-	return &opnicorev1beta1.Collector{
+	return &montycorev1beta1.Collector{
 		ObjectMeta: metav1.ObjectMeta{
 			Name: otel.CollectorName,
 		},
-		Spec: opnicorev1beta1.CollectorSpec{
-			ImageSpec: opnimeta.ImageSpec{
+		Spec: montycorev1beta1.CollectorSpec{
+			ImageSpec: montymeta.ImageSpec{
 				ImagePullPolicy: lo.ToPtr(corev1.PullAlways),
 			},
 			SystemNamespace:          m.Namespace,
 			AgentEndpoint:            otel.AgentEndpoint(serviceName),
-			AggregatorOTELConfigSpec: opnicorev1beta1.NewDefaultAggregatorOTELConfigSpec(),
-			NodeOTELConfigSpec:       opnicorev1beta1.NewDefaultNodeOTELConfigSpec(),
+			AggregatorOTELConfigSpec: montycorev1beta1.NewDefaultAggregatorOTELConfigSpec(),
+			NodeOTELConfigSpec:       montycorev1beta1.NewDefaultNodeOTELConfigSpec(),
 		},
 	}
 }

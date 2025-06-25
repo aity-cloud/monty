@@ -28,8 +28,8 @@ var _ = Describe("Alerting Controller", Ordered, Label("controller", "slow"), fu
 	gateway := &types.NamespacedName{}
 	testImage := "alerting-controller-test:latest"
 	BeforeAll(func() {
-		os.Setenv("OPNI_DEBUG_MANAGER_IMAGE", testImage)
-		DeferCleanup(os.Unsetenv, "OPNI_DEBUG_MANAGER_IMAGE")
+		os.Setenv("MONTY_DEBUG_MANAGER_IMAGE", testImage)
+		DeferCleanup(os.Unsetenv, "MONTY_DEBUG_MANAGER_IMAGE")
 	})
 
 	BeforeEach(func() {

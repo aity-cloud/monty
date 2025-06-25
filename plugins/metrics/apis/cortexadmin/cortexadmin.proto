@@ -288,7 +288,7 @@ message RuleGroup {
   // Note : string instead of timestamp to preserve compatibility with native prometheus api return value
   string lastEvaluation = 5;
   double evaluationTime = 6;
-  // opni specific field
+  // monty specific field
   string clusterId = 7;
 }
 

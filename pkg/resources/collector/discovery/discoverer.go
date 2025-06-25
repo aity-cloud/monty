@@ -31,8 +31,8 @@ const (
 
 var (
 	// somewhat counter-intuitively, decreasing this increases memory usage
-	opniDefaultScrapeInterval = model.Duration(60 * time.Second)
-	opniDefaultScrapeTimeout  = model.Duration(30 * time.Second)
+	montyDefaultScrapeInterval = model.Duration(60 * time.Second)
+	montyDefaultScrapeTimeout  = model.Duration(30 * time.Second)
 )
 
 type target struct {

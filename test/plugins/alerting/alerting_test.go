@@ -286,7 +286,7 @@ func BuildAlertingClusterIntegrationTests(
 							found := false
 							for _, ag := range res {
 								for _, alert := range ag.Alerts {
-									uuid, ok1 := alert.Labels[message.NotificationPropertyOpniUuid]
+									uuid, ok1 := alert.Labels[message.NotificationPropertyMontyUuid]
 									nsUuid, ok2 := alert.Labels[message.TestNamespace]
 									if ok1 && ok1 == ok2 && uuid == nsUuid {
 										foundMatchingRecv := false
@@ -391,10 +391,10 @@ func BuildAlertingClusterIntegrationTests(
 					By("verifying all the agents conditions are critical")
 
 					filterList, err := alertConditionsClient.ListAlertConditions(env.Context(), &alertingv1.ListAlertConditionRequest{
-						Severities: []alertingv1.OpniSeverity{
-							alertingv1.OpniSeverity_Warning,
-							alertingv1.OpniSeverity_Error,
-							alertingv1.OpniSeverity_Info,
+						Severities: []alertingv1.MontySeverity{
+							alertingv1.MontySeverity_Warning,
+							alertingv1.MontySeverity_Error,
+							alertingv1.MontySeverity_Info,
 						},
 					})
 					Expect(err).To(Succeed())
@@ -658,7 +658,7 @@ func BuildAlertingClusterIntegrationTests(
 							attachedEndpoints := cond.GetAttachedEndpoints().GetItems()
 							for _, ag := range res {
 								for _, alert := range ag.Alerts {
-									uuid, ok := alert.Labels[message.NotificationPropertyOpniUuid]
+									uuid, ok := alert.Labels[message.NotificationPropertyMontyUuid]
 									if ok && uuid == condId {
 										foundMatchingRecv := true
 										if len(attachedEndpoints) > 0 {

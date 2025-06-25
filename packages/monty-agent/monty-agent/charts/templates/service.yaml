@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: monty-agent
+  namespace: {{ include "monty-agent.namespace" . }}
+  labels:
+    {{- include "monty-agent.labels" . | nindent 4 }}
+    monty.io/app: agent
+spec:
+  type: {{ .Values.service.type }}
+  selector:
+    {{- include "monty-agent.selectorLabels" . | nindent 4 }}
+  ports:
+    - name: http
+      port: {{ .Values.service.port }}
+      targetPort: http

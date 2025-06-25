@@ -7,7 +7,7 @@ import (
 	"github.com/aity-cloud/monty/pkg/auth/openid"
 	cfgv1beta1 "github.com/aity-cloud/monty/pkg/config/v1beta1"
 	"github.com/aity-cloud/monty/pkg/noauth"
-	opnimeta "github.com/aity-cloud/monty/pkg/util/meta"
+	montymeta "github.com/aity-cloud/monty/pkg/util/meta"
 	. "github.com/kralicky/kmatch"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
@@ -33,7 +33,7 @@ var _ = Describe("Core Gateway Controller", Ordered, Label("controller", "slow")
 						Name: "test",
 					},
 					Spec: corev1beta1.GatewaySpec{
-						Image: &opnimeta.ImageSpec{
+						Image: &montymeta.ImageSpec{
 							Image: lo.ToPtr("rancher/monty:latest"),
 						},
 						Auth: corev1beta1.AuthSpec{
@@ -64,7 +64,7 @@ var _ = Describe("Core Gateway Controller", Ordered, Label("controller", "slow")
 						Name: "test",
 					},
 					Spec: corev1beta1.GatewaySpec{
-						Image: &opnimeta.ImageSpec{
+						Image: &montymeta.ImageSpec{
 							Image: lo.ToPtr("rancher/monty:latest"),
 						},
 						Auth: corev1beta1.AuthSpec{
@@ -87,7 +87,7 @@ var _ = Describe("Core Gateway Controller", Ordered, Label("controller", "slow")
 						Name: "test",
 					},
 					Spec: corev1beta1.GatewaySpec{
-						Image: &opnimeta.ImageSpec{
+						Image: &montymeta.ImageSpec{
 							Image: lo.ToPtr("rancher/monty:latest"),
 						},
 						Auth: corev1beta1.AuthSpec{

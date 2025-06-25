@@ -23,7 +23,7 @@ const (
 	metadataReadOnly = "readOnly"
 )
 
-func ignoreOpniConfigurations(conf *alertingv1.AlertCondition) {
+func ignoreMontyConfigurations(conf *alertingv1.AlertCondition) {
 	conf.Metadata = nil
 	conf.Name = ""
 	conf.Description = ""
@@ -49,11 +49,11 @@ func applyMutableReadOnlyFields(dest, src *alertingv1.AlertCondition) {
 }
 
 func areRuleSpecsEqual(old, new *alertingv1.AlertCondition) bool {
-	oldIgnoreOpniConf := util.ProtoClone(old)
-	newIgnoreOpniConf := util.ProtoClone(new)
-	ignoreOpniConfigurations(oldIgnoreOpniConf)
-	ignoreOpniConfigurations(newIgnoreOpniConf)
-	return cmp.Equal(oldIgnoreOpniConf, newIgnoreOpniConf, protocmp.Transform())
+	oldIgnoreMontyConf := util.ProtoClone(old)
+	newIgnoreMontyConf := util.ProtoClone(new)
+	ignoreMontyConfigurations(oldIgnoreMontyConf)
+	ignoreMontyConfigurations(newIgnoreMontyConf)
+	return cmp.Equal(oldIgnoreMontyConf, newIgnoreMontyConf, protocmp.Transform())
 }
 
 func (a *AlarmServerComponent) SyncRules(ctx context.Context, rules *rules.RuleManifest) (*emptypb.Empty, error) {

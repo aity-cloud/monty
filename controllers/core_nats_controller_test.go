@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	opnicorev1beta1 "github.com/aity-cloud/monty/apis/core/v1beta1"
+	montycorev1beta1 "github.com/aity-cloud/monty/apis/core/v1beta1"
 	. "github.com/kralicky/kmatch"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
@@ -15,16 +15,16 @@ import (
 )
 
 var _ = Describe("Core Nats Controller", Ordered, Label("controller"), func() {
-	cluster := &opnicorev1beta1.NatsCluster{}
+	cluster := &montycorev1beta1.NatsCluster{}
 
 	Specify("setup", func() {
-		cluster = &opnicorev1beta1.NatsCluster{
+		cluster = &montycorev1beta1.NatsCluster{
 			ObjectMeta: metav1.ObjectMeta{
 				Name:      "test-nats",
 				Namespace: makeTestNamespace(),
 			},
-			Spec: opnicorev1beta1.NatsSpec{
-				AuthMethod: opnicorev1beta1.NatsAuthPassword,
+			Spec: montycorev1beta1.NatsSpec{
+				AuthMethod: montycorev1beta1.NatsAuthPassword,
 				NodeSelector: map[string]string{
 					"foo": "bar",
 				},

@@ -75,7 +75,7 @@ func (r *Reconciler) Reconcile() (retResult reconcile.Result, retErr error) {
 	}
 	allResources = append(allResources, keys...)
 	deployment, err := r.deployment(map[string]string{
-		resources.OpniConfigHash: configDigest,
+		resources.MontyConfigHash: configDigest,
 	})
 	if err != nil {
 		return k8sutil.RequeueErr(err).Result()

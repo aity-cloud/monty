@@ -11,7 +11,7 @@ import (
 	"github.com/aity-cloud/monty/pkg/logger"
 
 	"emperror.dev/errors"
-	opnicorev1beta1 "github.com/aity-cloud/monty/apis/core/v1beta1"
+	montycorev1beta1 "github.com/aity-cloud/monty/apis/core/v1beta1"
 	"github.com/aity-cloud/monty/pkg/auth/openid"
 	cfgmeta "github.com/aity-cloud/monty/pkg/config/meta"
 	cfgv1beta1 "github.com/aity-cloud/monty/pkg/config/v1beta1"
@@ -131,7 +131,7 @@ func (r *Reconciler) configMap() (resources.Resource, string, error) {
 			},
 		}
 	case cfgv1beta1.StorageTypeJetStream:
-		nats := &opnicorev1beta1.NatsCluster{}
+		nats := &montycorev1beta1.NatsCluster{}
 		if err := r.client.Get(r.ctx, types.NamespacedName{
 			Namespace: r.gw.Namespace,
 			Name:      r.gw.Spec.NatsRef.Name,

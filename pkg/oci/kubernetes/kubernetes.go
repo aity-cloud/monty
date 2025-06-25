@@ -74,7 +74,7 @@ func (d *kubernetesResolveImageDriver) GetImage(ctx context.Context, imageType o
 	var err error
 	switch imageType {
 	case oci.ImageTypeMonty:
-		image, err = d.getOpniImage(ctx)
+		image, err = d.getMontyImage(ctx)
 	case oci.ImageTypeMinimal:
 		image, err = d.getMinimalImage(ctx)
 	default:
@@ -91,8 +91,8 @@ func (d *kubernetesResolveImageDriver) GetImage(ctx context.Context, imageType o
 	return image, nil
 }
 
-func (d *kubernetesResolveImageDriver) getOpniImage(ctx context.Context) (*oci.Image, error) {
-	imageStr, err := d.getOpniImageString(ctx)
+func (d *kubernetesResolveImageDriver) getMontyImage(ctx context.Context) (*oci.Image, error) {
+	imageStr, err := d.getMontyImageString(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("error resolving monty image: %w", err)
 	}
@@ -107,19 +107,19 @@ func (d *kubernetesResolveImageDriver) getMinimalImage(ctx context.Context) (*oc
 	}
 
 	// no minimal image available, try to guess based on the full image
-	opniImage, opniImageErr := d.getOpniImage(ctx)
-	if opniImageErr == nil {
+	montyImage, montyImageErr := d.getMontyImage(ctx)
+	if montyImageErr == nil {
 		// if we have a version, we can append the "-minimal" suffix to the tag
 		// to get the tagged minimal image for the same version
 		if versions.Version != "unversioned" {
-			opniImage.Tag = versions.Version + "-minimal"
-			opniImage.Digest = ""
+			montyImage.Tag = versions.Version + "-minimal"
+			montyImage.Digest = ""
 		}
 		// no version, only thing we can do is fall back to using the full image
-		return opniImage, nil
+		return montyImage, nil
 	}
 
-	return nil, fmt.Errorf("error resolving minimal image: %w", errors.Join(minimalImageErr, opniImageErr))
+	return nil, fmt.Errorf("error resolving minimal image: %w", errors.Join(minimalImageErr, montyImageErr))
 }
 
 func init() {

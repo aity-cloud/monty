@@ -68,14 +68,14 @@ var _ = Describe("Alerting cortex suite", Label("unit"), func() {
 			Expect(err).To(Succeed())
 			Expect(annotations).To(HaveLen(1))
 
-			opniResponses, errors := ParseAlertManagerWebhookPayload(annotations)
+			montyiResponses, errors := ParseAlertManagerWebhookPayload(annotations)
 			Expect(errors).To(HaveLen(1))
-			Expect(len(opniResponses)).To(Equal(len(errors)))
+			Expect(len(montyiResponses)).To(Equal(len(errors)))
 			for _, e := range errors {
 				Expect(e).To(Succeed())
 			}
-			Expect(opniResponses[0].ConditionId.GetId()).To(Equal(someId))
-			Expect(opniResponses[0].Annotations["alertname"]).To(Equal(somename))
+			Expect(montyiResponses[0].ConditionId.GetId()).To(Equal(someId))
+			Expect(montyiResponses[0].Annotations["alertname"]).To(Equal(somename))
 		})
 
 		It("Should errror on invalid cortex webhook payloads", func() {
@@ -87,11 +87,11 @@ var _ = Describe("Alerting cortex suite", Label("unit"), func() {
 			Expect(err).To(Succeed())
 			annotations, err := ParseCortexPayloadBytes(mockBody)
 			Expect(err).To(Succeed())
-			opniRequests, errors := ParseAlertManagerWebhookPayload(annotations)
+			montyRequests, errors := ParseAlertManagerWebhookPayload(annotations)
 			Expect(errors).To(HaveLen(1))
-			Expect(len(opniRequests)).To(Equal(len(errors)))
+			Expect(len(montyRequests)).To(Equal(len(errors)))
 			Expect(errors[0]).To(HaveOccurred())
-			Expect(opniRequests[0]).To(BeNil())
+			Expect(montyRequests[0]).To(BeNil())
 		})
 	})
 })

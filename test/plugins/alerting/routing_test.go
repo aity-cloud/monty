@@ -32,7 +32,7 @@ var defaultHook *alerting.MockIntegrationWebhookServer
 func init() {
 	testruntime.IfIntegration(func() {
 		BuildRoutingLogicTest(
-			func() routing.OpniRouting {
+			func() routing.MontyRouting {
 				defaultHooks := alerting.NewWebhookMemoryServer("webhook")
 				defaultHook = defaultHooks
 				cfg := config.WebhookConfig{
@@ -43,14 +43,14 @@ func init() {
 						URL: util.Must(url.Parse(defaultHook.GetWebhook())),
 					},
 				}
-				return routing.NewOpniRouterV1(cfg)
+				return routing.NewMontyRouterV1(cfg)
 			},
 		)
 	})
 }
 
 func BuildRoutingLogicTest(
-	routerConstructor func() routing.OpniRouting,
+	routerConstructor func() routing.MontyRouting,
 ) bool {
 	return Describe("Alerting routing logic translation to physical dispatching", Ordered, Label("integration"), func() {
 		var alertingClient client.AlertingClient
@@ -58,7 +58,7 @@ func BuildRoutingLogicTest(
 		var alertingClient3 client.AlertingClient
 		When("setting namespace specs on the routing tree", func() {
 			step := "initial"
-			var router routing.OpniRouting
+			var router routing.MontyRouting
 			BeforeAll(func() {
 				Expect(env).NotTo(BeNil())
 				router = routerConstructor()
@@ -272,7 +272,7 @@ type testSpec struct {
 	details   *alertingv1.EndpointImplementation
 }
 
-// FIXME: this expects that the router interface implementations builds things in the format specified by OpniRouterV1
+// FIXME: this expects that the router interface implementations builds things in the format specified by MontyRouterV1
 func (t testSpecSuite) ExpectAlertsToBeRouted(amPort int) error {
 	By("getting the AlertManager state")
 	alertingClient, err := client.NewClient(

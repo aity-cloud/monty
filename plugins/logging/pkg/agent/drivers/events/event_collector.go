@@ -271,7 +271,7 @@ func (c *EventCollector) shipEvent(event *corev1.Event, timestamp time.Time) err
 		},
 	}
 
-	endpoint := fmt.Sprintf("http://opni-shipper.%s:2021/log/ingest", c.namespace)
+	endpoint := fmt.Sprintf("http://monty-shipper.%s:2021/log/ingest", c.namespace)
 
 	req, err := http.NewRequest(http.MethodPost, endpoint, opensearchutil.NewJSONReader(output))
 	if err != nil {
