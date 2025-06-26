@@ -35,7 +35,7 @@ import (
 
 func buildPrerequisites() error {
 	testlog.Log.Debug("building prerequisite binaries...")
-	cmd := exec.Command("mage", "build:plugin", "example", "build:opniminimal", "build:monty")
+	cmd := exec.Command("mage", "build:plugin", "example", "build:montyminimal", "build:monty")
 	cmd.Dir = "../.."
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
@@ -227,7 +227,7 @@ var _ = Describe("Agent Memory Tests", Ordered, Serial, Label("integration", "sl
 			cmd.SysProcAttr = &syscall.SysProcAttr{
 				Setsid: true,
 			}
-			cmd.Env = append(os.Environ(), "OPNI_UNIQUE_IDENTIFIER=agent1")
+			cmd.Env = append(os.Environ(), "MONTY_UNIQUE_IDENTIFIER=agent1")
 			agentSession, err = gexec.Start(cmd, GinkgoWriter, GinkgoWriter)
 			Expect(err).NotTo(HaveOccurred())
 			DeferCleanup(func() {

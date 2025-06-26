@@ -68,7 +68,7 @@ func (r *UpgradeRequester) ProcessUpgradeResponse(response *upgraderesponder.Che
 		if semver.Compare(r.Version, latestVersion) < 0 {
 			r.log.Info("Upgrade is available", "current-version", r.Version, "latest-version", latestVersion)
 		} else {
-			r.log.Info("Opni is the latest version")
+			r.log.Info("Monty is the latest version")
 		}
 	}
 }

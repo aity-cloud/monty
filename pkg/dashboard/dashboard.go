@@ -141,11 +141,11 @@ func (ws *Server) ListenAndServe(ctx context.Context) error {
 		c.FileFromFS("/", webfs) // serve index.html
 	})
 
-	opniApiAddr := ws.config.HTTPListenAddress
-	mgmtUrl, err := url.Parse("http://" + opniApiAddr)
+	montyApiAddr := ws.config.HTTPListenAddress
+	mgmtUrl, err := url.Parse("http://" + montyApiAddr)
 	if err != nil {
 		lg.With(
-			"url", opniApiAddr,
+			"url", montyApiAddr,
 			"error", err,
 		).Error("failed to parse management API URL")
 		panic("failed to parse management API URL")

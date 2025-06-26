@@ -160,7 +160,7 @@ func (s *JetStreamStore) upsertBucket(name string) nats.KeyValue {
 	for s.ctx.Err() == nil {
 		kv, err := s.js.CreateKeyValue(&nats.KeyValueConfig{
 			Bucket: bucketName,
-			Description: fmt.Sprintf("Opni %s %s Store",
+			Description: fmt.Sprintf("Monty %s %s Store",
 				strcase.ToCamel(s.BucketPrefix),
 				strcase.ToCamel(name)),
 			Storage:  nats.FileStorage,

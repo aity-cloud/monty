@@ -17,7 +17,7 @@ import (
 
 const SingleConfigId = "global"
 
-const OpniAlertingCortexNamespace = "monty-alerting"
+const MontyAlertingCortexNamespace = "monty-alerting"
 
 func NewAlertingRefId(prefixes ...string) string {
 	return strings.Join(append(prefixes, shortuuid.New()), "-")
@@ -37,21 +37,21 @@ const InternalOpsGenieId = "opsgenie"
 const InternalVictorOpsId = "victorops"
 const InternalWechatId = "wechat"
 
-type OpniReceiverId struct {
+type MontyReceiverId struct {
 	Namespace  string
 	ReceiverId string
 }
 
-func NewOpniReceiverName(id OpniReceiverId) string {
+func NewMontyReceiverName(id MontyReceiverId) string {
 	return strings.Join([]string{"monty", id.Namespace, id.ReceiverId}, "__")
 }
 
-func ExtractReceiverId(receiverName string) (*OpniReceiverId, error) {
+func ExtractReceiverId(receiverName string) (*MontyReceiverId, error) {
 	parts := strings.Split(receiverName, "__")
 	if len(parts) != 3 {
 		return nil, fmt.Errorf("invalid receiver name format: %s", receiverName)
 	}
-	return &OpniReceiverId{
+	return &MontyReceiverId{
 		Namespace:  parts[1],
 		ReceiverId: parts[2],
 	}, nil
@@ -88,9 +88,9 @@ const AgentDisconnectStorageType = "agent-disconnect"
 // Datasources & Versioning
 
 // labels
-const OpniTitleLabel = "OpniTitleLabel"
-const OpniBodyLabel = "OpniBodyLabel"
-const BackendConditionNameLabel = "opniname"
+const MontyTitleLabel = "MontyTitleLabel"
+const MontyBodyLabel = "MontyBodyLabel"
+const BackendConditionNameLabel = "montyname"
 const BackendConditionClusterIdLabel = "clusterId"
 const BackendConditionSeverityLabel = "severity"
 

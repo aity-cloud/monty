@@ -58,7 +58,7 @@ type PartitionedAlertingStorage[T interfaces.AlertingSecret] interface {
 type (
 	ConditionStorage = PartitionedAlertingStorage[*alertingv1.AlertCondition]
 	EndpointStorage  = AlertingSecretStorage[*alertingv1.AlertEndpoint]
-	RouterStorage    = AlertingStorage[routing.OpniRouting]
+	RouterStorage    = AlertingStorage[routing.MontyRouting]
 )
 
 type AlertingStateCache[T interfaces.AlertingSecret] interface {

@@ -67,8 +67,8 @@ func (n *NotificationServerComponent) TestAlertEndpoint(ctx context.Context, ref
 		client.AlertObject{
 			Id: ref.Id,
 			Labels: map[string]string{
-				message.NotificationPropertyOpniUuid: ref.Id,
-				message.TestNamespace:                ref.Id,
+				message.NotificationPropertyMontyUuid: ref.Id,
+				message.TestNamespace:                 ref.Id,
 			},
 			Annotations: map[string]string{
 				message.NotificationContentHeader:  "Test notification",
@@ -97,8 +97,8 @@ func (n *NotificationServerComponent) TriggerAlerts(ctx context.Context, req *al
 		req.Labels[req.Namespace] = req.ConditionId.Id
 	}
 
-	if _, ok := req.Labels[message.NotificationPropertyOpniUuid]; !ok {
-		req.Labels[message.NotificationPropertyOpniUuid] = req.ConditionId.Id
+	if _, ok := req.Labels[message.NotificationPropertyMontyUuid]; !ok {
+		req.Labels[message.NotificationPropertyMontyUuid] = req.ConditionId.Id
 	}
 
 	if _, ok := req.Annotations[shared.BackendConditionNameLabel]; !ok {
@@ -135,8 +135,8 @@ func (n *NotificationServerComponent) ResolveAlerts(ctx context.Context, req *al
 		req.Labels[req.Namespace] = req.ConditionId.Id
 	}
 
-	if _, ok := req.Labels[message.NotificationPropertyOpniUuid]; !ok {
-		req.Labels[message.NotificationPropertyOpniUuid] = req.ConditionId.Id
+	if _, ok := req.Labels[message.NotificationPropertyMontyUuid]; !ok {
+		req.Labels[message.NotificationPropertyMontyUuid] = req.ConditionId.Id
 	}
 
 	if _, ok := req.Annotations[shared.BackendConditionNameLabel]; !ok {
@@ -173,7 +173,7 @@ func (n *NotificationServerComponent) PushNotification(ctx context.Context, req 
 	err := n.Client.AlertClient().PostNotification(
 		ctx,
 		client.AlertObject{
-			Id:          lo.ValueOr(routingLabels, message.NotificationPropertyOpniUuid, uuid.New().String()),
+			Id:          lo.ValueOr(routingLabels, message.NotificationPropertyMontyUuid, uuid.New().String()),
 			Labels:      routingLabels,
 			Annotations: req.GetRoutingAnnotations(),
 		},

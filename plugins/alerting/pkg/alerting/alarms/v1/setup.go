@@ -241,7 +241,7 @@ func (p *AlarmServerComponent) handleKubeAlertCreation(ctx context.Context, cond
 	}
 	_, err = adminClient.LoadRules(ctx, &cortexadmin.LoadRuleRequest{
 		ClusterId:   k.GetClusterId(),
-		Namespace:   shared.OpniAlertingCortexNamespace,
+		Namespace:   shared.MontyAlertingCortexNamespace,
 		YamlContent: out,
 	})
 	if err != nil {
@@ -287,7 +287,7 @@ func (p *AlarmServerComponent) handleCpuSaturationAlertCreation(
 
 	_, err = adminClient.LoadRules(ctx, &cortexadmin.LoadRuleRequest{
 		ClusterId:   c.ClusterId.GetId(),
-		Namespace:   shared.OpniAlertingCortexNamespace,
+		Namespace:   shared.MontyAlertingCortexNamespace,
 		YamlContent: out,
 	})
 	return err
@@ -328,7 +328,7 @@ func (p *AlarmServerComponent) handleMemorySaturationAlertCreation(ctx context.C
 	}
 	_, err = adminClient.LoadRules(ctx, &cortexadmin.LoadRuleRequest{
 		ClusterId:   m.ClusterId.GetId(),
-		Namespace:   shared.OpniAlertingCortexNamespace,
+		Namespace:   shared.MontyAlertingCortexNamespace,
 		YamlContent: out,
 	})
 	return err
@@ -369,7 +369,7 @@ func (p *AlarmServerComponent) handleFsSaturationAlertCreation(ctx context.Conte
 	}
 	_, err = adminClient.LoadRules(ctx, &cortexadmin.LoadRuleRequest{
 		ClusterId:   fs.ClusterId.GetId(),
-		Namespace:   shared.OpniAlertingCortexNamespace,
+		Namespace:   shared.MontyAlertingCortexNamespace,
 		YamlContent: out,
 	})
 	return err
@@ -406,7 +406,7 @@ func (p *AlarmServerComponent) handlePrometheusQueryAlertCreation(ctx context.Co
 	}
 	_, err = adminClient.LoadRules(ctx, &cortexadmin.LoadRuleRequest{
 		ClusterId:   q.ClusterId.GetId(),
-		Namespace:   shared.OpniAlertingCortexNamespace,
+		Namespace:   shared.MontyAlertingCortexNamespace,
 		YamlContent: out.Bytes(),
 	})
 

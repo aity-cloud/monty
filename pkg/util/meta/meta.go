@@ -1,6 +1,6 @@
 // +kubebuilder:object:generate=true
 
-// meta package contains generic kubernetes type implementations for Opni.
+// meta package contains generic kubernetes type implementations for Monty.
 
 package meta
 

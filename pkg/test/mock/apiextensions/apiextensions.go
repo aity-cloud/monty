@@ -8,8 +8,8 @@ import (
 	context "context"
 	reflect "reflect"
 
-	totem "github.com/kralicky/totem"
 	apiextensions "github.com/aity-cloud/monty/pkg/plugins/apis/apiextensions"
+	totem "github.com/kralicky/totem"
 	gomock "go.uber.org/mock/gomock"
 	grpc "google.golang.org/grpc"
 	metadata "google.golang.org/grpc/metadata"

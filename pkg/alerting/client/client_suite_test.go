@@ -40,19 +40,19 @@ var _ = BeforeSuite(func() {
 		}
 		Expect(env.Start()).To(Succeed())
 
-		opniPort := freeport.GetFreePort()
+		montyPort := freeport.GetFreePort()
 
 		singleEmitterCfg := config.WebhookConfig{
 			NotifierConfig: config.NotifierConfig{
 				VSendResolved: false,
 			},
 			URL: &amCfg.URL{
-				URL: util.Must(url.Parse(fmt.Sprintf("http://localhost:%d%s", opniPort, shared.AlertingDefaultHookName))),
+				URL: util.Must(url.Parse(fmt.Sprintf("http://localhost:%d%s", montyPort, shared.AlertingDefaultHookName))),
 			},
 		}
 
 		// set up a config file
-		router := routing.NewOpniRouterV1(singleEmitterCfg)
+		router := routing.NewMontyRouterV1(singleEmitterCfg)
 		cfg, err := router.BuildConfig()
 		Expect(err).To(Succeed())
 		dir := env.GenerateNewTempDirectory("alertmanager_client")
@@ -63,7 +63,7 @@ var _ = BeforeSuite(func() {
 		Expect(err).To(Succeed())
 
 		// start alertmanager
-		ports := env.StartEmbeddedAlertManager(env.Context(), file.Name(), lo.ToPtr(opniPort))
+		ports := env.StartEmbeddedAlertManager(env.Context(), file.Name(), lo.ToPtr(montyPort))
 		clA, err := client.NewClient(
 			client.WithAlertManagerAddress(
 				fmt.Sprintf("127.0.0.1:%d", ports.ApiPort),
@@ -85,7 +85,7 @@ var _ = BeforeSuite(func() {
 				URL: util.Must(url.Parse(fmt.Sprintf("http://localhost:%d%s", msgPort, shared.AlertingDefaultHookName))),
 			},
 		}
-		haRouter := routing.NewOpniRouterV1(haEmitterCfg)
+		haRouter := routing.NewMontyRouterV1(haEmitterCfg)
 		haCfg, err := haRouter.BuildConfig()
 		Expect(err).To(Succeed())
 		haFile, err := os.Create(fmt.Sprintf("%s/ha_alertmanager.yaml", dir))

@@ -19,7 +19,7 @@ func BuildEventsCmd() *cobra.Command {
 		RunE:  doEvents,
 	}
 
-	command.Flags().StringVar(&shipperEndpoint, "endpoint", "http://opni-shipper:2021/log/ingest", "endpoint to post events to")
+	command.Flags().StringVar(&shipperEndpoint, "endpoint", "http://monty-shipper:2021/log/ingest", "endpoint to post events to")
 	return command
 }
 
@@ -29,5 +29,5 @@ func doEvents(cmd *cobra.Command, _ []string) error {
 }
 
 func init() {
-	AddCommandsToGroup(OpniComponents, BuildEventsCmd())
+	AddCommandsToGroup(MontyComponents, BuildEventsCmd())
 }

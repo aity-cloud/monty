@@ -159,7 +159,7 @@ var _ = Describe("agent capability tests", Ordered, Label("integration"), func()
 					Expect(newCond.AlertCondition.GetMetadata()).NotTo(BeNil())
 					newCond.AlertCondition.Metadata["readOnly"] = "true"
 					newCond.AlertCondition.AlertType.GetPrometheusQuery().Query = "gibberish"
-					newCond.AlertCondition.Severity = alertingv1.OpniSeverity_Critical
+					newCond.AlertCondition.Severity = alertingv1.MontySeverity_Critical
 					_, err := alertConditionsClient.UpdateAlertCondition(env.Context(), &alertingv1.UpdateAlertConditionRequest{
 						Id:          newCond.Id,
 						UpdateAlert: newCond.GetAlertCondition(),
@@ -178,7 +178,7 @@ var _ = Describe("agent capability tests", Ordered, Label("integration"), func()
 					Expect(newCond.AlertCondition.Metadata).NotTo(BeNil())
 					Expect(newCond.AlertCondition.Metadata["readOnly"]).To(Equal("true"))
 					Expect(newCond.AlertCondition.AlertType.GetPrometheusQuery().Query).NotTo(Equal("gibberish"))
-					Expect(newCond.AlertCondition.Severity).To(Equal(alertingv1.OpniSeverity_Critical))
+					Expect(newCond.AlertCondition.Severity).To(Equal(alertingv1.MontySeverity_Critical))
 				}
 			}
 		})

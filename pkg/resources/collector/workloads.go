@@ -7,13 +7,13 @@ import (
 	"fmt"
 	"time"
 
-	opnicorev1beta1 "github.com/aity-cloud/monty/apis/core/v1beta1"
-	opniloggingv1beta1 "github.com/aity-cloud/monty/apis/logging/v1beta1"
+	montycorev1beta1 "github.com/aity-cloud/monty/apis/core/v1beta1"
+	montyloggingv1beta1 "github.com/aity-cloud/monty/apis/logging/v1beta1"
 	monitoringv1beta1 "github.com/aity-cloud/monty/apis/monitoring/v1beta1"
 	"github.com/aity-cloud/monty/pkg/logger"
 	"github.com/aity-cloud/monty/pkg/otel"
 	"github.com/aity-cloud/monty/pkg/resources"
-	opnimeta "github.com/aity-cloud/monty/pkg/util/meta"
+	montymeta "github.com/aity-cloud/monty/pkg/util/meta"
 	"github.com/samber/lo"
 	"go.opentelemetry.io/collector/exporter/exporterhelper"
 	"go.opentelemetry.io/collector/exporter/otlpexporter"
@@ -80,7 +80,7 @@ func (r *Reconciler) getDaemonOTELConfig() otel.NodeOTELConfig {
 	nodeOTELCfg := r.collector.Spec.NodeOTELConfigSpec
 	if nodeOTELCfg == nil {
 		r.lg.Warn("found no config for the daemon's OTEL Collector, falling back to default")
-		nodeOTELCfg = opnicorev1beta1.NewDefaultNodeOTELConfigSpec()
+		nodeOTELCfg = montycorev1beta1.NewDefaultNodeOTELConfigSpec()
 	}
 
 	return otel.NodeOTELConfig{
@@ -123,7 +123,7 @@ func (r *Reconciler) getAggregatorOTELConfig() otel.AggregatorOTELConfig {
 	aggregatorOTELCfg := r.collector.Spec.AggregatorOTELConfigSpec
 	if aggregatorOTELCfg == nil {
 		r.lg.Warn("found no config for the aggregator's OTEL Collector, falling back to default")
-		aggregatorOTELCfg = opnicorev1beta1.NewDefaultAggregatorOTELConfigSpec()
+		aggregatorOTELCfg = montycorev1beta1.NewDefaultAggregatorOTELConfigSpec()
 	}
 	return otel.AggregatorOTELConfig{
 		Processors: &otel.AggregatorOTELProcessors{
@@ -647,8 +647,8 @@ func (r *Reconciler) configReloaderContainer(mounts []corev1.VolumeMount, runAsR
 	}
 }
 
-func (r *Reconciler) imageSpec() opnimeta.ImageSpec {
-	return opnimeta.ImageResolver{
+func (r *Reconciler) imageSpec() montymeta.ImageSpec {
+	return montymeta.ImageResolver{
 		Version:       collectorVersion,
 		ImageName:     collectorImage,
 		DefaultRepo:   collectorImageRepo,
@@ -656,12 +656,12 @@ func (r *Reconciler) imageSpec() opnimeta.ImageSpec {
 	}.Resolve()
 }
 
-func (r *Reconciler) configReloaderImageSpec() opnimeta.ImageSpec {
-	return opnimeta.ImageResolver{
+func (r *Reconciler) configReloaderImageSpec() montymeta.ImageSpec {
+	return montymeta.ImageResolver{
 		Version:     reloaderVersion,
 		ImageName:   reloaderImage,
 		DefaultRepo: collectorImageRepo,
-		ImageOverride: func() *opnimeta.ImageSpec {
+		ImageOverride: func() *montymeta.ImageSpec {
 			if r.collector.Spec.ConfigReloader != nil {
 				return &r.collector.Spec.ConfigReloader.ImageSpec
 			}
@@ -670,8 +670,8 @@ func (r *Reconciler) configReloaderImageSpec() opnimeta.ImageSpec {
 	}.Resolve()
 }
 
-func (r *Reconciler) fetchLoggingCollectorConfig() (*opniloggingv1beta1.CollectorConfig, error) {
-	config := &opniloggingv1beta1.CollectorConfig{}
+func (r *Reconciler) fetchLoggingCollectorConfig() (*montyloggingv1beta1.CollectorConfig, error) {
+	config := &montyloggingv1beta1.CollectorConfig{}
 	err := r.client.Get(r.ctx, types.NamespacedName{
 		Name:      r.collector.Spec.LoggingConfig.Name,
 		Namespace: r.collector.Spec.SystemNamespace,

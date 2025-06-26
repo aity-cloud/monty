@@ -18,7 +18,7 @@ func init() {
 }
 
 func GinLogger(lg *slog.Logger) gin.HandlerFunc {
-	v, ok := os.LookupEnv("OPNI_ENABLE_GIN_LOGGING")
+	v, ok := os.LookupEnv("MONTY_ENABLE_GIN_LOGGING")
 	enabled, _ := strconv.ParseBool(v)
 	if ok && enabled {
 		r, w := io.Pipe()

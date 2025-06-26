@@ -1,6 +1,6 @@
 package common
 
-// These constants are available to all opnictl sub-commands and are filled
+// These constants are available to all montyctl sub-commands and are filled
 // in by the root command using persistent flags.
 
 var (
@@ -9,5 +9,5 @@ var (
 )
 
 const (
-	DefaultOpniNamespace = "monty-system"
+	DefaultMontyNamespace = "monty-system"
 )

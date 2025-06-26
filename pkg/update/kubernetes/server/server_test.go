@@ -37,7 +37,7 @@ var _ = Describe("Kubernetes sync server", Label("unit"), func() {
 	})
 
 	When("unknown package type is provided", func() {
-		packageURN := urn.NewOpniURN(urn.Agent, kubernetes.UpdateStrategy, "unknown")
+		packageURN := urn.NewMontyURN(urn.Agent, kubernetes.UpdateStrategy, "unknown")
 		manifest := &controlv1.UpdateManifest{
 			Items: []*controlv1.UpdateManifestEntry{
 				{
@@ -68,11 +68,11 @@ var _ = Describe("Kubernetes sync server", Label("unit"), func() {
 		})
 	})
 	When("URNs are valid", func() {
-		var packageURN1, packageURN2 urn.OpniURN
+		var packageURN1, packageURN2 urn.MontyURN
 		var manifest *controlv1.UpdateManifest
 		BeforeEach(func() {
-			packageURN1 = urn.NewOpniURN(urn.Agent, kubernetes.UpdateStrategy, "agent")
-			packageURN2 = urn.NewOpniURN(urn.Agent, kubernetes.UpdateStrategy, "controller")
+			packageURN1 = urn.NewMontyURN(urn.Agent, kubernetes.UpdateStrategy, "agent")
+			packageURN2 = urn.NewMontyURN(urn.Agent, kubernetes.UpdateStrategy, "controller")
 		})
 		When("manifest matches the current version", func() {
 			JustBeforeEach(func() {

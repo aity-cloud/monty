@@ -70,7 +70,7 @@ func (p *AlarmServerComponent) teardownCondition(
 			}
 			_, err = cortexAdminClient.DeleteRule(ctx, &cortexadmin.DeleteRuleRequest{
 				ClusterId: r.Id,
-				Namespace: shared.OpniAlertingCortexNamespace,
+				Namespace: shared.MontyAlertingCortexNamespace,
 				GroupName: cortex.RuleIdFromUuid(id),
 			})
 			retErr = err

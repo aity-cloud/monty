@@ -184,7 +184,7 @@ func (r *CoreMonitoringReconciler) Upgrade(ctx context.Context, umc *unstructure
 			}
 		}
 	} else if currentRevision > corev1beta1.MonitoringClusterTargetRevision {
-		return k8sutil.DoNotRequeue(), fmt.Errorf("MonitoringCluster %s/%s was created with a newer version of Opni and is incompatible with the current version", umc.GetNamespace(), umc.GetName())
+		return k8sutil.DoNotRequeue(), fmt.Errorf("MonitoringCluster %s/%s was created with a newer version of Monty and is incompatible with the current version", umc.GetNamespace(), umc.GetName())
 	} else {
 		return k8sutil.DoNotRequeue(), nil
 	}

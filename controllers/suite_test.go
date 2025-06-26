@@ -35,13 +35,13 @@ import (
 	"github.com/aity-cloud/monty/apis"
 	"github.com/aity-cloud/monty/controllers"
 	"github.com/aity-cloud/monty/pkg/logger"
-	"github.com/aity-cloud/monty/pkg/resources/opnicluster"
-	"github.com/aity-cloud/monty/pkg/resources/opniopensearch"
+	"github.com/aity-cloud/monty/pkg/resources/montycluster"
+	"github.com/aity-cloud/monty/pkg/resources/montyopensearch"
 	"github.com/aity-cloud/monty/pkg/resources/preprocessor"
 	"github.com/aity-cloud/monty/pkg/test/freeport"
 	_ "github.com/aity-cloud/monty/pkg/test/setup"
 	"github.com/aity-cloud/monty/pkg/test/testk8s"
-	opnimeta "github.com/aity-cloud/monty/pkg/util/meta"
+	montymeta "github.com/aity-cloud/monty/pkg/util/meta"
 	"github.com/kralicky/kmatch"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
@@ -134,15 +134,15 @@ var _ = SynchronizedBeforeSuite(func() []byte {
 		&controllers.GrafanaDatasourceReconciler{},
 		&controllers.LoggingDataPrepperReconciler{},
 		&controllers.CoreAlertingReconciler{},
-		&controllers.AIOpniClusterReconciler{
-			Opts: []opnicluster.ReconcilerOption{
-				opnicluster.WithContinueOnIndexError(),
-				opnicluster.WithCertManager(certMgr),
+		&controllers.AIMontyClusterReconciler{
+			Opts: []montycluster.ReconcilerOption{
+				montycluster.WithContinueOnIndexError(),
+				montycluster.WithCertManager(certMgr),
 			},
 		},
-		&controllers.LoggingOpniOpensearchReconciler{
-			Opts: []opniopensearch.ReconcilerOption{
-				opniopensearch.WithCertManager(certMgr),
+		&controllers.LoggingMontyOpensearchReconciler{
+			Opts: []montyopensearch.ReconcilerOption{
+				montyopensearch.WithCertManager(certMgr),
 			},
 		},
 		&controllers.AIPretrainedModelReconciler{},
@@ -262,17 +262,17 @@ func updateObject(existing client.Object, patchFn interface{}) {
 	}
 }
 
-type opniClusterOpts struct {
-	Name                string
-	Namespace           string
-	Models              []string
-	DisableOpniServices bool
-	PrometheusEndpoint  string
-	UsePrometheusRef    bool
+type montyClusterOpts struct {
+	Name                 string
+	Namespace            string
+	Models               []string
+	DisableMontyServices bool
+	PrometheusEndpoint   string
+	UsePrometheusRef     bool
 }
 
-func buildAICluster(opts opniClusterOpts) *aiv1beta1.OpniCluster {
-	imageSpec := opnimeta.ImageSpec{
+func buildAICluster(opts montyClusterOpts) *aiv1beta1.MontyCluster {
+	imageSpec := montymeta.ImageSpec{
 		ImagePullPolicy: (*corev1.PullPolicy)(lo.ToPtr(string(corev1.PullNever))),
 		ImagePullSecrets: []corev1.LocalObjectReference{
 			{
@@ -280,10 +280,10 @@ func buildAICluster(opts opniClusterOpts) *aiv1beta1.OpniCluster {
 			},
 		},
 	}
-	return &aiv1beta1.OpniCluster{
+	return &aiv1beta1.MontyCluster{
 		TypeMeta: metav1.TypeMeta{
 			APIVersion: aiv1beta1.GroupVersion.String(),
-			Kind:       "OpniCluster",
+			Kind:       "MontyCluster",
 		},
 		ObjectMeta: metav1.ObjectMeta{
 			Name: opts.Name,
@@ -294,7 +294,7 @@ func buildAICluster(opts opniClusterOpts) *aiv1beta1.OpniCluster {
 				return opts.Namespace
 			}(),
 		},
-		Spec: aiv1beta1.OpniClusterSpec{
+		Spec: aiv1beta1.MontyClusterSpec{
 			Version:     "test",
 			DefaultRepo: lo.ToPtr("docker.biz/rancher"), // nonexistent repo
 			GlobalNodeSelector: map[string]string{
@@ -308,7 +308,7 @@ func buildAICluster(opts opniClusterOpts) *aiv1beta1.OpniCluster {
 			},
 			Services: aiv1beta1.ServicesSpec{
 				Inference: aiv1beta1.InferenceServiceSpec{
-					Enabled:   lo.ToPtr(!opts.DisableOpniServices),
+					Enabled:   lo.ToPtr(!opts.DisableMontyServices),
 					ImageSpec: imageSpec,
 					PretrainedModels: func() []corev1.LocalObjectReference {
 						var ret []corev1.LocalObjectReference
@@ -321,27 +321,27 @@ func buildAICluster(opts opniClusterOpts) *aiv1beta1.OpniCluster {
 					}(),
 				},
 				Drain: aiv1beta1.DrainServiceSpec{
-					Enabled:   lo.ToPtr(!opts.DisableOpniServices),
+					Enabled:   lo.ToPtr(!opts.DisableMontyServices),
 					ImageSpec: imageSpec,
 				},
 				Preprocessing: aiv1beta1.PreprocessingServiceSpec{
-					Enabled:   lo.ToPtr(!opts.DisableOpniServices),
+					Enabled:   lo.ToPtr(!opts.DisableMontyServices),
 					ImageSpec: imageSpec,
 				},
 				PayloadReceiver: aiv1beta1.PayloadReceiverServiceSpec{
-					Enabled:   lo.ToPtr(!opts.DisableOpniServices),
+					Enabled:   lo.ToPtr(!opts.DisableMontyServices),
 					ImageSpec: imageSpec,
 				},
 				GPUController: aiv1beta1.GPUControllerServiceSpec{
-					Enabled:   lo.ToPtr(!opts.DisableOpniServices),
+					Enabled:   lo.ToPtr(!opts.DisableMontyServices),
 					ImageSpec: imageSpec,
 				},
 				TrainingController: aiv1beta1.TrainingControllerServiceSpec{
-					Enabled:   lo.ToPtr(!opts.DisableOpniServices),
+					Enabled:   lo.ToPtr(!opts.DisableMontyServices),
 					ImageSpec: imageSpec,
 				},
 				Metrics: aiv1beta1.MetricsServiceSpec{
-					Enabled:   lo.ToPtr(!opts.DisableOpniServices),
+					Enabled:   lo.ToPtr(!opts.DisableMontyServices),
 					ImageSpec: imageSpec,
 					PrometheusEndpoint: func() string {
 						if opts.PrometheusEndpoint != "" {
@@ -352,16 +352,16 @@ func buildAICluster(opts opniClusterOpts) *aiv1beta1.OpniCluster {
 						}
 						return "http://dummy-endpoint"
 					}(),
-					PrometheusReference: func() *opnimeta.PrometheusReference {
+					PrometheusReference: func() *montymeta.PrometheusReference {
 						if opts.UsePrometheusRef {
-							return &opnimeta.PrometheusReference{
+							return &montymeta.PrometheusReference{
 								Name:      "test-prometheus",
 								Namespace: "prometheus-new",
 							}
 						}
 						return nil
 					}(),
-					ExtraVolumeMounts: []opnimeta.ExtraVolumeMount{
+					ExtraVolumeMounts: []montymeta.ExtraVolumeMount{
 						{
 							Name:      "test-volume",
 							MountPath: "/var/test-volume",
@@ -428,7 +428,7 @@ func RunTestEnvironment(
 
 	ports := freeport.GetFreePorts(2)
 
-	// add the opnicluster manager
+	// add the montycluster manager
 	k8sManager, err = ctrl.NewManager(cfg, ctrl.Options{
 		Scheme:                 scheme,
 		Metrics:                server.Options{BindAddress: fmt.Sprintf(":%d", ports[0])},
@@ -451,14 +451,14 @@ func RunTestEnvironment(
 
 	err = k8sClient.Create(context.Background(), &corev1.Namespace{
 		ObjectMeta: metav1.ObjectMeta{
-			Name: "opnicluster-test",
+			Name: "montycluster-test",
 		},
 	})
 	Expect(err).Should(Or(BeNil(), WithTransform(errors.IsAlreadyExists, BeTrue())))
 
 	err = k8sClient.Create(context.Background(), &corev1.Namespace{
 		ObjectMeta: metav1.ObjectMeta{
-			Name: "opnidemo-test",
+			Name: "montydemo-test",
 		},
 	})
 	Expect(err).Should(Or(BeNil(), WithTransform(errors.IsAlreadyExists, BeTrue())))

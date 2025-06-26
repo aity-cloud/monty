@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	PluginModeEnvVar = "OPNI_PLUGIN_MODE"
+	PluginModeEnvVar = "MONTY_PLUGIN_MODE"
 )
 
 type PluginMode string

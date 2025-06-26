@@ -3,7 +3,7 @@ package v1beta1
 import (
 	"strconv"
 
-	opnimeta "github.com/aity-cloud/monty/pkg/util/meta"
+	montymeta "github.com/aity-cloud/monty/pkg/util/meta"
 	"github.com/aity-cloud/monty/plugins/metrics/apis/cortexops"
 	grafanav1beta1 "github.com/grafana-operator/grafana-operator/v5/api/v1beta1"
 	corev1 "k8s.io/api/core/v1"
@@ -35,8 +35,8 @@ type AlertingSpec struct {
 	ClusterGossipInterval string `json:"clusterGossipInterval,omitempty"`
 	ConfigName            string `json:"configName,omitempty"`
 	//+kubebuilder:default="/var/lib"
-	DataMountPath       string                      `json:"dataMountPath,omitempty"`
-	GatewayVolumeMounts []opnimeta.ExtraVolumeMount `json:"alertVolumeMounts,omitempty"`
+	DataMountPath       string                       `json:"dataMountPath,omitempty"`
+	GatewayVolumeMounts []montymeta.ExtraVolumeMount `json:"alertVolumeMounts,omitempty"`
 	//! deprecated
 	RawAlertManagerConfig string `json:"rawConfigMap,omitempty"`
 	//! deprecated

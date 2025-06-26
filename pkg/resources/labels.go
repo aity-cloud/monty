@@ -3,15 +3,15 @@ package resources
 const (
 	PretrainedModelLabel = "monty.io/pretrained-model"
 	ServiceLabel         = "monty.io/service"
-	OpniClusterName      = "monty.io/cluster-name"
+	MontyClusterName     = "monty.io/cluster-name"
 	AppNameLabel         = "app.kubernetes.io/name"
 	PartOfLabel          = "app.kubernetes.io/part-of"
 	InstanceLabel        = "app.kubernetes.io/instance"
 	HostTopologyKey      = "kubernetes.io/hostname"
-	OpniClusterID        = "monty.io/cluster-id"
-	OpniBootstrapToken   = "monty.io/bootstrap-token"
-	OpniInferenceType    = "monty.io/inference-type"
-	OpniConfigHash       = "monty.io/config-hash"
+	MontyClusterID       = "monty.io/cluster-id"
+	MontyBootstrapToken  = "monty.io/bootstrap-token"
+	MontyInferenceType   = "monty.io/inference-type"
+	MontyConfigHash      = "monty.io/config-hash"
 )
 
 func CombineLabels(maps ...map[string]string) map[string]string {

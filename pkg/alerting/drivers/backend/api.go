@@ -349,7 +349,7 @@ import (
 // 	}).WithAPIV2()
 // }
 
-// func NewAlertManagerOpniConfigClient(ctx context.Context, endpoint string, opts ...AlertManagerApiOption) *AlertManagerAPI {
+// func NewAlertManagerMontyConfigClient(ctx context.Context, endpoint string, opts ...AlertManagerApiOption) *AlertManagerAPI {
 // 	options := NewDefaultAlertManagerOptions()
 // 	options.apply(opts...)
 // 	return &AlertManagerAPI{

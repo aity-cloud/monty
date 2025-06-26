@@ -23,7 +23,7 @@ func init() {
 			Name:        "agent-disconnect",
 			Description: "Alert when the downstream agent disconnects from the monty upstream",
 			Labels:      []string{"agent-disconnect", "monty", "_default"},
-			Severity:    alertingv1.OpniSeverity_Critical,
+			Severity:    alertingv1.MontySeverity_Critical,
 			AlertType: &alertingv1.AlertTypeDetails{
 				Type: &alertingv1.AlertTypeDetails_System{
 					System: &alertingv1.AlertConditionSystem{
@@ -40,7 +40,7 @@ func init() {
 			Name:        "agent-capability-unhealthy",
 			Description: "Alert when some downstream agent capability becomes unhealthy",
 			Labels:      []string{"agent-capability-health", "monty", "_default"},
-			Severity:    alertingv1.OpniSeverity_Critical,
+			Severity:    alertingv1.MontySeverity_Critical,
 			AlertType: &alertingv1.AlertTypeDetails{
 				Type: &alertingv1.AlertTypeDetails_DownstreamCapability{
 					DownstreamCapability: &alertingv1.AlertConditionDownstreamCapability{

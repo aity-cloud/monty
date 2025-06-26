@@ -32,7 +32,7 @@ func BuildRootCmd() *cobra.Command {
 	rootCmd.InitDefaultCompletionCmd()
 	rootCmd.AddCommand(commands.BuildVersionCmd())
 
-	rootCmd.PersistentFlags().BoolVar(&common.DisableUsage, "disable-usage", false, "Disable anonymous Opni usage tracking.")
+	rootCmd.PersistentFlags().BoolVar(&common.DisableUsage, "disable-usage", false, "Disable anonymous Monty usage tracking.")
 	rootCmd.PersistentFlags().StringP("address", "a", "", "Management API address (default: auto-detect)")
 
 	return rootCmd

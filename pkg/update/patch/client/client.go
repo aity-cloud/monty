@@ -239,7 +239,7 @@ func (pc *patchClient) GetCurrentManifest(_ context.Context) (*controlv1.UpdateM
 	manifest := archive.ToManifest()
 	// if there are no items in the manifest add a placeholder
 	if len(manifest.GetItems()) == 0 {
-		packageURN := urn.NewOpniURN(urn.Plugin, patch.UpdateStrategy, "placeholder")
+		packageURN := urn.NewMontyURN(urn.Plugin, patch.UpdateStrategy, "placeholder")
 		manifest.Items = append(manifest.Items, &controlv1.UpdateManifestEntry{
 			Package: packageURN.String(),
 			Path:    "placeholder",

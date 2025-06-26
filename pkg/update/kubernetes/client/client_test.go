@@ -113,7 +113,7 @@ var _ = Describe("Kubernetes update client", Label("unit", "slow"), func() {
 
 	When("sync result has a plugin package", func() {
 		BeforeEach(func() {
-			packageURN := urn.NewOpniURN(urn.Plugin, kubernetes.UpdateStrategy, "agent")
+			packageURN := urn.NewMontyURN(urn.Plugin, kubernetes.UpdateStrategy, "agent")
 			patchList := &controlv1.PatchList{
 				Items: []*controlv1.PatchSpec{
 					{
@@ -134,7 +134,7 @@ var _ = Describe("Kubernetes update client", Label("unit", "slow"), func() {
 	})
 	When("sync result has an unknown package", func() {
 		BeforeEach(func() {
-			packageURN := urn.NewOpniURN(urn.Agent, kubernetes.UpdateStrategy, "unknown")
+			packageURN := urn.NewMontyURN(urn.Agent, kubernetes.UpdateStrategy, "unknown")
 			patchList := &controlv1.PatchList{
 				Items: []*controlv1.PatchSpec{
 					{
@@ -170,8 +170,8 @@ var _ = Describe("Kubernetes update client", Label("unit", "slow"), func() {
 	})
 	When("sync result has noop packages", func() {
 		BeforeEach(func() {
-			packageURN1 := urn.NewOpniURN(urn.Agent, kubernetes.UpdateStrategy, "agent")
-			packageURN2 := urn.NewOpniURN(urn.Agent, kubernetes.UpdateStrategy, "controller")
+			packageURN1 := urn.NewMontyURN(urn.Agent, kubernetes.UpdateStrategy, "agent")
+			packageURN2 := urn.NewMontyURN(urn.Agent, kubernetes.UpdateStrategy, "controller")
 			patchList := &controlv1.PatchList{
 				Items: []*controlv1.PatchSpec{
 					{
@@ -212,8 +212,8 @@ var _ = Describe("Kubernetes update client", Label("unit", "slow"), func() {
 	})
 	When("agent package has an update", func() {
 		BeforeEach(func() {
-			packageURN1 := urn.NewOpniURN(urn.Agent, kubernetes.UpdateStrategy, "agent")
-			packageURN2 := urn.NewOpniURN(urn.Agent, kubernetes.UpdateStrategy, "controller")
+			packageURN1 := urn.NewMontyURN(urn.Agent, kubernetes.UpdateStrategy, "agent")
+			packageURN2 := urn.NewMontyURN(urn.Agent, kubernetes.UpdateStrategy, "controller")
 			patchList := &controlv1.PatchList{
 				Items: []*controlv1.PatchSpec{
 					{
@@ -255,8 +255,8 @@ var _ = Describe("Kubernetes update client", Label("unit", "slow"), func() {
 		})
 	})
 	When("controller package has an update", func() {
-		packageURN1 := urn.NewOpniURN(urn.Agent, kubernetes.UpdateStrategy, "agent")
-		packageURN2 := urn.NewOpniURN(urn.Agent, kubernetes.UpdateStrategy, "controller")
+		packageURN1 := urn.NewMontyURN(urn.Agent, kubernetes.UpdateStrategy, "agent")
+		packageURN2 := urn.NewMontyURN(urn.Agent, kubernetes.UpdateStrategy, "controller")
 		BeforeEach(func() {
 			patchList := &controlv1.PatchList{
 				Items: []*controlv1.PatchSpec{
@@ -313,8 +313,8 @@ var _ = Describe("Kubernetes update client", Label("unit", "slow"), func() {
 		})
 	})
 	When("both packages have an update", func() {
-		packageURN1 := urn.NewOpniURN(urn.Agent, kubernetes.UpdateStrategy, "agent")
-		packageURN2 := urn.NewOpniURN(urn.Agent, kubernetes.UpdateStrategy, "controller")
+		packageURN1 := urn.NewMontyURN(urn.Agent, kubernetes.UpdateStrategy, "agent")
+		packageURN2 := urn.NewMontyURN(urn.Agent, kubernetes.UpdateStrategy, "controller")
 		BeforeEach(func() {
 			patchList := &controlv1.PatchList{
 				Items: []*controlv1.PatchSpec{

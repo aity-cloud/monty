@@ -13,7 +13,7 @@ import (
 
 	"slices"
 
-	opnicorev1beta1 "github.com/aity-cloud/monty/apis/core/v1beta1"
+	montycorev1beta1 "github.com/aity-cloud/monty/apis/core/v1beta1"
 	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
 	"github.com/aity-cloud/monty/pkg/config/v1beta1"
 	"github.com/aity-cloud/monty/pkg/keyring/ephemeral"
@@ -113,7 +113,7 @@ func BuildKeyringsGetCmd() *cobra.Command {
 				fmt.Println(e.EncodeToString(util.Must(kr.Marshal())))
 			case "crd":
 				fmt.Printf("apiVersion: %s\nkind: %s\nmetadata:\n  name: %s\ndata: %s\n",
-					opnicorev1beta1.GroupVersion.String(), "Keyring", args[0],
+					montycorev1beta1.GroupVersion.String(), "Keyring", args[0],
 					base64.StdEncoding.EncodeToString(util.Must(kr.Marshal())))
 			default:
 				return fmt.Errorf("unsupported encoding: %s", output)

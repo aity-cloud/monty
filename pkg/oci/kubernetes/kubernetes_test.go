@@ -79,9 +79,9 @@ var _ = Describe("Kubernetes OCI handler", Ordered, Label("unit", "slow"), func(
 		When("the minimal image is available from the environment", func() {
 			It("should return the minimal image", func() {
 				minimalRef := fmt.Sprintf("rancher/monty-test@%s", imageDigest2)
-				os.Setenv("OPNI_MINIMAL_IMAGE_REF", minimalRef)
+				os.Setenv("MONTY_MINIMAL_IMAGE_REF", minimalRef)
 				DeferCleanup(func() {
-					os.Unsetenv("OPNI_MINIMAL_IMAGE_REF")
+					os.Unsetenv("MONTY_MINIMAL_IMAGE_REF")
 				})
 				image, err := k8sOCI.GetImage(context.Background(), oci.ImageTypeMinimal)
 				Expect(err).NotTo(HaveOccurred())

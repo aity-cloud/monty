@@ -24,7 +24,7 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-type JetstreamRouterStore[T routing.OpniRouting] struct {
+type JetstreamRouterStore[T routing.MontyRouting] struct {
 	obj      nats.ObjectStore
 	basePath string
 }
@@ -72,8 +72,8 @@ func NewJetStreamAlertingIncidentTracker(kv nats.KeyValue, prefix string, ttl ti
 	}
 }
 
-func NewJetstreamRouterStore(obj nats.ObjectStore, prefix string) *JetstreamRouterStore[routing.OpniRouting] {
-	return &JetstreamRouterStore[routing.OpniRouting]{
+func NewJetstreamRouterStore(obj nats.ObjectStore, prefix string) *JetstreamRouterStore[routing.MontyRouting] {
+	return &JetstreamRouterStore[routing.MontyRouting]{
 		obj:      obj,
 		basePath: prefix,
 	}

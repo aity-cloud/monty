@@ -4,8 +4,8 @@ import (
 	"context"
 
 	corev1beta1 "github.com/aity-cloud/monty/apis/core/v1beta1"
-	opniloggingv1beta1 "github.com/aity-cloud/monty/apis/logging/v1beta1"
-	opnimonitoringv1beta1 "github.com/aity-cloud/monty/apis/monitoring/v1beta1"
+	montyloggingv1beta1 "github.com/aity-cloud/monty/apis/logging/v1beta1"
+	montymonitoringv1beta1 "github.com/aity-cloud/monty/apis/monitoring/v1beta1"
 	"github.com/aity-cloud/monty/pkg/resources"
 	"github.com/aity-cloud/monty/pkg/resources/collector"
 	"github.com/aity-cloud/monty/pkg/util/k8sutil"
@@ -79,8 +79,8 @@ func (r *CoreCollectorReconciler) SetupWithManager(mgr ctrl.Manager) error {
 
 	return ctrl.NewControllerManagedBy(mgr).
 		For(&corev1beta1.Collector{}).
-		Watches(&opnimonitoringv1beta1.CollectorConfig{}, requestMapper).
-		Watches(&opniloggingv1beta1.CollectorConfig{}, requestMapper).
+		Watches(&montymonitoringv1beta1.CollectorConfig{}, requestMapper).
+		Watches(&montyloggingv1beta1.CollectorConfig{}, requestMapper).
 		// for metrics, we want to watch changes to the spec of objects that drive discovery
 		Watches(&promoperatorv1.ServiceMonitor{}, watchAllRequestMapper).
 		Watches(&promoperatorv1.PodMonitor{}, watchAllRequestMapper).

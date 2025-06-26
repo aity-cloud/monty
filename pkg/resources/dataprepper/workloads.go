@@ -9,7 +9,7 @@ import (
 	"html/template"
 
 	"github.com/aity-cloud/monty/pkg/resources"
-	opnimeta "github.com/aity-cloud/monty/pkg/util/meta"
+	montymeta "github.com/aity-cloud/monty/pkg/util/meta"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -174,9 +174,9 @@ func (r *Reconciler) config() (resources.Resource, []byte) {
 
 func (r *Reconciler) labels() map[string]string {
 	return map[string]string{
-		resources.AppNameLabel:  "dataprepper",
-		resources.PartOfLabel:   "monty",
-		resources.OpniClusterID: r.dataPrepper.Spec.ClusterID,
+		resources.AppNameLabel:   "dataprepper",
+		resources.PartOfLabel:    "monty",
+		resources.MontyClusterID: r.dataPrepper.Spec.ClusterID,
 	}
 }
 
@@ -211,7 +211,7 @@ func (r *Reconciler) service() resources.Resource {
 }
 
 func (r *Reconciler) deployment(configData []byte) resources.Resource {
-	imageSpec := opnimeta.ImageResolver{
+	imageSpec := montymeta.ImageResolver{
 		Version:             r.dataPrepper.Spec.Version,
 		ImageName:           "data-prepper",
 		DefaultRepo:         "docker.io/opensearchproject",

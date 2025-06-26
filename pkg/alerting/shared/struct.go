@@ -17,16 +17,16 @@ type AlertingClusterOptions struct {
 	ControllerNodePort    int
 	ControllerClusterPort int
 	ControllerStatefulSet string
-	OpniPort              int
+	MontyPort             int
 	ConfigMap             string
 	ManagementHookHandler string
 }
 
-func (a *AlertingClusterOptions) GetInternalControllerOpniEndpoint() string {
+func (a *AlertingClusterOptions) GetInternalControllerMontyEndpoint() string {
 	return fmt.Sprintf("%s:%d", a.ControllerNodeService, AlertingDefaultHookPort)
 }
 
-func (a *AlertingClusterOptions) GetInternalWorkerOpniEndpoint() string {
+func (a *AlertingClusterOptions) GetInternalWorkerMontyEndpoint() string {
 	return fmt.Sprintf("%s:%d", a.WorkerNodesService, AlertingDefaultHookPort)
 }
 

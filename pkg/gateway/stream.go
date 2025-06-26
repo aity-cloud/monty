@@ -86,7 +86,7 @@ func (s *StreamServer) getProviderForId(agentId string) *metric.MeterProvider {
 		return prev
 	}
 	exporter, err := otelprometheus.New(
-		otelprometheus.WithRegisterer(prometheus.WrapRegistererWithPrefix("opni_gateway_", s.metricsRegisterer)),
+		otelprometheus.WithRegisterer(prometheus.WrapRegistererWithPrefix("monty_gateway_", s.metricsRegisterer)),
 		otelprometheus.WithoutScopeInfo(),
 		otelprometheus.WithoutTargetInfo(),
 	)

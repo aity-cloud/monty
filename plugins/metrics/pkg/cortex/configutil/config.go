@@ -490,7 +490,7 @@ func loadNonConfigurableStaticFields(config *cortex.Config) {
 	config.Ruler.AlertmanangerEnableV2API = true
 	config.Ruler.EnableAPI = true
 	config.LimitsConfig.MetricRelabelConfigs = []*relabel.Config{
-		metrics.OpniInternalLabelFilter(),
+		metrics.MontyInternalLabelFilter(),
 	}
 	config.Flusher.ExitAfterFlush = false
 }

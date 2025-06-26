@@ -62,9 +62,9 @@ var _ = Describe("Logging DataPrepper Controller", Ordered, Label("controller"),
 		Expect(err).NotTo(HaveOccurred())
 
 		labels = map[string]string{
-			resources.AppNameLabel:  "dataprepper",
-			resources.PartOfLabel:   "monty",
-			resources.OpniClusterID: "dummyid",
+			resources.AppNameLabel:   "dataprepper",
+			resources.PartOfLabel:    "monty",
+			resources.MontyClusterID: "dummyid",
 		}
 	})
 	When("a log adapter is created", func() {

@@ -20,11 +20,11 @@ import (
 )
 
 const (
-	grafana_delete_mask = "slo_opni_delete"
+	grafana_delete_mask = "slo_monty_delete"
 	// id labels
-	slo_uuid    = "slo_opni_id"
-	slo_service = "slo_opni_service"
-	slo_name    = "slo_opni_name"
+	slo_uuid    = "slo_monty_id"
+	slo_service = "slo_monty_service"
+	slo_name    = "slo_monty_name"
 	slo_window  = "slo_window"
 
 	// recording rule names
@@ -39,7 +39,7 @@ const (
 	slo_current_burn_rate_ratio             = "slo:current_burn_rate:ratio"
 	slo_period_burn_rate_ratio              = "slo:period_burn_rate:ratio"
 	slo_period_error_budget_remaining_ratio = "slo:period_error_budget_remaining:ratio"
-	slo_info                                = "opni_slo_info"
+	slo_info                                = "monty_slo_info"
 
 	// alert rule names
 	RecordingRuleSuffix = "-recording"

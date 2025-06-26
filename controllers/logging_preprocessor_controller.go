@@ -33,10 +33,10 @@ func (r *LoggingPreprocessorReconciler) Reconcile(ctx context.Context, req ctrl.
 		return ctrl.Result{}, client.IgnoreNotFound(err)
 	}
 
-	opniOpensearchReconciler := preprocessor.NewReconciler(ctx, instance, r.Client, r.Opts...)
+	montyOpensearchReconciler := preprocessor.NewReconciler(ctx, instance, r.Client, r.Opts...)
 
 	reconcilers := []resources.ComponentReconciler{
-		opniOpensearchReconciler.Reconcile,
+		montyOpensearchReconciler.Reconcile,
 	}
 
 	for _, rec := range reconcilers {

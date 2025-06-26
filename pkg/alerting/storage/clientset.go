@@ -119,7 +119,7 @@ func (c *CompositeAlertingClientSet) calculateRouters(ctx context.Context, syncO
 	})
 
 	if syncOpts.Router == nil {
-		syncOpts.Router = routing.NewDefaultOpniRouting()
+		syncOpts.Router = routing.NewDefaultMontyRouting()
 	}
 
 	endpKeys := lo.Keys(endpMap)

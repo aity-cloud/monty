@@ -14,7 +14,7 @@ import (
 )
 
 func (p *provisioner) buildNamespace(ctx *Context, provider ProviderResource) (*corev1.Namespace, error) {
-	opniNs, err := corev1.NewNamespace(ctx, "monty", &corev1.NamespaceArgs{
+	montyNs, err := corev1.NewNamespace(ctx, "monty", &corev1.NamespaceArgs{
 		Metadata: &metav1.ObjectMetaArgs{
 			Name: String("monty"),
 		},
@@ -22,7 +22,7 @@ func (p *provisioner) buildNamespace(ctx *Context, provider ProviderResource) (*
 	if err != nil {
 		return nil, errors.WithStack(err)
 	}
-	return opniNs, nil
+	return montyNs, nil
 }
 
 func (p *provisioner) buildCertManager(ctx *Context, provider ProviderResource) error {

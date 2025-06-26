@@ -38,7 +38,7 @@ func (r *Reconciler) rbac() ([]resources.Resource, error) {
 					"keyrings",
 					"rolebindings",
 					"roles",
-					"opniopensearches",
+					"montyopensearches",
 					"gateways",
 				},
 				Verbs: []string{

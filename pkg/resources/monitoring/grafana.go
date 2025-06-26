@@ -25,13 +25,13 @@ import (
 //go:embed dashboards/dashboards.json
 var dashboardsJson []byte
 
-//go:embed dashboards/opni-gateway.json
-var opniGatewayJson []byte
+//go:embed dashboards/monty-gateway.json
+var montyGatewayJson []byte
 
 //go:embed dashboards/home.json
 var homeDashboardJson []byte
 
-//go:embed dashboards/opni-service-latency.json
+//go:embed dashboards/monty-service-latency.json
 var serviceLatencyDashboardJson []byte
 
 //go:embed slo/slo_grafana_overview.json
@@ -78,12 +78,12 @@ func (r *Reconciler) grafana() ([]resources.Resource, error) {
 		}),
 	}
 
-	opniDatasource, err := r.createOpniDatasource(dashboardSelector)
+	montyDatasource, err := r.createMontyDatasource(dashboardSelector)
 	if err != nil {
 		return nil, err
 	}
 
-	opniAlertManagerDatasource, err := r.createOpniAlertManagerDatasource(dashboardSelector)
+	montyAlertManagerDatasource, err := r.createMontyAlertManagerDatasource(dashboardSelector)
 	if err != nil {
 		return nil, err
 	}
@@ -96,8 +96,8 @@ func (r *Reconciler) grafana() ([]resources.Resource, error) {
 	if !r.mc.Spec.Grafana.GetEnabled() {
 		absentResources := append([]resources.Resource{
 			resources.Absent(grafana),
-			resources.Absent(opniDatasource),
-			resources.Absent(opniAlertManagerDatasource),
+			resources.Absent(montyDatasource),
+			resources.Absent(montyAlertManagerDatasource),
 		}, legacyResources...)
 		for _, dashboard := range grafanaDashboards {
 			absentResources = append(absentResources, resources.Absent(dashboard))
@@ -207,13 +207,13 @@ func (r *Reconciler) grafana() ([]resources.Resource, error) {
 	}
 
 	controllerutil.SetOwnerReference(r.mc, grafana, r.client.Scheme())
-	controllerutil.SetOwnerReference(r.mc, opniDatasource, r.client.Scheme())
-	controllerutil.SetOwnerReference(r.mc, opniAlertManagerDatasource, r.client.Scheme())
+	controllerutil.SetOwnerReference(r.mc, montyDatasource, r.client.Scheme())
+	controllerutil.SetOwnerReference(r.mc, montyAlertManagerDatasource, r.client.Scheme())
 
 	presentResources := []resources.Resource{
 		resources.Present(grafana),
-		resources.Present(opniDatasource),
-		resources.Present(opniAlertManagerDatasource),
+		resources.Present(montyDatasource),
+		resources.Present(montyAlertManagerDatasource),
 	}
 	for _, dashboard := range grafanaDashboards {
 		controllerutil.SetOwnerReference(r.mc, dashboard, r.client.Scheme())
@@ -290,12 +290,12 @@ func (r *Reconciler) getGrafanaHostname(gatewayHostname string) (string, error) 
 	return grafanaHostname, nil
 }
 
-func (r *Reconciler) createOpniDatasource(dashboardSelector *metav1.LabelSelector) (*grafanav1beta1.GrafanaDatasource, error) {
-	opniDatasourceJSONCfg, err := createDatasourceJSONData()
+func (r *Reconciler) createMontyDatasource(dashboardSelector *metav1.LabelSelector) (*grafanav1beta1.GrafanaDatasource, error) {
+	montyDatasourceJSONCfg, err := createDatasourceJSONData()
 	if err != nil {
 		return nil, err
 	}
-	opniDatasourceSecureJSONCfg, err := createDatasourceSecureJSONData()
+	montyDatasourceSecureJSONCfg, err := createDatasourceSecureJSONData()
 	if err != nil {
 		return nil, err
 	}
@@ -311,26 +311,26 @@ func (r *Reconciler) createOpniDatasource(dashboardSelector *metav1.LabelSelecto
 				MatchLabels: dashboardSelector.MatchLabels,
 			},
 			Datasource: &grafanav1beta1.GrafanaDatasourceInternal{
-				Name:           "Opni",
+				Name:           "Monty",
 				Type:           "prometheus",
 				Access:         "proxy",
-				URL:            fmt.Sprintf("https://opni-internal.%s.svc:8080/api/prom", r.mc.Namespace),
+				URL:            fmt.Sprintf("https://monty-internal.%s.svc:8080/api/prom", r.mc.Namespace),
 				Editable:       lo.ToPtr(false),
 				IsDefault:      lo.ToPtr(true),
-				JSONData:       opniDatasourceJSONCfg,
-				SecureJSONData: opniDatasourceSecureJSONCfg,
+				JSONData:       montyDatasourceJSONCfg,
+				SecureJSONData: montyDatasourceSecureJSONCfg,
 			},
 		},
 	}, nil
 }
 
-func (r *Reconciler) createOpniAlertManagerDatasource(dashboardSelector *metav1.LabelSelector) (*grafanav1beta1.GrafanaDatasource, error) {
-	opniAlertManagerDatasourceJSONCfg, err := createAlertManagerDatasourceJSONData()
+func (r *Reconciler) createMontyAlertManagerDatasource(dashboardSelector *metav1.LabelSelector) (*grafanav1beta1.GrafanaDatasource, error) {
+	montyAlertManagerDatasourceJSONCfg, err := createAlertManagerDatasourceJSONData()
 	if err != nil {
 		return nil, err
 	}
 
-	opniDatasourceSecureJSONCfg, err := createDatasourceSecureJSONData()
+	montyDatasourceSecureJSONCfg, err := createDatasourceSecureJSONData()
 	if err != nil {
 		return nil, err
 	}
@@ -346,14 +346,14 @@ func (r *Reconciler) createOpniAlertManagerDatasource(dashboardSelector *metav1.
 			},
 			ValuesFrom: grafanaDatasourceTLSSecret(),
 			Datasource: &grafanav1beta1.GrafanaDatasourceInternal{
-				Name:           "Opni Alertmanager",
-				UID:            "opni_alertmanager",
+				Name:           "Monty Alertmanager",
+				UID:            "monty_alertmanager",
 				Type:           "alertmanager",
 				Access:         "proxy",
-				URL:            fmt.Sprintf("https://opni-internal.%s.svc:8080/api/prom", r.mc.Namespace),
+				URL:            fmt.Sprintf("https://monty-internal.%s.svc:8080/api/prom", r.mc.Namespace),
 				Editable:       lo.ToPtr(false),
-				JSONData:       opniAlertManagerDatasourceJSONCfg,
-				SecureJSONData: opniDatasourceSecureJSONCfg,
+				JSONData:       montyAlertManagerDatasourceJSONCfg,
+				SecureJSONData: montyDatasourceSecureJSONCfg,
 			},
 		},
 	}, nil
@@ -437,7 +437,7 @@ func createDefaultGrafanaIni(grafanaHostname string) map[string]map[string]strin
 
 func createDatasourceJSONData() (json.RawMessage, error) {
 	datasourceCfg := make(map[string]any)
-	datasourceCfg["alertmanagerUid"] = "opni_alertmanager"
+	datasourceCfg["alertmanagerUid"] = "monty_alertmanager"
 	datasourceCfg["oauthPassThru"] = true
 	datasourceCfg["tlsAuthWithCACert"] = true
 
@@ -475,8 +475,8 @@ func createDatasourceSecureJSONData() (json.RawMessage, error) {
 }
 
 func (r *Reconciler) createGrafanaDashboards(dashboardSelector *metav1.LabelSelector) ([]*grafanav1beta1.GrafanaDashboard, error) {
-	opniPrometheusDatasource := grafanav1beta1.GrafanaDashboardDatasource{
-		DatasourceName: "Opni",
+	montyPrometheusDatasource := grafanav1beta1.GrafanaDashboardDatasource{
+		DatasourceName: "Monty",
 		InputName:      "DS_PROMETHEUS",
 	}
 
@@ -487,11 +487,11 @@ func (r *Reconciler) createGrafanaDashboards(dashboardSelector *metav1.LabelSele
 				Namespace: r.mc.Namespace,
 			},
 			Spec: grafanav1beta1.GrafanaDashboardSpec{
-				Json: string(opniGatewayJson),
+				Json: string(montyGatewayJson),
 				InstanceSelector: &metav1.LabelSelector{
 					MatchLabels: dashboardSelector.MatchLabels,
 				},
-				Datasources: []grafanav1beta1.GrafanaDashboardDatasource{opniPrometheusDatasource},
+				Datasources: []grafanav1beta1.GrafanaDashboardDatasource{montyPrometheusDatasource},
 			},
 		},
 		{
@@ -504,7 +504,7 @@ func (r *Reconciler) createGrafanaDashboards(dashboardSelector *metav1.LabelSele
 				InstanceSelector: &metav1.LabelSelector{
 					MatchLabels: dashboardSelector.MatchLabels,
 				},
-				Datasources: []grafanav1beta1.GrafanaDashboardDatasource{opniPrometheusDatasource},
+				Datasources: []grafanav1beta1.GrafanaDashboardDatasource{montyPrometheusDatasource},
 			},
 		},
 		{
@@ -517,7 +517,7 @@ func (r *Reconciler) createGrafanaDashboards(dashboardSelector *metav1.LabelSele
 				InstanceSelector: &metav1.LabelSelector{
 					MatchLabels: dashboardSelector.MatchLabels,
 				},
-				Datasources: []grafanav1beta1.GrafanaDashboardDatasource{opniPrometheusDatasource},
+				Datasources: []grafanav1beta1.GrafanaDashboardDatasource{montyPrometheusDatasource},
 			},
 		},
 		{
@@ -530,7 +530,7 @@ func (r *Reconciler) createGrafanaDashboards(dashboardSelector *metav1.LabelSele
 				InstanceSelector: &metav1.LabelSelector{
 					MatchLabels: dashboardSelector.MatchLabels,
 				},
-				Datasources: []grafanav1beta1.GrafanaDashboardDatasource{opniPrometheusDatasource},
+				Datasources: []grafanav1beta1.GrafanaDashboardDatasource{montyPrometheusDatasource},
 			},
 		},
 		{
@@ -543,7 +543,7 @@ func (r *Reconciler) createGrafanaDashboards(dashboardSelector *metav1.LabelSele
 				InstanceSelector: &metav1.LabelSelector{
 					MatchLabels: dashboardSelector.MatchLabels,
 				},
-				Datasources: []grafanav1beta1.GrafanaDashboardDatasource{opniPrometheusDatasource},
+				Datasources: []grafanav1beta1.GrafanaDashboardDatasource{montyPrometheusDatasource},
 			},
 		},
 	}

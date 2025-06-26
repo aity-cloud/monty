@@ -36,16 +36,16 @@ func NotificationSubTreeLabel() string {
 // that is also part of monty, i.e. plain text notifications
 func NotificationSubTreeValues() []RouteValues {
 	// sorted by ascending severity
-	severityKey := lo.Keys(alertingv1.OpniSeverity_name)
+	severityKey := lo.Keys(alertingv1.MontySeverity_name)
 	slices.SortFunc(severityKey, func(a, b int32) int {
 		return int(a - b)
 	})
 	res := []RouteValues{}
-	n := len(alertingv1.OpniSeverity_name)
+	n := len(alertingv1.MontySeverity_name)
 	for i, sev := range severityKey {
 		i := time.Duration((abs(i - n)) * 10) // i = forula for rate limiting
 		res = append(res, RouteValues{
-			A: alertingv1.OpniSeverity_name[sev],
+			A: alertingv1.MontySeverity_name[sev],
 			B: rateLimitingConfig{
 				InitialDelay:       i * time.Second,
 				ThrottlingDuration: i * time.Second, // additive with initial delay on repeats
@@ -56,24 +56,24 @@ func NotificationSubTreeValues() []RouteValues {
 	return res
 }
 
-var OpniSubRoutingTreeId config.Matchers = []*labels.Matcher{
-	OpniSubRoutingTreeMatcher,
+var MontySubRoutingTreeId config.Matchers = []*labels.Matcher{
+	MontySubRoutingTreeMatcher,
 }
 
 var (
-	OpniSubRoutingTreeMatcher *labels.Matcher = &labels.Matcher{
+	MontySubRoutingTreeMatcher *labels.Matcher = &labels.Matcher{
 		Type:  labels.MatchEqual,
 		Name:  alertingv1.RoutingPropertyDatasource,
 		Value: "",
 	}
 
-	OpniMetricsSubRoutingTreeMatcher *labels.Matcher = &labels.Matcher{
+	MontyMetricsSubRoutingTreeMatcher *labels.Matcher = &labels.Matcher{
 		Type:  labels.MatchEqual,
 		Name:  alertingv1.RoutingPropertyDatasource,
 		Value: wellknown.CapabilityMetrics,
 	}
 
-	OpniSeverityTreeMatcher *labels.Matcher = &labels.Matcher{
+	MontySeverityTreeMatcher *labels.Matcher = &labels.Matcher{
 		Type:  labels.MatchNotEqual,
 		Name:  message.NotificationPropertySeverity,
 		Value: "",
@@ -91,8 +91,8 @@ func FinalizerReceiver(cfg *config.WebhookConfig) config.Receiver {
 
 func NewRoutingTree(cfg *config.WebhookConfig) *config.Config {
 	root := NewRootNode(cfg)
-	subtree, recvs := NewOpniSubRoutingTree()
-	metricsSubtree := NewOpniMetricsSubtree()
+	subtree, recvs := NewMontySubRoutingTree()
+	metricsSubtree := NewMontyMetricsSubtree()
 	root.Route.Routes = append(root.Route.Routes, subtree)
 	root.Route.Routes = append(root.Route.Routes, metricsSubtree)
 	slices.SortFunc(recvs, func(a, b config.Receiver) int {
@@ -129,11 +129,11 @@ func NewRootNode(cfg *config.WebhookConfig) *config.Config {
 
 // returns the subtree & the default receivers
 // contains the setup for broadcasting and conditions
-func NewOpniSubRoutingTree() (*config.Route, []config.Receiver) {
-	opniRoute := &config.Route{
-		GroupByStr: []string{message.NotificationPropertyOpniUuid},
+func NewMontySubRoutingTree() (*config.Route, []config.Receiver) {
+	montyRoute := &config.Route{
+		GroupByStr: []string{message.NotificationPropertyMontyUuid},
 
-		Matchers: OpniSubRoutingTreeId,
+		Matchers: MontySubRoutingTreeId,
 		Routes:   []*config.Route{},
 		Continue: true, // we want to expand the sub trees
 	}
@@ -142,16 +142,16 @@ func NewOpniSubRoutingTree() (*config.Route, []config.Receiver) {
 	notificationRouting, recvs := NewNamespaceTree(NotificationSubTreeLabel(), NotificationSubTreeValues()...)
 
 	// rate limits messages pushed from an monty source that itself should decide how to group messages
-	opniRoute.Routes = append(opniRoute.Routes, notificationRouting)
+	montyRoute.Routes = append(montyRoute.Routes, notificationRouting)
 	allRecvs = append(allRecvs, recvs...)
 
 	// must be last to prevent any monty alerts from leaking into the user's production routing tree
-	opniRoute.Routes = append(opniRoute.Routes, newFinalizer(nil, rateLimitingConfig{
+	montyRoute.Routes = append(montyRoute.Routes, newFinalizer(nil, rateLimitingConfig{
 		InitialDelay:       DefaultConfig.FinalizerConfig.InitialDelay,
 		ThrottlingDuration: DefaultConfig.FinalizerConfig.ThrottlingDuration,
 		RepeatInterval:     DefaultConfig.FinalizerConfig.RepeatInterval,
 	}))
-	return opniRoute, allRecvs
+	return montyRoute, allRecvs
 }
 
 func newNamespaceParentMatcher(namespace string) *labels.Matcher {
@@ -265,7 +265,7 @@ func NewNotificationLeaf(namespace string, value RouteValues) (*config.Route, co
 		Continue: true,
 	}
 	setRateLimiting(valueRoute, value.B)
-	constructedReceiverId := shared.NewOpniReceiverName(shared.OpniReceiverId{
+	constructedReceiverId := shared.NewMontyReceiverName(shared.MontyReceiverId{
 		Namespace:  namespace,
 		ReceiverId: value.A,
 	})
@@ -279,7 +279,7 @@ func NewNotificationLeaf(namespace string, value RouteValues) (*config.Route, co
 // new namespace matcher
 func NewNamespaceLeaf(
 	rl rateLimitingConfig,
-	opniConfigs []config.OpniReceiver,
+	montyConfigs []config.MontyReceiver,
 	matchers []*labels.Matcher,
 	receiverId string,
 ) (*config.Route, config.Receiver) {
@@ -297,7 +297,7 @@ func NewNamespaceLeaf(
 	repeatIntervalDur := model.Duration(rl.RepeatInterval)
 	valueRoute.RepeatInterval = &repeatIntervalDur
 	valueRoute.Receiver = receiverId
-	valueReceiver, err := config.BuildReceiver(receiverId, opniConfigs)
+	valueReceiver, err := config.BuildReceiver(receiverId, montyConfigs)
 	if err != nil {
 		panic(err)
 	}

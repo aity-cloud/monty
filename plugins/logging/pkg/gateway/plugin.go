@@ -26,13 +26,13 @@ import (
 	"github.com/aity-cloud/monty/pkg/plugins/apis/system"
 	"github.com/aity-cloud/monty/pkg/plugins/driverutil"
 	"github.com/aity-cloud/monty/pkg/plugins/meta"
-	"github.com/aity-cloud/monty/pkg/resources/opniopensearch"
+	"github.com/aity-cloud/monty/pkg/resources/montyopensearch"
 	"github.com/aity-cloud/monty/pkg/resources/preprocessor"
 	"github.com/aity-cloud/monty/pkg/storage"
 	"github.com/aity-cloud/monty/pkg/task"
 	"github.com/aity-cloud/monty/pkg/util"
 	"github.com/aity-cloud/monty/pkg/util/future"
-	opnimeta "github.com/aity-cloud/monty/pkg/util/meta"
+	montymeta "github.com/aity-cloud/monty/pkg/util/meta"
 	alertingApi "github.com/aity-cloud/monty/plugins/logging/apis/alerting"
 	"github.com/aity-cloud/monty/plugins/logging/pkg/backend"
 	"github.com/aity-cloud/monty/plugins/logging/pkg/gateway/alerting"
@@ -45,8 +45,8 @@ import (
 )
 
 const (
-	OpensearchBindingName = "monty-logging"
-	OpniPreprocessingPort = 4317
+	OpensearchBindingName  = "monty-logging"
+	MontyPreprocessingPort = 4317
 )
 
 type Plugin struct {
@@ -71,7 +71,7 @@ type Plugin struct {
 
 type PluginOptions struct {
 	storageNamespace  string
-	opensearchCluster *opnimeta.OpensearchClusterRef
+	opensearchCluster *montymeta.OpensearchClusterRef
 	restconfig        *rest.Config
 	featureOverride   featureflags.FeatureFlag
 	natsRef           *corev1.LocalObjectReference
@@ -91,7 +91,7 @@ func WithNamespace(namespace string) PluginOption {
 	}
 }
 
-func WithOpensearchCluster(cluster *opnimeta.OpensearchClusterRef) PluginOption {
+func WithOpensearchCluster(cluster *montymeta.OpensearchClusterRef) PluginOption {
 	return func(o *PluginOptions) {
 		o.opensearchCluster = cluster
 	}
@@ -150,8 +150,8 @@ func NewPlugin(ctx context.Context, opts ...PluginOption) *Plugin {
 				otel.WithLogger(lg.WithGroup("otel-logs-forwarder")),
 				otel.WithAddress(fmt.Sprintf(
 					"%s:%d",
-					preprocessor.PreprocessorServiceName(opniopensearch.OpniPreprocessingInstanceName),
-					OpniPreprocessingPort,
+					preprocessor.PreprocessorServiceName(montyopensearch.MontyPreprocessingInstanceName),
+					MontyPreprocessingPort,
 				)),
 				otel.WithDialOptions(grpc.WithTransportCredentials(insecure.NewCredentials())),
 				otel.WithPrivileged(true),
@@ -160,8 +160,8 @@ func NewPlugin(ctx context.Context, opts ...PluginOption) *Plugin {
 				otel.WithLogger(lg.WithGroup("otel-trace-forwarder")),
 				otel.WithAddress(fmt.Sprintf(
 					"%s:%d",
-					preprocessor.PreprocessorServiceName(opniopensearch.OpniPreprocessingInstanceName),
-					OpniPreprocessingPort,
+					preprocessor.PreprocessorServiceName(montyopensearch.MontyPreprocessingInstanceName),
+					MontyPreprocessingPort,
 				)),
 				otel.WithDialOptions(grpc.WithTransportCredentials(insecure.NewCredentials())),
 				otel.WithPrivileged(true),

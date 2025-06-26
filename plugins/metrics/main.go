@@ -6,9 +6,9 @@ import (
 	"github.com/aity-cloud/monty/plugins/metrics/pkg/agent"
 	"github.com/aity-cloud/monty/plugins/metrics/pkg/gateway"
 
-	_ "github.com/aity-cloud/monty/plugins/metrics/pkg/agent/drivers/opni_manager_otel"
+	_ "github.com/aity-cloud/monty/plugins/metrics/pkg/agent/drivers/monty_manager_otel"
 	_ "github.com/aity-cloud/monty/plugins/metrics/pkg/agent/drivers/prometheus_operator"
-	_ "github.com/aity-cloud/monty/plugins/metrics/pkg/gateway/drivers/opni_manager"
+	_ "github.com/aity-cloud/monty/plugins/metrics/pkg/gateway/drivers/monty_manager"
 )
 
 func main() {

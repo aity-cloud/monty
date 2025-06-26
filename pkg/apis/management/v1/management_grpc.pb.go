@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.3.0
 // - ragu               v1.0.0
-// source:  github.com/aity-cloud/monty/pkg/apis/management/v1/management.proto
+// source: github.com/aity-cloud/monty/pkg/apis/management/v1/management.proto
 
 package v1
 

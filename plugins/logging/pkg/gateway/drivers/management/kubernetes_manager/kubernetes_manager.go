@@ -9,7 +9,7 @@ import (
 	"log/slog"
 
 	"github.com/aity-cloud/monty/apis"
-	opnicorev1beta1 "github.com/aity-cloud/monty/apis/core/v1beta1"
+	montycorev1beta1 "github.com/aity-cloud/monty/apis/core/v1beta1"
 	loggingv1beta1 "github.com/aity-cloud/monty/apis/logging/v1beta1"
 	"github.com/aity-cloud/monty/pkg/opensearch/certs"
 	"github.com/aity-cloud/monty/pkg/opensearch/opensearch"
@@ -17,7 +17,7 @@ import (
 	"github.com/aity-cloud/monty/pkg/util"
 	k8sutilerrors "github.com/aity-cloud/monty/pkg/util/errors/k8sutil"
 	"github.com/aity-cloud/monty/pkg/util/k8sutil"
-	opnimeta "github.com/aity-cloud/monty/pkg/util/meta"
+	montymeta "github.com/aity-cloud/monty/pkg/util/meta"
 	"github.com/aity-cloud/monty/plugins/logging/apis/loggingadmin"
 	loggingerrors "github.com/aity-cloud/monty/plugins/logging/pkg/errors"
 	"github.com/aity-cloud/monty/plugins/logging/pkg/gateway/drivers/management"
@@ -39,7 +39,7 @@ import (
 const (
 	LabelOpsterCluster  = "opster.io/opensearch-cluster"
 	LabelOpsterNodePool = "opster.io/opensearch-nodepool"
-	LabelOpniNodeGroup  = "monty.io/node-group"
+	LabelMontyNodeGroup = "monty.io/node-group"
 	TopologyKeyK8sHost  = "kubernetes.io/hostname"
 
 	opensearchVersion   = "2.8.0"
@@ -52,9 +52,9 @@ type KubernetesManagerDriver struct {
 }
 
 type KubernetesManagerDriverOptions struct {
-	OpensearchCluster *opnimeta.OpensearchClusterRef `option:"opensearchCluster"`
-	K8sClient         client.Client                  `option:"k8sClient"`
-	Logger            *slog.Logger                   `option:"logger"`
+	OpensearchCluster *montymeta.OpensearchClusterRef `option:"opensearchCluster"`
+	K8sClient         client.Client                   `option:"k8sClient"`
+	Logger            *slog.Logger                    `option:"logger"`
 }
 
 func NewKubernetesManagerDriver(options KubernetesManagerDriverOptions) (*KubernetesManagerDriver, error) {
@@ -74,7 +74,7 @@ func NewKubernetesManagerDriver(options KubernetesManagerDriverOptions) (*Kubern
 }
 
 func (d *KubernetesManagerDriver) AdminPassword(ctx context.Context) (password []byte, retErr error) {
-	k8sOpensearchCluster := &loggingv1beta1.OpniOpensearch{}
+	k8sOpensearchCluster := &loggingv1beta1.MontyOpensearch{}
 
 	retErr = d.K8sClient.Get(ctx, types.NamespacedName{
 		Name:      d.OpensearchCluster.Name,
@@ -173,7 +173,7 @@ FETCH:
 }
 
 func (d *KubernetesManagerDriver) DeleteCluster(ctx context.Context) error {
-	loggingClusters := &opnicorev1beta1.LoggingClusterList{}
+	loggingClusters := &montycorev1beta1.LoggingClusterList{}
 	err := d.K8sClient.List(ctx, loggingClusters, client.InNamespace(d.OpensearchCluster.Namespace))
 	if err != nil {
 		d.Logger.Error(fmt.Sprintf("failed to list logging clusters: %v", err))
@@ -184,7 +184,7 @@ func (d *KubernetesManagerDriver) DeleteCluster(ctx context.Context) error {
 		return loggingerrors.ErrLoggingCapabilityExists
 	}
 
-	cluster := &loggingv1beta1.OpniOpensearch{
+	cluster := &loggingv1beta1.MontyOpensearch{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      d.OpensearchCluster.Name,
 			Namespace: d.OpensearchCluster.Namespace,
@@ -200,7 +200,7 @@ func (d *KubernetesManagerDriver) DeleteCluster(ctx context.Context) error {
 }
 
 func (d *KubernetesManagerDriver) GetCluster(ctx context.Context) (*loggingadmin.OpensearchClusterV2, error) {
-	cluster := &loggingv1beta1.OpniOpensearch{}
+	cluster := &loggingv1beta1.MontyOpensearch{}
 	if err := d.K8sClient.Get(ctx, types.NamespacedName{
 		Name:      d.OpensearchCluster.Name,
 		Namespace: d.OpensearchCluster.Namespace,
@@ -236,7 +236,7 @@ func (d *KubernetesManagerDriver) GetCluster(ctx context.Context) (*loggingadmin
 func (d *KubernetesManagerDriver) CreateOrUpdateCluster(
 	ctx context.Context,
 	cluster *loggingadmin.OpensearchClusterV2,
-	opniVersion string,
+	montyVersion string,
 	natName string,
 ) error {
 	err := d.storeS3Credentials(ctx, cluster.GetS3().GetCredentials())
@@ -244,7 +244,7 @@ func (d *KubernetesManagerDriver) CreateOrUpdateCluster(
 		return err
 	}
 
-	k8sOpensearchCluster := &loggingv1beta1.OpniOpensearch{}
+	k8sOpensearchCluster := &loggingv1beta1.MontyOpensearch{}
 	exists := true
 	err = d.K8sClient.Get(ctx, types.NamespacedName{
 		Name:      d.OpensearchCluster.Name,
@@ -264,14 +264,14 @@ func (d *KubernetesManagerDriver) CreateOrUpdateCluster(
 	}
 
 	if !exists {
-		k8sOpensearchCluster = &loggingv1beta1.OpniOpensearch{
+		k8sOpensearchCluster = &loggingv1beta1.MontyOpensearch{
 			ObjectMeta: metav1.ObjectMeta{
 				Name:      d.OpensearchCluster.Name,
 				Namespace: d.OpensearchCluster.Namespace,
 			},
-			Spec: loggingv1beta1.OpniOpensearchSpec{
+			Spec: loggingv1beta1.MontyOpensearchSpec{
 				OpensearchSettings: loggingv1beta1.OpensearchSettings{
-					Dashboards: convertProtobufToDashboards(cluster.Dashboards, nil, opniVersion),
+					Dashboards: convertProtobufToDashboards(cluster.Dashboards, nil, montyVersion),
 					NodePools:  nodePools,
 					Security: &opsterv1.Security{
 						Tls: &opsterv1.TlsConfig{
@@ -291,7 +291,7 @@ func (d *KubernetesManagerDriver) CreateOrUpdateCluster(
 					IndexRetention: lo.FromPtrOr(cluster.DataRetention, "7d"),
 				},
 				OpensearchVersion: opensearchVersion,
-				Version:           opniVersion,
+				Version:           montyVersion,
 				ImageRepo:         "docker.io/rancher",
 				NatsRef: &corev1.LocalObjectReference{
 					Name: natName,
@@ -315,7 +315,7 @@ func (d *KubernetesManagerDriver) CreateOrUpdateCluster(
 		k8sOpensearchCluster.Spec.OpensearchSettings.Dashboards = convertProtobufToDashboards(
 			cluster.Dashboards,
 			k8sOpensearchCluster,
-			opniVersion,
+			montyVersion,
 		)
 		k8sOpensearchCluster.Spec.OpensearchSettings.S3Settings = s3ToKubernetes(cluster.GetS3())
 		k8sOpensearchCluster.Spec.ExternalURL = cluster.ExternalURL
@@ -337,8 +337,8 @@ func (d *KubernetesManagerDriver) CreateOrUpdateCluster(
 	return nil
 }
 
-func (d *KubernetesManagerDriver) UpgradeAvailable(ctx context.Context, opniVersion string) (bool, error) {
-	k8sOpensearchCluster := &loggingv1beta1.OpniOpensearch{}
+func (d *KubernetesManagerDriver) UpgradeAvailable(ctx context.Context, montyVersion string) (bool, error) {
+	k8sOpensearchCluster := &loggingv1beta1.MontyOpensearch{}
 
 	err := d.K8sClient.Get(ctx, types.NamespacedName{
 		Name:      d.OpensearchCluster.Name,
@@ -357,7 +357,7 @@ func (d *KubernetesManagerDriver) UpgradeAvailable(ctx context.Context, opniVers
 		return false, nil
 	}
 
-	if *k8sOpensearchCluster.Status.Version != opniVersion {
+	if *k8sOpensearchCluster.Status.Version != montyVersion {
 		return true, nil
 	}
 	if *k8sOpensearchCluster.Status.OpensearchVersion != opensearchVersion {
@@ -367,8 +367,8 @@ func (d *KubernetesManagerDriver) UpgradeAvailable(ctx context.Context, opniVers
 	return false, nil
 }
 
-func (d *KubernetesManagerDriver) DoUpgrade(ctx context.Context, opniVersion string) error {
-	k8sOpensearchCluster := &loggingv1beta1.OpniOpensearch{
+func (d *KubernetesManagerDriver) DoUpgrade(ctx context.Context, montyVersion string) error {
+	k8sOpensearchCluster := &loggingv1beta1.MontyOpensearch{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      d.OpensearchCluster.Name,
 			Namespace: d.OpensearchCluster.Namespace,
@@ -380,13 +380,13 @@ func (d *KubernetesManagerDriver) DoUpgrade(ctx context.Context, opniVersion str
 			return err
 		}
 
-		k8sOpensearchCluster.Spec.Version = opniVersion
+		k8sOpensearchCluster.Spec.Version = montyVersion
 		k8sOpensearchCluster.Spec.OpensearchVersion = opensearchVersion
 
 		image := fmt.Sprintf(
 			"%s/opensearch-dashboards:v%s-%s",
 			defaultRepo,
-			opniVersion,
+			montyVersion,
 			opensearchVersion,
 		)
 
@@ -519,7 +519,7 @@ func (d *KubernetesManagerDriver) ListAllSnapshotSchedules(ctx context.Context) 
 func init() {
 	management.Drivers.Register("kubernetes-manager", func(_ context.Context, opts ...driverutil.Option) (management.ClusterDriver, error) {
 		options := KubernetesManagerDriverOptions{
-			OpensearchCluster: &opnimeta.OpensearchClusterRef{
+			OpensearchCluster: &montymeta.OpensearchClusterRef{
 				Name:      "monty",
 				Namespace: os.Getenv("POD_NAMESPACE"),
 			},

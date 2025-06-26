@@ -115,10 +115,10 @@ func BuildDebugEtcdctlCmd() *cobra.Command {
 	debugEtcdctlCmd := &cobra.Command{
 		Use:                "etcdctl",
 		Short:              "embedded auto-configured etcdctl",
-		Long:               "To specify a gateway address, use the OPNI_ADDRESS environment variable.",
+		Long:               "To specify a gateway address, use the MONTY_ADDRESS environment variable.",
 		DisableFlagParsing: true,
 		RunE: func(cmd *cobra.Command, args []string) error {
-			addr := os.Getenv("OPNI_ADDRESS")
+			addr := os.Getenv("MONTY_ADDRESS")
 			var gatewayConfig *v1beta1.GatewayConfig
 			if addr != "" {
 				c, err := clients.NewManagementClient(cmd.Context(), clients.WithAddress(addr))

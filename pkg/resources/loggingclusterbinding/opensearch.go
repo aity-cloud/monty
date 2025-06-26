@@ -29,7 +29,7 @@ func (r *Reconciler) reconcileOpensearchObjects(cluster *opensearchv1.OpenSearch
 			r.ctx,
 			list,
 			client.InNamespace(r.loggingClusterBinding.Namespace),
-			client.MatchingLabels{resources.OpniClusterID: r.loggingClusterBinding.Spec.LoggingCluster.ID},
+			client.MatchingLabels{resources.MontyClusterID: r.loggingClusterBinding.Spec.LoggingCluster.ID},
 		)
 		if err != nil {
 			return err

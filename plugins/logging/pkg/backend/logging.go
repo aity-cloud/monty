@@ -9,7 +9,7 @@ import (
 
 	"github.com/aity-cloud/monty/pkg/agent"
 	capabilityv1 "github.com/aity-cloud/monty/pkg/apis/capability/v1"
-	opnicorev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	montycorev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
 	managementv1 "github.com/aity-cloud/monty/pkg/apis/management/v1"
 	"github.com/aity-cloud/monty/pkg/capabilities/wellknown"
 	"github.com/aity-cloud/monty/pkg/logger"
@@ -58,7 +58,7 @@ func (b *LoggingBackend) Initialize(conf LoggingBackendConfig) {
 
 		b.watcher = management.NewManagementWatcherHooks[*managementv1.WatchEvent](context.TODO())
 		b.watcher.RegisterHook(func(event *managementv1.WatchEvent) bool {
-			return event.Type == managementv1.WatchEventType_Put && slices.ContainsFunc(event.Cluster.Metadata.Capabilities, func(c *opnicorev1.ClusterCapability) bool {
+			return event.Type == managementv1.WatchEventType_Put && slices.ContainsFunc(event.Cluster.Metadata.Capabilities, func(c *montycorev1.ClusterCapability) bool {
 				return c.Name == wellknown.CapabilityLogs
 			})
 		}, b.updateClusterMetadata)

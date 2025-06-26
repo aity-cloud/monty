@@ -260,5 +260,5 @@ func configureBootstrapV2(conf *v1beta1.AgentConfig, agentlg *slog.Logger) (boot
 }
 
 func init() {
-	AddCommandsToGroup(OpniComponents, BuildAgentV2Cmd())
+	AddCommandsToGroup(MontyComponents, BuildAgentV2Cmd())
 }

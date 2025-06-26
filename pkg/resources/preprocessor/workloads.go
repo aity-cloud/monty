@@ -8,7 +8,7 @@ import (
 	"html/template"
 
 	"github.com/aity-cloud/monty/pkg/resources"
-	opnimeta "github.com/aity-cloud/monty/pkg/util/meta"
+	montymeta "github.com/aity-cloud/monty/pkg/util/meta"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -262,7 +262,7 @@ func (r *Reconciler) deployment(configHash string) resources.Resource {
 						resources.InstanceLabel: r.preprocessor.Name,
 					},
 					Annotations: map[string]string{
-						resources.OpniConfigHash: configHash,
+						resources.MontyConfigHash: configHash,
 					},
 				},
 				Spec: corev1.PodSpec{
@@ -357,8 +357,8 @@ func (r *Reconciler) caChain() resources.Resource {
 	return resources.Present(chainSecret)
 }
 
-func (r *Reconciler) imageSpec() opnimeta.ImageSpec {
-	return opnimeta.ImageResolver{
+func (r *Reconciler) imageSpec() montymeta.ImageSpec {
+	return montymeta.ImageResolver{
 		Version:       preprocessorVersion,
 		ImageName:     preprocessorImage,
 		DefaultRepo:   preprocessorImageRepo,

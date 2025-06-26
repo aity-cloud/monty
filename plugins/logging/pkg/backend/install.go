@@ -6,7 +6,7 @@ import (
 	"errors"
 
 	capabilityv1 "github.com/aity-cloud/monty/pkg/apis/capability/v1"
-	opnicorev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	montycorev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
 	"github.com/aity-cloud/monty/pkg/capabilities"
 	"github.com/aity-cloud/monty/pkg/capabilities/wellknown"
 	"github.com/aity-cloud/monty/pkg/crypto"
@@ -59,7 +59,7 @@ func (b *LoggingBackend) Install(ctx context.Context, req *capabilityv1.InstallR
 		return nil, err
 	}
 
-	name := cluster.GetMetadata().GetLabels()[opnicorev1.NameLabel]
+	name := cluster.GetMetadata().GetLabels()[montycorev1.NameLabel]
 
 	if err := b.ClusterDriver.StoreCluster(ctx, req.GetCluster(), name); err != nil {
 		if !req.IgnoreWarnings {
@@ -71,7 +71,7 @@ func (b *LoggingBackend) Install(ctx context.Context, req *capabilityv1.InstallR
 		warningErr = err
 	}
 
-	supportLabelValue, ok := cluster.GetMetadata().GetLabels()[opnicorev1.SupportLabel]
+	supportLabelValue, ok := cluster.GetMetadata().GetLabels()[montycorev1.SupportLabel]
 	supportUser := ok && supportLabelValue == "true"
 	if supportUser {
 		p, err := b.generatePassword(ctx, req.GetCluster())
@@ -85,7 +85,7 @@ func (b *LoggingBackend) Install(ctx context.Context, req *capabilityv1.InstallR
 	}
 
 	_, err = b.StorageBackend.UpdateCluster(ctx, req.Cluster,
-		storage.NewAddCapabilityMutator[*opnicorev1.Cluster](capabilities.Cluster(wellknown.CapabilityLogs)),
+		storage.NewAddCapabilityMutator[*montycorev1.Cluster](capabilities.Cluster(wellknown.CapabilityLogs)),
 	)
 	if err != nil {
 		return nil, err
@@ -116,7 +116,7 @@ func (b *LoggingBackend) InstallerTemplate(context.Context, *emptypb.Empty) (*ca
 	}, nil
 }
 
-func (b *LoggingBackend) generatePassword(ctx context.Context, cluster *opnicorev1.Reference) ([]byte, error) {
+func (b *LoggingBackend) generatePassword(ctx context.Context, cluster *montycorev1.Reference) ([]byte, error) {
 	krStore := b.StorageBackend.KeyringStore("gateway", cluster)
 	kr, err := krStore.Get(ctx)
 	if err != nil {

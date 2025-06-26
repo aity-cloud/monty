@@ -98,7 +98,7 @@ func (m *OpsServiceBackend) Uninstall(ctx context.Context, in *emptypb.Empty) (*
 		}
 	}
 	if len(clustersWithCapability) > 0 {
-		return nil, status.Error(codes.FailedPrecondition, fmt.Sprintf("There are %d agents sending metrics to the Opni monitoring backend. Uninstall the capability on all agents before attempting to uninstall the Opni monitoring backend.", len(clustersWithCapability)))
+		return nil, status.Error(codes.FailedPrecondition, fmt.Sprintf("There are %d agents sending metrics to the Monty monitoring backend. Uninstall the capability on all agents before attempting to uninstall the Monty monitoring backend.", len(clustersWithCapability)))
 	}
 	defer m.broadcastNodeSync(ctx)
 	return m.ClusterDriver.Uninstall(ctx, in)

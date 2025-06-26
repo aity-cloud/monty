@@ -165,7 +165,7 @@ func (r *Reconciler) cortexWorkloads(configDigest string) []resources.Resource {
 				Replicas(spec.GetReplicas()),
 				ExtraArgs(spec.GetExtraArgs()...),
 				ExtraAnnotations(map[string]string{
-					resources.OpniConfigHash: configDigest,
+					resources.MontyConfigHash: configDigest,
 				}),
 			}, workloadOptions[target]...)
 			switch workloadType {

@@ -94,7 +94,7 @@ func (r *Reconciler) config() ([]resources.Resource, string, error) {
 			QueryFrontendAddress: "cortex-query-frontend-headless:9095",
 			MemberlistJoinAddrs:  []string{"cortex-memberlist"},
 			AlertManager: configutil.AlertmanagerOverrideShape{
-				AlertmanagerURL: fmt.Sprintf("https://opni-internal.%s.svc:8080/plugin_alerting/alertmanager", r.mc.Namespace),
+				AlertmanagerURL: fmt.Sprintf("https://monty-internal.%s.svc:8080/plugin_alerting/alertmanager", r.mc.Namespace),
 				EnableV2:        true,
 				ClientTLS:       configutil.TLSClientConfigShape(tlsGatewayClientConfig),
 			},

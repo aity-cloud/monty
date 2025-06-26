@@ -14,7 +14,7 @@ import (
 	"github.com/aity-cloud/monty/pkg/plugins/meta"
 	"github.com/aity-cloud/monty/pkg/util"
 	"github.com/aity-cloud/monty/pkg/util/future"
-	opnimeta "github.com/aity-cloud/monty/pkg/util/meta"
+	montymeta "github.com/aity-cloud/monty/pkg/util/meta"
 	"github.com/aity-cloud/monty/plugins/aiops/apis/admin"
 	"github.com/aity-cloud/monty/plugins/aiops/apis/modeltraining"
 	"github.com/nats-io/nats.go"
@@ -42,7 +42,7 @@ type AIOpsPlugin struct {
 type PluginOptions struct {
 	storageNamespace  string
 	version           string
-	opensearchCluster *opnimeta.OpensearchClusterRef
+	opensearchCluster *montymeta.OpensearchClusterRef
 	restconfig        *rest.Config
 }
 
@@ -72,7 +72,7 @@ func WithVersion(version string) PluginOption {
 	}
 }
 
-func WithOpensearchCluster(cluster *opnimeta.OpensearchClusterRef) PluginOption {
+func WithOpensearchCluster(cluster *montymeta.OpensearchClusterRef) PluginOption {
 	return func(o *PluginOptions) {
 		o.opensearchCluster = cluster
 	}
@@ -87,7 +87,7 @@ func WithRestConfig(restconfig *rest.Config) PluginOption {
 func NewPlugin(ctx context.Context, opts ...PluginOption) *AIOpsPlugin {
 	options := PluginOptions{
 		storageNamespace: os.Getenv("POD_NAMESPACE"),
-		opensearchCluster: &opnimeta.OpensearchClusterRef{
+		opensearchCluster: &montymeta.OpensearchClusterRef{
 			Name:      "monty",
 			Namespace: os.Getenv("POD_NAMESPACE"),
 		},

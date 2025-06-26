@@ -4,7 +4,7 @@ import (
 	"context"
 	"os"
 
-	opnicorev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	montycorev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
 	managementv1 "github.com/aity-cloud/monty/pkg/apis/management/v1"
 	"github.com/aity-cloud/monty/pkg/config/v1beta1"
 	"github.com/aity-cloud/monty/pkg/machinery"
@@ -52,7 +52,7 @@ func (p *Plugin) UseManagementAPI(client managementv1.ManagementClient) {
 
 func (p *Plugin) UseKeyValueStore(client system.KeyValueStoreClient) {
 	p.kv.Set(client)
-	ctrl, err := task.NewController(p.ctx, "uninstall", system.NewKVStoreClient[*opnicorev1.TaskStatus](client), &UninstallTaskRunner{
+	ctrl, err := task.NewController(p.ctx, "uninstall", system.NewKVStoreClient[*montycorev1.TaskStatus](client), &UninstallTaskRunner{
 		storageNamespace:  p.storageNamespace,
 		opensearchManager: p.opensearchManager,
 		backendDriver:     p.backendDriver,

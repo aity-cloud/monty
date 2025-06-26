@@ -155,7 +155,7 @@ func NewHTTPServer(
 	srv.metricsRegisterer.MustRegister(apiCollectors...)
 
 	exporter, err := otelprom.New(
-		otelprom.WithRegisterer(prometheus.WrapRegistererWithPrefix("opni_gateway_", srv.metricsRegisterer)),
+		otelprom.WithRegisterer(prometheus.WrapRegistererWithPrefix("monty_gateway_", srv.metricsRegisterer)),
 		otelprom.WithoutScopeInfo(),
 		otelprom.WithoutTargetInfo(),
 	)

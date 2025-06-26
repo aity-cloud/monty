@@ -207,10 +207,10 @@ func (a *AlertingRule) Build(id string) (*rulefmt.RuleNode, error) {
 		return nil, fmt.Errorf("constructed rule : %s is not a valid prometheus rule %v", promRule.Expr.Value, err)
 	}
 	promRule.Annotations = lo.Assign(promRule.Annotations, map[string]string{
-		message.NotificationPropertyOpniUuid: id,
+		message.NotificationPropertyMontyUuid: id,
 	})
 	promRule.Labels = lo.Assign(promRule.Labels, map[string]string{
-		message.NotificationPropertyOpniUuid: id,
+		message.NotificationPropertyMontyUuid: id,
 	})
 	return promRule, nil
 }

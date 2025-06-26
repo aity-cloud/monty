@@ -17,8 +17,8 @@ import (
 	"github.com/aity-cloud/monty/pkg/logger"
 	"github.com/aity-cloud/monty/pkg/machinery"
 	"github.com/aity-cloud/monty/pkg/management"
-	"github.com/aity-cloud/monty/pkg/noauth"
 	"github.com/aity-cloud/monty/pkg/monty/cliutil"
+	"github.com/aity-cloud/monty/pkg/noauth"
 	"github.com/aity-cloud/monty/pkg/plugins"
 	"github.com/aity-cloud/monty/pkg/plugins/hooks"
 	"github.com/aity-cloud/monty/pkg/tracing"
@@ -213,7 +213,7 @@ func BuildGatewayCmd() *cobra.Command {
 
 	serveCmd := &cobra.Command{
 		Use:   "gateway",
-		Short: "Run the Opni Gateway",
+		Short: "Run the Monty Gateway",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			for {
 				if err := run(cmd.Context()); err != nil {
@@ -231,5 +231,5 @@ func BuildGatewayCmd() *cobra.Command {
 }
 
 func init() {
-	AddCommandsToGroup(OpniComponents, BuildGatewayCmd())
+	AddCommandsToGroup(MontyComponents, BuildGatewayCmd())
 }

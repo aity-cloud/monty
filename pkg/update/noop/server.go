@@ -54,7 +54,7 @@ func (s *syncServer) CalculateExpectedManifest(_ context.Context, updateType urn
 	return &controlv1.UpdateManifest{
 		Items: []*controlv1.UpdateManifestEntry{
 			{
-				Package: urn.NewOpniURN(updateType, updateStrategy, "unmanaged").String(),
+				Package: urn.NewMontyURN(updateType, updateStrategy, "unmanaged").String(),
 				Path:    "unmanaged",
 				Digest:  emptyDigest,
 			},
@@ -74,7 +74,7 @@ func (s *syncServer) CalculateUpdate(_ context.Context, manifest *controlv1.Upda
 		Items: []*controlv1.PatchSpec{
 			{
 				Op:        controlv1.PatchOp_None,
-				Package:   urn.NewOpniURN(updateType, updateStrategy, "unmanaged").String(),
+				Package:   urn.NewMontyURN(updateType, updateStrategy, "unmanaged").String(),
 				Path:      "unmanaged",
 				OldDigest: emptyDigest,
 				NewDigest: emptyDigest,

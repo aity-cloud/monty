@@ -4,7 +4,7 @@ import (
 	"github.com/aity-cloud/monty/pkg/auth/openid"
 	cfgv1beta1 "github.com/aity-cloud/monty/pkg/config/v1beta1"
 	"github.com/aity-cloud/monty/pkg/noauth"
-	opnimeta "github.com/aity-cloud/monty/pkg/util/meta"
+	montymeta "github.com/aity-cloud/monty/pkg/util/meta"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -36,7 +36,7 @@ type OpenIDConfigSpec struct {
 }
 
 type GatewaySpec struct {
-	Image *opnimeta.ImageSpec `json:"image,omitempty"`
+	Image *montymeta.ImageSpec `json:"image,omitempty"`
 	//+kubebuilder:validation:Required
 	Auth     AuthSpec `json:"auth,omitempty"`
 	Hostname string   `json:"hostname,omitempty"`
@@ -58,12 +58,12 @@ type GatewaySpec struct {
 	//+kubebuilder:validation:XValidation:rule="self == oldSelf",message="Value is immutable"
 	StorageType cfgv1beta1.StorageType `json:"storageType,omitempty"`
 
-	NodeSelector      map[string]string           `json:"nodeSelector,omitempty"`
-	Tolerations       []corev1.Toleration         `json:"tolerations,omitempty"`
-	Affinity          *corev1.Affinity            `json:"affinity,omitempty"`
-	ExtraVolumeMounts []opnimeta.ExtraVolumeMount `json:"extraVolumeMounts,omitempty"`
-	ExtraEnvVars      []corev1.EnvVar             `json:"extraEnvVars,omitempty"`
-	Profiling         cfgv1beta1.ProfilingSpec    `json:"profiling,omitempty"`
+	NodeSelector      map[string]string            `json:"nodeSelector,omitempty"`
+	Tolerations       []corev1.Toleration          `json:"tolerations,omitempty"`
+	Affinity          *corev1.Affinity             `json:"affinity,omitempty"`
+	ExtraVolumeMounts []montymeta.ExtraVolumeMount `json:"extraVolumeMounts,omitempty"`
+	ExtraEnvVars      []corev1.EnvVar              `json:"extraEnvVars,omitempty"`
+	Profiling         cfgv1beta1.ProfilingSpec     `json:"profiling,omitempty"`
 }
 
 func (g *GatewaySpec) GetServiceType() corev1.ServiceType {

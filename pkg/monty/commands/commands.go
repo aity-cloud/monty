@@ -5,9 +5,9 @@ import (
 )
 
 var (
-	OpniComponents = &cobra.Group{
+	MontyComponents = &cobra.Group{
 		ID:    "monty-components",
-		Title: "Opni Components:",
+		Title: "Monty Components:",
 	}
 	ManagementAPI = &cobra.Group{
 		ID:    "management-api",
@@ -26,7 +26,7 @@ var (
 		Title: "Debug:",
 	}
 	AllGroups = []*cobra.Group{
-		OpniComponents,
+		MontyComponents,
 		ManagementAPI,
 		PluginAPIs,
 		Utilities,

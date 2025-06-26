@@ -76,7 +76,7 @@ func (r *Reconciler) reconcileOpensearchUsers(reconciler *opensearch.Reconciler)
 	clusterReadRole.RoleName = r.loggingCluster.Name
 	clusterReadRole.IndexPermissions[0].DocumentLevelSecurity = fmt.Sprintf(
 		`{"term":{"cluster_id": "%s"}}`,
-		r.loggingCluster.Labels[resources.OpniClusterID],
+		r.loggingCluster.Labels[resources.MontyClusterID],
 	)
 
 	retErr = reconciler.MaybeCreateRole(clusterReadRole)
@@ -86,7 +86,7 @@ func (r *Reconciler) reconcileOpensearchUsers(reconciler *opensearch.Reconciler)
 
 func (r *Reconciler) reconcileFriendlyName(reconciler *opensearch.Reconciler) (retResult *reconcile.Result, retErr error) {
 	retErr = reconciler.UpsertClusterMetadata(
-		r.loggingCluster.Labels[resources.OpniClusterID],
+		r.loggingCluster.Labels[resources.MontyClusterID],
 		r.loggingCluster.Spec.FriendlyName,
 		resources.ClusterMetadataIndexName,
 	)
@@ -120,7 +120,7 @@ func (r *Reconciler) deleteOpensearchObjects(cluster *opensearchv1.OpenSearchClu
 		}
 
 		err = osReconciler.DeleteClusterMetadata(
-			r.loggingCluster.Labels[resources.OpniClusterID],
+			r.loggingCluster.Labels[resources.MontyClusterID],
 			resources.ClusterMetadataIndexName,
 		)
 		if err != nil {

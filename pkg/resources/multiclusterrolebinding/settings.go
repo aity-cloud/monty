@@ -6,7 +6,7 @@ import (
 	_ "embed" // embed should be a blank import
 
 	opensearchtypes "github.com/aity-cloud/monty/pkg/opensearch/opensearch/types"
-	"github.com/aity-cloud/monty/pkg/resources/opnicluster/elastic/indices"
+	"github.com/aity-cloud/monty/pkg/resources/montycluster/elastic/indices"
 	"github.com/samber/lo"
 )
 
@@ -63,7 +63,7 @@ var (
 		},
 	}
 
-	OpniSpanTemplate = opensearchtypes.IndexTemplateSpec{
+	MontySpanTemplate = opensearchtypes.IndexTemplateSpec{
 		TemplateName: SpanIndexTemplateName,
 		IndexPatterns: []string{
 			fmt.Sprintf("%s*", SpanIndexPrefix),
@@ -157,7 +157,7 @@ var (
 		Priority: 100,
 	}
 
-	opniServiceMapTemplate = opensearchtypes.IndexTemplateSpec{
+	montyServiceMapTemplate = opensearchtypes.IndexTemplateSpec{
 		TemplateName: serviceMapTemplateName,
 		IndexPatterns: []string{
 			serviceMapIndexName,
@@ -230,15 +230,15 @@ var (
 	}
 
 	preprocessingPipeline = opensearchtypes.IngestPipeline{
-		Description: "Opni preprocessing ingest pipeline",
+		Description: "Monty preprocessing ingest pipeline",
 		Processors: []opensearchtypes.Processor{
 			{
-				OpniPreProcessor: &opensearchtypes.OpniProcessorConfig{},
+				MontyPreProcessor: &opensearchtypes.MontyProcessorConfig{},
 			},
 		},
 	}
 
-	OpniLogTemplate = opensearchtypes.IndexTemplateSpec{
+	MontyLogTemplate = opensearchtypes.IndexTemplateSpec{
 		TemplateName: LogIndexTemplateName,
 		IndexPatterns: []string{
 			fmt.Sprintf("%s*", LogIndexPrefix),
@@ -308,7 +308,7 @@ func (r *Reconciler) logISMPolicy() opensearchtypes.ISMPolicySpec {
 			PolicyID:   LogPolicyName,
 			MarshallID: false,
 		},
-		Description:  "Opni policy with hot-warm-cold workflow",
+		Description:  "Monty policy with hot-warm-cold workflow",
 		DefaultState: "hot",
 		States: []opensearchtypes.StateSpec{
 			{
@@ -407,7 +407,7 @@ func (r *Reconciler) traceISMPolicy() opensearchtypes.ISMPolicySpec {
 			PolicyID:   TracePolicyName,
 			MarshallID: false,
 		},
-		Description:  "Opni policy with hot-warm-cold workflow",
+		Description:  "Monty policy with hot-warm-cold workflow",
 		DefaultState: "hot",
 		States: []opensearchtypes.StateSpec{
 			{

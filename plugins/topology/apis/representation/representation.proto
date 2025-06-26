@@ -9,7 +9,7 @@ import "github.com/aity-cloud/monty/pkg/apis/core/v1/core.proto";
 package representation;
 
 service TopologyRepresentation {
-    // opni internal use
+    // monty internal use
     rpc GetGraph(core.Reference) returns (TopologyGraph) {}
 
     // cluster id  --> kubernetes graph SVG

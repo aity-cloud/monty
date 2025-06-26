@@ -45,7 +45,7 @@ func ConstructRecordingRuleName(prefix, typeName string) string {
 
 func ConstructIdLabelsForRecordingRule(alertId string) map[string]string {
 	return map[string]string{
-		message.NotificationPropertyOpniUuid: alertId,
+		message.NotificationPropertyMontyUuid: alertId,
 	}
 }
 
@@ -60,8 +60,8 @@ func ConstructFiltersFromMap(in map[string]string) string {
 func NewPrometheusAlertingRule(
 	alertId,
 	_ string,
-	opniLabels,
-	opniAnnotations map[string]string,
+	montyLabels,
+	montyAnnotations map[string]string,
 	info alertingv1.IndexableMetric,
 	interval *time.Duration,
 	rule metrics.AlertRuleBuilder,
@@ -85,8 +85,8 @@ func NewPrometheusAlertingRule(
 	}
 	// have the alerting rule instead point to the recording rule(s)
 	alertingRule.Expr.Value = fmt.Sprintf("%s{%s}", recordingRuleFmt.Record.Value, ConstructFiltersFromMap(idLabels))
-	alertingRule.Labels = lo.Assign(alertingRule.Labels, opniLabels)
-	alertingRule.Annotations = lo.Assign(alertingRule.Annotations, opniAnnotations)
+	alertingRule.Labels = lo.Assign(alertingRule.Labels, montyLabels)
+	alertingRule.Annotations = lo.Assign(alertingRule.Annotations, montyAnnotations)
 
 	var promInterval prommodel.Duration
 	if interval == nil {
@@ -102,7 +102,7 @@ func NewPrometheusAlertingRule(
 	}
 
 	return rg, map[string]string{
-		MetadataCortexNamespace: shared.OpniAlertingCortexNamespace,
+		MetadataCortexNamespace: shared.MontyAlertingCortexNamespace,
 		MetadataCortexGroup:     rg.Name,
 		MetadataCortexRuleName:  alertingRule.Alert.Value,
 	}, nil
