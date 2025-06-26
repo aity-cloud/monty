@@ -1,6 +1,6 @@
 module  github.com/aity-cloud/monty/infra
 
-go 1.22
+go 1.23
 
 require (
 	github.com/aws/aws-sdk-go v1.44.258
