@@ -65,7 +65,7 @@ func SpecialCaseEnvVars(client *dagger.Client) []SpecialCaseEnv {
 			Converter: secret,
 		},
 		{
-			EnvVar: "DRONE_BRANCH",
+			EnvVar: "GITHUB_BRANCH",
 			Keys: []string{
 				"images.monty.tag",
 				"images.minimal.tag",
@@ -76,7 +76,7 @@ func SpecialCaseEnvVars(client *dagger.Client) []SpecialCaseEnv {
 			Converter: plaintext,
 		},
 		{
-			EnvVar: "DRONE_TAG", // if set, will override DRONE_BRANCH
+			EnvVar: "GITHUB_TAG", // if set, will override GITHUB_BRANCH
 			Keys: []string{
 				"images.monty.tag",
 				"images.minimal.tag",
