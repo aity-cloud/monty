@@ -1,7 +1,7 @@
 import Vue, { reactive } from 'vue';
 import GlobalEventBus from '@pkg/monty/utils/GlobalEventBus';
 import { deleteCluster } from '@pkg/monty/utils/requests/management';
-import * as Core from '@pkg/monty/generated/ github.com/aity-cloud/monty/pkg/apis/core/v1/core_pb';
+import * as Core from '@pkg/monty/generated/github.com/aity-cloud/monty/pkg/apis/core/v1/core_pb';
 import { LABEL_KEYS } from './shared';
 import { Resource } from './Resource';
 import { TaskState, Capability } from './Capability';

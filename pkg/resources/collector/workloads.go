@@ -34,10 +34,10 @@ const (
 	mainKey       = "config.yaml"
 	aggregatorKey = "aggregator.yaml"
 
-	collectorImageRepo = "ghcr.io"
-	collectorImage     = "rancher-sandbox/monty-otel-collector"
-	collectorVersion   = "v0.1.4-rc1-0.85.0"
-	reloaderImage      = "rancher-sandbox/config-reloader"
+	collectorImageRepo = "registry.aity.tech"
+	collectorImage     = "monty/monty-otel-collector"
+	collectorVersion   = "v0.1.2-0.85.0"
+	reloaderImage      = "monty/config-reloader"
 	reloaderVersion    = "v0.1.2"
 
 	otelColBinaryName  = "otelcol-custom"

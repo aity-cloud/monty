@@ -47,9 +47,9 @@ export default {
         <Checkbox v-model="value.enableAntiAffinity" label="Spread across nodes" />
       </div>
     </div>
-    <Storage v-model="value" class="border-bottom mb-10" :storage-class-options="storageClassOptions" />
-    <Resources v-model="value" class="border-bottom mb-10" />
-    <Advanced v-model="value" />
+    <Storage :value="value" class="border-bottom mb-10" :storage-class-options="storageClassOptions" />
+    <Resources :value="value" class="border-bottom mb-10" />
+    <Advanced :value="value" />
   </div>
 </template>
 

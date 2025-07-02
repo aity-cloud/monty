@@ -132,7 +132,7 @@ func (Generate) Protobuf(ctx context.Context) {
 
 	_, err := exec.LookPath("yarn")
 	if err == nil {
-		mg.CtxDeps(ctx, Generate.ProtobufGo, Generate.ProtobufPython)
+		mg.CtxDeps(ctx, Generate.ProtobufGo, Generate.ProtobufPython, Generate.ProtobufTypescript)
 	} else {
 		mg.CtxDeps(ctx, Generate.ProtobufGo, Generate.ProtobufPython)
 	}

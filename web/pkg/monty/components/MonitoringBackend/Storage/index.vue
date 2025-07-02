@@ -38,6 +38,10 @@ export default {
     },
 
     retentionPeriod: createComputedDuration('value.cortexConfig.limits.compactorBlocksRetentionPeriod', SECONDS_IN_DAY),
+
+    updateValue(value) {
+      this.value = value
+    }
   },
 
   methods: {},
@@ -69,10 +73,10 @@ export default {
           />
         </div>
       </div>
-      <S3 v-if="value.cortexConfig.storage.backend === 's3'" v-model="value" class="mt-15" />
-      <Azure v-if="value.cortexConfig.storage.backend === 'azure'" v-model="value" class="mt-15" />
-      <Gcs v-if="value.cortexConfig.storage.backend === 'gcs'" v-model="value" class="mt-15" />
-      <Swift v-if="value.cortexConfig.storage.backend === 'swift'" v-model="value" class="mt-15" />
+      <S3 v-if="value.cortexConfig.storage.backend === 's3'" :value="value" @updated="updateValue" class="mt-15" />
+      <Azure v-if="value.cortexConfig.storage.backend === 'azure'" :value="value" @updated="updateValue" class="mt-15" />
+      <Gcs v-if="value.cortexConfig.storage.backend === 'gcs'" :value="value" @updated="updateValue" class="mt-15" />
+      <Swift v-if="value.cortexConfig.storage.backend === 'swift'" :value="value" @updated="updateValue" class="mt-15" />
     </div>
   </div>
 </template>

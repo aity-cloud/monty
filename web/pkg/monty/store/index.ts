@@ -1,7 +1,7 @@
 import { CoreStoreSpecifics, CoreStoreConfig } from '@shell/core/types';
 import { Cluster as ClusterModel } from '@pkg/monty/models/Cluster';
-import * as core from '@pkg/monty/generated/ github.com/aity-cloud/monty/pkg/apis/core/v1/core_pb';
-import * as management from '@pkg/monty/generated/ github.com/aity-cloud/monty/pkg/apis/management/v1/management_pb';
+import * as core from '@pkg/monty/generated/github.com/aity-cloud/monty/pkg/apis/core/v1/core_pb';
+import * as management from '@pkg/monty/generated/github.com/aity-cloud/monty/pkg/apis/management/v1/management_pb';
 
 const config: CoreStoreConfig = { namespace: 'monty' };
 

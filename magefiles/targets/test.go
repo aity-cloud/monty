@@ -159,8 +159,8 @@ var testbinConfig = fmt.Sprintf(`
 		},
 		{
 			"name": "otelcol-custom",
-			"sourceImage": "ghcr.io/rancher-sandbox/monty-otel-collector",
-			"version": "v0.1.2-0.74.0",
+			"sourceImage": "registry.aity.tech/monty/monty-otel-collector",
+			"version": "v0.1.2-0.85.0",
 			"path": "/otelcol-custom"
 		},
 		{

@@ -21,8 +21,8 @@ import (
 
 const (
 	configKey             = "config.yaml"
-	preprocessorVersion   = "v0.1.5-rc1-0.85.0"
-	preprocessorImageRepo = "ghcr.io/rancher-sandbox"
+	preprocessorVersion   = "v0.1.2-0.85.0"
+	preprocessorImageRepo = "registry.aity.tech/monty"
 	preprocessorImage     = "monty-otel-collector"
 	otlpGRPCPort          = 4317
 )

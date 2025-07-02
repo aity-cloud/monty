@@ -36,8 +36,8 @@ export default {
         <Checkbox v-model="value.enableAntiAffinity" label="Spread across nodes" />
       </div>
     </div>
-    <Resources v-model="value" class="mb-10 border-bottom" />
-    <Advanced v-model="value" />
+    <Resources :value="value" class="mb-10 border-bottom" />
+    <Advanced :value="value" />
   </EnabledDisabled>
 </template>
 

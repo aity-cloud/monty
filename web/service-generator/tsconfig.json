@@ -21,6 +21,9 @@
         "resolveJsonModule": true,
         "outDir": "./dist"
     },
+    "types": [
+        "@types/minimatch"
+    ],
     "include": [
         "./src/index.ts"
     ],
