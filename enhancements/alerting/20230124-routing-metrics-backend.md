@@ -131,7 +131,7 @@ Some additional notes:
 
 ## Dependencies:
 
-- https:// github.com/aity-cloud/monty/pull/942
+- https://github.com/aity-cloud/monty/pull/942
 
 ## Risks and contingencies:
 

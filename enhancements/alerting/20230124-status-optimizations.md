@@ -62,7 +62,7 @@ Caching will be implemented using interceptors over the protocols Monty uses
 
 ## Supporting documents
 
-Addresses https:// github.com/aity-cloud/monty/wiki/Alerting-Condition-Server#performance-issues
+Addresses https://github.com/aity-cloud/monty/wiki/Alerting-Condition-Server#performance-issues
 
 ## Dependencies
 

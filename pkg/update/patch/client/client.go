@@ -115,7 +115,7 @@ func findTempDirBase(baseFs afero.Fs, pluginDir string) (string, error) {
 		if stat, ok := sys.(*syscall.Stat_t); ok {
 			deviceInfoAvailable = true
 			// This cast is necessary for arm64 compilation.
-			// See https:// github.com/aity-cloud/monty/issues/1614
+			// See https://github.com/aity-cloud/monty/issues/1614
 			pluginDirDevice = uint64(stat.Dev)
 		}
 	}
@@ -128,7 +128,7 @@ func findTempDirBase(baseFs afero.Fs, pluginDir string) (string, error) {
 				if sys := info.Sys(); sys != nil {
 					if stat, ok := sys.(*syscall.Stat_t); ok {
 						// This cast is necessary for arm64 compilation.
-						// See https:// github.com/aity-cloud/monty/issues/1614
+						// See https://github.com/aity-cloud/monty/issues/1614
 						if uint64(stat.Dev) == pluginDirDevice {
 							return candidate, nil
 						}

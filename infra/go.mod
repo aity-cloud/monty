@@ -1,4 +1,4 @@
-module  github.com/aity-cloud/monty/infra
+module github.com/aity-cloud/monty/infra
 
 go 1.24
 

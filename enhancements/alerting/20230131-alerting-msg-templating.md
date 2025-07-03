@@ -64,8 +64,8 @@ The templating system address the need to embed runtime or alarm specific inform
 
 ## Dependencies:
 
-- Improved management broadcast event watcher : https:// github.com/aity-cloud/monty/pull/969
-- Alerting Cluster as a messaging system : https:// github.com/aity-cloud/monty/pull/973
+- Improved management broadcast event watcher : https://github.com/aity-cloud/monty/pull/969
+- Alerting Cluster as a messaging system : https://github.com/aity-cloud/monty/pull/973
 
 ## Risks and contingencies:
 

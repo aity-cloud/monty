@@ -12,7 +12,7 @@ import (
 	"k8s.io/apimachinery/pkg/util/intstr"
 )
 
-// FIXME: https:// github.com/aity-cloud/monty/issues/1742
+// FIXME: https://github.com/aity-cloud/monty/issues/1742
 var _ = XDescribe("AI PretrainedModel Controller", Ordered, Label("controller"), func() {
 	It("should reconcile pretrained model resources", func() {
 		By("Creating a pretrainedmodel")

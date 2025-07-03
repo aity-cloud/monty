@@ -42,7 +42,7 @@ func matchTestPackages(_ *types.Package, from *analysis.Pass) bool {
 func analyzeImports(p *analysis.Pass) (any, error) {
 	restrictions := []restrictedImport{
 		{
-			Regex: regexp.MustCompile("^ github.com/aity-cloud/monty/plugins/pkg/"),
+			Regex: regexp.MustCompile("^github.com/aity-cloud/monty/plugins/pkg/"),
 			Exceptions: []any{
 				"github.com/aity-cloud/monty/plugins/pkg/",
 				matchTestPackages,
@@ -53,28 +53,28 @@ func analyzeImports(p *analysis.Pass) (any, error) {
 			},
 		},
 		{
-			Regex: regexp.MustCompile("^ github.com/aity-cloud/monty/pkg/test"),
+			Regex: regexp.MustCompile("^github.com/aity-cloud/monty/pkg/test"),
 			Exceptions: []any{
 				"github.com/aity-cloud/monty/pkg/test",
 				"github.com/aity-cloud/monty/test/",
-				regexp.MustCompile(`^ github.com/aity-cloud/monty/plugins/\w+/test$`),
+				regexp.MustCompile(`^github.com/aity-cloud/monty/plugins/\w+/test$`),
 				matchTestPackages,
 				"github.com/aity-cloud/monty/internal/mage/",
 				"github.com/aity-cloud/monty/internal/cmd/testenv",
 			},
 		},
 		{
-			Regex: regexp.MustCompile("^ github.com/aity-cloud/monty/test"),
+			Regex: regexp.MustCompile("^github.com/aity-cloud/monty/test"),
 		},
 		{
-			Regex: regexp.MustCompile("^ github.com/aity-cloud/monty/web"),
+			Regex: regexp.MustCompile("^github.com/aity-cloud/monty/web"),
 			Exceptions: []any{
 				"github.com/aity-cloud/monty/pkg/monty/commands",
 				"github.com/aity-cloud/monty/pkg/dashboard",
 			},
 		},
 		{
-			Regex: regexp.MustCompile("^ github.com/aity-cloud/monty/pkg/dashboard"),
+			Regex: regexp.MustCompile("^github.com/aity-cloud/monty/pkg/dashboard"),
 			Exceptions: []any{
 				"github.com/aity-cloud/monty/pkg/monty/commands",
 				"github.com/aity-cloud/monty/internal/cmd/testenv",
@@ -82,14 +82,14 @@ func analyzeImports(p *analysis.Pass) (any, error) {
 			},
 		},
 		{
-			Regex: regexp.MustCompile("^ github.com/aity-cloud/monty/controllers"),
+			Regex: regexp.MustCompile("^github.com/aity-cloud/monty/controllers"),
 			Exceptions: []any{
 				"github.com/aity-cloud/monty/controllers",
 				"github.com/aity-cloud/monty/pkg/monty/commands",
 			},
 		},
 		{
-			Regex: regexp.MustCompile("^ github.com/aity-cloud/monty/pkg/monty/commands"),
+			Regex: regexp.MustCompile("^github.com/aity-cloud/monty/pkg/monty/commands"),
 			Exceptions: []any{
 				"github.com/aity-cloud/monty/pkg/monty",
 			},

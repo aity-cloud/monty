@@ -30,7 +30,7 @@ Scenario 2: GPU is available in central Monty cluster
 
 
 
-The AIOps gateway plugin will need to be modified, specifically the /model/train endpoint. When a request is sent to that endpoint, in the [corresponding function](https:// github.com/aity-cloud/monty/blob/main/plugins/aiops/pkg/gateway/modeltraining.go#L21), the following deployments will be enabled on the cluster. 
+The AIOps gateway plugin will need to be modified, specifically the /model/train endpoint. When a request is sent to that endpoint, in the [corresponding function](https://github.com/aity-cloud/monty/blob/main/plugins/aiops/pkg/gateway/modeltraining.go#L21), the following deployments will be enabled on the cluster. 
 
 These deployments are:
 * monty-svc-preprocessing

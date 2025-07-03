@@ -267,7 +267,7 @@ func FindTestBin() (string, error) {
 WALK:
 	for {
 		if wd == "/" {
-			return "", errors.New("could not find go.mod for  github.com/aity-cloud/monty")
+			return "", errors.New("could not find go.mod for github.com/aity-cloud/monty")
 		}
 		if _, err := os.Stat(filepath.Join(wd, "go.mod")); err == nil {
 			// check to make sure it's the right one
@@ -279,7 +279,7 @@ WALK:
 			for scanner.Scan() {
 				line := scanner.Text()
 				if strings.HasPrefix(line, "module") {
-					if line == "module  github.com/aity-cloud/monty" {
+					if line == "module github.com/aity-cloud/monty" {
 						f.Close()
 						break WALK
 					}

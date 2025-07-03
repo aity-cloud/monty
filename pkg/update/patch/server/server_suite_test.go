@@ -28,9 +28,9 @@ func TestPatch(t *testing.T) {
 
 var (
 	test1Path    = "github.com/aity-cloud/monty/pkg/test/testdata/patch/test1"
-	test1Package = "urn:monty:plugin:binary: github.com/aity-cloud/monty/pkg/test/testdata/patch/test1"
+	test1Package = "urn:monty:plugin:binary:github.com/aity-cloud/monty/pkg/test/testdata/patch/test1"
 	test2Path    = "github.com/aity-cloud/monty/pkg/test/testdata/patch/test2"
-	test2Package = "urn:monty:plugin:binary: github.com/aity-cloud/monty/pkg/test/testdata/patch/test2"
+	test2Package = "urn:monty:plugin:binary:github.com/aity-cloud/monty/pkg/test/testdata/patch/test2"
 
 	testBinaries = map[string]map[string][]byte{
 		"test1": {},

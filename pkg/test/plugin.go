@@ -177,7 +177,7 @@ func EnablePlugin(mode meta.PluginMode, schemeFunc func(context.Context) meta.Sc
 	fn := runtime.FuncForPC(pc)
 	name := fn.Name() // "github.com/aity-cloud/monty/plugins/<name>/test.init.x"
 
-	regex := regexp.MustCompile(`^ github.com/aity-cloud/monty/plugins/(\w+)/test.init.\d+$`)
+	regex := regexp.MustCompile(`^github.com/aity-cloud/monty/plugins/(\w+)/test.init.\d+$`)
 
 	matches := regex.FindStringSubmatch(name)
 	if len(matches) != 2 {

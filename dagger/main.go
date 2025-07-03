@@ -469,14 +469,14 @@ func (b *Builder) runOutOfTreeBuilds(ctx context.Context) error {
 		Pipeline("Opensearch Dashboards Image").
 		From(fmt.Sprintf("opensearchproject/opensearch-dashboards:%s", b.Images.Opensearch.Build.DashboardsVersion)).
 		WithExec([]string{"opensearch-dashboards-plugin", "install",
-			fmt.Sprintf("https:// github.com/aity-cloud/monty-ui/releases/download/plugin-%[1]s/monty-dashboards-plugin-%[1]s.zip", b.Images.Opensearch.Build.PluginVersion),
+			fmt.Sprintf("https://github.com/aity-cloud/monty-ui/releases/download/plugin-%[1]s/monty-dashboards-plugin-%[1]s.zip", b.Images.Opensearch.Build.PluginVersion),
 		})
 
 	opensearch := b.client.Container().
 		Pipeline("Opensearch Image").
 		From(fmt.Sprintf("opensearchproject/opensearch:%s", b.Images.Opensearch.Build.OpensearchVersion)).
 		WithExec([]string{"opensearch-plugin", "-s", "install", "-b",
-			fmt.Sprintf("https:// github.com/aity-cloud/monty-ingest-plugin/releases/download/v%s/montypreprocessing.zip", b.Images.Opensearch.Build.PluginVersion),
+			fmt.Sprintf("https://github.com/aity-cloud/monty-ingest-plugin/releases/download/v%s/montypreprocessing.zip", b.Images.Opensearch.Build.PluginVersion),
 		}).
 		WithDirectory("/usr/share/opensearch/extensions", b.client.Directory(), dagger.ContainerWithDirectoryOpts{Owner: "1000:1000"})
 

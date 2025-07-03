@@ -29,7 +29,7 @@ var _ = BuildHttpTransportCaching(
 func BuildHttpTransportCaching(
 	t caching.HttpCachingTransport,
 ) bool {
-	//FIXME: https:// github.com/aity-cloud/monty/issues/1764
+	//FIXME: https://github.com/aity-cloud/monty/issues/1764
 	return XDescribe("Http util test suites", Ordered, Label("integration"), func() {
 		var serverPort int
 		var cachingClient *http.Client
