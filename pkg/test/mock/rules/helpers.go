@@ -3,9 +3,9 @@ package mock_rules
 import (
 	"context"
 
-	"github.com/rancher/opni/pkg/rules"
-	mock_notifier "github.com/rancher/opni/pkg/test/mock/notifier"
-	"github.com/rancher/opni/pkg/util/notifier"
+	"github.com/aity-cloud/monty/pkg/rules"
+	mock_notifier "github.com/aity-cloud/monty/pkg/test/mock/notifier"
+	"github.com/aity-cloud/monty/pkg/util/notifier"
 	"go.uber.org/mock/gomock"
 )
 

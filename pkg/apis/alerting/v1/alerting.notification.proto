@@ -1,5 +1,5 @@
 syntax = "proto3";
-option go_package = "github.com/rancher/opni/pkg/apis/alerting/v1";
+option go_package = "github.com/aity-cloud/monty/pkg/apis/alerting/v1";
 
 import "google/protobuf/duration.proto";
 import "google/protobuf/struct.proto";
@@ -10,13 +10,13 @@ import "google/api/http.proto";
 import "google/api/annotations.proto";
 import "google/rpc/status.proto";
 
-import "github.com/rancher/opni/pkg/apis/core/v1/core.proto";
-import "github.com/rancher/opni/pkg/apis/alerting/v1/alerting.proto";
+import "github.com/aity-cloud/monty/pkg/apis/core/v1/core.proto";
+import "github.com/aity-cloud/monty/pkg/apis/alerting/v1/alerting.proto";
 
 
 package alerting;
 
-// Opni-Alerting internal use
+// Monty-Alerting internal use
 service AlertNotifications {
   rpc TestAlertEndpoint(core.Reference) returns (google.protobuf.Empty) {
     option (google.api.http) = {
@@ -79,7 +79,7 @@ message ListNotificationRequest{
   // defaults to 100 most severe (frequency + severity heuristic)
   optional int32 limit = 1;
 
-  repeated alerting.OpniSeverity severityFilters = 2;
+  repeated alerting.MontySeverity severityFilters = 2;
   repeated alerting.GoldenSignal goldenSignalFilters = 3;
 }
 
@@ -106,7 +106,7 @@ message MessageInstance {
   map<string,string> startDetails = 4;
   map<string,string> lastDetails = 5;
 }
-// opni-alerting internal use
+// monty-alerting internal use
 message TriggerAlertsRequest {
   core.Reference conditionId = 1;
   string namespace = 2;

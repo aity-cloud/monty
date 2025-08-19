@@ -7,13 +7,13 @@ import (
 	"sync"
 	"testing"
 
+	controlv1 "github.com/aity-cloud/monty/pkg/apis/control/v1"
+	_ "github.com/aity-cloud/monty/pkg/test/setup"
+	"github.com/aity-cloud/monty/pkg/test/testutil"
+	"github.com/aity-cloud/monty/pkg/update/patch"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	"github.com/onsi/gomega/gexec"
-	controlv1 "github.com/rancher/opni/pkg/apis/control/v1"
-	_ "github.com/rancher/opni/pkg/test/setup"
-	"github.com/rancher/opni/pkg/test/testutil"
-	"github.com/rancher/opni/pkg/update/patch"
 	"github.com/spf13/afero"
 	"go.uber.org/mock/gomock"
 	"golang.org/x/crypto/blake2b"
@@ -26,10 +26,10 @@ func TestPatch(t *testing.T) {
 }
 
 var (
-	test1Path    = "github.com/rancher/opni/pkg/test/testdata/patch/test1"
-	test1Package = "urn:opni:plugin:binary:github.com/rancher/opni/pkg/test/testdata/patch/test1"
-	test2Path    = "github.com/rancher/opni/pkg/test/testdata/patch/test2"
-	test2Package = "urn:opni:plugin:binary:github.com/rancher/opni/pkg/test/testdata/patch/test2"
+	test1Path    = "github.com/aity-cloud/monty/pkg/test/testdata/patch/test1"
+	test1Package = "urn:monty:plugin:binary:github.com/aity-cloud/monty/pkg/test/testdata/patch/test1"
+	test2Path    = "github.com/aity-cloud/monty/pkg/test/testdata/patch/test2"
+	test2Package = "urn:monty:plugin:binary:github.com/aity-cloud/monty/pkg/test/testdata/patch/test2"
 
 	testPackages = map[string]string{
 		"test1": test1Package,

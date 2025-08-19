@@ -1,9 +1,9 @@
 package agent
 
 import (
-	capabilityv1 "github.com/rancher/opni/pkg/apis/capability/v1"
-	"github.com/rancher/opni/pkg/util"
-	"github.com/rancher/opni/plugins/logging/apis/node"
+	capabilityv1 "github.com/aity-cloud/monty/pkg/apis/capability/v1"
+	"github.com/aity-cloud/monty/pkg/util"
+	"github.com/aity-cloud/monty/plugins/logging/apis/node"
 	collogspb "go.opentelemetry.io/proto/otlp/collector/logs/v1"
 	coltracepb "go.opentelemetry.io/proto/otlp/collector/trace/v1"
 	"google.golang.org/grpc"

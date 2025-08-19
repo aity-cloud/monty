@@ -10,26 +10,26 @@ import (
 	"sync"
 	"time"
 
+	capabilityv1 "github.com/aity-cloud/monty/pkg/apis/capability/v1"
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	"github.com/aity-cloud/monty/pkg/auth/cluster"
+	"github.com/aity-cloud/monty/pkg/capabilities"
+	"github.com/aity-cloud/monty/pkg/capabilities/wellknown"
+	"github.com/aity-cloud/monty/pkg/logger"
+	"github.com/aity-cloud/monty/pkg/machinery/uninstall"
+	"github.com/aity-cloud/monty/pkg/plugins/apis/capability"
+	"github.com/aity-cloud/monty/pkg/plugins/apis/system"
+	"github.com/aity-cloud/monty/pkg/plugins/driverutil"
+	"github.com/aity-cloud/monty/pkg/plugins/meta"
+	"github.com/aity-cloud/monty/pkg/storage"
+	"github.com/aity-cloud/monty/pkg/task"
+	"github.com/aity-cloud/monty/pkg/util"
+	"github.com/aity-cloud/monty/plugins/metrics/apis/node"
+	"github.com/aity-cloud/monty/plugins/metrics/pkg/cortex"
+	"github.com/aity-cloud/monty/plugins/metrics/pkg/gateway/drivers"
+	"github.com/aity-cloud/monty/plugins/metrics/pkg/types"
 	"github.com/cortexproject/cortex/pkg/purger"
 	"github.com/lestrrat-go/backoff/v2"
-	capabilityv1 "github.com/rancher/opni/pkg/apis/capability/v1"
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	"github.com/rancher/opni/pkg/auth/cluster"
-	"github.com/rancher/opni/pkg/capabilities"
-	"github.com/rancher/opni/pkg/capabilities/wellknown"
-	"github.com/rancher/opni/pkg/logger"
-	"github.com/rancher/opni/pkg/machinery/uninstall"
-	"github.com/rancher/opni/pkg/plugins/apis/capability"
-	"github.com/rancher/opni/pkg/plugins/apis/system"
-	"github.com/rancher/opni/pkg/plugins/driverutil"
-	"github.com/rancher/opni/pkg/plugins/meta"
-	"github.com/rancher/opni/pkg/storage"
-	"github.com/rancher/opni/pkg/task"
-	"github.com/rancher/opni/pkg/util"
-	"github.com/rancher/opni/plugins/metrics/apis/node"
-	"github.com/rancher/opni/plugins/metrics/pkg/cortex"
-	"github.com/rancher/opni/plugins/metrics/pkg/gateway/drivers"
-	"github.com/rancher/opni/plugins/metrics/pkg/types"
 	"golang.org/x/tools/pkg/memoize"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -261,9 +261,9 @@ func (s *CapabilityBackendService) CancelUninstall(_ context.Context, req *capab
 // InstallerTemplate implements capabilityv1.BackendServer
 func (s *CapabilityBackendService) InstallerTemplate(context.Context, *emptypb.Empty) (*capabilityv1.InstallerTemplateResponse, error) {
 	return &capabilityv1.InstallerTemplateResponse{
-		Template: `helm install opni-agent ` +
-			`{{ arg "input" "Namespace" "+omitEmpty" "+default:opni-agent" "+format:-n {{ value }}" }} ` +
-			`oci://docker.io/rancher/opni-agent --version=0.5.4 ` +
+		Template: `helm install monty-agent ` +
+			`{{ arg "input" "Namespace" "+omitEmpty" "+default:monty-agent" "+format:-n {{ value }}" }} ` +
+			`oci://registry.aity.tech/monty/helm/monty-agent --version=0.5.4 ` +
 			`--set monitoring.enabled=true,token={{ .Token }},pin={{ .Pin }},address={{ arg "input" "Gateway Hostname" "+default:{{ .Address }}" }}:{{ arg "input" "Gateway Port" "+default:{{ .Port }}" }} ` +
 			`{{ arg "toggle" "Install Prometheus Operator" "+omitEmpty" "+default:false" "+format:--set kube-prometheus-stack.enabled={{ value }}" }} ` +
 			`--create-namespace`,

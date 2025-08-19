@@ -7,9 +7,9 @@ import (
 	"log/slog"
 	"time"
 
+	"github.com/aity-cloud/monty/pkg/logger"
 	"github.com/google/uuid"
 	"github.com/nats-io/nats.go"
-	"github.com/rancher/opni/pkg/logger"
 	"github.com/samber/lo"
 )
 

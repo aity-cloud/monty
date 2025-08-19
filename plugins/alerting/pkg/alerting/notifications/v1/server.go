@@ -8,14 +8,14 @@ import (
 
 	"slices"
 
+	"github.com/aity-cloud/monty/pkg/alerting/client"
+	"github.com/aity-cloud/monty/pkg/alerting/drivers/routing"
+	"github.com/aity-cloud/monty/pkg/alerting/message"
+	"github.com/aity-cloud/monty/pkg/alerting/shared"
+	alertingv1 "github.com/aity-cloud/monty/pkg/apis/alerting/v1"
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	"github.com/aity-cloud/monty/pkg/util"
 	"github.com/google/uuid"
-	"github.com/rancher/opni/pkg/alerting/client"
-	"github.com/rancher/opni/pkg/alerting/drivers/routing"
-	"github.com/rancher/opni/pkg/alerting/message"
-	"github.com/rancher/opni/pkg/alerting/shared"
-	alertingv1 "github.com/rancher/opni/pkg/apis/alerting/v1"
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	"github.com/rancher/opni/pkg/util"
 	"github.com/samber/lo"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -67,8 +67,8 @@ func (n *NotificationServerComponent) TestAlertEndpoint(ctx context.Context, ref
 		client.AlertObject{
 			Id: ref.Id,
 			Labels: map[string]string{
-				message.NotificationPropertyOpniUuid: ref.Id,
-				message.TestNamespace:                ref.Id,
+				message.NotificationPropertyMontyUuid: ref.Id,
+				message.TestNamespace:                 ref.Id,
 			},
 			Annotations: map[string]string{
 				message.NotificationContentHeader:  "Test notification",
@@ -97,8 +97,8 @@ func (n *NotificationServerComponent) TriggerAlerts(ctx context.Context, req *al
 		req.Labels[req.Namespace] = req.ConditionId.Id
 	}
 
-	if _, ok := req.Labels[message.NotificationPropertyOpniUuid]; !ok {
-		req.Labels[message.NotificationPropertyOpniUuid] = req.ConditionId.Id
+	if _, ok := req.Labels[message.NotificationPropertyMontyUuid]; !ok {
+		req.Labels[message.NotificationPropertyMontyUuid] = req.ConditionId.Id
 	}
 
 	if _, ok := req.Annotations[shared.BackendConditionNameLabel]; !ok {
@@ -135,8 +135,8 @@ func (n *NotificationServerComponent) ResolveAlerts(ctx context.Context, req *al
 		req.Labels[req.Namespace] = req.ConditionId.Id
 	}
 
-	if _, ok := req.Labels[message.NotificationPropertyOpniUuid]; !ok {
-		req.Labels[message.NotificationPropertyOpniUuid] = req.ConditionId.Id
+	if _, ok := req.Labels[message.NotificationPropertyMontyUuid]; !ok {
+		req.Labels[message.NotificationPropertyMontyUuid] = req.ConditionId.Id
 	}
 
 	if _, ok := req.Annotations[shared.BackendConditionNameLabel]; !ok {
@@ -173,7 +173,7 @@ func (n *NotificationServerComponent) PushNotification(ctx context.Context, req 
 	err := n.Client.AlertClient().PostNotification(
 		ctx,
 		client.AlertObject{
-			Id:          lo.ValueOr(routingLabels, message.NotificationPropertyOpniUuid, uuid.New().String()),
+			Id:          lo.ValueOr(routingLabels, message.NotificationPropertyMontyUuid, uuid.New().String()),
 			Labels:      routingLabels,
 			Annotations: req.GetRoutingAnnotations(),
 		},

@@ -3,13 +3,13 @@ package fieldmask_test
 import (
 	"fmt"
 
+	"github.com/aity-cloud/monty/pkg/test/testdata/plugins/ext"
+	"github.com/aity-cloud/monty/pkg/test/testutil"
+	"github.com/aity-cloud/monty/pkg/util"
+	"github.com/aity-cloud/monty/pkg/util/fieldmask"
+	"github.com/aity-cloud/monty/pkg/util/protorand"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/rancher/opni/pkg/test/testdata/plugins/ext"
-	"github.com/rancher/opni/pkg/test/testutil"
-	"github.com/rancher/opni/pkg/util"
-	"github.com/rancher/opni/pkg/util/fieldmask"
-	"github.com/rancher/opni/pkg/util/protorand"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 )
 

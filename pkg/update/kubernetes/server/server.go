@@ -8,17 +8,17 @@ import (
 
 	"log/slog"
 
+	controlv1 "github.com/aity-cloud/monty/pkg/apis/control/v1"
+	"github.com/aity-cloud/monty/pkg/config/reactive"
+	configv1 "github.com/aity-cloud/monty/pkg/config/v1"
+	"github.com/aity-cloud/monty/pkg/logger"
+	"github.com/aity-cloud/monty/pkg/machinery"
+	"github.com/aity-cloud/monty/pkg/oci"
+	"github.com/aity-cloud/monty/pkg/update"
+	"github.com/aity-cloud/monty/pkg/update/kubernetes"
+	"github.com/aity-cloud/monty/pkg/urn"
+	montyurn "github.com/aity-cloud/monty/pkg/urn"
 	"github.com/prometheus/client_golang/prometheus"
-	controlv1 "github.com/rancher/opni/pkg/apis/control/v1"
-	"github.com/rancher/opni/pkg/config/reactive"
-	configv1 "github.com/rancher/opni/pkg/config/v1"
-	"github.com/rancher/opni/pkg/logger"
-	"github.com/rancher/opni/pkg/machinery"
-	"github.com/rancher/opni/pkg/oci"
-	"github.com/rancher/opni/pkg/update"
-	"github.com/rancher/opni/pkg/update/kubernetes"
-	"github.com/rancher/opni/pkg/urn"
-	opniurn "github.com/rancher/opni/pkg/urn"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
@@ -98,7 +98,7 @@ func (k *kubernetesSyncServer) CalculateUpdate(
 	}
 
 	switch updateType {
-	case opniurn.Agent:
+	case montyurn.Agent:
 		return k.calculateAgentUpdate(ctx, manifest)
 	default:
 		return nil, status.Error(codes.Unimplemented, kubernetes.ErrUnhandledUpdateType(string(updateType)).Error())
@@ -106,7 +106,7 @@ func (k *kubernetesSyncServer) CalculateUpdate(
 }
 
 func (k *kubernetesSyncServer) CalculateExpectedManifest(ctx context.Context, updateType urn.UpdateType) (*controlv1.UpdateManifest, error) {
-	if updateType != opniurn.Agent {
+	if updateType != montyurn.Agent {
 		return nil, status.Error(codes.Unimplemented, kubernetes.ErrUnhandledUpdateType(string(updateType)).Error())
 	}
 	imageFetcher := k.imageFetcher.Load()
@@ -127,7 +127,7 @@ func (k *kubernetesSyncServer) CalculateExpectedManifest(ctx context.Context, up
 			return nil, status.Error(codes.Internal, err.Error())
 		}
 		newEntry := &controlv1.UpdateManifestEntry{
-			Package: urn.NewOpniURN(opniurn.Agent, strategy[0], string(component)).String(),
+			Package: urn.NewMontyURN(montyurn.Agent, strategy[0], string(component)).String(),
 			Path:    image.Path(),
 			Digest:  image.Digest.String(),
 		}
@@ -142,14 +142,14 @@ func (k *kubernetesSyncServer) calculateAgentUpdate(
 ) (*controlv1.PatchList, error) {
 	patches := []*controlv1.PatchSpec{}
 
-	expected, err := k.CalculateExpectedManifest(ctx, opniurn.Agent)
+	expected, err := k.CalculateExpectedManifest(ctx, montyurn.Agent)
 	if err != nil {
 		return nil, err
 	}
 
 	expectedItems := map[string]*controlv1.UpdateManifestEntry{}
 	for _, entry := range expected.GetItems() {
-		urn, err := opniurn.ParseString(entry.GetPackage())
+		urn, err := montyurn.ParseString(entry.GetPackage())
 		if err != nil {
 			return nil, err
 		}
@@ -157,7 +157,7 @@ func (k *kubernetesSyncServer) calculateAgentUpdate(
 	}
 
 	for _, item := range current.GetItems() {
-		urn, err := opniurn.ParseString(item.GetPackage())
+		urn, err := montyurn.ParseString(item.GetPackage())
 		if err != nil {
 			return nil, err
 		}
@@ -185,7 +185,7 @@ func (k *kubernetesSyncServer) imageForEntry(
 		return nil, status.Error(codes.Unavailable, "oci image fetcher not configured")
 	}
 
-	urn, err := opniurn.ParseString(entry.GetPackage())
+	urn, err := montyurn.ParseString(entry.GetPackage())
 	if err != nil {
 		return nil, err
 	}

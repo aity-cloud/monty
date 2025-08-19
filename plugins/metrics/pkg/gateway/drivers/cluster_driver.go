@@ -3,10 +3,10 @@ package drivers
 import (
 	"context"
 
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	"github.com/rancher/opni/pkg/plugins/driverutil"
-	"github.com/rancher/opni/pkg/storage"
-	"github.com/rancher/opni/plugins/metrics/apis/cortexops"
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	"github.com/aity-cloud/monty/pkg/plugins/driverutil"
+	"github.com/aity-cloud/monty/pkg/storage"
+	"github.com/aity-cloud/monty/plugins/metrics/apis/cortexops"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 

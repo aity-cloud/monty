@@ -4,11 +4,11 @@
 syntax = "proto3";
 package storage;
 
-import "github.com/rancher/opni/internal/codegen/cli/cli.proto";
-import "github.com/rancher/opni/pkg/validation/validate.proto";
+import "github.com/aity-cloud/monty/internal/codegen/cli/cli.proto";
+import "github.com/aity-cloud/monty/pkg/validation/validate.proto";
 import "google/protobuf/duration.proto";
 
-option go_package      = "github.com/rancher/opni/internal/cortex/config/storage";
+option go_package      = "github.com/aity-cloud/monty/internal/cortex/config/storage";
 option (cli.generator) = {
   generate:          true
   generate_deepcopy: true

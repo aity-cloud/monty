@@ -11,11 +11,11 @@ import (
 
 	"log/slog"
 
+	managementv1 "github.com/aity-cloud/monty/pkg/apis/management/v1"
+	"github.com/aity-cloud/monty/pkg/auth/openid"
+	"github.com/aity-cloud/monty/pkg/util"
 	"github.com/lestrrat-go/jwx/jwk"
 	"github.com/ory/fosite"
-	managementv1 "github.com/rancher/opni/pkg/apis/management/v1"
-	"github.com/rancher/opni/pkg/auth/openid"
-	"github.com/rancher/opni/pkg/util"
 	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"

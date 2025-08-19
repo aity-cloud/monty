@@ -7,8 +7,8 @@ import (
 
 	"log/slog"
 
+	montylogger "github.com/aity-cloud/monty/pkg/logger"
 	"github.com/cisco-open/k8s-objectmatcher/patch"
-	opnilogger "github.com/rancher/opni/pkg/logger"
 	"github.com/samber/lo"
 	appsv1 "k8s.io/api/apps/v1"
 	k8serrors "k8s.io/apimachinery/pkg/api/errors"
@@ -66,7 +66,7 @@ func ReconcileObject(logger *slog.Logger, k8sClient client.Client, namespace str
 	if err := k8sClient.List(context.TODO(), list,
 		client.InNamespace(namespace),
 		client.MatchingLabels{
-			"opni.io/app": "agent",
+			"monty.io/app": "agent",
 		},
 	); err != nil {
 		return err
@@ -104,7 +104,7 @@ func ReconcileObject(logger *slog.Logger, k8sClient client.Client, namespace str
 	patchResult, err := patch.DefaultPatchMaker.Calculate(current, desired, patch.IgnoreStatusFields())
 	if err != nil {
 		logger.With(
-			opnilogger.Err(err),
+			montylogger.Err(err),
 		).Warn("could not match objects")
 
 		return err
@@ -117,7 +117,7 @@ func ReconcileObject(logger *slog.Logger, k8sClient client.Client, namespace str
 
 	if err := patch.DefaultAnnotator.SetLastAppliedAnnotation(desired); err != nil {
 		logger.With(
-			opnilogger.Err(err),
+			montylogger.Err(err),
 		).Error("failed to set last applied annotation")
 	}
 

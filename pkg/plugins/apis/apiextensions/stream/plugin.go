@@ -6,14 +6,14 @@ import (
 	"github.com/hashicorp/go-plugin"
 	"google.golang.org/grpc"
 
-	streamv1 "github.com/rancher/opni/pkg/apis/stream/v1"
-	"github.com/rancher/opni/pkg/plugins"
-	"github.com/rancher/opni/pkg/plugins/apis/apiextensions"
-	"github.com/rancher/opni/pkg/util"
+	streamv1 "github.com/aity-cloud/monty/pkg/apis/stream/v1"
+	"github.com/aity-cloud/monty/pkg/plugins"
+	"github.com/aity-cloud/monty/pkg/plugins/apis/apiextensions"
+	"github.com/aity-cloud/monty/pkg/util"
 )
 
 const (
-	StreamAPIExtensionPluginID = "opni.apiextensions.StreamAPIExtension"
+	StreamAPIExtensionPluginID = "monty.apiextensions.StreamAPIExtension"
 	ServiceID                  = "apiextensions.StreamAPIExtension"
 )
 

@@ -4,15 +4,15 @@ import (
 	"io/fs"
 	"path/filepath"
 
+	"github.com/aity-cloud/monty/pkg/test/memfs"
+	"github.com/aity-cloud/monty/pkg/test/testlog"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/rancher/opni/pkg/test/memfs"
-	"github.com/rancher/opni/pkg/test/testlog"
 	"github.com/samber/lo"
 	"github.com/spf13/afero"
 
-	configv1 "github.com/rancher/opni/pkg/config/v1"
-	"github.com/rancher/opni/pkg/update/patch"
+	configv1 "github.com/aity-cloud/monty/pkg/config/v1"
+	"github.com/aity-cloud/monty/pkg/update/patch"
 )
 
 func init() {

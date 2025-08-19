@@ -2,7 +2,7 @@ package v1beta1
 
 import (
 	openv1 "github.com/Opster/opensearch-k8s-operator/opensearch-operator/api/v1"
-	opnimeta "github.com/rancher/opni/pkg/util/meta"
+	montymeta "github.com/aity-cloud/monty/pkg/util/meta"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -29,10 +29,10 @@ type AlertingClusterSpec struct {
 }
 
 type AlertManagerSpec struct {
-	Enable     bool                `json:"enable,omitempty"`
-	Image      *opnimeta.ImageSpec `json:"image,omitempty"`
-	LogLevel   string              `json:"logLevel,omitempty"`
-	DeployConf string              `json:"deployConf,omitempty"`
+	Enable     bool                 `json:"enable,omitempty"`
+	Image      *montymeta.ImageSpec `json:"image,omitempty"`
+	LogLevel   string               `json:"logLevel,omitempty"`
+	DeployConf string               `json:"deployConf,omitempty"`
 
 	// Overrides for out-of-the box alerting specs
 	ApplicationSpec AlertingApplicationSpec `json:"workloads,omitempty"`

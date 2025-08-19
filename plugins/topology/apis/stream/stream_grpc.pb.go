@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.3.0
 // - ragu               v1.0.0
-// source: github.com/rancher/opni/plugins/topology/apis/stream/stream.proto
+// source: github.com/aity-cloud/monty/plugins/topology/apis/stream/stream.proto
 
 package stream
 
@@ -141,5 +141,5 @@ var RemoteTopology_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "github.com/rancher/opni/plugins/topology/apis/stream/stream.proto",
+	Metadata: "github.com/aity-cloud/monty/plugins/topology/apis/stream/stream.proto",
 }

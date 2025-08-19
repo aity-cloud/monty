@@ -7,11 +7,11 @@ import (
 	"text/template"
 
 	emperrors "emperror.dev/errors"
+	montycorev1beta1 "github.com/aity-cloud/monty/apis/core/v1beta1"
+	"github.com/aity-cloud/monty/pkg/resources"
+	"github.com/aity-cloud/monty/pkg/util"
 	"github.com/cisco-open/operator-tools/pkg/reconciler"
 	"github.com/nats-io/nkeys"
-	opnicorev1beta1 "github.com/rancher/opni/apis/core/v1beta1"
-	"github.com/rancher/opni/pkg/resources"
-	"github.com/rancher/opni/pkg/util"
 	"github.com/samber/lo"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
@@ -106,7 +106,7 @@ type jestreamConfigData struct {
 }
 
 type natsConfigData struct {
-	AuthMethod      opnicorev1beta1.NatsAuthMethod
+	AuthMethod      montycorev1beta1.NatsAuthMethod
 	Username        string
 	Password        string
 	NKeyUser        string
@@ -443,7 +443,7 @@ func (r *Reconciler) natsConfig() (*corev1.Secret, error) {
 	natsConfig.ClusterPassword = string(passwordBytes)
 
 	switch r.natsCluster.Spec.AuthMethod {
-	case opnicorev1beta1.NatsAuthPassword:
+	case montycorev1beta1.NatsAuthPassword:
 		if r.natsCluster.Spec.Username == "" {
 			natsConfig.Username = "nats-user"
 		} else {
@@ -454,7 +454,7 @@ func (r *Reconciler) natsConfig() (*corev1.Secret, error) {
 			return &corev1.Secret{}, err
 		}
 		natsConfig.Password = string(password)
-	case opnicorev1beta1.NatsAuthNkey:
+	case montycorev1beta1.NatsAuthNkey:
 		nKeyUser, _, err := r.getNKeyUser()
 		if err != nil {
 			return &corev1.Secret{}, err
@@ -486,7 +486,7 @@ func (r *Reconciler) getNatsClusterPassword() ([]byte, error) {
 
 func (r *Reconciler) natsAuthSecret() (*corev1.Secret, error) {
 	switch r.natsCluster.Spec.AuthMethod {
-	case opnicorev1beta1.NatsAuthPassword:
+	case montycorev1beta1.NatsAuthPassword:
 		password, err := r.getNatsUserPassword()
 		if err != nil {
 			return nil, err
@@ -513,7 +513,7 @@ func (r *Reconciler) natsAuthSecret() (*corev1.Secret, error) {
 			return nil, err
 		}
 		return secret, nil
-	case opnicorev1beta1.NatsAuthNkey:
+	case montycorev1beta1.NatsAuthNkey:
 		_, seed, err := r.getNKeyUser()
 		if err != nil {
 			return nil, err
@@ -818,8 +818,8 @@ func (r *Reconciler) getNKeyUser() (string, []byte, error) {
 
 func (r *Reconciler) natsLabels() map[string]string {
 	return map[string]string{
-		resources.AppNameLabel:    "nats",
-		resources.OpniClusterName: r.natsCluster.Name,
+		resources.AppNameLabel:     "nats",
+		resources.MontyClusterName: r.natsCluster.Name,
 	}
 }
 

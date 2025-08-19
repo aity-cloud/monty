@@ -6,15 +6,15 @@ import (
 	"os"
 	"time"
 
-	apicorev1 "github.com/rancher/opni/apis/core/v1"
+	apicorev1 "github.com/aity-cloud/monty/apis/core/v1"
 	"k8s.io/apimachinery/pkg/util/wait"
 	"k8s.io/client-go/util/retry"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 const (
-	minimalImageRefEnv = "OPNI_MINIMAL_IMAGE_REF"
-	gatewayName        = "opni-gateway"
+	minimalImageRefEnv = "MONTY_MINIMAL_IMAGE_REF"
+	gatewayName        = "monty-gateway"
 )
 
 var retryBackoff = wait.Backoff{
@@ -24,7 +24,7 @@ var retryBackoff = wait.Backoff{
 	Jitter:   0.1,
 }
 
-func (d *kubernetesResolveImageDriver) getOpniImageString(ctx context.Context) (string, error) {
+func (d *kubernetesResolveImageDriver) getMontyImageString(ctx context.Context) (string, error) {
 	gateway := &apicorev1.Gateway{}
 	retryFunc := func() error {
 		err := d.k8sClient.Get(ctx, client.ObjectKey{

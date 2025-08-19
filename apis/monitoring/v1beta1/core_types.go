@@ -1,7 +1,7 @@
 package v1beta1
 
 import (
-	opnicorev1 "github.com/rancher/opni/pkg/apis/core/v1"
+	montycorev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -9,7 +9,7 @@ import (
 type Role struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              *opnicorev1.Role `json:"spec,omitempty"`
+	Spec              *montycorev1.Role `json:"spec,omitempty"`
 }
 
 // +kubebuilder:object:root=true
@@ -23,7 +23,7 @@ type RoleList struct {
 type RoleBinding struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              *opnicorev1.RoleBinding `json:"spec,omitempty"`
+	Spec              *montycorev1.RoleBinding `json:"spec,omitempty"`
 }
 
 // +kubebuilder:object:root=true

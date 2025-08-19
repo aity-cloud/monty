@@ -8,11 +8,11 @@ import (
 
 	"slices"
 
+	"github.com/aity-cloud/monty/pkg/alerting/message"
+	alertingSync "github.com/aity-cloud/monty/pkg/alerting/server/sync"
+	"github.com/aity-cloud/monty/pkg/alerting/shared"
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
 	"github.com/google/uuid"
-	"github.com/rancher/opni/pkg/alerting/message"
-	alertingSync "github.com/rancher/opni/pkg/alerting/server/sync"
-	"github.com/rancher/opni/pkg/alerting/shared"
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
 	"github.com/samber/lo"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/durationpb"
@@ -28,7 +28,7 @@ const (
 // https://prometheus.io/docs/alerting/latest/configuration/#labelname
 const (
 	// maps to a wellknown.Capability
-	RoutingPropertyDatasource = "opni_datasource"
+	RoutingPropertyDatasource = "monty_datasource"
 )
 
 func (r *RoutingRelationships) InvolvedConditionsForEndpoint(endpointId string) []string {
@@ -66,13 +66,13 @@ func IsMetricsCondition(cond *AlertCondition) bool {
 
 func (n *Notification) GetRoutingLabels() map[string]string {
 	res := map[string]string{
-		message.NotificationPropertySeverity: n.GetProperties()[message.NotificationPropertySeverity],
-		message.NotificationPropertyOpniUuid: n.GetProperties()[message.NotificationPropertyOpniUuid],
+		message.NotificationPropertySeverity:  n.GetProperties()[message.NotificationPropertySeverity],
+		message.NotificationPropertyMontyUuid: n.GetProperties()[message.NotificationPropertyMontyUuid],
 	}
 	if v, ok := n.GetProperties()[message.NotificationPropertyDedupeKey]; ok {
 		res[message.NotificationPropertyDedupeKey] = v
 	} else {
-		res[message.NotificationPropertyDedupeKey] = n.GetProperties()[message.NotificationPropertyOpniUuid]
+		res[message.NotificationPropertyDedupeKey] = n.GetProperties()[message.NotificationPropertyMontyUuid]
 	}
 
 	if v, ok := n.GetProperties()[message.NotificationPropertyGroupKey]; ok {
@@ -142,9 +142,9 @@ func (a *AlertCondition) Sanitize() {}
 
 func (a *AlertCondition) GetRoutingLabels() map[string]string {
 	res := map[string]string{
-		message.NotificationPropertySeverity: a.GetSeverity().String(),
-		message.NotificationPropertyOpniUuid: a.GetId(),
-		a.Namespace():                        a.GetId(),
+		message.NotificationPropertySeverity:  a.GetSeverity().String(),
+		message.NotificationPropertyMontyUuid: a.GetId(),
+		a.Namespace():                         a.GetId(),
 	}
 	return res
 }
@@ -159,7 +159,7 @@ func (a *AlertCondition) GetRoutingAnnotations() map[string]string {
 	}
 	if IsMetricsCondition(a) {
 		res[message.NotificationPropertyFingerprint] = fmt.Sprintf(
-			`{{ "ALERTS_FOR_STATE{opni_uuid=\"%s\"} OR vector(0)" | query | first | value `,
+			`{{ "ALERTS_FOR_STATE{monty_uuid=\"%s\"} OR vector(0)" | query | first | value `,
 			a.Id,
 		) + `| printf "%.0f" }}`
 	}
@@ -382,30 +382,30 @@ func (r *RateLimitingConfig) Default() *RateLimitingConfig {
 
 func (a *AlertCondition) Namespace() string {
 	if a.GetAlertType().GetSystem() != nil {
-		return "opni_disconnect"
+		return "monty_disconnect"
 	}
 	if a.GetAlertType().GetDownstreamCapability() != nil {
-		return "opni_capability"
+		return "monty_capability"
 	}
 	if a.GetAlertType().GetCpu() != nil {
-		return "opni_cpu"
+		return "monty_cpu"
 	}
 	if a.GetAlertType().GetMemory() != nil {
-		return "opni_memory"
+		return "monty_memory"
 	}
 	if a.GetAlertType().GetFs() != nil {
-		return "opni_fs"
+		return "monty_fs"
 	}
 	if a.GetAlertType().GetKubeState() != nil {
-		return "opni_kube_state"
+		return "monty_kube_state"
 	}
 	if a.GetAlertType().GetPrometheusQuery() != nil {
-		return "opni_promql"
+		return "monty_promql"
 	}
 	if a.GetAlertType().GetMonitoringBackend() != nil {
-		return "opni_monitoring_backend"
+		return "monty_monitoring_backend"
 	}
-	return "opni_default"
+	return "monty_default"
 }
 
 func (l *ListAlertConditionRequest) FilterFunc() func(*AlertCondition, int) bool {

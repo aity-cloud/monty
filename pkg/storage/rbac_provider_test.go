@@ -6,9 +6,9 @@ package storage_test
 // 	"github.com/golang/mock/gomock"
 // 	. "github.com/onsi/ginkgo/v2"
 // 	. "github.com/onsi/gomega"
-// 	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-// 	"github.com/rancher/opni/pkg/storage"
-// 	"github.com/rancher/opni/pkg/test/mock/storage"
+// 	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+// 	"github.com/aity-cloud/monty/pkg/storage"
+// 	"github.com/aity-cloud/monty/pkg/test/mock/storage"
 // )
 
 // var _ = Describe("RBAC Provider", Ordered, Label("unit"), func() {

@@ -1,11 +1,11 @@
 package gateway
 
 import (
-	"github.com/rancher/opni/pkg/agent"
-	streamext "github.com/rancher/opni/pkg/plugins/apis/apiextensions/stream"
-	"github.com/rancher/opni/pkg/util"
-	"github.com/rancher/opni/plugins/topology/apis/node"
-	"github.com/rancher/opni/plugins/topology/apis/stream"
+	"github.com/aity-cloud/monty/pkg/agent"
+	streamext "github.com/aity-cloud/monty/pkg/plugins/apis/apiextensions/stream"
+	"github.com/aity-cloud/monty/pkg/util"
+	"github.com/aity-cloud/monty/plugins/topology/apis/node"
+	"github.com/aity-cloud/monty/plugins/topology/apis/stream"
 	"google.golang.org/grpc"
 )
 

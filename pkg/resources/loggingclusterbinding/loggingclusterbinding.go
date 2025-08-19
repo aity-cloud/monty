@@ -6,10 +6,10 @@ import (
 	"time"
 
 	opensearchv1 "github.com/Opster/opensearch-k8s-operator/opensearch-operator/api/v1"
+	loggingv1beta1 "github.com/aity-cloud/monty/apis/logging/v1beta1"
+	"github.com/aity-cloud/monty/pkg/util/k8sutil"
+	"github.com/aity-cloud/monty/pkg/util/meta"
 	"github.com/cisco-open/operator-tools/pkg/reconciler"
-	loggingv1beta1 "github.com/rancher/opni/apis/logging/v1beta1"
-	"github.com/rancher/opni/pkg/util/k8sutil"
-	"github.com/rancher/opni/pkg/util/meta"
 	"k8s.io/client-go/util/retry"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"

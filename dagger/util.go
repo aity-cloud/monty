@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 
 	"dagger.io/dagger"
-	"github.com/rancher/opni/dagger/images"
+	"github.com/aity-cloud/monty/dagger/images"
 )
 
 func (b *Builder) bin(paths ...string) string {

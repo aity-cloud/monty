@@ -3,13 +3,13 @@ package noauth
 import (
 	"context"
 
+	"github.com/aity-cloud/monty/pkg/auth"
+	"github.com/aity-cloud/monty/pkg/auth/openid"
+	"github.com/aity-cloud/monty/pkg/config/v1beta1"
+	"github.com/aity-cloud/monty/pkg/logger"
+	"github.com/aity-cloud/monty/pkg/noauth"
+	"github.com/aity-cloud/monty/pkg/util"
 	"github.com/gin-gonic/gin"
-	"github.com/rancher/opni/pkg/auth"
-	"github.com/rancher/opni/pkg/auth/openid"
-	"github.com/rancher/opni/pkg/config/v1beta1"
-	"github.com/rancher/opni/pkg/logger"
-	"github.com/rancher/opni/pkg/noauth"
-	"github.com/rancher/opni/pkg/util"
 	"log/slog"
 )
 

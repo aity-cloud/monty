@@ -3,10 +3,10 @@ package validation_test
 import (
 	"errors"
 
+	"github.com/aity-cloud/monty/pkg/validation"
 	"github.com/google/uuid"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/rancher/opni/pkg/validation"
 )
 
 var (

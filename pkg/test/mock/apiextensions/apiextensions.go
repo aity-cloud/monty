@@ -8,9 +8,9 @@ import (
 	context "context"
 	reflect "reflect"
 
+	configv1 "github.com/aity-cloud/monty/pkg/config/v1"
+	apiextensions "github.com/aity-cloud/monty/pkg/plugins/apis/apiextensions"
 	totem "github.com/kralicky/totem"
-	configv1 "github.com/rancher/opni/pkg/config/v1"
-	apiextensions "github.com/rancher/opni/pkg/plugins/apis/apiextensions"
 	gomock "go.uber.org/mock/gomock"
 	grpc "google.golang.org/grpc"
 	grpc_health_v1 "google.golang.org/grpc/health/grpc_health_v1"

@@ -1,8 +1,8 @@
 package gateway
 
 import (
-	"github.com/rancher/opni/pkg/logger"
-	"github.com/rancher/opni/plugins/topology/pkg/topology/gateway/drivers"
+	"github.com/aity-cloud/monty/pkg/logger"
+	"github.com/aity-cloud/monty/plugins/topology/pkg/topology/gateway/drivers"
 )
 
 func (p *Plugin) configureTopologyManagement() {

@@ -3,16 +3,16 @@ package capability
 import (
 	context "context"
 
+	capabilityv1 "github.com/aity-cloud/monty/pkg/apis/capability/v1"
+	"github.com/aity-cloud/monty/pkg/plugins"
 	"github.com/hashicorp/go-plugin"
-	capabilityv1 "github.com/rancher/opni/pkg/apis/capability/v1"
-	"github.com/rancher/opni/pkg/plugins"
 	"google.golang.org/grpc"
 )
 
 const (
-	CapabilityBackendPluginID = "opni.backends.Capability"
-	CapabilityNodePluginID    = "opni.backends.CapabilityNode"
-	CapabilityRBACPluginID    = "opni.backends.RBAC"
+	CapabilityBackendPluginID = "monty.backends.Capability"
+	CapabilityNodePluginID    = "monty.backends.CapabilityNode"
+	CapabilityRBACPluginID    = "monty.backends.RBAC"
 	ServiceID                 = "capability.Backend"
 	NodeServiceID             = "capability.Node"
 	RBACServiceID             = "capability.RBACManager"

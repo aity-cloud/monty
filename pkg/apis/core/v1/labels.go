@@ -3,7 +3,7 @@ package v1
 import (
 	"strings"
 
-	"github.com/rancher/opni/pkg/validation"
+	"github.com/aity-cloud/monty/pkg/validation"
 )
 
 type LabelSelectorOperator string
@@ -14,9 +14,9 @@ const (
 	LabelSelectorOpExists       LabelSelectorOperator = "Exists"
 	LabelSelectorOpDoesNotExist LabelSelectorOperator = "DoesNotExist"
 
-	NameLabel         = "opni.io/name"
-	SupportLabel      = "opni.io/support-user"
-	AllowMatcherLabel = "opni.io/label-match"
+	NameLabel         = "monty.io/name"
+	SupportLabel      = "monty.io/support-user"
+	AllowMatcherLabel = "monty.io/label-match"
 	LegacyNameLabel   = "kubernetes.io/metadata.name"
 )
 
@@ -25,7 +25,7 @@ var (
 )
 
 func IsLabelInternal(key string) bool {
-	return strings.HasPrefix(key, "opni.io/")
+	return strings.HasPrefix(key, "monty.io/")
 }
 
 func IsLabelMutable(key string) bool {

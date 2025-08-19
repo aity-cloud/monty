@@ -3,8 +3,8 @@ package cortex
 import (
 	"fmt"
 
+	"github.com/aity-cloud/monty/pkg/resources"
 	monitoringv1 "github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring/v1"
-	"github.com/rancher/opni/pkg/resources"
 	"github.com/samber/lo"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
@@ -30,7 +30,7 @@ var (
 func cortexWorkloadLabels(target string) map[string]string {
 	return map[string]string{
 		"app.kubernetes.io/name":      "cortex",
-		"app.kubernetes.io/part-of":   "opni",
+		"app.kubernetes.io/part-of":   "monty",
 		"app.kubernetes.io/instance":  "cortex",
 		"app.kubernetes.io/component": target,
 	}
@@ -417,7 +417,7 @@ func (r *Reconciler) cortexWorkloadPodTemplate(
 							ReadOnly:  true,
 						},
 						{
-							Name:      "opni-gateway-client-cert",
+							Name:      "monty-gateway-client-cert",
 							MountPath: "/run/gateway/certs/client",
 							ReadOnly:  true,
 						},
@@ -475,10 +475,10 @@ func (r *Reconciler) cortexWorkloadPodTemplate(
 					},
 				},
 				{
-					Name: "opni-gateway-client-cert",
+					Name: "monty-gateway-client-cert",
 					VolumeSource: corev1.VolumeSource{
 						Secret: &corev1.SecretVolumeSource{
-							SecretName: "opni-gateway-client-cert",
+							SecretName: "monty-gateway-client-cert",
 							Items:      tlsSecretItems,
 						},
 					},

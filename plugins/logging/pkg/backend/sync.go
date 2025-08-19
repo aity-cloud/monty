@@ -4,15 +4,15 @@ import (
 	"context"
 	"errors"
 
+	capabilityv1 "github.com/aity-cloud/monty/pkg/apis/capability/v1"
+	montycorev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	"github.com/aity-cloud/monty/pkg/auth/cluster"
+	"github.com/aity-cloud/monty/pkg/capabilities/wellknown"
+	"github.com/aity-cloud/monty/pkg/logger"
+	"github.com/aity-cloud/monty/plugins/logging/apis/node"
+	loggingerrors "github.com/aity-cloud/monty/plugins/logging/pkg/errors"
+	driver "github.com/aity-cloud/monty/plugins/logging/pkg/gateway/drivers/backend"
 	"github.com/google/go-cmp/cmp"
-	capabilityv1 "github.com/rancher/opni/pkg/apis/capability/v1"
-	opnicorev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	"github.com/rancher/opni/pkg/auth/cluster"
-	"github.com/rancher/opni/pkg/capabilities/wellknown"
-	"github.com/rancher/opni/pkg/logger"
-	"github.com/rancher/opni/plugins/logging/apis/node"
-	loggingerrors "github.com/rancher/opni/plugins/logging/pkg/errors"
-	driver "github.com/rancher/opni/plugins/logging/pkg/gateway/drivers/backend"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/testing/protocmp"
@@ -41,7 +41,7 @@ func (b *LoggingBackend) Sync(ctx context.Context, req *node.SyncRequest) (*node
 	id := cluster.StreamAuthorizedID(ctx)
 
 	// look up the cluster and check if the capability is installed
-	cluster, err := b.StorageBackend.GetCluster(ctx, &opnicorev1.Reference{
+	cluster, err := b.StorageBackend.GetCluster(ctx, &montycorev1.Reference{
 		Id: id,
 	})
 	if err != nil {
@@ -111,7 +111,7 @@ func (b *LoggingBackend) shouldDisableNode(ctx context.Context) bool {
 	return false
 }
 
-func (b *LoggingBackend) requestNodeSync(ctx context.Context, cluster *opnicorev1.Reference) {
+func (b *LoggingBackend) requestNodeSync(ctx context.Context, cluster *montycorev1.Reference) {
 	_, err := b.Delegate.WithTarget(cluster).SyncNow(ctx, &capabilityv1.Filter{
 		CapabilityNames: []string{wellknown.CapabilityLogs},
 	})

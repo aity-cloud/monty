@@ -6,10 +6,10 @@ import (
 	"strings"
 	"time"
 
+	configv1 "github.com/aity-cloud/monty/pkg/config/v1"
+	"github.com/aity-cloud/monty/pkg/logger"
 	"github.com/lestrrat-go/backoff/v2"
 	"github.com/nats-io/nats.go"
-	configv1 "github.com/rancher/opni/pkg/config/v1"
-	"github.com/rancher/opni/pkg/logger"
 )
 
 func AcquireJetstreamConn(ctx context.Context, conf *configv1.JetStreamSpec, lg *slog.Logger) (nats.JetStreamContext, error) {

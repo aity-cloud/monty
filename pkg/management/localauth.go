@@ -3,7 +3,7 @@ package management
 import (
 	"context"
 
-	managementv1 "github.com/rancher/opni/pkg/apis/management/v1"
+	managementv1 "github.com/aity-cloud/monty/pkg/apis/management/v1"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 

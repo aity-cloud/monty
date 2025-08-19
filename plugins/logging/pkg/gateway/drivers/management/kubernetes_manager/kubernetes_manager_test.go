@@ -7,14 +7,14 @@ import (
 	"time"
 
 	opsterv1 "github.com/Opster/opensearch-k8s-operator/opensearch-operator/api/v1"
+	loggingv1beta1 "github.com/aity-cloud/monty/apis/logging/v1beta1"
+	"github.com/aity-cloud/monty/pkg/test/testlog"
+	montymeta "github.com/aity-cloud/monty/pkg/util/meta"
+	"github.com/aity-cloud/monty/plugins/logging/apis/loggingadmin"
+	"github.com/aity-cloud/monty/plugins/logging/pkg/gateway/drivers/management/kubernetes_manager"
 	. "github.com/kralicky/kmatch"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	loggingv1beta1 "github.com/rancher/opni/apis/logging/v1beta1"
-	"github.com/rancher/opni/pkg/test/testlog"
-	opnimeta "github.com/rancher/opni/pkg/util/meta"
-	"github.com/rancher/opni/plugins/logging/apis/loggingadmin"
-	"github.com/rancher/opni/plugins/logging/pkg/gateway/drivers/management/kubernetes_manager"
 	"github.com/samber/lo"
 	corev1 "k8s.io/api/core/v1"
 	k8serrors "k8s.io/apimachinery/pkg/api/errors"
@@ -64,7 +64,7 @@ var _ = Describe("Opensearch Admin V2", Ordered, Label("integration"), func() {
 		timeout  = 30 * time.Second
 		interval = time.Second
 
-		nats = "opni"
+		nats = "monty"
 	)
 
 	BeforeEach(func() {
@@ -85,7 +85,7 @@ var _ = Describe("Opensearch Admin V2", Ordered, Label("integration"), func() {
 		}
 		dashboards = opsterv1.DashboardsConfig{
 			ImageSpec: &opsterv1.ImageSpec{
-				Image: lo.ToPtr("docker.io/rancher/opensearch-dashboards:v0.12.1-2.8.0"),
+				Image: lo.ToPtr("registry.aity.tech/monty/opensearch-dashboards:v0.12.1-2.8.0"),
 			},
 			Replicas: 1,
 			Enable:   true,
@@ -98,12 +98,12 @@ var _ = Describe("Opensearch Admin V2", Ordered, Label("integration"), func() {
 				Type: corev1.ServiceTypeClusterIP,
 			},
 			AdditionalConfig: map[string]string{
-				"opensearchDashboards.branding.logo.defaultUrl":         "https://raw.githubusercontent.com/rancher/opni/main/branding/opni-logo-dark.svg",
-				"opensearchDashboards.branding.mark.defaultUrl":         "https://raw.githubusercontent.com/rancher/opni/main/branding/opni-mark.svg",
-				"opensearchDashboards.branding.loadingLogo.defaultUrl":  "https://raw.githubusercontent.com/rancher/opni/main/branding/opni-loading.svg",
-				"opensearchDashboards.branding.loadingLogo.darkModeUrl": "https://raw.githubusercontent.com/rancher/opni/main/branding/opni-loading-dark.svg",
-				"opensearchDashboards.branding.faviconUrl":              "https://raw.githubusercontent.com/rancher/opni/main/branding/favicon.png",
-				"opensearchDashboards.branding.applicationTitle":        "Opni Logging",
+				"opensearchDashboards.branding.logo.defaultUrl":         "https://raw.githubusercontent.com/rancher/monty/main/branding/monty-logo-dark.svg",
+				"opensearchDashboards.branding.mark.defaultUrl":         "https://raw.githubusercontent.com/rancher/monty/main/branding/monty-mark.svg",
+				"opensearchDashboards.branding.loadingLogo.defaultUrl":  "https://raw.githubusercontent.com/rancher/monty/main/branding/monty-loading.svg",
+				"opensearchDashboards.branding.loadingLogo.darkModeUrl": "https://raw.githubusercontent.com/rancher/monty/main/branding/monty-loading-dark.svg",
+				"opensearchDashboards.branding.faviconUrl":              "https://raw.githubusercontent.com/rancher/monty/main/branding/favicon.png",
+				"opensearchDashboards.branding.applicationTitle":        "Monty Logging",
 			},
 		}
 
@@ -125,22 +125,22 @@ var _ = Describe("Opensearch Admin V2", Ordered, Label("integration"), func() {
 	})
 
 	JustBeforeEach(func() {
-		opniCluster := &opnimeta.OpensearchClusterRef{
-			Name:      "opni",
+		montyCluster := &montymeta.OpensearchClusterRef{
+			Name:      "monty",
 			Namespace: namespace,
 		}
 		var err error
 		manager, err = kubernetes_manager.NewKubernetesManagerDriver(
 			kubernetes_manager.KubernetesManagerDriverOptions{
 				K8sClient:         k8sClient,
-				OpensearchCluster: opniCluster,
+				OpensearchCluster: montyCluster,
 				Logger:            testlog.Log,
 			},
 		)
 		Expect(err).NotTo(HaveOccurred())
 	})
 
-	When("opniopensearch object does not exist", func() {
+	When("montyopensearch object does not exist", func() {
 		Specify("get should succeed and return nothing", func() {
 			object, err := manager.GetCluster(context.Background())
 			Expect(err).NotTo(HaveOccurred())
@@ -155,7 +155,7 @@ var _ = Describe("Opensearch Admin V2", Ordered, Label("integration"), func() {
 			When("it has no separate roles and 3 replicas", func() {
 				Context("no options are enabled", func() {
 					request := createRequest()
-					object := &loggingv1beta1.OpniOpensearch{}
+					object := &loggingv1beta1.MontyOpensearch{}
 					Specify("put should succeed", func() {
 						err := manager.CreateOrUpdateCluster(context.Background(), request, version, nats)
 						Expect(err).NotTo(HaveOccurred())
@@ -163,7 +163,7 @@ var _ = Describe("Opensearch Admin V2", Ordered, Label("integration"), func() {
 					It("should not create a credential secret", func() {
 						Consistently(func() error {
 							return k8sClient.Get(context.Background(), types.NamespacedName{
-								Name:      "opni-opensearch-s3",
+								Name:      "monty-opensearch-s3",
 								Namespace: namespace,
 							}, &corev1.Secret{})
 						}, timeout, interval).ShouldNot(Succeed())
@@ -171,7 +171,7 @@ var _ = Describe("Opensearch Admin V2", Ordered, Label("integration"), func() {
 					It("should create a single node pool", func() {
 						Eventually(func() error {
 							return k8sClient.Get(context.Background(), types.NamespacedName{
-								Name:      "opni",
+								Name:      "monty",
 								Namespace: namespace,
 							}, object)
 						}, timeout, interval).Should(Succeed())
@@ -199,7 +199,7 @@ var _ = Describe("Opensearch Admin V2", Ordered, Label("integration"), func() {
 								},
 							},
 							Labels: map[string]string{
-								kubernetes_manager.LabelOpniNodeGroup: "data",
+								kubernetes_manager.LabelMontyNodeGroup: "data",
 							},
 							Env: []corev1.EnvVar{
 								{
@@ -216,7 +216,7 @@ var _ = Describe("Opensearch Admin V2", Ordered, Label("integration"), func() {
 					})
 				})
 				Context("s3 settings are enabled", func() {
-					object := &loggingv1beta1.OpniOpensearch{}
+					object := &loggingv1beta1.MontyOpensearch{}
 					request := createRequest()
 					request.S3 = &loggingadmin.OpensearchS3Settings{
 						Endpoint: "s3.example.com",
@@ -234,7 +234,7 @@ var _ = Describe("Opensearch Admin V2", Ordered, Label("integration"), func() {
 					It("should apply s3 settings", func() {
 						Eventually(Object(&corev1.Secret{
 							ObjectMeta: metav1.ObjectMeta{
-								Name:      "opni-opensearch-s3",
+								Name:      "monty-opensearch-s3",
 								Namespace: namespace,
 							},
 						})).Should(ExistAnd(
@@ -245,7 +245,7 @@ var _ = Describe("Opensearch Admin V2", Ordered, Label("integration"), func() {
 						))
 						Eventually(func() error {
 							return k8sClient.Get(context.Background(), types.NamespacedName{
-								Name:      "opni",
+								Name:      "monty",
 								Namespace: namespace,
 							}, object)
 						}, timeout, interval).Should(Succeed())
@@ -253,7 +253,7 @@ var _ = Describe("Opensearch Admin V2", Ordered, Label("integration"), func() {
 							Endpoint: "s3.example.com",
 							Protocol: loggingv1beta1.OpensearchS3ProtocolHTTPS,
 							CredentialSecret: corev1.LocalObjectReference{
-								Name: "opni-opensearch-s3",
+								Name: "monty-opensearch-s3",
 							},
 							Repository: loggingv1beta1.S3PathSettings{
 								Bucket: "testbucket",
@@ -263,7 +263,7 @@ var _ = Describe("Opensearch Admin V2", Ordered, Label("integration"), func() {
 					})
 				})
 				Context("anti affinity is enabled", func() {
-					object := &loggingv1beta1.OpniOpensearch{}
+					object := &loggingv1beta1.MontyOpensearch{}
 					request := createRequest()
 					request.DataNodes.EnableAntiAffinity = lo.ToPtr(true)
 					Specify("put should succeed", func() {
@@ -273,7 +273,7 @@ var _ = Describe("Opensearch Admin V2", Ordered, Label("integration"), func() {
 					It("should create a single node pool with anti affinity", func() {
 						Eventually(func() error {
 							return k8sClient.Get(context.Background(), types.NamespacedName{
-								Name:      "opni",
+								Name:      "monty",
 								Namespace: namespace,
 							}, object)
 						}, timeout, interval).Should(Succeed())
@@ -301,7 +301,7 @@ var _ = Describe("Opensearch Admin V2", Ordered, Label("integration"), func() {
 								},
 							},
 							Labels: map[string]string{
-								kubernetes_manager.LabelOpniNodeGroup: "data",
+								kubernetes_manager.LabelMontyNodeGroup: "data",
 							},
 							Affinity: &corev1.Affinity{
 								PodAntiAffinity: &corev1.PodAntiAffinity{
@@ -311,8 +311,8 @@ var _ = Describe("Opensearch Admin V2", Ordered, Label("integration"), func() {
 											PodAffinityTerm: corev1.PodAffinityTerm{
 												LabelSelector: &metav1.LabelSelector{
 													MatchLabels: map[string]string{
-														kubernetes_manager.LabelOpsterCluster: "opni",
-														kubernetes_manager.LabelOpniNodeGroup: "data",
+														kubernetes_manager.LabelOpsterCluster:  "monty",
+														kubernetes_manager.LabelMontyNodeGroup: "data",
 													},
 												},
 												TopologyKey: kubernetes_manager.TopologyKeyK8sHost,
@@ -339,7 +339,7 @@ var _ = Describe("Opensearch Admin V2", Ordered, Label("integration"), func() {
 					request.DataNodes.Persistence = &loggingadmin.DataPersistence{
 						Enabled: lo.ToPtr(false),
 					}
-					object := &loggingv1beta1.OpniOpensearch{}
+					object := &loggingv1beta1.MontyOpensearch{}
 					Specify("put should succeed", func() {
 						err := manager.CreateOrUpdateCluster(context.Background(), request, version, nats)
 						Expect(err).NotTo(HaveOccurred())
@@ -347,7 +347,7 @@ var _ = Describe("Opensearch Admin V2", Ordered, Label("integration"), func() {
 					It("should create a single node pool", func() {
 						Eventually(func() error {
 							return k8sClient.Get(context.Background(), types.NamespacedName{
-								Name:      "opni",
+								Name:      "monty",
 								Namespace: namespace,
 							}, object)
 						}, timeout, interval).Should(Succeed())
@@ -375,7 +375,7 @@ var _ = Describe("Opensearch Admin V2", Ordered, Label("integration"), func() {
 								},
 							},
 							Labels: map[string]string{
-								kubernetes_manager.LabelOpniNodeGroup: "data",
+								kubernetes_manager.LabelMontyNodeGroup: "data",
 							},
 							Persistence: &opsterv1.PersistenceConfig{
 								PersistenceSource: opsterv1.PersistenceSource{
@@ -401,7 +401,7 @@ var _ = Describe("Opensearch Admin V2", Ordered, Label("integration"), func() {
 						Enabled:      lo.ToPtr(true),
 						StorageClass: lo.ToPtr("testclass"),
 					}
-					object := &loggingv1beta1.OpniOpensearch{}
+					object := &loggingv1beta1.MontyOpensearch{}
 					Specify("put should succeed", func() {
 						err := manager.CreateOrUpdateCluster(context.Background(), request, version, nats)
 						Expect(err).NotTo(HaveOccurred())
@@ -409,7 +409,7 @@ var _ = Describe("Opensearch Admin V2", Ordered, Label("integration"), func() {
 					It("should create a single node pool", func() {
 						Eventually(func() error {
 							return k8sClient.Get(context.Background(), types.NamespacedName{
-								Name:      "opni",
+								Name:      "monty",
 								Namespace: namespace,
 							}, object)
 						}, timeout, interval).Should(Succeed())
@@ -437,7 +437,7 @@ var _ = Describe("Opensearch Admin V2", Ordered, Label("integration"), func() {
 								},
 							},
 							Labels: map[string]string{
-								kubernetes_manager.LabelOpniNodeGroup: "data",
+								kubernetes_manager.LabelMontyNodeGroup: "data",
 							},
 							Persistence: &opsterv1.PersistenceConfig{
 								PersistenceSource: opsterv1.PersistenceSource{
@@ -467,7 +467,7 @@ var _ = Describe("Opensearch Admin V2", Ordered, Label("integration"), func() {
 						Request: "100m",
 						Limit:   "150m",
 					}
-					object := &loggingv1beta1.OpniOpensearch{}
+					object := &loggingv1beta1.MontyOpensearch{}
 					Specify("put should succeed", func() {
 						err := manager.CreateOrUpdateCluster(context.Background(), request, version, nats)
 						Expect(err).NotTo(HaveOccurred())
@@ -475,7 +475,7 @@ var _ = Describe("Opensearch Admin V2", Ordered, Label("integration"), func() {
 					It("should create a single node pool", func() {
 						Eventually(func() error {
 							return k8sClient.Get(context.Background(), types.NamespacedName{
-								Name:      "opni",
+								Name:      "monty",
 								Namespace: namespace,
 							}, object)
 						}, timeout, interval).Should(Succeed())
@@ -505,7 +505,7 @@ var _ = Describe("Opensearch Admin V2", Ordered, Label("integration"), func() {
 								},
 							},
 							Labels: map[string]string{
-								kubernetes_manager.LabelOpniNodeGroup: "data",
+								kubernetes_manager.LabelMontyNodeGroup: "data",
 							},
 							Env: []corev1.EnvVar{
 								{
@@ -524,7 +524,7 @@ var _ = Describe("Opensearch Admin V2", Ordered, Label("integration"), func() {
 			When("it has an even number of nodes < 5", func() {
 				request := createRequest()
 				request.DataNodes.Replicas = lo.ToPtr(int32(2))
-				object := &loggingv1beta1.OpniOpensearch{}
+				object := &loggingv1beta1.MontyOpensearch{}
 				Specify("put should succeed", func() {
 					err := manager.CreateOrUpdateCluster(context.Background(), request, version, nats)
 					Expect(err).NotTo(HaveOccurred())
@@ -532,7 +532,7 @@ var _ = Describe("Opensearch Admin V2", Ordered, Label("integration"), func() {
 				It("should create a data and quorum node pool", func() {
 					Eventually(func() error {
 						return k8sClient.Get(context.Background(), types.NamespacedName{
-							Name:      "opni",
+							Name:      "monty",
 							Namespace: namespace,
 						}, object)
 					}, timeout, interval).Should(Succeed())
@@ -560,7 +560,7 @@ var _ = Describe("Opensearch Admin V2", Ordered, Label("integration"), func() {
 							},
 						},
 						Labels: map[string]string{
-							kubernetes_manager.LabelOpniNodeGroup: "data",
+							kubernetes_manager.LabelMontyNodeGroup: "data",
 						},
 						Env: []corev1.EnvVar{
 							{
@@ -587,7 +587,7 @@ var _ = Describe("Opensearch Admin V2", Ordered, Label("integration"), func() {
 							},
 						},
 						Labels: map[string]string{
-							kubernetes_manager.LabelOpniNodeGroup: "data",
+							kubernetes_manager.LabelMontyNodeGroup: "data",
 						},
 						Env: []corev1.EnvVar{
 							{
@@ -609,7 +609,7 @@ var _ = Describe("Opensearch Admin V2", Ordered, Label("integration"), func() {
 			When("it has a number of nodes > 5", func() {
 				request := createRequest()
 				request.DataNodes.Replicas = lo.ToPtr(int32(7))
-				object := &loggingv1beta1.OpniOpensearch{}
+				object := &loggingv1beta1.MontyOpensearch{}
 				Specify("put should succeed", func() {
 					err := manager.CreateOrUpdateCluster(context.Background(), request, version, nats)
 					Expect(err).NotTo(HaveOccurred())
@@ -617,7 +617,7 @@ var _ = Describe("Opensearch Admin V2", Ordered, Label("integration"), func() {
 				It("should create a data pool for the excess nodes", func() {
 					Eventually(func() error {
 						return k8sClient.Get(context.Background(), types.NamespacedName{
-							Name:      "opni",
+							Name:      "monty",
 							Namespace: namespace,
 						}, object)
 					}, timeout, interval).Should(Succeed())
@@ -645,7 +645,7 @@ var _ = Describe("Opensearch Admin V2", Ordered, Label("integration"), func() {
 							},
 						},
 						Labels: map[string]string{
-							kubernetes_manager.LabelOpniNodeGroup: "data",
+							kubernetes_manager.LabelMontyNodeGroup: "data",
 						},
 						Env: []corev1.EnvVar{
 							{
@@ -672,7 +672,7 @@ var _ = Describe("Opensearch Admin V2", Ordered, Label("integration"), func() {
 							},
 						},
 						Labels: map[string]string{
-							kubernetes_manager.LabelOpniNodeGroup: "data",
+							kubernetes_manager.LabelMontyNodeGroup: "data",
 						},
 						Env: []corev1.EnvVar{
 							{
@@ -693,7 +693,7 @@ var _ = Describe("Opensearch Admin V2", Ordered, Label("integration"), func() {
 					Replicas:    lo.ToPtr(int32(2)),
 					MemoryLimit: "4Gi",
 				}
-				object := &loggingv1beta1.OpniOpensearch{}
+				object := &loggingv1beta1.MontyOpensearch{}
 				Specify("put should succeed", func() {
 					err := manager.CreateOrUpdateCluster(context.Background(), request, version, nats)
 					Expect(err).NotTo(HaveOccurred())
@@ -701,7 +701,7 @@ var _ = Describe("Opensearch Admin V2", Ordered, Label("integration"), func() {
 				It("should create a data and ingest node pool", func() {
 					Eventually(func() error {
 						return k8sClient.Get(context.Background(), types.NamespacedName{
-							Name:      "opni",
+							Name:      "monty",
 							Namespace: namespace,
 						}, object)
 					}, timeout, interval).Should(Succeed())
@@ -728,7 +728,7 @@ var _ = Describe("Opensearch Admin V2", Ordered, Label("integration"), func() {
 							},
 						},
 						Labels: map[string]string{
-							kubernetes_manager.LabelOpniNodeGroup: "data",
+							kubernetes_manager.LabelMontyNodeGroup: "data",
 						},
 						Env: []corev1.EnvVar{
 							{
@@ -754,7 +754,7 @@ var _ = Describe("Opensearch Admin V2", Ordered, Label("integration"), func() {
 							},
 						},
 						Labels: map[string]string{
-							kubernetes_manager.LabelOpniNodeGroup: "ingest",
+							kubernetes_manager.LabelMontyNodeGroup: "ingest",
 						},
 						Persistence: &opsterv1.PersistenceConfig{
 							PersistenceSource: opsterv1.PersistenceSource{
@@ -779,7 +779,7 @@ var _ = Describe("Opensearch Admin V2", Ordered, Label("integration"), func() {
 				request.ControlplaneNodes = &loggingadmin.ControlplaneDetails{
 					Replicas: lo.ToPtr(int32(3)),
 				}
-				object := &loggingv1beta1.OpniOpensearch{}
+				object := &loggingv1beta1.MontyOpensearch{}
 				Specify("put should succeed", func() {
 					err := manager.CreateOrUpdateCluster(context.Background(), request, version, nats)
 					Expect(err).NotTo(HaveOccurred())
@@ -787,7 +787,7 @@ var _ = Describe("Opensearch Admin V2", Ordered, Label("integration"), func() {
 				It("should create a data and controlplane", func() {
 					Eventually(func() error {
 						return k8sClient.Get(context.Background(), types.NamespacedName{
-							Name:      "opni",
+							Name:      "monty",
 							Namespace: namespace,
 						}, object)
 					}, timeout, interval).Should(Succeed())
@@ -814,7 +814,7 @@ var _ = Describe("Opensearch Admin V2", Ordered, Label("integration"), func() {
 							},
 						},
 						Labels: map[string]string{
-							kubernetes_manager.LabelOpniNodeGroup: "data",
+							kubernetes_manager.LabelMontyNodeGroup: "data",
 						},
 						Env: []corev1.EnvVar{
 							{
@@ -841,7 +841,7 @@ var _ = Describe("Opensearch Admin V2", Ordered, Label("integration"), func() {
 							},
 						},
 						Labels: map[string]string{
-							kubernetes_manager.LabelOpniNodeGroup: "controlplane",
+							kubernetes_manager.LabelMontyNodeGroup: "controlplane",
 						},
 						Affinity: &corev1.Affinity{
 							PodAntiAffinity: &corev1.PodAntiAffinity{
@@ -851,8 +851,8 @@ var _ = Describe("Opensearch Admin V2", Ordered, Label("integration"), func() {
 										PodAffinityTerm: corev1.PodAffinityTerm{
 											LabelSelector: &metav1.LabelSelector{
 												MatchLabels: map[string]string{
-													kubernetes_manager.LabelOpsterCluster: "opni",
-													kubernetes_manager.LabelOpniNodeGroup: "controlplane",
+													kubernetes_manager.LabelOpsterCluster:  "monty",
+													kubernetes_manager.LabelMontyNodeGroup: "controlplane",
 												},
 											},
 											TopologyKey: kubernetes_manager.TopologyKeyK8sHost,
@@ -887,7 +887,7 @@ var _ = Describe("Opensearch Admin V2", Ordered, Label("integration"), func() {
 						StorageClass: lo.ToPtr("testclass"),
 					},
 				}
-				object := &loggingv1beta1.OpniOpensearch{}
+				object := &loggingv1beta1.MontyOpensearch{}
 				Specify("put should succeed", func() {
 					err := manager.CreateOrUpdateCluster(context.Background(), request, version, nats)
 					Expect(err).NotTo(HaveOccurred())
@@ -895,7 +895,7 @@ var _ = Describe("Opensearch Admin V2", Ordered, Label("integration"), func() {
 				It("should create a data and controlplane", func() {
 					Eventually(func() error {
 						return k8sClient.Get(context.Background(), types.NamespacedName{
-							Name:      "opni",
+							Name:      "monty",
 							Namespace: namespace,
 						}, object)
 					}, timeout, interval).Should(Succeed())
@@ -922,7 +922,7 @@ var _ = Describe("Opensearch Admin V2", Ordered, Label("integration"), func() {
 							},
 						},
 						Labels: map[string]string{
-							kubernetes_manager.LabelOpniNodeGroup: "data",
+							kubernetes_manager.LabelMontyNodeGroup: "data",
 						},
 						Env: []corev1.EnvVar{
 							{
@@ -949,7 +949,7 @@ var _ = Describe("Opensearch Admin V2", Ordered, Label("integration"), func() {
 							},
 						},
 						Labels: map[string]string{
-							kubernetes_manager.LabelOpniNodeGroup: "controlplane",
+							kubernetes_manager.LabelMontyNodeGroup: "controlplane",
 						},
 						Affinity: &corev1.Affinity{
 							PodAntiAffinity: &corev1.PodAntiAffinity{
@@ -959,8 +959,8 @@ var _ = Describe("Opensearch Admin V2", Ordered, Label("integration"), func() {
 										PodAffinityTerm: corev1.PodAffinityTerm{
 											LabelSelector: &metav1.LabelSelector{
 												MatchLabels: map[string]string{
-													kubernetes_manager.LabelOpsterCluster: "opni",
-													kubernetes_manager.LabelOpniNodeGroup: "controlplane",
+													kubernetes_manager.LabelOpsterCluster:  "monty",
+													kubernetes_manager.LabelMontyNodeGroup: "controlplane",
 												},
 											},
 											TopologyKey: kubernetes_manager.TopologyKeyK8sHost,
@@ -998,13 +998,13 @@ var _ = Describe("Opensearch Admin V2", Ordered, Label("integration"), func() {
 			})
 		})
 	})
-	Context("opniopensearch object does exist", func() {
+	Context("montyopensearch object does exist", func() {
 		request := createRequest()
 		request.DataNodes.Persistence = &loggingadmin.DataPersistence{
 			Enabled:      lo.ToPtr(true),
 			StorageClass: lo.ToPtr("testclass"),
 		}
-		object := &loggingv1beta1.OpniOpensearch{}
+		object := &loggingv1beta1.MontyOpensearch{}
 		Specify("put should succeed", func() {
 			err := manager.CreateOrUpdateCluster(context.Background(), request, version, nats)
 			Expect(err).NotTo(HaveOccurred())
@@ -1012,7 +1012,7 @@ var _ = Describe("Opensearch Admin V2", Ordered, Label("integration"), func() {
 		It("should create a single node pool", func() {
 			Eventually(func() error {
 				return k8sClient.Get(context.Background(), types.NamespacedName{
-					Name:      "opni",
+					Name:      "monty",
 					Namespace: namespace,
 				}, object)
 			}, timeout, interval).Should(Succeed())
@@ -1040,7 +1040,7 @@ var _ = Describe("Opensearch Admin V2", Ordered, Label("integration"), func() {
 					},
 				},
 				Labels: map[string]string{
-					kubernetes_manager.LabelOpniNodeGroup: "data",
+					kubernetes_manager.LabelMontyNodeGroup: "data",
 				},
 				Persistence: &opsterv1.PersistenceConfig{
 					PersistenceSource: opsterv1.PersistenceSource{
@@ -1087,7 +1087,7 @@ var _ = Describe("Opensearch Admin V2", Ordered, Label("integration"), func() {
 				Expect(err).NotTo(HaveOccurred())
 				Eventually(func() bool {
 					err := k8sClient.Get(context.Background(), types.NamespacedName{
-						Name:      "opni",
+						Name:      "monty",
 						Namespace: namespace,
 					}, object)
 					if err != nil {
@@ -1114,7 +1114,7 @@ var _ = Describe("Opensearch Admin V2", Ordered, Label("integration"), func() {
 							},
 						},
 						Labels: map[string]string{
-							kubernetes_manager.LabelOpniNodeGroup: "controlplane",
+							kubernetes_manager.LabelMontyNodeGroup: "controlplane",
 						},
 						Affinity: &corev1.Affinity{
 							PodAntiAffinity: &corev1.PodAntiAffinity{
@@ -1124,8 +1124,8 @@ var _ = Describe("Opensearch Admin V2", Ordered, Label("integration"), func() {
 										PodAffinityTerm: corev1.PodAffinityTerm{
 											LabelSelector: &metav1.LabelSelector{
 												MatchLabels: map[string]string{
-													kubernetes_manager.LabelOpsterCluster: "opni",
-													kubernetes_manager.LabelOpniNodeGroup: "controlplane",
+													kubernetes_manager.LabelOpsterCluster:  "monty",
+													kubernetes_manager.LabelMontyNodeGroup: "controlplane",
 												},
 											},
 											TopologyKey: kubernetes_manager.TopologyKeyK8sHost,
@@ -1163,7 +1163,7 @@ var _ = Describe("Opensearch Admin V2", Ordered, Label("integration"), func() {
 			When("upgrade is available", func() {
 				Specify("setup status", func() {
 					err := k8sClient.Get(context.Background(), types.NamespacedName{
-						Name:      "opni",
+						Name:      "monty",
 						Namespace: namespace,
 					}, object)
 					Expect(err).NotTo(HaveOccurred())
@@ -1181,7 +1181,7 @@ var _ = Describe("Opensearch Admin V2", Ordered, Label("integration"), func() {
 					Expect(err).NotTo(HaveOccurred())
 					Eventually(func() bool {
 						err := k8sClient.Get(context.Background(), types.NamespacedName{
-							Name:      "opni",
+							Name:      "monty",
 							Namespace: namespace,
 						}, object)
 						if err != nil {
@@ -1198,7 +1198,7 @@ var _ = Describe("Opensearch Admin V2", Ordered, Label("integration"), func() {
 			Expect(err).NotTo(HaveOccurred())
 			Eventually(func() bool {
 				err := k8sClient.Get(context.Background(), types.NamespacedName{
-					Name:      "opni",
+					Name:      "monty",
 					Namespace: namespace,
 				}, object)
 				if err != nil {
@@ -1233,9 +1233,9 @@ var _ = Describe("Opensearch Admin V2", Ordered, Label("integration"), func() {
 				Expect(err).NotTo(HaveOccurred())
 				Eventually(func() bool {
 					err := k8sClient.Get(context.Background(), types.NamespacedName{
-						Name:      "opni",
+						Name:      "monty",
 						Namespace: namespace,
-					}, &loggingv1beta1.OpniOpensearch{})
+					}, &loggingv1beta1.MontyOpensearch{})
 					if err != nil {
 						return k8serrors.IsNotFound(err)
 					}
@@ -1243,7 +1243,7 @@ var _ = Describe("Opensearch Admin V2", Ordered, Label("integration"), func() {
 				}, timeout, interval).Should(BeTrue())
 				err = k8sClient.Delete(context.Background(), &loggingv1beta1.OpensearchRepository{
 					ObjectMeta: metav1.ObjectMeta{
-						Name:      "opni",
+						Name:      "monty",
 						Namespace: namespace,
 					},
 					Spec: loggingv1beta1.OpensearchRepositorySpec{
@@ -1253,8 +1253,8 @@ var _ = Describe("Opensearch Admin V2", Ordered, Label("integration"), func() {
 								Folder: "test",
 							},
 						},
-						OpensearchClusterRef: &opnimeta.OpensearchClusterRef{
-							Name:      "opni",
+						OpensearchClusterRef: &montymeta.OpensearchClusterRef{
+							Name:      "monty",
 							Namespace: namespace,
 						},
 					},
@@ -1266,7 +1266,7 @@ var _ = Describe("Opensearch Admin V2", Ordered, Label("integration"), func() {
 			JustBeforeEach(func() {
 				repo = &loggingv1beta1.OpensearchRepository{
 					ObjectMeta: metav1.ObjectMeta{
-						Name:      "opni",
+						Name:      "monty",
 						Namespace: namespace,
 					},
 					Spec: loggingv1beta1.OpensearchRepositorySpec{
@@ -1276,8 +1276,8 @@ var _ = Describe("Opensearch Admin V2", Ordered, Label("integration"), func() {
 								Folder: "test",
 							},
 						},
-						OpensearchClusterRef: &opnimeta.OpensearchClusterRef{
-							Name:      "opni",
+						OpensearchClusterRef: &montymeta.OpensearchClusterRef{
+							Name:      "monty",
 							Namespace: namespace,
 						},
 					},

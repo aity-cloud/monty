@@ -1,6 +1,6 @@
 syntax = "proto3";
-option go_package = "github.com/rancher/opni/plugins/aiops/apis/modeltraining";
-import "github.com/rancher/opni/pkg/apis/core/v1/core.proto";
+option go_package = "github.com/aity-cloud/monty/plugins/aiops/apis/modeltraining";
+import "github.com/aity-cloud/monty/pkg/apis/core/v1/core.proto";
 import "google/protobuf/empty.proto";
 import "google/api/annotations.proto";
 

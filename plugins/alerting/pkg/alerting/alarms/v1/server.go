@@ -8,17 +8,17 @@ import (
 
 	"slices"
 
+	"github.com/aity-cloud/monty/pkg/alerting/drivers/cortex"
+	"github.com/aity-cloud/monty/pkg/alerting/shared"
+	alertingv1 "github.com/aity-cloud/monty/pkg/apis/alerting/v1"
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	managementv1 "github.com/aity-cloud/monty/pkg/apis/management/v1"
+	"github.com/aity-cloud/monty/pkg/caching"
+	"github.com/aity-cloud/monty/pkg/metrics/compat"
+	"github.com/aity-cloud/monty/pkg/util"
+	"github.com/aity-cloud/monty/pkg/validation"
+	"github.com/aity-cloud/monty/plugins/metrics/apis/cortexadmin"
 	"github.com/alitto/pond"
-	"github.com/rancher/opni/pkg/alerting/drivers/cortex"
-	"github.com/rancher/opni/pkg/alerting/shared"
-	alertingv1 "github.com/rancher/opni/pkg/apis/alerting/v1"
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	managementv1 "github.com/rancher/opni/pkg/apis/management/v1"
-	"github.com/rancher/opni/pkg/caching"
-	"github.com/rancher/opni/pkg/metrics/compat"
-	"github.com/rancher/opni/pkg/util"
-	"github.com/rancher/opni/pkg/validation"
-	"github.com/rancher/opni/plugins/metrics/apis/cortexadmin"
 	"github.com/samber/lo"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -507,7 +507,7 @@ func (a *AlarmServerComponent) Timeline(ctx context.Context, req *alertingv1.Tim
 				if alertingv1.IsMetricsCondition(cond) {
 					res, err := adminClient.QueryRange(ctx, &cortexadmin.QueryRangeRequest{
 						Tenants: []string{cond.GetClusterId().GetId()},
-						Query:   fmt.Sprintf("ALERTS_FOR_STATE{opni_uuid=\"%s\"}", cond.Id),
+						Query:   fmt.Sprintf("ALERTS_FOR_STATE{monty_uuid=\"%s\"}", cond.Id),
 						Start:   start,
 						End:     end,
 						Step:    durationpb.New(time.Minute * 1),

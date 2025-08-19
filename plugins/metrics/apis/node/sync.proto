@@ -2,10 +2,10 @@ syntax = "proto3";
 
 package node.metrics;
 
-import "github.com/rancher/opni/pkg/validation/validate.proto";
-import "github.com/rancher/opni/plugins/metrics/apis/node/config.proto";
+import "github.com/aity-cloud/monty/pkg/validation/validate.proto";
+import "github.com/aity-cloud/monty/plugins/metrics/apis/node/config.proto";
 
-option go_package = "github.com/rancher/opni/plugins/metrics/apis/node";
+option go_package = "github.com/aity-cloud/monty/plugins/metrics/apis/node";
 
 // The NodeMetricsCapability service serves implementation-specific config
 // for metrics capability nodes.

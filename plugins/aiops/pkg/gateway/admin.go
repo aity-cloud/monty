@@ -11,11 +11,11 @@ import (
 	"slices"
 
 	"github.com/Masterminds/semver"
-	aiv1beta1 "github.com/rancher/opni/apis/ai/v1beta1"
-	"github.com/rancher/opni/pkg/logger"
-	"github.com/rancher/opni/pkg/util/nats"
-	"github.com/rancher/opni/pkg/versions"
-	"github.com/rancher/opni/plugins/aiops/apis/admin"
+	aiv1beta1 "github.com/aity-cloud/monty/apis/ai/v1beta1"
+	"github.com/aity-cloud/monty/pkg/logger"
+	"github.com/aity-cloud/monty/pkg/util/nats"
+	"github.com/aity-cloud/monty/pkg/versions"
+	"github.com/aity-cloud/monty/plugins/aiops/apis/admin"
 	"github.com/samber/lo"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -39,17 +39,17 @@ const (
 )
 
 const (
-	OpniServicesName = "opni"
-	OpniS3SecretName = "opni-s3-credentials"
-	AccessKeyKey     = "accessKey"
-	SecretKeyKey     = "secretKey"
+	MontyServicesName = "monty"
+	MontyS3SecretName = "monty-s3-credentials"
+	AccessKeyKey      = "accessKey"
+	SecretKeyKey      = "secretKey"
 )
 
 var (
 	DefaultModelSources = map[pretrainedModelType]*string{
-		pretrainedModelControlplane: lo.ToPtr("https://opni-pretrained-models.s3.us-east-2.amazonaws.com/control-plane-model-v0.4.2.zip"),
-		pretrainedModelRancher:      lo.ToPtr("https://opni-pretrained-models.s3.us-east-2.amazonaws.com/rancher-model-v0.4.2.zip"),
-		pretrainedModelLonghorn:     lo.ToPtr("https://opni-pretrained-models.s3.us-east-2.amazonaws.com/longhorn-model-v0.6.0.zip"),
+		pretrainedModelControlplane: lo.ToPtr("https://monty-pretrained-models.s3.us-east-2.amazonaws.com/control-plane-model-v0.4.2.zip"),
+		pretrainedModelRancher:      lo.ToPtr("https://monty-pretrained-models.s3.us-east-2.amazonaws.com/rancher-model-v0.4.2.zip"),
+		pretrainedModelLonghorn:     lo.ToPtr("https://monty-pretrained-models.s3.us-east-2.amazonaws.com/longhorn-model-v0.6.0.zip"),
 	}
 	ModelHyperParameters = map[pretrainedModelType]map[string]intstr.IntOrString{
 		pretrainedModelControlplane: {
@@ -153,11 +153,11 @@ func (s *AIOpsPlugin) putPretrainedModel(
 }
 
 func (s *AIOpsPlugin) GetAISettings(ctx context.Context, _ *emptypb.Empty) (*admin.AISettings, error) {
-	opni := &aiv1beta1.OpniCluster{}
+	monty := &aiv1beta1.MontyCluster{}
 	err := s.k8sClient.Get(ctx, types.NamespacedName{
-		Name:      OpniServicesName,
+		Name:      MontyServicesName,
 		Namespace: s.storageNamespace,
-	}, opni)
+	}, monty)
 
 	if err != nil {
 		if k8serrors.IsNotFound(err) {
@@ -181,47 +181,47 @@ func (s *AIOpsPlugin) GetAISettings(ctx context.Context, _ *emptypb.Empty) (*adm
 	}
 
 	var s3Settings *admin.S3Settings
-	if opni.Spec.S3.External != nil {
+	if monty.Spec.S3.External != nil {
 		secret := &corev1.Secret{}
 		err := s.k8sClient.Get(ctx, types.NamespacedName{
-			Name:      opni.Spec.S3.External.Credentials.Name,
-			Namespace: opni.Spec.S3.External.Credentials.Namespace,
+			Name:      monty.Spec.S3.External.Credentials.Name,
+			Namespace: monty.Spec.S3.External.Credentials.Namespace,
 		}, secret)
 		if err != nil {
 			s.Logger.Error("failed to get s3 secret", logger.Err(err))
 		}
 		s3Settings = &admin.S3Settings{
-			Endpoint:    opni.Spec.S3.External.Endpoint,
-			NulogBucket: &opni.Spec.S3.NulogS3Bucket,
-			DrainBucket: &opni.Spec.S3.DrainS3Bucket,
+			Endpoint:    monty.Spec.S3.External.Endpoint,
+			NulogBucket: &monty.Spec.S3.NulogS3Bucket,
+			DrainBucket: &monty.Spec.S3.DrainS3Bucket,
 			AccessKey:   string(secret.Data["accessKey"]),
 		}
 	}
 
 	return &admin.AISettings{
 		GpuSettings: func() *admin.GPUSettings {
-			if !lo.FromPtrOr(opni.Spec.Services.GPUController.Enabled, true) {
+			if !lo.FromPtrOr(monty.Spec.Services.GPUController.Enabled, true) {
 				return nil
 			}
 			return &admin.GPUSettings{
-				RuntimeClass: opni.Spec.Services.GPUController.RuntimeClass,
+				RuntimeClass: monty.Spec.Services.GPUController.RuntimeClass,
 			}
 		}(),
-		DrainReplicas: opni.Spec.Services.Drain.Replicas,
+		DrainReplicas: monty.Spec.Services.Drain.Replicas,
 		Controlplane: func() *admin.PretrainedModel {
-			if modelEnabled(opni.Spec.Services.Inference.PretrainedModels, pretrainedModelControlplane) {
+			if modelEnabled(monty.Spec.Services.Inference.PretrainedModels, pretrainedModelControlplane) {
 				return controlplane
 			}
 			return nil
 		}(),
 		Rancher: func() *admin.PretrainedModel {
-			if modelEnabled(opni.Spec.Services.Inference.PretrainedModels, pretrainedModelRancher) {
+			if modelEnabled(monty.Spec.Services.Inference.PretrainedModels, pretrainedModelRancher) {
 				return rancher
 			}
 			return nil
 		}(),
 		Longhorn: func() *admin.PretrainedModel {
-			if modelEnabled(opni.Spec.Services.Inference.PretrainedModels, pretrainedModelLonghorn) {
+			if modelEnabled(monty.Spec.Services.Inference.PretrainedModels, pretrainedModelLonghorn) {
 				return longhorn
 			}
 			return nil
@@ -274,12 +274,12 @@ func (s *AIOpsPlugin) PutAISettings(ctx context.Context, settings *admin.AISetti
 	}
 
 	exists := true
-	opniCluster := &aiv1beta1.OpniCluster{
+	montyCluster := &aiv1beta1.MontyCluster{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      OpniServicesName,
+			Name:      MontyServicesName,
 			Namespace: s.storageNamespace,
 		},
-		Spec: aiv1beta1.OpniClusterSpec{
+		Spec: aiv1beta1.MontyClusterSpec{
 			NatsRef: corev1.LocalObjectReference{
 				Name: nats.NatsObjectNameFromURL(os.Getenv("NATS_SERVER_URL")),
 			},
@@ -294,7 +294,7 @@ func (s *AIOpsPlugin) PutAISettings(ctx context.Context, settings *admin.AISetti
 			Opensearch: s.opensearchCluster,
 		},
 	}
-	err = s.k8sClient.Get(ctx, client.ObjectKeyFromObject(opniCluster), opniCluster)
+	err = s.k8sClient.Get(ctx, client.ObjectKeyFromObject(montyCluster), montyCluster)
 	if err != nil {
 		if !k8serrors.IsNotFound(err) {
 			return nil, err
@@ -303,32 +303,32 @@ func (s *AIOpsPlugin) PutAISettings(ctx context.Context, settings *admin.AISetti
 	}
 
 	if !exists {
-		opniCluster.Spec.Version = "v" + strings.TrimPrefix(version, "v")
-		opniCluster.Spec.Services.Inference.PretrainedModels = models
-		gpuSettingsMutator(settings.GetGpuSettings(), opniCluster)
-		s3SettingsMutator(settings.GetS3Settings(), opniCluster)
+		montyCluster.Spec.Version = "v" + strings.TrimPrefix(version, "v")
+		montyCluster.Spec.Services.Inference.PretrainedModels = models
+		gpuSettingsMutator(settings.GetGpuSettings(), montyCluster)
+		s3SettingsMutator(settings.GetS3Settings(), montyCluster)
 
-		return &emptypb.Empty{}, s.k8sClient.Create(ctx, opniCluster)
+		return &emptypb.Empty{}, s.k8sClient.Create(ctx, montyCluster)
 	}
 
 	err = retry.RetryOnConflict(retry.DefaultRetry, func() error {
-		err := s.k8sClient.Get(ctx, client.ObjectKeyFromObject(opniCluster), opniCluster)
+		err := s.k8sClient.Get(ctx, client.ObjectKeyFromObject(montyCluster), montyCluster)
 		if err != nil {
 			return err
 		}
-		opniCluster.Spec.Services.Inference.PretrainedModels = models
-		gpuSettingsMutator(settings.GetGpuSettings(), opniCluster)
-		s3SettingsMutator(settings.GetS3Settings(), opniCluster)
-		return s.k8sClient.Update(ctx, opniCluster)
+		montyCluster.Spec.Services.Inference.PretrainedModels = models
+		gpuSettingsMutator(settings.GetGpuSettings(), montyCluster)
+		s3SettingsMutator(settings.GetS3Settings(), montyCluster)
+		return s.k8sClient.Update(ctx, montyCluster)
 	})
 	return &emptypb.Empty{}, err
 }
 
 func (s *AIOpsPlugin) deleteAIOpsResources(ctx context.Context) error {
 	s.Logger.Info("deleting aiops resources...")
-	err := s.k8sClient.Delete(ctx, &aiv1beta1.OpniCluster{
+	err := s.k8sClient.Delete(ctx, &aiv1beta1.MontyCluster{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      OpniServicesName,
+			Name:      MontyServicesName,
 			Namespace: s.storageNamespace,
 		},
 	})
@@ -338,7 +338,7 @@ func (s *AIOpsPlugin) deleteAIOpsResources(ctx context.Context) error {
 
 	err = s.k8sClient.Delete(ctx, &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      OpniS3SecretName,
+			Name:      MontyS3SecretName,
 			Namespace: s.storageNamespace,
 		},
 	})
@@ -378,16 +378,16 @@ func (s *AIOpsPlugin) UpgradeAvailable(ctx context.Context, _ *emptypb.Empty) (*
 	if err != nil {
 		return nil, err
 	}
-	opniCluster := &aiv1beta1.OpniCluster{}
+	montyCluster := &aiv1beta1.MontyCluster{}
 	err = s.k8sClient.Get(ctx, types.NamespacedName{
-		Name:      OpniServicesName,
+		Name:      MontyServicesName,
 		Namespace: s.storageNamespace,
-	}, opniCluster)
+	}, montyCluster)
 	if err != nil {
 		return nil, err
 	}
 
-	oldVersion, err := semver.NewVersion(opniCluster.Spec.Version)
+	oldVersion, err := semver.NewVersion(montyCluster.Spec.Version)
 	if err != nil {
 		return nil, err
 	}
@@ -407,18 +407,18 @@ func (s *AIOpsPlugin) DoUpgrade(ctx context.Context, _ *emptypb.Empty) (*emptypb
 		return nil, err
 	}
 
-	opniCluster := &aiv1beta1.OpniCluster{
+	montyCluster := &aiv1beta1.MontyCluster{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      OpniServicesName,
+			Name:      MontyServicesName,
 			Namespace: s.storageNamespace,
 		},
 	}
-	err = s.k8sClient.Get(ctx, client.ObjectKeyFromObject(opniCluster), opniCluster)
+	err = s.k8sClient.Get(ctx, client.ObjectKeyFromObject(montyCluster), montyCluster)
 	if err != nil {
 		return nil, err
 	}
 
-	oldVersion, err := semver.NewVersion(opniCluster.Spec.Version)
+	oldVersion, err := semver.NewVersion(montyCluster.Spec.Version)
 	if err != nil {
 		return nil, err
 	}
@@ -428,12 +428,12 @@ func (s *AIOpsPlugin) DoUpgrade(ctx context.Context, _ *emptypb.Empty) (*emptypb
 	}
 
 	err = retry.RetryOnConflict(retry.DefaultRetry, func() error {
-		err := s.k8sClient.Get(ctx, client.ObjectKeyFromObject(opniCluster), opniCluster)
+		err := s.k8sClient.Get(ctx, client.ObjectKeyFromObject(montyCluster), montyCluster)
 		if err != nil {
 			return err
 		}
-		opniCluster.Spec.Version = "v" + strings.TrimPrefix(version, "v")
-		return s.k8sClient.Update(ctx, opniCluster)
+		montyCluster.Spec.Version = "v" + strings.TrimPrefix(version, "v")
+		return s.k8sClient.Update(ctx, montyCluster)
 	})
 	return &emptypb.Empty{}, err
 }
@@ -461,7 +461,7 @@ func (s *AIOpsPlugin) createOrUpdateS3Secret(ctx context.Context, settings *admi
 	exists := true
 	secret := &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      OpniS3SecretName,
+			Name:      MontyS3SecretName,
 			Namespace: s.storageNamespace,
 		},
 		StringData: map[string]string{
@@ -526,7 +526,7 @@ func updateModelSpec(modelType pretrainedModelType, modelRequest *admin.Pretrain
 }
 
 func modelObjectName(modelType pretrainedModelType) string {
-	return fmt.Sprintf("opni-model-%s", modelType)
+	return fmt.Sprintf("monty-model-%s", modelType)
 }
 
 func modelEnabled(models []corev1.LocalObjectReference, modelType pretrainedModelType) bool {
@@ -535,7 +535,7 @@ func modelEnabled(models []corev1.LocalObjectReference, modelType pretrainedMode
 	})
 }
 
-func gpuSettingsMutator(settings *admin.GPUSettings, cluster *aiv1beta1.OpniCluster) {
+func gpuSettingsMutator(settings *admin.GPUSettings, cluster *aiv1beta1.MontyCluster) {
 	cluster.Spec.Services.GPUController.Enabled = lo.ToPtr(settings != nil)
 	cluster.Spec.Services.GPUController.RuntimeClass = func() *string {
 		if settings == nil {
@@ -548,7 +548,7 @@ func gpuSettingsMutator(settings *admin.GPUSettings, cluster *aiv1beta1.OpniClus
 	cluster.Spec.Services.Drain.Workload.Enabled = lo.ToPtr(settings != nil)
 }
 
-func s3SettingsMutator(settings *admin.S3Settings, cluster *aiv1beta1.OpniCluster) {
+func s3SettingsMutator(settings *admin.S3Settings, cluster *aiv1beta1.MontyCluster) {
 	if settings == nil {
 		cluster.Spec.S3 = aiv1beta1.S3Spec{
 			Internal: &aiv1beta1.InternalSpec{},
@@ -567,7 +567,7 @@ func s3SettingsMutator(settings *admin.S3Settings, cluster *aiv1beta1.OpniCluste
 		External: &aiv1beta1.ExternalSpec{
 			Endpoint: endpoint,
 			Credentials: &corev1.SecretReference{
-				Name:      OpniS3SecretName,
+				Name:      MontyS3SecretName,
 				Namespace: cluster.Namespace,
 			},
 		},

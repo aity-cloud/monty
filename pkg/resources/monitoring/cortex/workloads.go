@@ -1,7 +1,7 @@
 package cortex
 
 import (
-	"github.com/rancher/opni/pkg/resources"
+	"github.com/aity-cloud/monty/pkg/resources"
 	"github.com/samber/lo"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
@@ -165,7 +165,7 @@ func (r *Reconciler) cortexWorkloads(configDigest string) []resources.Resource {
 				Replicas(spec.GetReplicas()),
 				ExtraArgs(spec.GetExtraArgs()...),
 				ExtraAnnotations(map[string]string{
-					resources.OpniConfigHash: configDigest,
+					resources.MontyConfigHash: configDigest,
 				}),
 			}, workloadOptions[target]...)
 			switch workloadType {

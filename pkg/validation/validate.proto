@@ -7,7 +7,7 @@ import public "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/va
 import public "buf/validate/expression.proto";
 import "google/protobuf/timestamp.proto";
 
-option go_package = "github.com/rancher/opni/pkg/validation";
+option go_package = "github.com/aity-cloud/monty/pkg/validation";
 
 message PEMBlock {
   string              type    = 1;

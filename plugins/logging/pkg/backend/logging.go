@@ -7,22 +7,22 @@ import (
 
 	"log/slog"
 
-	"github.com/rancher/opni/pkg/agent"
-	capabilityv1 "github.com/rancher/opni/pkg/apis/capability/v1"
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	managementv1 "github.com/rancher/opni/pkg/apis/management/v1"
-	proxyv1 "github.com/rancher/opni/pkg/apis/proxy/v1"
-	"github.com/rancher/opni/pkg/capabilities/wellknown"
-	"github.com/rancher/opni/pkg/logger"
-	"github.com/rancher/opni/pkg/management"
-	streamext "github.com/rancher/opni/pkg/plugins/apis/apiextensions/stream"
-	"github.com/rancher/opni/pkg/storage"
-	"github.com/rancher/opni/pkg/task"
-	"github.com/rancher/opni/pkg/util"
-	"github.com/rancher/opni/plugins/logging/apis/node"
-	driver "github.com/rancher/opni/plugins/logging/pkg/gateway/drivers/backend"
-	"github.com/rancher/opni/plugins/logging/pkg/opensearchdata"
-	loggingutil "github.com/rancher/opni/plugins/logging/pkg/util"
+	"github.com/aity-cloud/monty/pkg/agent"
+	capabilityv1 "github.com/aity-cloud/monty/pkg/apis/capability/v1"
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	managementv1 "github.com/aity-cloud/monty/pkg/apis/management/v1"
+	proxyv1 "github.com/aity-cloud/monty/pkg/apis/proxy/v1"
+	"github.com/aity-cloud/monty/pkg/capabilities/wellknown"
+	"github.com/aity-cloud/monty/pkg/logger"
+	"github.com/aity-cloud/monty/pkg/management"
+	streamext "github.com/aity-cloud/monty/pkg/plugins/apis/apiextensions/stream"
+	"github.com/aity-cloud/monty/pkg/storage"
+	"github.com/aity-cloud/monty/pkg/task"
+	"github.com/aity-cloud/monty/pkg/util"
+	"github.com/aity-cloud/monty/plugins/logging/apis/node"
+	driver "github.com/aity-cloud/monty/plugins/logging/pkg/gateway/drivers/backend"
+	"github.com/aity-cloud/monty/plugins/logging/pkg/opensearchdata"
+	loggingutil "github.com/aity-cloud/monty/plugins/logging/pkg/util"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
@@ -81,7 +81,7 @@ func (b *LoggingBackend) Initialize(conf LoggingBackendConfig) {
 			}
 
 			if err := b.reconcileClusterMetadata(context.Background(), clusters.Items); err != nil {
-				b.Logger.With(logger.Err(err)).Error("could not reconcile opni agents with metadata index, some agents may not be included")
+				b.Logger.With(logger.Err(err)).Error("could not reconcile monty agents with metadata index, some agents may not be included")
 				return
 			}
 

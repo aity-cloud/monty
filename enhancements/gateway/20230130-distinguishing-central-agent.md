@@ -1,10 +1,10 @@
-# Distinguishing the central Opni cluster agent
+# Distinguishing the central Monty cluster agent
 
 ## Summary:
-This proposal describes a mechanism by which the agent running in the central opni cluster can be distinguished from other clusters.
+This proposal describes a mechanism by which the agent running in the central monty cluster can be distinguished from other clusters.
 
 ## Use case:
-This is a prerequisite for several other features. For example, identifying the central opni cluster would be required for implementing a global metrics tenant.
+This is a prerequisite for several other features. For example, identifying the central monty cluster would be required for implementing a global metrics tenant.
 
 ## Benefits:
 The ability to distinguish the central cluster from other clusters provides benefits such as:

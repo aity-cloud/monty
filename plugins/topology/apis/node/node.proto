@@ -1,5 +1,5 @@
 syntax = "proto3";
-option go_package = "github.com/rancher/opni/plugins/topology/apis/node";
+option go_package = "github.com/aity-cloud/monty/plugins/topology/apis/node";
 
 package node.topology;
 

@@ -14,21 +14,21 @@ import (
 	"testing"
 	"time"
 
+	managementv1 "github.com/aity-cloud/monty/pkg/apis/management/v1"
+	"github.com/aity-cloud/monty/pkg/clients"
+	"github.com/aity-cloud/monty/pkg/config/adapt"
+	"github.com/aity-cloud/monty/pkg/config/meta"
+	configv1 "github.com/aity-cloud/monty/pkg/config/v1"
+	"github.com/aity-cloud/monty/pkg/config/v1beta1"
+	"github.com/aity-cloud/monty/pkg/test"
+	"github.com/aity-cloud/monty/pkg/test/freeport"
+	"github.com/aity-cloud/monty/pkg/test/testlog"
+	"github.com/aity-cloud/monty/pkg/tokens"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	"github.com/onsi/gomega/gexec"
 	"github.com/onsi/gomega/gmeasure"
 	"github.com/prometheus/procfs"
-	managementv1 "github.com/rancher/opni/pkg/apis/management/v1"
-	"github.com/rancher/opni/pkg/clients"
-	"github.com/rancher/opni/pkg/config/adapt"
-	"github.com/rancher/opni/pkg/config/meta"
-	configv1 "github.com/rancher/opni/pkg/config/v1"
-	"github.com/rancher/opni/pkg/config/v1beta1"
-	"github.com/rancher/opni/pkg/test"
-	"github.com/rancher/opni/pkg/test/freeport"
-	"github.com/rancher/opni/pkg/test/testlog"
-	"github.com/rancher/opni/pkg/tokens"
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/types/known/durationpb"
 	"google.golang.org/protobuf/types/known/emptypb"
@@ -37,7 +37,7 @@ import (
 
 func buildPrerequisites() error {
 	testlog.Log.Debug("building prerequisite binaries...")
-	cmd := exec.Command("mage", "build:plugin", "example", "build:opniminimal", "build:opni")
+	cmd := exec.Command("mage", "build:plugin", "example", "build:montyminimal", "build:monty")
 	cmd.Dir = "../.."
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
@@ -117,7 +117,7 @@ var _ = Describe("Agent Memory Tests", Ordered, Serial, Label("integration", "sl
 		Expect(environment.Start(test.WithEnableGateway(false), test.WithStorageBackend(v1beta1.StorageTypeEtcd))).To(Succeed())
 
 		DeferCleanup(environment.Stop)
-		tempDir, err := os.MkdirTemp("", "opni-test")
+		tempDir, err := os.MkdirTemp("", "monty-test")
 		Expect(err).NotTo(HaveOccurred())
 		DeferCleanup(func() {
 			os.RemoveAll(tempDir)
@@ -141,7 +141,7 @@ var _ = Describe("Agent Memory Tests", Ordered, Serial, Label("integration", "sl
 		cfgv1 := adapt.V1ConfigOf[*configv1.GatewayConfigSpec](&gatewayConfig.Spec)
 
 		startGateway = func() {
-			cmd := exec.Command("bin/opni", "gateway",
+			cmd := exec.Command("bin/monty", "gateway",
 				"--storage.etcd.endpoints", strings.Join(cfgv1.Storage.Etcd.GetEndpoints(), ","),
 				"--defaults.certs.ca-cert-data", cfgv1.Certs.GetCaCertData(),
 				"--defaults.certs.serving-cert-data", cfgv1.Certs.GetServingCertData(),
@@ -189,7 +189,7 @@ var _ = Describe("Agent Memory Tests", Ordered, Serial, Label("integration", "sl
 			t, err := tokens.FromBootstrapToken(token)
 			Expect(err).NotTo(HaveOccurred())
 
-			tempDir, err := os.MkdirTemp("", "opni-test")
+			tempDir, err := os.MkdirTemp("", "monty-test")
 			Expect(err).NotTo(HaveOccurred())
 
 			DeferCleanup(func() {
@@ -227,12 +227,12 @@ var _ = Describe("Agent Memory Tests", Ordered, Serial, Label("integration", "sl
 			Expect(err).NotTo(HaveOccurred())
 			Expect(os.WriteFile(configFile, configData, 0644)).To(Succeed())
 
-			cmd := exec.Command("bin/opni-minimal", "agentv2", "--config", configFile)
+			cmd := exec.Command("bin/monty-minimal", "agentv2", "--config", configFile)
 			cmd.Dir = "../.."
 			cmd.SysProcAttr = &syscall.SysProcAttr{
 				Setsid: true,
 			}
-			cmd.Env = append(os.Environ(), "OPNI_UNIQUE_IDENTIFIER=agent1")
+			cmd.Env = append(os.Environ(), "MONTY_UNIQUE_IDENTIFIER=agent1")
 			agentSession, err = gexec.Start(cmd, GinkgoWriter, GinkgoWriter)
 			Expect(err).NotTo(HaveOccurred())
 			DeferCleanup(func() {

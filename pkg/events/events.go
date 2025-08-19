@@ -9,9 +9,9 @@ import (
 
 	"log/slog"
 
+	"github.com/aity-cloud/monty/pkg/logger"
+	"github.com/aity-cloud/monty/pkg/util"
 	"github.com/opensearch-project/opensearch-go/opensearchutil"
-	"github.com/rancher/opni/pkg/logger"
-	"github.com/rancher/opni/pkg/util"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/runtime"

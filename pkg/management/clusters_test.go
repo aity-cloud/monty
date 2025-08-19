@@ -5,15 +5,15 @@ import (
 	"fmt"
 	"time"
 
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	managementv1 "github.com/aity-cloud/monty/pkg/apis/management/v1"
+	"github.com/aity-cloud/monty/pkg/plugins"
+	"github.com/aity-cloud/monty/pkg/test/testutil"
+	"github.com/aity-cloud/monty/pkg/util"
+	"github.com/aity-cloud/monty/pkg/validation"
 	"github.com/google/uuid"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	managementv1 "github.com/rancher/opni/pkg/apis/management/v1"
-	"github.com/rancher/opni/pkg/plugins"
-	"github.com/rancher/opni/pkg/test/testutil"
-	"github.com/rancher/opni/pkg/util"
-	"github.com/rancher/opni/pkg/validation"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -247,8 +247,8 @@ var _ = Describe("Clusters", Ordered, Label("unit"), func() {
 			Id: "immutable-1",
 			Metadata: &corev1.ClusterMetadata{
 				Labels: map[string]string{
-					"foo":          "bar",
-					"opni.io/test": "1",
+					"foo":           "bar",
+					"monty.io/test": "1",
 				},
 			},
 		}
@@ -265,7 +265,7 @@ var _ = Describe("Clusters", Ordered, Label("unit"), func() {
 		_, err = tv.client.EditCluster(context.Background(), &managementv1.EditClusterRequest{
 			Cluster: c.Reference(),
 			Labels: map[string]string{
-				"opni.io/test": "2",
+				"monty.io/test": "2",
 			},
 		})
 		Expect(status.Code(err)).To(Equal(codes.InvalidArgument))
@@ -273,8 +273,8 @@ var _ = Describe("Clusters", Ordered, Label("unit"), func() {
 		_, err = tv.client.EditCluster(context.Background(), &managementv1.EditClusterRequest{
 			Cluster: c.Reference(),
 			Labels: map[string]string{
-				"opni.io/test":  "1",
-				"opni.io/test2": "2",
+				"monty.io/test":  "1",
+				"monty.io/test2": "2",
 			},
 		})
 		Expect(status.Code(err)).To(Equal(codes.InvalidArgument))
@@ -282,11 +282,11 @@ var _ = Describe("Clusters", Ordered, Label("unit"), func() {
 		updatedC, err := tv.client.EditCluster(context.Background(), &managementv1.EditClusterRequest{
 			Cluster: c.Reference(),
 			Labels: map[string]string{
-				"opni.io/test": "1",
-				"foo":          "baz",
+				"monty.io/test": "1",
+				"foo":           "baz",
 			},
 		})
 		Expect(err).NotTo(HaveOccurred())
-		Expect(updatedC.Metadata.Labels).To(And(HaveKeyWithValue("foo", "baz"), HaveKeyWithValue("opni.io/test", "1")))
+		Expect(updatedC.Metadata.Labels).To(And(HaveKeyWithValue("foo", "baz"), HaveKeyWithValue("monty.io/test", "1")))
 	})
 })

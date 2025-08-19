@@ -2,14 +2,14 @@
 // versions:
 // - protoc-gen-go-grpc v1.3.0
 // - ragu               v1.0.0
-// source: github.com/rancher/opni/pkg/plugins/apis/apiextensions/apiextensions.proto
+// source: github.com/aity-cloud/monty/pkg/plugins/apis/apiextensions/apiextensions.proto
 
 package apiextensions
 
 import (
 	context "context"
+	v1 "github.com/aity-cloud/monty/pkg/config/v1"
 	totem "github.com/kralicky/totem"
-	v1 "github.com/rancher/opni/pkg/config/v1"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	grpc_health_v1 "google.golang.org/grpc/health/grpc_health_v1"
@@ -247,7 +247,7 @@ var ManagementAPIExtension_ServiceDesc = grpc.ServiceDesc{
 			ServerStreams: true,
 		},
 	},
-	Metadata: "github.com/rancher/opni/pkg/plugins/apis/apiextensions/apiextensions.proto",
+	Metadata: "github.com/aity-cloud/monty/pkg/plugins/apis/apiextensions/apiextensions.proto",
 }
 
 const (
@@ -335,7 +335,7 @@ var HTTPAPIExtension_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "github.com/rancher/opni/pkg/plugins/apis/apiextensions/apiextensions.proto",
+	Metadata: "github.com/aity-cloud/monty/pkg/plugins/apis/apiextensions/apiextensions.proto",
 }
 
 const (
@@ -455,7 +455,7 @@ var StreamAPIExtension_ServiceDesc = grpc.ServiceDesc{
 			ClientStreams: true,
 		},
 	},
-	Metadata: "github.com/rancher/opni/pkg/plugins/apis/apiextensions/apiextensions.proto",
+	Metadata: "github.com/aity-cloud/monty/pkg/plugins/apis/apiextensions/apiextensions.proto",
 }
 
 const (
@@ -543,5 +543,5 @@ var UnaryAPIExtension_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "github.com/rancher/opni/pkg/plugins/apis/apiextensions/apiextensions.proto",
+	Metadata: "github.com/aity-cloud/monty/pkg/plugins/apis/apiextensions/apiextensions.proto",
 }

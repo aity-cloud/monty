@@ -9,17 +9,17 @@ import (
 	"path/filepath"
 	"time"
 
+	"github.com/aity-cloud/monty/pkg/test/memfs"
+	"github.com/aity-cloud/monty/pkg/test/testlog"
+	"github.com/aity-cloud/monty/pkg/update"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/rancher/opni/pkg/test/memfs"
-	"github.com/rancher/opni/pkg/test/testlog"
-	"github.com/rancher/opni/pkg/update"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	controlv1 "github.com/rancher/opni/pkg/apis/control/v1"
-	"github.com/rancher/opni/pkg/test/testutil"
-	patchclient "github.com/rancher/opni/pkg/update/patch/client"
+	controlv1 "github.com/aity-cloud/monty/pkg/apis/control/v1"
+	"github.com/aity-cloud/monty/pkg/test/testutil"
+	patchclient "github.com/aity-cloud/monty/pkg/update/patch/client"
 	"github.com/spf13/afero"
 )
 
@@ -184,7 +184,7 @@ var _ = Describe("Client", Label("unit"), func() {
 				currentManifest, err := client.GetCurrentManifest(context.Background())
 				Expect(err).NotTo(HaveOccurred())
 				Expect(currentManifest.Items).To(HaveLen(1))
-				Expect(currentManifest.Items[0].Package).To(Equal("urn:opni:plugin:binary:placeholder"))
+				Expect(currentManifest.Items[0].Package).To(Equal("urn:monty:plugin:binary:placeholder"))
 				Expect(currentManifest.Items[0].Path).To(Equal("placeholder"))
 				Expect(currentManifest.Items[0].Digest).To(Equal("placeholder"))
 			})

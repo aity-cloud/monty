@@ -2,14 +2,14 @@
 // versions:
 // 	protoc-gen-go v1.31.0-devel
 // 	protoc        v1.0.0
-// source: github.com/rancher/opni/pkg/apis/management/v1/management.proto
+// source: github.com/aity-cloud/monty/pkg/apis/management/v1/management.proto
 
 package v1
 
 import (
-	_ "github.com/rancher/opni/internal/codegen/cli"
-	v11 "github.com/rancher/opni/pkg/apis/capability/v1"
-	v1 "github.com/rancher/opni/pkg/apis/core/v1"
+	_ "github.com/aity-cloud/monty/internal/codegen/cli"
+	v11 "github.com/aity-cloud/monty/pkg/apis/capability/v1"
+	v1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
 	annotations "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -57,11 +57,11 @@ func (x WatchEventType) String() string {
 }
 
 func (WatchEventType) Descriptor() protoreflect.EnumDescriptor {
-	return file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_enumTypes[0].Descriptor()
+	return file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_enumTypes[0].Descriptor()
 }
 
 func (WatchEventType) Type() protoreflect.EnumType {
-	return &file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_enumTypes[0]
+	return &file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_enumTypes[0]
 }
 
 func (x WatchEventType) Number() protoreflect.EnumNumber {
@@ -70,7 +70,7 @@ func (x WatchEventType) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use WatchEventType.Descriptor instead.
 func (WatchEventType) EnumDescriptor() ([]byte, []int) {
-	return file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_rawDescGZIP(), []int{0}
+	return file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_rawDescGZIP(), []int{0}
 }
 
 type CreateBootstrapTokenRequest struct {
@@ -87,7 +87,7 @@ type CreateBootstrapTokenRequest struct {
 func (x *CreateBootstrapTokenRequest) Reset() {
 	*x = CreateBootstrapTokenRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_msgTypes[0]
+		mi := &file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_msgTypes[0]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -100,7 +100,7 @@ func (x *CreateBootstrapTokenRequest) String() string {
 func (*CreateBootstrapTokenRequest) ProtoMessage() {}
 
 func (x *CreateBootstrapTokenRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_msgTypes[0]
+	mi := &file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -113,7 +113,7 @@ func (x *CreateBootstrapTokenRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateBootstrapTokenRequest.ProtoReflect.Descriptor instead.
 func (*CreateBootstrapTokenRequest) Descriptor() ([]byte, []int) {
-	return file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_rawDescGZIP(), []int{0}
+	return file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *CreateBootstrapTokenRequest) GetTtl() *durationpb.Duration {
@@ -155,7 +155,7 @@ type CertsInfoResponse struct {
 func (x *CertsInfoResponse) Reset() {
 	*x = CertsInfoResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_msgTypes[1]
+		mi := &file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -168,7 +168,7 @@ func (x *CertsInfoResponse) String() string {
 func (*CertsInfoResponse) ProtoMessage() {}
 
 func (x *CertsInfoResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_msgTypes[1]
+	mi := &file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -181,7 +181,7 @@ func (x *CertsInfoResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CertsInfoResponse.ProtoReflect.Descriptor instead.
 func (*CertsInfoResponse) Descriptor() ([]byte, []int) {
-	return file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_rawDescGZIP(), []int{1}
+	return file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *CertsInfoResponse) GetChain() []*v1.CertInfo {
@@ -203,7 +203,7 @@ type ListClustersRequest struct {
 func (x *ListClustersRequest) Reset() {
 	*x = ListClustersRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_msgTypes[2]
+		mi := &file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_msgTypes[2]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -216,7 +216,7 @@ func (x *ListClustersRequest) String() string {
 func (*ListClustersRequest) ProtoMessage() {}
 
 func (x *ListClustersRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_msgTypes[2]
+	mi := &file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_msgTypes[2]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -229,7 +229,7 @@ func (x *ListClustersRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListClustersRequest.ProtoReflect.Descriptor instead.
 func (*ListClustersRequest) Descriptor() ([]byte, []int) {
-	return file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_rawDescGZIP(), []int{2}
+	return file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *ListClustersRequest) GetMatchLabels() *v1.LabelSelector {
@@ -258,7 +258,7 @@ type EditClusterRequest struct {
 func (x *EditClusterRequest) Reset() {
 	*x = EditClusterRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_msgTypes[3]
+		mi := &file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_msgTypes[3]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -271,7 +271,7 @@ func (x *EditClusterRequest) String() string {
 func (*EditClusterRequest) ProtoMessage() {}
 
 func (x *EditClusterRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_msgTypes[3]
+	mi := &file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_msgTypes[3]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -284,7 +284,7 @@ func (x *EditClusterRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EditClusterRequest.ProtoReflect.Descriptor instead.
 func (*EditClusterRequest) Descriptor() ([]byte, []int) {
-	return file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_rawDescGZIP(), []int{3}
+	return file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *EditClusterRequest) GetCluster() *v1.Reference {
@@ -312,7 +312,7 @@ type WatchClustersRequest struct {
 func (x *WatchClustersRequest) Reset() {
 	*x = WatchClustersRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_msgTypes[4]
+		mi := &file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_msgTypes[4]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -325,7 +325,7 @@ func (x *WatchClustersRequest) String() string {
 func (*WatchClustersRequest) ProtoMessage() {}
 
 func (x *WatchClustersRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_msgTypes[4]
+	mi := &file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_msgTypes[4]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -338,7 +338,7 @@ func (x *WatchClustersRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WatchClustersRequest.ProtoReflect.Descriptor instead.
 func (*WatchClustersRequest) Descriptor() ([]byte, []int) {
-	return file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_rawDescGZIP(), []int{4}
+	return file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *WatchClustersRequest) GetKnownClusters() *v1.ReferenceList {
@@ -361,7 +361,7 @@ type WatchEvent struct {
 func (x *WatchEvent) Reset() {
 	*x = WatchEvent{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_msgTypes[5]
+		mi := &file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_msgTypes[5]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -374,7 +374,7 @@ func (x *WatchEvent) String() string {
 func (*WatchEvent) ProtoMessage() {}
 
 func (x *WatchEvent) ProtoReflect() protoreflect.Message {
-	mi := &file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_msgTypes[5]
+	mi := &file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_msgTypes[5]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -387,7 +387,7 @@ func (x *WatchEvent) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WatchEvent.ProtoReflect.Descriptor instead.
 func (*WatchEvent) Descriptor() ([]byte, []int) {
-	return file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_rawDescGZIP(), []int{5}
+	return file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *WatchEvent) GetCluster() *v1.Cluster {
@@ -422,7 +422,7 @@ type APIExtensionInfoList struct {
 func (x *APIExtensionInfoList) Reset() {
 	*x = APIExtensionInfoList{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_msgTypes[6]
+		mi := &file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_msgTypes[6]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -435,7 +435,7 @@ func (x *APIExtensionInfoList) String() string {
 func (*APIExtensionInfoList) ProtoMessage() {}
 
 func (x *APIExtensionInfoList) ProtoReflect() protoreflect.Message {
-	mi := &file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_msgTypes[6]
+	mi := &file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_msgTypes[6]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -448,7 +448,7 @@ func (x *APIExtensionInfoList) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use APIExtensionInfoList.ProtoReflect.Descriptor instead.
 func (*APIExtensionInfoList) Descriptor() ([]byte, []int) {
-	return file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_rawDescGZIP(), []int{6}
+	return file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *APIExtensionInfoList) GetItems() []*APIExtensionInfo {
@@ -470,7 +470,7 @@ type APIExtensionInfo struct {
 func (x *APIExtensionInfo) Reset() {
 	*x = APIExtensionInfo{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_msgTypes[7]
+		mi := &file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_msgTypes[7]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -483,7 +483,7 @@ func (x *APIExtensionInfo) String() string {
 func (*APIExtensionInfo) ProtoMessage() {}
 
 func (x *APIExtensionInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_msgTypes[7]
+	mi := &file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_msgTypes[7]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -496,7 +496,7 @@ func (x *APIExtensionInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use APIExtensionInfo.ProtoReflect.Descriptor instead.
 func (*APIExtensionInfo) Descriptor() ([]byte, []int) {
-	return file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_rawDescGZIP(), []int{7}
+	return file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *APIExtensionInfo) GetServiceDesc() *descriptorpb.ServiceDescriptorProto {
@@ -525,7 +525,7 @@ type HTTPRuleDescriptor struct {
 func (x *HTTPRuleDescriptor) Reset() {
 	*x = HTTPRuleDescriptor{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_msgTypes[8]
+		mi := &file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_msgTypes[8]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -538,7 +538,7 @@ func (x *HTTPRuleDescriptor) String() string {
 func (*HTTPRuleDescriptor) ProtoMessage() {}
 
 func (x *HTTPRuleDescriptor) ProtoReflect() protoreflect.Message {
-	mi := &file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_msgTypes[8]
+	mi := &file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_msgTypes[8]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -551,7 +551,7 @@ func (x *HTTPRuleDescriptor) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use HTTPRuleDescriptor.ProtoReflect.Descriptor instead.
 func (*HTTPRuleDescriptor) Descriptor() ([]byte, []int) {
-	return file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_rawDescGZIP(), []int{8}
+	return file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *HTTPRuleDescriptor) GetHttp() *annotations.HttpRule {
@@ -579,7 +579,7 @@ type GatewayConfig struct {
 func (x *GatewayConfig) Reset() {
 	*x = GatewayConfig{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_msgTypes[9]
+		mi := &file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_msgTypes[9]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -592,7 +592,7 @@ func (x *GatewayConfig) String() string {
 func (*GatewayConfig) ProtoMessage() {}
 
 func (x *GatewayConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_msgTypes[9]
+	mi := &file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_msgTypes[9]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -605,7 +605,7 @@ func (x *GatewayConfig) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GatewayConfig.ProtoReflect.Descriptor instead.
 func (*GatewayConfig) Descriptor() ([]byte, []int) {
-	return file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_rawDescGZIP(), []int{9}
+	return file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *GatewayConfig) GetDocuments() []*ConfigDocumentWithSchema {
@@ -628,7 +628,7 @@ type ConfigDocumentWithSchema struct {
 func (x *ConfigDocumentWithSchema) Reset() {
 	*x = ConfigDocumentWithSchema{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_msgTypes[10]
+		mi := &file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_msgTypes[10]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -641,7 +641,7 @@ func (x *ConfigDocumentWithSchema) String() string {
 func (*ConfigDocumentWithSchema) ProtoMessage() {}
 
 func (x *ConfigDocumentWithSchema) ProtoReflect() protoreflect.Message {
-	mi := &file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_msgTypes[10]
+	mi := &file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_msgTypes[10]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -654,7 +654,7 @@ func (x *ConfigDocumentWithSchema) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ConfigDocumentWithSchema.ProtoReflect.Descriptor instead.
 func (*ConfigDocumentWithSchema) Descriptor() ([]byte, []int) {
-	return file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_rawDescGZIP(), []int{10}
+	return file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *ConfigDocumentWithSchema) GetJson() []byte {
@@ -689,7 +689,7 @@ type ConfigDocument struct {
 func (x *ConfigDocument) Reset() {
 	*x = ConfigDocument{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_msgTypes[11]
+		mi := &file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_msgTypes[11]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -702,7 +702,7 @@ func (x *ConfigDocument) String() string {
 func (*ConfigDocument) ProtoMessage() {}
 
 func (x *ConfigDocument) ProtoReflect() protoreflect.Message {
-	mi := &file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_msgTypes[11]
+	mi := &file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_msgTypes[11]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -715,7 +715,7 @@ func (x *ConfigDocument) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ConfigDocument.ProtoReflect.Descriptor instead.
 func (*ConfigDocument) Descriptor() ([]byte, []int) {
-	return file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_rawDescGZIP(), []int{11}
+	return file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *ConfigDocument) GetJson() []byte {
@@ -736,7 +736,7 @@ type UpdateConfigRequest struct {
 func (x *UpdateConfigRequest) Reset() {
 	*x = UpdateConfigRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_msgTypes[12]
+		mi := &file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_msgTypes[12]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -749,7 +749,7 @@ func (x *UpdateConfigRequest) String() string {
 func (*UpdateConfigRequest) ProtoMessage() {}
 
 func (x *UpdateConfigRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_msgTypes[12]
+	mi := &file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_msgTypes[12]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -762,7 +762,7 @@ func (x *UpdateConfigRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateConfigRequest.ProtoReflect.Descriptor instead.
 func (*UpdateConfigRequest) Descriptor() ([]byte, []int) {
-	return file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_rawDescGZIP(), []int{12}
+	return file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *UpdateConfigRequest) GetDocuments() []*ConfigDocument {
@@ -783,7 +783,7 @@ type CapabilityList struct {
 func (x *CapabilityList) Reset() {
 	*x = CapabilityList{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_msgTypes[13]
+		mi := &file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_msgTypes[13]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -796,7 +796,7 @@ func (x *CapabilityList) String() string {
 func (*CapabilityList) ProtoMessage() {}
 
 func (x *CapabilityList) ProtoReflect() protoreflect.Message {
-	mi := &file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_msgTypes[13]
+	mi := &file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_msgTypes[13]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -809,7 +809,7 @@ func (x *CapabilityList) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CapabilityList.ProtoReflect.Descriptor instead.
 func (*CapabilityList) Descriptor() ([]byte, []int) {
-	return file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_rawDescGZIP(), []int{13}
+	return file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *CapabilityList) GetItems() []*CapabilityInfo {
@@ -831,7 +831,7 @@ type CapabilityInfo struct {
 func (x *CapabilityInfo) Reset() {
 	*x = CapabilityInfo{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_msgTypes[14]
+		mi := &file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_msgTypes[14]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -844,7 +844,7 @@ func (x *CapabilityInfo) String() string {
 func (*CapabilityInfo) ProtoMessage() {}
 
 func (x *CapabilityInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_msgTypes[14]
+	mi := &file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_msgTypes[14]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -857,7 +857,7 @@ func (x *CapabilityInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CapabilityInfo.ProtoReflect.Descriptor instead.
 func (*CapabilityInfo) Descriptor() ([]byte, []int) {
-	return file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_rawDescGZIP(), []int{14}
+	return file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *CapabilityInfo) GetDetails() *v11.Details {
@@ -886,7 +886,7 @@ type DashboardSettings struct {
 func (x *DashboardSettings) Reset() {
 	*x = DashboardSettings{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_msgTypes[15]
+		mi := &file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_msgTypes[15]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -899,7 +899,7 @@ func (x *DashboardSettings) String() string {
 func (*DashboardSettings) ProtoMessage() {}
 
 func (x *DashboardSettings) ProtoReflect() protoreflect.Message {
-	mi := &file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_msgTypes[15]
+	mi := &file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_msgTypes[15]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -912,7 +912,7 @@ func (x *DashboardSettings) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DashboardSettings.ProtoReflect.Descriptor instead.
 func (*DashboardSettings) Descriptor() ([]byte, []int) {
-	return file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_rawDescGZIP(), []int{15}
+	return file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *DashboardSettings) GetGlobal() *DashboardGlobalSettings {
@@ -942,7 +942,7 @@ type DashboardGlobalSettings struct {
 func (x *DashboardGlobalSettings) Reset() {
 	*x = DashboardGlobalSettings{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_msgTypes[16]
+		mi := &file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_msgTypes[16]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -955,7 +955,7 @@ func (x *DashboardGlobalSettings) String() string {
 func (*DashboardGlobalSettings) ProtoMessage() {}
 
 func (x *DashboardGlobalSettings) ProtoReflect() protoreflect.Message {
-	mi := &file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_msgTypes[16]
+	mi := &file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_msgTypes[16]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -968,7 +968,7 @@ func (x *DashboardGlobalSettings) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DashboardGlobalSettings.ProtoReflect.Descriptor instead.
 func (*DashboardGlobalSettings) Descriptor() ([]byte, []int) {
-	return file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_rawDescGZIP(), []int{16}
+	return file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *DashboardGlobalSettings) GetDefaultImageRepository() string {
@@ -1003,7 +1003,7 @@ type LocalPasswordResponse struct {
 func (x *LocalPasswordResponse) Reset() {
 	*x = LocalPasswordResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_msgTypes[17]
+		mi := &file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_msgTypes[17]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1016,7 +1016,7 @@ func (x *LocalPasswordResponse) String() string {
 func (*LocalPasswordResponse) ProtoMessage() {}
 
 func (x *LocalPasswordResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_msgTypes[17]
+	mi := &file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_msgTypes[17]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1029,7 +1029,7 @@ func (x *LocalPasswordResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LocalPasswordResponse.ProtoReflect.Descriptor instead.
 func (*LocalPasswordResponse) Descriptor() ([]byte, []int) {
-	return file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_rawDescGZIP(), []int{17}
+	return file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *LocalPasswordResponse) GetPassword() string {
@@ -1039,23 +1039,24 @@ func (x *LocalPasswordResponse) GetPassword() string {
 	return ""
 }
 
-var File_github_com_rancher_opni_pkg_apis_management_v1_management_proto protoreflect.FileDescriptor
+var File_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto protoreflect.FileDescriptor
 
-var file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_rawDesc = []byte{
-	0x0a, 0x3f, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x72, 0x61, 0x6e,
-	0x63, 0x68, 0x65, 0x72, 0x2f, 0x6f, 0x70, 0x6e, 0x69, 0x2f, 0x70, 0x6b, 0x67, 0x2f, 0x61, 0x70,
-	0x69, 0x73, 0x2f, 0x6d, 0x61, 0x6e, 0x61, 0x67, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x2f, 0x76, 0x31,
-	0x2f, 0x6d, 0x61, 0x6e, 0x61, 0x67, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x2e, 0x70, 0x72, 0x6f, 0x74,
-	0x6f, 0x12, 0x0a, 0x6d, 0x61, 0x6e, 0x61, 0x67, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x1a, 0x36, 0x67,
-	0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x72, 0x61, 0x6e, 0x63, 0x68, 0x65,
-	0x72, 0x2f, 0x6f, 0x70, 0x6e, 0x69, 0x2f, 0x69, 0x6e, 0x74, 0x65, 0x72, 0x6e, 0x61, 0x6c, 0x2f,
-	0x63, 0x6f, 0x64, 0x65, 0x67, 0x65, 0x6e, 0x2f, 0x63, 0x6c, 0x69, 0x2f, 0x63, 0x6c, 0x69, 0x2e,
-	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x3f, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f,
-	0x6d, 0x2f, 0x72, 0x61, 0x6e, 0x63, 0x68, 0x65, 0x72, 0x2f, 0x6f, 0x70, 0x6e, 0x69, 0x2f, 0x70,
-	0x6b, 0x67, 0x2f, 0x61, 0x70, 0x69, 0x73, 0x2f, 0x63, 0x61, 0x70, 0x61, 0x62, 0x69, 0x6c, 0x69,
-	0x74, 0x79, 0x2f, 0x76, 0x31, 0x2f, 0x63, 0x61, 0x70, 0x61, 0x62, 0x69, 0x6c, 0x69, 0x74, 0x79,
-	0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x33, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63,
-	0x6f, 0x6d, 0x2f, 0x72, 0x61, 0x6e, 0x63, 0x68, 0x65, 0x72, 0x2f, 0x6f, 0x70, 0x6e, 0x69, 0x2f,
+var file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_rawDesc = []byte{
+	0x0a, 0x43, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x61, 0x69, 0x74,
+	0x79, 0x2d, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2f, 0x6d, 0x6f, 0x6e, 0x74, 0x79, 0x2f, 0x70, 0x6b,
+	0x67, 0x2f, 0x61, 0x70, 0x69, 0x73, 0x2f, 0x6d, 0x61, 0x6e, 0x61, 0x67, 0x65, 0x6d, 0x65, 0x6e,
+	0x74, 0x2f, 0x76, 0x31, 0x2f, 0x6d, 0x61, 0x6e, 0x61, 0x67, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x2e,
+	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x0a, 0x6d, 0x61, 0x6e, 0x61, 0x67, 0x65, 0x6d, 0x65, 0x6e,
+	0x74, 0x1a, 0x3a, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x61, 0x69,
+	0x74, 0x79, 0x2d, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2f, 0x6d, 0x6f, 0x6e, 0x74, 0x79, 0x2f, 0x69,
+	0x6e, 0x74, 0x65, 0x72, 0x6e, 0x61, 0x6c, 0x2f, 0x63, 0x6f, 0x64, 0x65, 0x67, 0x65, 0x6e, 0x2f,
+	0x63, 0x6c, 0x69, 0x2f, 0x63, 0x6c, 0x69, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x43, 0x67,
+	0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x61, 0x69, 0x74, 0x79, 0x2d, 0x63,
+	0x6c, 0x6f, 0x75, 0x64, 0x2f, 0x6d, 0x6f, 0x6e, 0x74, 0x79, 0x2f, 0x70, 0x6b, 0x67, 0x2f, 0x61,
+	0x70, 0x69, 0x73, 0x2f, 0x63, 0x61, 0x70, 0x61, 0x62, 0x69, 0x6c, 0x69, 0x74, 0x79, 0x2f, 0x76,
+	0x31, 0x2f, 0x63, 0x61, 0x70, 0x61, 0x62, 0x69, 0x6c, 0x69, 0x74, 0x79, 0x2e, 0x70, 0x72, 0x6f,
+	0x74, 0x6f, 0x1a, 0x37, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x61,
+	0x69, 0x74, 0x79, 0x2d, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2f, 0x6d, 0x6f, 0x6e, 0x74, 0x79, 0x2f,
 	0x70, 0x6b, 0x67, 0x2f, 0x61, 0x70, 0x69, 0x73, 0x2f, 0x63, 0x6f, 0x72, 0x65, 0x2f, 0x76, 0x31,
 	0x2f, 0x63, 0x6f, 0x72, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x1c, 0x67, 0x6f, 0x6f,
 	0x67, 0x6c, 0x65, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x61, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69,
@@ -1476,27 +1477,28 @@ var file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_rawDesc
 	0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x22,
 	0x1e, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x18, 0x3a, 0x01, 0x2a, 0x1a, 0x13, 0x2f, 0x64, 0x61, 0x73,
 	0x68, 0x62, 0x6f, 0x61, 0x72, 0x64, 0x2f, 0x73, 0x65, 0x74, 0x74, 0x69, 0x6e, 0x67, 0x73, 0x42,
-	0x36, 0x82, 0xc0, 0x0c, 0x02, 0x08, 0x01, 0x5a, 0x2e, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e,
-	0x63, 0x6f, 0x6d, 0x2f, 0x72, 0x61, 0x6e, 0x63, 0x68, 0x65, 0x72, 0x2f, 0x6f, 0x70, 0x6e, 0x69,
-	0x2f, 0x70, 0x6b, 0x67, 0x2f, 0x61, 0x70, 0x69, 0x73, 0x2f, 0x6d, 0x61, 0x6e, 0x61, 0x67, 0x65,
-	0x6d, 0x65, 0x6e, 0x74, 0x2f, 0x76, 0x31, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x3a, 0x82, 0xc0, 0x0c, 0x02, 0x08, 0x01, 0x5a, 0x32, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e,
+	0x63, 0x6f, 0x6d, 0x2f, 0x61, 0x69, 0x74, 0x79, 0x2d, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2f, 0x6d,
+	0x6f, 0x6e, 0x74, 0x79, 0x2f, 0x70, 0x6b, 0x67, 0x2f, 0x61, 0x70, 0x69, 0x73, 0x2f, 0x6d, 0x61,
+	0x6e, 0x61, 0x67, 0x65, 0x6d, 0x65, 0x6e, 0x74, 0x2f, 0x76, 0x31, 0x62, 0x06, 0x70, 0x72, 0x6f,
+	0x74, 0x6f, 0x33,
 }
 
 var (
-	file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_rawDescOnce sync.Once
-	file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_rawDescData = file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_rawDesc
+	file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_rawDescOnce sync.Once
+	file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_rawDescData = file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_rawDesc
 )
 
-func file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_rawDescGZIP() []byte {
-	file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_rawDescOnce.Do(func() {
-		file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_rawDescData = protoimpl.X.CompressGZIP(file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_rawDescData)
+func file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_rawDescGZIP() []byte {
+	file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_rawDescOnce.Do(func() {
+		file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_rawDescData = protoimpl.X.CompressGZIP(file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_rawDescData)
 	})
-	return file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_rawDescData
+	return file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_rawDescData
 }
 
-var file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_msgTypes = make([]protoimpl.MessageInfo, 22)
-var file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_goTypes = []interface{}{
+var file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_msgTypes = make([]protoimpl.MessageInfo, 22)
+var file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_goTypes = []interface{}{
 	(WatchEventType)(0),                         // 0: management.WatchEventType
 	(*CreateBootstrapTokenRequest)(nil),         // 1: management.CreateBootstrapTokenRequest
 	(*CertsInfoResponse)(nil),                   // 2: management.CertsInfoResponse
@@ -1556,7 +1558,7 @@ var file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_goTypes
 	(*v11.NodeCapabilityStatus)(nil),            // 56: capability.NodeCapabilityStatus
 	(*v1.TaskStatus)(nil),                       // 57: core.TaskStatus
 }
-var file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_depIdxs = []int32{
+var file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_depIdxs = []int32{
 	23, // 0: management.CreateBootstrapTokenRequest.ttl:type_name -> google.protobuf.Duration
 	19, // 1: management.CreateBootstrapTokenRequest.labels:type_name -> management.CreateBootstrapTokenRequest.LabelsEntry
 	24, // 2: management.CreateBootstrapTokenRequest.capabilities:type_name -> core.TokenCapability
@@ -1663,13 +1665,13 @@ var file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_depIdxs
 	0,  // [0:25] is the sub-list for field type_name
 }
 
-func init() { file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_init() }
-func file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_init() {
-	if File_github_com_rancher_opni_pkg_apis_management_v1_management_proto != nil {
+func init() { file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_init() }
+func file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_init() {
+	if File_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto != nil {
 		return
 	}
 	if !protoimpl.UnsafeEnabled {
-		file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
+		file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*CreateBootstrapTokenRequest); i {
 			case 0:
 				return &v.state
@@ -1681,7 +1683,7 @@ func file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_init()
 				return nil
 			}
 		}
-		file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
+		file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*CertsInfoResponse); i {
 			case 0:
 				return &v.state
@@ -1693,7 +1695,7 @@ func file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_init()
 				return nil
 			}
 		}
-		file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
+		file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*ListClustersRequest); i {
 			case 0:
 				return &v.state
@@ -1705,7 +1707,7 @@ func file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_init()
 				return nil
 			}
 		}
-		file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
+		file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*EditClusterRequest); i {
 			case 0:
 				return &v.state
@@ -1717,7 +1719,7 @@ func file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_init()
 				return nil
 			}
 		}
-		file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
+		file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*WatchClustersRequest); i {
 			case 0:
 				return &v.state
@@ -1729,7 +1731,7 @@ func file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_init()
 				return nil
 			}
 		}
-		file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
+		file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*WatchEvent); i {
 			case 0:
 				return &v.state
@@ -1741,7 +1743,7 @@ func file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_init()
 				return nil
 			}
 		}
-		file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
+		file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*APIExtensionInfoList); i {
 			case 0:
 				return &v.state
@@ -1753,7 +1755,7 @@ func file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_init()
 				return nil
 			}
 		}
-		file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
+		file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*APIExtensionInfo); i {
 			case 0:
 				return &v.state
@@ -1765,7 +1767,7 @@ func file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_init()
 				return nil
 			}
 		}
-		file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
+		file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*HTTPRuleDescriptor); i {
 			case 0:
 				return &v.state
@@ -1777,7 +1779,7 @@ func file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_init()
 				return nil
 			}
 		}
-		file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
+		file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GatewayConfig); i {
 			case 0:
 				return &v.state
@@ -1789,7 +1791,7 @@ func file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_init()
 				return nil
 			}
 		}
-		file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
+		file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*ConfigDocumentWithSchema); i {
 			case 0:
 				return &v.state
@@ -1801,7 +1803,7 @@ func file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_init()
 				return nil
 			}
 		}
-		file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
+		file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*ConfigDocument); i {
 			case 0:
 				return &v.state
@@ -1813,7 +1815,7 @@ func file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_init()
 				return nil
 			}
 		}
-		file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
+		file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*UpdateConfigRequest); i {
 			case 0:
 				return &v.state
@@ -1825,7 +1827,7 @@ func file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_init()
 				return nil
 			}
 		}
-		file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
+		file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*CapabilityList); i {
 			case 0:
 				return &v.state
@@ -1837,7 +1839,7 @@ func file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_init()
 				return nil
 			}
 		}
-		file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_msgTypes[14].Exporter = func(v interface{}, i int) interface{} {
+		file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_msgTypes[14].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*CapabilityInfo); i {
 			case 0:
 				return &v.state
@@ -1849,7 +1851,7 @@ func file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_init()
 				return nil
 			}
 		}
-		file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
+		file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*DashboardSettings); i {
 			case 0:
 				return &v.state
@@ -1861,7 +1863,7 @@ func file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_init()
 				return nil
 			}
 		}
-		file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_msgTypes[16].Exporter = func(v interface{}, i int) interface{} {
+		file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_msgTypes[16].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*DashboardGlobalSettings); i {
 			case 0:
 				return &v.state
@@ -1873,7 +1875,7 @@ func file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_init()
 				return nil
 			}
 		}
-		file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_msgTypes[17].Exporter = func(v interface{}, i int) interface{} {
+		file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_msgTypes[17].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*LocalPasswordResponse); i {
 			case 0:
 				return &v.state
@@ -1886,24 +1888,24 @@ func file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_init()
 			}
 		}
 	}
-	file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_msgTypes[15].OneofWrappers = []interface{}{}
+	file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_msgTypes[15].OneofWrappers = []interface{}{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_rawDesc,
+			RawDescriptor: file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_rawDesc,
 			NumEnums:      1,
 			NumMessages:   22,
 			NumExtensions: 0,
 			NumServices:   2,
 		},
-		GoTypes:           file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_goTypes,
-		DependencyIndexes: file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_depIdxs,
-		EnumInfos:         file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_enumTypes,
-		MessageInfos:      file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_msgTypes,
+		GoTypes:           file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_goTypes,
+		DependencyIndexes: file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_depIdxs,
+		EnumInfos:         file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_enumTypes,
+		MessageInfos:      file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_msgTypes,
 	}.Build()
-	File_github_com_rancher_opni_pkg_apis_management_v1_management_proto = out.File
-	file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_rawDesc = nil
-	file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_goTypes = nil
-	file_github_com_rancher_opni_pkg_apis_management_v1_management_proto_depIdxs = nil
+	File_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto = out.File
+	file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_rawDesc = nil
+	file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_goTypes = nil
+	file_github_com_aity_cloud_monty_pkg_apis_management_v1_management_proto_depIdxs = nil
 }

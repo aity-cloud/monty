@@ -14,10 +14,10 @@ package rbac_test
 // 	. "github.com/onsi/gomega"
 // 	"go.uber.org/atomic"
 
-// 	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-// 	"github.com/rancher/opni/pkg/rbac"
-// 	mock_rbac "github.com/rancher/opni/pkg/test/mock/rbac"
-// 	"github.com/rancher/opni/pkg/util"
+// 	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+// 	"github.com/aity-cloud/monty/pkg/rbac"
+// 	mock_rbac "github.com/aity-cloud/monty/pkg/test/mock/rbac"
+// 	"github.com/aity-cloud/monty/pkg/util"
 // )
 
 // var testUsers = map[string][]string{

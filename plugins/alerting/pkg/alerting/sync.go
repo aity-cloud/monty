@@ -6,14 +6,14 @@ import (
 	"sync"
 	"time"
 
-	"github.com/rancher/opni/pkg/alerting/storage/opts"
-	"github.com/rancher/opni/pkg/capabilities/wellknown"
-	"github.com/rancher/opni/pkg/health"
+	"github.com/aity-cloud/monty/pkg/alerting/storage/opts"
+	"github.com/aity-cloud/monty/pkg/capabilities/wellknown"
+	"github.com/aity-cloud/monty/pkg/health"
 	"google.golang.org/protobuf/types/known/durationpb"
 
-	alertingv1 "github.com/rancher/opni/pkg/apis/alerting/v1"
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	metricsnode "github.com/rancher/opni/plugins/metrics/apis/node"
+	alertingv1 "github.com/aity-cloud/monty/pkg/apis/alerting/v1"
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	metricsnode "github.com/aity-cloud/monty/plugins/metrics/apis/node"
 )
 
 // capability name ---> condition name ---> condition status
@@ -74,9 +74,9 @@ var (
 	DefaultDisconnectAlarm = func(clusterId string) *alertingv1.AlertCondition {
 		return &alertingv1.AlertCondition{
 			Name:        "agent-disconnect",
-			Description: "Alert when the downstream agent disconnects from the opni upstream",
-			Labels:      []string{"agent-disconnect", "opni", "_default"},
-			Severity:    alertingv1.OpniSeverity_Critical,
+			Description: "Alert when the downstream agent disconnects from the monty upstream",
+			Labels:      []string{"agent-disconnect", "monty", "_default"},
+			Severity:    alertingv1.MontySeverity_Critical,
 			AlertType: &alertingv1.AlertTypeDetails{
 				Type: &alertingv1.AlertTypeDetails_System{
 					System: &alertingv1.AlertConditionSystem{
@@ -92,8 +92,8 @@ var (
 		return &alertingv1.AlertCondition{
 			Name:        "agent-capability-unhealthy",
 			Description: "Alert when some downstream agent capability becomes unhealthy",
-			Labels:      []string{"agent-capability-health", "opni", "_default"},
-			Severity:    alertingv1.OpniSeverity_Critical,
+			Labels:      []string{"agent-capability-health", "monty", "_default"},
+			Severity:    alertingv1.MontySeverity_Critical,
 			AlertType: &alertingv1.AlertTypeDetails{
 				Type: &alertingv1.AlertTypeDetails_DownstreamCapability{
 					DownstreamCapability: &alertingv1.AlertConditionDownstreamCapability{

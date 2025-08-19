@@ -8,10 +8,10 @@ import (
 	"path/filepath"
 	"sync"
 
-	controlv1 "github.com/rancher/opni/pkg/apis/control/v1"
-	"github.com/rancher/opni/pkg/logger"
-	"github.com/rancher/opni/pkg/plugins"
-	"github.com/rancher/opni/pkg/urn"
+	controlv1 "github.com/aity-cloud/monty/pkg/apis/control/v1"
+	"github.com/aity-cloud/monty/pkg/logger"
+	"github.com/aity-cloud/monty/pkg/plugins"
+	"github.com/aity-cloud/monty/pkg/urn"
 	"github.com/samber/lo"
 	"github.com/spf13/afero"
 	"golang.org/x/crypto/blake2b"
@@ -126,10 +126,10 @@ func GetFilesystemPlugins(dc plugins.DiscoveryConfig) (*controlv1.PluginArchive,
 				return
 			}
 			sum := hex.EncodeToString(hash.Sum(nil))
-			opniURN := urn.NewOpniURN(urn.Plugin, UpdateStrategy, md.Module)
+			montyURN := urn.NewMontyURN(urn.Plugin, UpdateStrategy, md.Module)
 			res.Items[i] = &controlv1.PluginArchiveEntry{
 				Metadata: &controlv1.UpdateManifestEntry{
-					Package: opniURN.String(),
+					Package: montyURN.String(),
 					Path:    filepath.Base(md.BinaryPath),
 					Digest:  sum,
 				},

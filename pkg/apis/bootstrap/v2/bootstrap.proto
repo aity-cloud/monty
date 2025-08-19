@@ -1,5 +1,5 @@
 syntax = "proto3";
-option go_package = "github.com/rancher/opni/pkg/apis/bootstrap/v2";
+option go_package = "github.com/aity-cloud/monty/pkg/apis/bootstrap/v2";
 
 package bootstrap.v2;
 

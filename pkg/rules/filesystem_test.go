@@ -7,8 +7,8 @@ import (
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 
-	"github.com/rancher/opni/pkg/config/v1beta1"
-	"github.com/rancher/opni/pkg/rules"
+	"github.com/aity-cloud/monty/pkg/config/v1beta1"
+	"github.com/aity-cloud/monty/pkg/rules"
 )
 
 var _ = Describe("Filesystem Rule Group Discovery", Label("unit"), func() {

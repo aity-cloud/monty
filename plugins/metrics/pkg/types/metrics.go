@@ -1,7 +1,7 @@
 package types
 
 import (
-	"github.com/rancher/opni/pkg/util"
+	"github.com/aity-cloud/monty/pkg/util"
 	"go.opentelemetry.io/otel/metric"
 	sdkmetric "go.opentelemetry.io/otel/sdk/metric"
 	"go.opentelemetry.io/otel/sdk/metric/aggregation"

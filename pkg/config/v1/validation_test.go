@@ -9,10 +9,10 @@ import (
 	lo "github.com/samber/lo"
 	"github.com/ttacon/chalk"
 
-	configv1 "github.com/rancher/opni/pkg/config/v1"
-	"github.com/rancher/opni/pkg/test/testdata"
-	"github.com/rancher/opni/pkg/util/flagutil"
-	"github.com/rancher/opni/pkg/validation"
+	configv1 "github.com/aity-cloud/monty/pkg/config/v1"
+	"github.com/aity-cloud/monty/pkg/test/testdata"
+	"github.com/aity-cloud/monty/pkg/util/flagutil"
+	"github.com/aity-cloud/monty/pkg/validation"
 	"google.golang.org/protobuf/proto"
 )
 

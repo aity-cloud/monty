@@ -17,7 +17,7 @@ const (
 	certStore            = "/etc/ssl/certs"
 	clientCertsMountPath = "/run/certs/client"
 	alertingUser         = "alerting"
-	requiredData         = "opni-alertmanager-data"
+	requiredData         = "monty-alertmanager-data"
 )
 
 func (r *Reconciler) storage() ([]corev1.PersistentVolumeClaim, []corev1.Volume) {
@@ -53,7 +53,7 @@ func (r *Reconciler) storage() ([]corev1.PersistentVolumeClaim, []corev1.Volume)
 			VolumeSource: corev1.VolumeSource{
 				ConfigMap: &corev1.ConfigMapVolumeSource{
 					LocalObjectReference: corev1.LocalObjectReference{
-						Name: "opni-alerting-web-config",
+						Name: "monty-alerting-web-config",
 					},
 				},
 			},
@@ -158,7 +158,7 @@ tls_server_config:
     client_allowed_sans: [
 		"localhost",
 		"alerting-client",
-		"opni-gateway-client",
+		"monty-gateway-client",
 		"cortex-client",
 	]
 http_server_config:
@@ -172,7 +172,7 @@ http_server_config:
 
 	cm := &corev1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "opni-alerting-web-config",
+			Name:      "monty-alerting-web-config",
 			Namespace: r.gw.Namespace,
 		},
 		Data: map[string]string{

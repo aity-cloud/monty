@@ -4,13 +4,13 @@ import (
 	"context"
 	"errors"
 
+	mock_auth "github.com/aity-cloud/monty/pkg/test/mock/auth"
+	mock_health "github.com/aity-cloud/monty/pkg/test/mock/health"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	mock_auth "github.com/rancher/opni/pkg/test/mock/auth"
-	mock_health "github.com/rancher/opni/pkg/test/mock/health"
 
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	"github.com/rancher/opni/pkg/health"
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	"github.com/aity-cloud/monty/pkg/health"
 )
 
 var _ = Describe("Monitor", Label("unit"), func() {

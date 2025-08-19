@@ -4,8 +4,8 @@ import (
 	"context"
 
 	"buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	flagutil "github.com/rancher/opni/pkg/util/flagutil"
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	flagutil "github.com/aity-cloud/monty/pkg/util/flagutil"
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"

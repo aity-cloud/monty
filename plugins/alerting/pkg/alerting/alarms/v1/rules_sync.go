@@ -4,12 +4,12 @@ import (
 	"context"
 	"fmt"
 
+	alertingv1 "github.com/aity-cloud/monty/pkg/apis/alerting/v1"
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	"github.com/aity-cloud/monty/pkg/auth/cluster"
+	"github.com/aity-cloud/monty/pkg/util"
+	"github.com/aity-cloud/monty/plugins/alerting/pkg/apis/rules"
 	"github.com/google/go-cmp/cmp"
-	alertingv1 "github.com/rancher/opni/pkg/apis/alerting/v1"
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	"github.com/rancher/opni/pkg/auth/cluster"
-	"github.com/rancher/opni/pkg/util"
-	"github.com/rancher/opni/plugins/alerting/pkg/apis/rules"
 	"github.com/samber/lo"
 	"go.uber.org/multierr"
 	"google.golang.org/grpc/codes"
@@ -23,7 +23,7 @@ const (
 	metadataReadOnly = "readOnly"
 )
 
-func ignoreOpniConfigurations(conf *alertingv1.AlertCondition) {
+func ignoreMontyConfigurations(conf *alertingv1.AlertCondition) {
 	conf.Metadata = nil
 	conf.Name = ""
 	conf.Description = ""
@@ -49,11 +49,11 @@ func applyMutableReadOnlyFields(dest, src *alertingv1.AlertCondition) {
 }
 
 func areRuleSpecsEqual(old, new *alertingv1.AlertCondition) bool {
-	oldIgnoreOpniConf := util.ProtoClone(old)
-	newIgnoreOpniConf := util.ProtoClone(new)
-	ignoreOpniConfigurations(oldIgnoreOpniConf)
-	ignoreOpniConfigurations(newIgnoreOpniConf)
-	return cmp.Equal(oldIgnoreOpniConf, newIgnoreOpniConf, protocmp.Transform())
+	oldIgnoreMontyConf := util.ProtoClone(old)
+	newIgnoreMontyConf := util.ProtoClone(new)
+	ignoreMontyConfigurations(oldIgnoreMontyConf)
+	ignoreMontyConfigurations(newIgnoreMontyConf)
+	return cmp.Equal(oldIgnoreMontyConf, newIgnoreMontyConf, protocmp.Transform())
 }
 
 func (a *AlarmServerComponent) SyncRules(ctx context.Context, rules *rules.RuleManifest) (*emptypb.Empty, error) {
@@ -95,7 +95,7 @@ func (a *AlarmServerComponent) SyncRules(ctx context.Context, rules *rules.RuleM
 			if metadata == nil {
 				metadata = map[string]string{}
 			}
-			// keep opni managed metadata, unless overriden
+			// keep monty managed metadata, unless overriden
 			retMetadata := lo.Assign(metadata, incomingCond.Metadata)
 			if !areRuleSpecsEqual(existing, incomingCond) {
 				applyMutableReadOnlyFields(incomingCond, existing)

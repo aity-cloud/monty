@@ -17,7 +17,7 @@ type (
 
 const (
 	AttributeMetadataKey = "x-session-attribute"
-	AttributeLabelKey    = "opni.io/session-attribute"
+	AttributeLabelKey    = "monty.io/session-attribute"
 
 	KeyLength = 32
 )

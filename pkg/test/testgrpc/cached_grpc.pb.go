@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.3.0
 // - ragu               v1.0.0
-// source: github.com/rancher/opni/pkg/test/testgrpc/cached.proto
+// source: github.com/aity-cloud/monty/pkg/test/testgrpc/cached.proto
 
 package testgrpc
 
@@ -178,7 +178,7 @@ var SimpleService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "github.com/rancher/opni/pkg/test/testgrpc/cached.proto",
+	Metadata: "github.com/aity-cloud/monty/pkg/test/testgrpc/cached.proto",
 }
 
 const (
@@ -344,7 +344,7 @@ var ObjectService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "github.com/rancher/opni/pkg/test/testgrpc/cached.proto",
+	Metadata: "github.com/aity-cloud/monty/pkg/test/testgrpc/cached.proto",
 }
 
 const (
@@ -514,5 +514,5 @@ var AggregatorService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "github.com/rancher/opni/pkg/test/testgrpc/cached.proto",
+	Metadata: "github.com/aity-cloud/monty/pkg/test/testgrpc/cached.proto",
 }

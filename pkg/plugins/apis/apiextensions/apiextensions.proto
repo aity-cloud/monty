@@ -3,13 +3,13 @@ syntax = "proto3";
 package apiextensions;
 
 import "github.com/kralicky/totem/totem.proto";
-import "github.com/rancher/opni/pkg/config/v1/gateway_config.proto";
+import "github.com/aity-cloud/monty/pkg/config/v1/gateway_config.proto";
 import "google.golang.org/grpc/health/grpc_health_v1/health.proto";
 import "google/protobuf/descriptor.proto";
 import "google/protobuf/empty.proto";
-import "github.com/rancher/opni/pkg/apis/core/v1/core.proto";
+import "github.com/aity-cloud/monty/pkg/apis/core/v1/core.proto";
 
-option go_package = "github.com/rancher/opni/pkg/plugins/apis/apiextensions";
+option go_package = "github.com/aity-cloud/monty/pkg/plugins/apis/apiextensions";
 
 service ManagementAPIExtension {
   rpc Descriptors(google.protobuf.Empty) returns (ServiceDescriptorProtoList);

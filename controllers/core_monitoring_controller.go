@@ -12,12 +12,12 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/client-go/metadata"
 
+	apicorev1 "github.com/aity-cloud/monty/apis/core/v1"
+	corev1beta1 "github.com/aity-cloud/monty/apis/core/v1beta1"
+	"github.com/aity-cloud/monty/pkg/resources/monitoring"
+	"github.com/aity-cloud/monty/pkg/util/k8sutil"
 	"github.com/go-logr/logr"
 	"github.com/huandu/xstrings"
-	apicorev1 "github.com/rancher/opni/apis/core/v1"
-	corev1beta1 "github.com/rancher/opni/apis/core/v1beta1"
-	"github.com/rancher/opni/pkg/resources/monitoring"
-	"github.com/rancher/opni/pkg/util/k8sutil"
 	"github.com/samber/lo"
 	"github.com/ttacon/chalk"
 	appsv1 "k8s.io/api/apps/v1"
@@ -33,9 +33,9 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/predicate"
 )
 
-// +kubebuilder:rbac:groups=core.opni.io,resources=monitoringclusters,verbs=get;list;watch;create;update;patch;delete
-// +kubebuilder:rbac:groups=core.opni.io,resources=monitoringclusters/status,verbs=get;update;patch
-// +kubebuilder:rbac:groups=core.opni.io,resources=monitoringclusters/finalizers,verbs=update
+// +kubebuilder:rbac:groups=core.monty.io,resources=monitoringclusters,verbs=get;list;watch;create;update;patch;delete
+// +kubebuilder:rbac:groups=core.monty.io,resources=monitoringclusters/status,verbs=get;update;patch
+// +kubebuilder:rbac:groups=core.monty.io,resources=monitoringclusters/finalizers,verbs=update
 // +kubebuilder:rbac:groups=apps,resources=deployments,verbs=get;list;watch;create;update;patch;delete
 // +kubebuilder:rbac:groups=apps,resources=statefulsets,verbs=get;list;watch;create;update;patch;delete
 // +kubebuilder:rbac:groups=core,resources=configmaps,verbs=get;list;watch;create;update;patch;delete
@@ -147,7 +147,7 @@ func (r *CoreMonitoringReconciler) Upgrade(ctx context.Context, umc *unstructure
 			Group:    "apiextensions.k8s.io",
 			Version:  "v1",
 			Resource: "customresourcedefinitions",
-		}).Get(ctx, "monitoringclusters.core.opni.io", metav1.GetOptions{})
+		}).Get(ctx, "monitoringclusters.core.monty.io", metav1.GetOptions{})
 
 		annotations := map[string]string{}
 		if err != nil && !k8serrors.IsForbidden(err) {
@@ -162,9 +162,9 @@ func (r *CoreMonitoringReconciler) Upgrade(ctx context.Context, umc *unstructure
 
 		if _, ok := annotations[corev1beta1.InternalSchemalessAnnotation]; !ok {
 			if err == nil {
-				err = fmt.Errorf("error: monitoringclusters.core.opni.io is missing annotation %q", corev1beta1.InternalSchemalessAnnotation)
+				err = fmt.Errorf("error: monitoringclusters.core.monty.io is missing annotation %q", corev1beta1.InternalSchemalessAnnotation)
 			}
-			err := fmt.Errorf("MonitoringCluster CRD is out of date or cannot be verified; please ensure both the 'opni-crd' and 'opni' helm charts are updated to the latest version (caused by: %w)", err)
+			err := fmt.Errorf("MonitoringCluster CRD is out of date or cannot be verified; please ensure both the 'monty-crd' and 'monty' helm charts are updated to the latest version (caused by: %w)", err)
 			return k8sutil.RequeueErr(err), err
 		}
 	}
@@ -185,7 +185,7 @@ func (r *CoreMonitoringReconciler) Upgrade(ctx context.Context, umc *unstructure
 			}
 		}
 	} else if currentRevision > corev1beta1.MonitoringClusterTargetRevision {
-		return k8sutil.DoNotRequeue(), fmt.Errorf("MonitoringCluster %s/%s was created with a newer version of Opni and is incompatible with the current version", umc.GetNamespace(), umc.GetName())
+		return k8sutil.DoNotRequeue(), fmt.Errorf("MonitoringCluster %s/%s was created with a newer version of Monty and is incompatible with the current version", umc.GetNamespace(), umc.GetName())
 	} else {
 		return k8sutil.DoNotRequeue(), nil
 	}

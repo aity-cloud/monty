@@ -3,10 +3,10 @@ package spec
 import (
 	"context"
 
-	"github.com/rancher/opni/pkg/alerting/drivers/routing"
-	"github.com/rancher/opni/pkg/alerting/interfaces"
-	"github.com/rancher/opni/pkg/alerting/storage/opts"
-	alertingv1 "github.com/rancher/opni/pkg/apis/alerting/v1"
+	"github.com/aity-cloud/monty/pkg/alerting/drivers/routing"
+	"github.com/aity-cloud/monty/pkg/alerting/interfaces"
+	"github.com/aity-cloud/monty/pkg/alerting/storage/opts"
+	alertingv1 "github.com/aity-cloud/monty/pkg/apis/alerting/v1"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
@@ -58,7 +58,7 @@ type PartitionedAlertingStorage[T interfaces.AlertingSecret] interface {
 type (
 	ConditionStorage = PartitionedAlertingStorage[*alertingv1.AlertCondition]
 	EndpointStorage  = AlertingSecretStorage[*alertingv1.AlertEndpoint]
-	RouterStorage    = AlertingStorage[routing.OpniRouting]
+	RouterStorage    = AlertingStorage[routing.MontyRouting]
 )
 
 type AlertingStateCache[T interfaces.AlertingSecret] interface {

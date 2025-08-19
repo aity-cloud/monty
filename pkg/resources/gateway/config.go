@@ -6,19 +6,19 @@ import (
 	"path/filepath"
 	"time"
 
-	apicorev1 "github.com/rancher/opni/apis/core/v1"
-	"github.com/rancher/opni/pkg/logger"
-	"github.com/rancher/opni/pkg/storage/crds"
+	apicorev1 "github.com/aity-cloud/monty/apis/core/v1"
+	"github.com/aity-cloud/monty/pkg/logger"
+	"github.com/aity-cloud/monty/pkg/storage/crds"
 
+	montycorev1beta1 "github.com/aity-cloud/monty/apis/core/v1beta1"
+	configv1 "github.com/aity-cloud/monty/pkg/config/v1"
+	"github.com/aity-cloud/monty/pkg/resources"
+	"github.com/aity-cloud/monty/pkg/util/flagutil"
+	"github.com/aity-cloud/monty/pkg/util/k8sutil"
+	natsutil "github.com/aity-cloud/monty/pkg/util/nats"
 	cmv1 "github.com/cert-manager/cert-manager/pkg/apis/certmanager/v1"
 	v1 "github.com/cert-manager/cert-manager/pkg/apis/meta/v1"
 	promcommon "github.com/prometheus/common/config"
-	opnicorev1beta1 "github.com/rancher/opni/apis/core/v1beta1"
-	configv1 "github.com/rancher/opni/pkg/config/v1"
-	"github.com/rancher/opni/pkg/resources"
-	"github.com/rancher/opni/pkg/util/flagutil"
-	"github.com/rancher/opni/pkg/util/k8sutil"
-	natsutil "github.com/rancher/opni/pkg/util/nats"
 	"github.com/samber/lo"
 	yamlv3 "gopkg.in/yaml.v3"
 	corev1 "k8s.io/api/core/v1"
@@ -84,7 +84,7 @@ func (r *Reconciler) checkConfiguration() k8sutil.RequeueOp {
 	certs := &configv1.CertsSpec{
 		CaCertData:      lo.ToPtr(string(caCert.Data["ca.crt"])),
 		ServingCertData: lo.ToPtr(string(servingCert.Data["tls.crt"])),
-		ServingKey:      lo.ToPtr("/run/opni/certs/tls.key"),
+		ServingKey:      lo.ToPtr("/run/monty/certs/tls.key"),
 	}
 
 	if shouldInitializeConfig(r.gw) {
@@ -130,8 +130,8 @@ func (r *Reconciler) initDefaultActiveConfig(certs *configv1.CertsSpec) k8sutil.
 	conf.Management.AdvertiseAddress = lo.ToPtr("${POD_IP}:11090")
 	conf.Relay.AdvertiseAddress = lo.ToPtr("${POD_IP}:11190")
 	conf.Dashboard.AdvertiseAddress = lo.ToPtr("${POD_IP}:12080")
-	conf.Keyring.RuntimeKeyDirs = []string{"/run/opni/keyring"}
-	conf.Plugins.Dir = lo.ToPtr("/var/lib/opni/plugins")
+	conf.Keyring.RuntimeKeyDirs = []string{"/run/monty/keyring"}
+	conf.Plugins.Dir = lo.ToPtr("/var/lib/monty/plugins")
 	conf.Certs = certs
 
 	// config.storage.backend can be set before initial setup, otherwise
@@ -148,7 +148,7 @@ func (r *Reconciler) initDefaultActiveConfig(certs *configv1.CertsSpec) k8sutil.
 			},
 		}
 	case configv1.StorageBackend_JetStream:
-		nats := &opnicorev1beta1.NatsCluster{}
+		nats := &montycorev1beta1.NatsCluster{}
 		if err := r.client.Get(r.ctx, types.NamespacedName{
 			Namespace: r.gw.Namespace,
 			Name:      r.gw.Spec.NatsRef.Name,
@@ -199,9 +199,9 @@ func (r *Reconciler) amtoolConfigMap() resources.Resource {
 
 	httpConfig := promcommon.HTTPClientConfig{
 		TLSConfig: promcommon.TLSConfig{
-			CAFile:   "/run/opni/certs/ca.crt",
-			CertFile: "/run/opni/certs/tls.crt",
-			KeyFile:  "/run/opni/certs/tls.key",
+			CAFile:   "/run/monty/certs/ca.crt",
+			CertFile: "/run/monty/certs/tls.crt",
+			KeyFile:  "/run/monty/certs/tls.key",
 		},
 		FollowRedirects: true,
 	}

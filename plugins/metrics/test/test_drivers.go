@@ -10,28 +10,28 @@ import (
 	"sync/atomic"
 	"time"
 
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	storagev1 "github.com/aity-cloud/monty/pkg/apis/storage/v1"
+	"github.com/aity-cloud/monty/pkg/config/v1beta1"
+	"github.com/aity-cloud/monty/pkg/logger"
+	"github.com/aity-cloud/monty/pkg/plugins/driverutil"
+	"github.com/aity-cloud/monty/pkg/rules"
+	"github.com/aity-cloud/monty/pkg/storage"
+	"github.com/aity-cloud/monty/pkg/storage/inmemory"
+	"github.com/aity-cloud/monty/pkg/test"
+	"github.com/aity-cloud/monty/pkg/util"
+	"github.com/aity-cloud/monty/pkg/util/notifier"
+	"github.com/aity-cloud/monty/plugins/metrics/apis/cortexops"
+	"github.com/aity-cloud/monty/plugins/metrics/apis/node"
+	"github.com/aity-cloud/monty/plugins/metrics/apis/remoteread"
+	metrics_agent_drivers "github.com/aity-cloud/monty/plugins/metrics/pkg/agent/drivers"
+	"github.com/aity-cloud/monty/plugins/metrics/pkg/cortex/configutil"
+	"github.com/aity-cloud/monty/plugins/metrics/pkg/gateway/drivers"
+	metrics_drivers "github.com/aity-cloud/monty/plugins/metrics/pkg/gateway/drivers"
 	"github.com/cortexproject/cortex/pkg/ring"
 	"github.com/cortexproject/cortex/pkg/ruler"
 	"github.com/cortexproject/cortex/pkg/storage/bucket/filesystem"
 	"github.com/cortexproject/cortex/pkg/storage/tsdb"
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	storagev1 "github.com/rancher/opni/pkg/apis/storage/v1"
-	"github.com/rancher/opni/pkg/config/v1beta1"
-	"github.com/rancher/opni/pkg/logger"
-	"github.com/rancher/opni/pkg/plugins/driverutil"
-	"github.com/rancher/opni/pkg/rules"
-	"github.com/rancher/opni/pkg/storage"
-	"github.com/rancher/opni/pkg/storage/inmemory"
-	"github.com/rancher/opni/pkg/test"
-	"github.com/rancher/opni/pkg/util"
-	"github.com/rancher/opni/pkg/util/notifier"
-	"github.com/rancher/opni/plugins/metrics/apis/cortexops"
-	"github.com/rancher/opni/plugins/metrics/apis/node"
-	"github.com/rancher/opni/plugins/metrics/apis/remoteread"
-	metrics_agent_drivers "github.com/rancher/opni/plugins/metrics/pkg/agent/drivers"
-	"github.com/rancher/opni/plugins/metrics/pkg/cortex/configutil"
-	"github.com/rancher/opni/plugins/metrics/pkg/gateway/drivers"
-	metrics_drivers "github.com/rancher/opni/plugins/metrics/pkg/gateway/drivers"
 	"github.com/samber/lo"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -123,7 +123,7 @@ func (d *TestEnvMetricsClusterDriver) ListPresets(context.Context, *emptypb.Empt
 				Id: &corev1.Reference{Id: "test-environment"},
 				Metadata: &driverutil.PresetMetadata{
 					DisplayName: "Test Environment",
-					Description: "Runs cortex in single-binary mode from bin/opni",
+					Description: "Runs cortex in single-binary mode from bin/monty",
 					Notes: []string{
 						"Configuration is stored in a temporary directory; press (i) for details.",
 						"Workload configuration is ignored in the test environment.",

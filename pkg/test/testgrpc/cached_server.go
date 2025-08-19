@@ -10,10 +10,10 @@ import (
 
 	"gopkg.in/square/go-jose.v2/json"
 
-	"github.com/rancher/opni/pkg/caching"
+	"github.com/aity-cloud/monty/pkg/caching"
 	"google.golang.org/grpc/codes"
 
-	"github.com/rancher/opni/pkg/util"
+	"github.com/aity-cloud/monty/pkg/util"
 
 	"google.golang.org/protobuf/types/known/emptypb"
 )

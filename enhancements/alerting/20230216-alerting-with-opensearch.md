@@ -4,15 +4,15 @@ Alerting Integration with OpenSearch
 
 ## Summary:
 
-Allow end-users to be alerted on opensearch data as an alarm type in Opni-Alerting
+Allow end-users to be alerted on opensearch data as an alarm type in Monty-Alerting
 
 ## Use case:
 
-- End-users gain access to Opni-Alerting features on logging observability data and by extension, Opni-Alerting features on AiOps logging insights
+- End-users gain access to Monty-Alerting features on logging observability data and by extension, Monty-Alerting features on AiOps logging insights
 
 ## Benefits:
 
-- Use Opni-Alerting with Logging & AiOps
+- Use Monty-Alerting with Logging & AiOps
 
 ## Impact:
 
@@ -85,7 +85,7 @@ message OpensearchDestinationList{
 
 Alerting uses `LoadMonitor` to create the OpenSearch dependencies required to activate the alarm.
 
-`LoadMonitor` bundles the [Create monitor](https://opensearch.org/docs/2.4/observing-your-data/alerting/api/#create-a-query-level-monitor) & [Update monitor](https://opensearch.org/docs/2.4/observing-your-data/alerting/api/#update-monitor) apis depending on what operation is appropriate. The reason is to be semantically and ideologically in line with the existing internal opni alarms and cortex alarms :
+`LoadMonitor` bundles the [Create monitor](https://opensearch.org/docs/2.4/observing-your-data/alerting/api/#create-a-query-level-monitor) & [Update monitor](https://opensearch.org/docs/2.4/observing-your-data/alerting/api/#update-monitor) apis depending on what operation is appropriate. The reason is to be semantically and ideologically in line with the existing internal monty alarms and cortex alarms :
 
 1. they are stateless
 2. alerting's only concern is whether or not the monitor spec is loaded
@@ -129,9 +129,9 @@ message AlertConditionOpensearchQuery{
   }
 ```
 
-The actions field on the monitor will always be implicitly set by Opni-Alerting based on the alarm configuration.
+The actions field on the monitor will always be implicitly set by Monty-Alerting based on the alarm configuration.
 
-The actions field always points to the opni-gateway address and the new trigger alerting `TriggerWithHook` api.
+The actions field always points to the monty-gateway address and the new trigger alerting `TriggerWithHook` api.
 
 The logic for creating & translating these fields will go into `pkg/alerting/drivers/opensearch`.
 
@@ -188,20 +188,20 @@ message AlertConditionLogKeywordCount {
 
 - `AlertConditionStatus` & `ListStatusAlertCondition` APIs should return `Pending` state for Opensearch alarms if the associated monitor doesn't exist in Opensearch. The `Reason` field on the returned state can include more details.
 
-- `AlertConditionStatus` & `ListStatusAlertCondition` APIs need to also get the state from the Monitors using `MonitorStatus`, with the following mappings `OpenSearch -> OpniAlerting`:
+- `AlertConditionStatus` & `ListStatusAlertCondition` APIs need to also get the state from the Monitors using `MonitorStatus`, with the following mappings `OpenSearch -> MontyAlerting`:
 
-  - `Acknowledged` ----> `Silence` (when an OpenSearch admin acknowledges it from OpenSearch, propagate that change to OpniAlerting in the form of a silence)
+  - `Acknowledged` ----> `Silence` (when an OpenSearch admin acknowledges it from OpenSearch, propagate that change to MontyAlerting in the form of a silence)
   - `Completed` ----> `Ok`
   - `Active` ----> `Firing`
-  - `Error`/`Deleted` ----> `Invalidated` (when something is deleted through a source other than opni alerting, or something is severely wrong). The `Reason` field should specify additional details
+  - `Error`/`Deleted` ----> `Invalidated` (when something is deleted through a source other than monty alerting, or something is severely wrong). The `Reason` field should specify additional details
 
 #### Sync loop
 
 alerting sync loop needs to handle some additional sync tasks
 
-- if logging is enabled, check the opni-alerting webhook that points `ProxyOpenSearchTrigger` always exists
+- if logging is enabled, check the monty-alerting webhook that points `ProxyOpenSearchTrigger` always exists
 
-- if an opensearch monitor is acknowledged, but not silenced, silence it in opni-alerting
+- if an opensearch monitor is acknowledged, but not silenced, silence it in monty-alerting
 - if a logging alarm condition is silenced, but not acknowledged in opensearch, acknowledge it
 
 ### UI/UX
@@ -222,7 +222,7 @@ alerting sync loop needs to handle some additional sync tasks
   - [ ] input construction of protocol buffer to Opensearch monitors
   - [ ] extensive input validation to constructions
   - [ ] trigger hook api that accepts webhook message contents
-- [ ] Opensearch monitor status mapping to OpniAlerting alarm status
+- [ ] Opensearch monitor status mapping to MontyAlerting alarm status
 - [ ] Push/apply updates to opensearch dependencies inside the alerting push stream syncing logic
 
 ## Supporting documents:
@@ -250,4 +250,4 @@ alerting sync loop needs to handle some additional sync tasks
 
 ## Resources:
 
-1 Opni Upstream Cluster + 1 Opni Downstream Cluster
+1 Monty Upstream Cluster + 1 Monty Downstream Cluster

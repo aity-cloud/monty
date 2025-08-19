@@ -6,7 +6,7 @@ import (
 
 	gokitlog "github.com/go-kit/log"
 
-	"github.com/rancher/opni/plugins/metrics/apis/cortexops"
+	"github.com/aity-cloud/monty/plugins/metrics/apis/cortexops"
 )
 
 type errLogger struct {
@@ -50,7 +50,7 @@ func CollectValidationErrorLogs(cfg *cortexops.CortexApplicationConfig, override
 // 		errs = append(errs, rule(cfg)...)
 // 	}
 // 	for _, err := range errs {
-// 		err.Source = "opni"
+// 		err.Source = "monty"
 // 	}
 // 	return errs
 // }

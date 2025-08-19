@@ -10,17 +10,17 @@ import (
 	"testing"
 	"time"
 
+	"github.com/aity-cloud/monty/apis"
+	managementv1 "github.com/aity-cloud/monty/pkg/apis/management/v1"
+	"github.com/aity-cloud/monty/pkg/clients"
+	"github.com/aity-cloud/monty/pkg/plugins/driverutil"
+	"github.com/aity-cloud/monty/pkg/test"
+	"github.com/aity-cloud/monty/plugins/logging/apis/loggingadmin"
+	"github.com/aity-cloud/monty/plugins/metrics/apis/cortexadmin"
+	"github.com/aity-cloud/monty/plugins/metrics/apis/cortexops"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	"github.com/pulumi/pulumi/sdk/v3/go/auto"
-	"github.com/rancher/opni/apis"
-	managementv1 "github.com/rancher/opni/pkg/apis/management/v1"
-	"github.com/rancher/opni/pkg/clients"
-	"github.com/rancher/opni/pkg/plugins/driverutil"
-	"github.com/rancher/opni/pkg/test"
-	"github.com/rancher/opni/plugins/logging/apis/loggingadmin"
-	"github.com/rancher/opni/plugins/metrics/apis/cortexadmin"
-	"github.com/rancher/opni/plugins/metrics/apis/cortexops"
 	"google.golang.org/protobuf/types/known/emptypb"
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/client-go/rest"
@@ -81,8 +81,8 @@ var _ = BeforeSuite(func() {
 	DeferCleanup(ca)
 
 	internalPorts, err := PortForward(ctx, types.NamespacedName{
-		Namespace: "opni",
-		Name:      "opni-internal",
+		Namespace: "monty",
+		Name:      "monty-internal",
 	}, []string{
 		"11090",
 	}, restConfig, scheme)

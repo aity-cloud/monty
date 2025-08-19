@@ -4,15 +4,15 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/rancher/opni/plugins/metrics/apis/node"
-	"github.com/rancher/opni/plugins/metrics/apis/remoteread"
+	"github.com/aity-cloud/monty/plugins/metrics/apis/node"
+	"github.com/aity-cloud/monty/plugins/metrics/apis/remoteread"
 	"google.golang.org/protobuf/encoding/prototext"
 
 	"slices"
 
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
 	"github.com/jedib0t/go-pretty/v6/table"
 	"github.com/jedib0t/go-pretty/v6/text"
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
 	"github.com/samber/lo"
 )
 
@@ -227,7 +227,7 @@ func RenderTargetList(list *remoteread.TargetList) string {
 			state = "unknown"
 		}
 
-		// todo: we should be able to accept whatever time format given here as the --start parameter to opni import start
+		// todo: we should be able to accept whatever time format given here as the --start parameter to monty import start
 		var lastRead string
 		if progress := target.Status.Progress; progress != nil {
 			lastRead = progress.LastReadTimestamp.AsTime().String()

@@ -3,13 +3,13 @@ package gateway
 import (
 	"context"
 
-	"github.com/rancher/opni/pkg/agent"
-	"github.com/rancher/opni/pkg/auth/cluster"
-	"github.com/rancher/opni/pkg/metrics"
-	streamext "github.com/rancher/opni/pkg/plugins/apis/apiextensions/stream"
-	"github.com/rancher/opni/pkg/util"
-	"github.com/rancher/opni/plugins/metrics/apis/remoteread"
-	"github.com/rancher/opni/plugins/metrics/pkg/types"
+	"github.com/aity-cloud/monty/pkg/agent"
+	"github.com/aity-cloud/monty/pkg/auth/cluster"
+	"github.com/aity-cloud/monty/pkg/metrics"
+	streamext "github.com/aity-cloud/monty/pkg/plugins/apis/apiextensions/stream"
+	"github.com/aity-cloud/monty/pkg/util"
+	"github.com/aity-cloud/monty/plugins/metrics/apis/remoteread"
+	"github.com/aity-cloud/monty/plugins/metrics/pkg/types"
 	"go.opentelemetry.io/otel/attribute"
 	"google.golang.org/grpc"
 )

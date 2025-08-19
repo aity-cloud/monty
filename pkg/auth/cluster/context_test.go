@@ -6,19 +6,19 @@ import (
 	"crypto/x509"
 	"net"
 
+	"github.com/aity-cloud/monty/pkg/keyring"
+	"github.com/aity-cloud/monty/pkg/test/testdata"
+	"github.com/aity-cloud/monty/pkg/test/testgrpc"
+	"github.com/aity-cloud/monty/pkg/test/testutil"
+	"github.com/aity-cloud/monty/pkg/util/streams"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/rancher/opni/pkg/keyring"
-	"github.com/rancher/opni/pkg/test/testdata"
-	"github.com/rancher/opni/pkg/test/testgrpc"
-	"github.com/rancher/opni/pkg/test/testutil"
-	"github.com/rancher/opni/pkg/util/streams"
 	"github.com/samber/lo"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/test/bufconn"
 
-	"github.com/rancher/opni/pkg/auth/cluster"
+	"github.com/aity-cloud/monty/pkg/auth/cluster"
 )
 
 var _ = Describe("Cluster Context Utils", Label("unit"), func() {

@@ -7,11 +7,11 @@ import (
 	"reflect"
 	strings "strings"
 
+	cliutil "github.com/aity-cloud/monty/pkg/monty/cliutil"
+	"github.com/aity-cloud/monty/pkg/plugins/driverutil"
+	"github.com/aity-cloud/monty/pkg/util"
 	"github.com/bufbuild/protovalidate-go"
 	"github.com/nsf/jsondiff"
-	cliutil "github.com/rancher/opni/pkg/opni/cliutil"
-	"github.com/rancher/opni/pkg/plugins/driverutil"
-	"github.com/rancher/opni/pkg/util"
 	"github.com/samber/lo"
 	cobra "github.com/spf13/cobra"
 	"github.com/ttacon/chalk"
@@ -53,10 +53,10 @@ import (
 // as a subcommand of the service's top-level command. For example,
 // (assuming the service's use line is "config"):
 //
-//	$ opni x config set [--flags ...]
-//	$ opni x config dry-run set [--flags ...]
-//	$ opni x config reset [--flags ...]
-//	$ opni x config dry-run reset [--flags ...]
+//	$ monty x config set [--flags ...]
+//	$ monty x config dry-run set [--flags ...]
+//	$ monty x config reset [--flags ...]
+//	$ monty x config dry-run reset [--flags ...]
 //	etc.
 func BuildCmd[
 	T driverutil.ConfigType[T],

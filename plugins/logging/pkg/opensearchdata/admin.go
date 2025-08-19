@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"time"
 
+	opensearchtypes "github.com/aity-cloud/monty/pkg/opensearch/opensearch/types"
+	"github.com/aity-cloud/monty/pkg/plugins/apis/system"
 	"github.com/lestrrat-go/backoff/v2"
 	"github.com/opensearch-project/opensearch-go/opensearchutil"
-	opensearchtypes "github.com/rancher/opni/pkg/opensearch/opensearch/types"
-	"github.com/rancher/opni/pkg/plugins/apis/system"
 )
 
 const (
@@ -50,7 +50,7 @@ func (m *Manager) CreateInitialAdmin(password []byte, readyFunc ...ReadyFunc) {
 	ctx := context.Background()
 
 	user := opensearchtypes.UserSpec{
-		UserName: "opni",
+		UserName: "monty",
 		Password: string(password),
 		BackendRoles: []string{
 			"admin",

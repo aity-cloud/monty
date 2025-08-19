@@ -10,15 +10,15 @@ import (
 
 	"log/slog"
 
+	"github.com/aity-cloud/monty/pkg/versions"
+	"github.com/aity-cloud/monty/plugins/logging/apis/loggingadmin"
+	loggingerrors "github.com/aity-cloud/monty/plugins/logging/pkg/errors"
+	"github.com/aity-cloud/monty/plugins/logging/pkg/gateway/alerting"
+	"github.com/aity-cloud/monty/plugins/logging/pkg/gateway/drivers/backend"
+	"github.com/aity-cloud/monty/plugins/logging/pkg/gateway/drivers/management"
+	"github.com/aity-cloud/monty/plugins/logging/pkg/opensearchdata"
+	"github.com/aity-cloud/monty/plugins/logging/pkg/otel"
 	"github.com/lestrrat-go/backoff/v2"
-	"github.com/rancher/opni/pkg/versions"
-	"github.com/rancher/opni/plugins/logging/apis/loggingadmin"
-	loggingerrors "github.com/rancher/opni/plugins/logging/pkg/errors"
-	"github.com/rancher/opni/plugins/logging/pkg/gateway/alerting"
-	"github.com/rancher/opni/plugins/logging/pkg/gateway/drivers/backend"
-	"github.com/rancher/opni/plugins/logging/pkg/gateway/drivers/management"
-	"github.com/rancher/opni/plugins/logging/pkg/opensearchdata"
-	"github.com/rancher/opni/plugins/logging/pkg/otel"
 	"github.com/samber/lo"
 	"google.golang.org/grpc/codes"
 	grpcstatus "google.golang.org/grpc/status"
@@ -26,7 +26,7 @@ import (
 	corev1 "k8s.io/api/core/v1"
 )
 
-const defaultOpniVersion = "0.12.1"
+const defaultMontyVersion = "0.12.1"
 
 type ClusterStatus int
 
@@ -57,8 +57,8 @@ func ClusterStatusDescription(s ClusterStatus, extraInfo ...string) string {
 
 var defaultIndices = []string{
 	"logs*",
-	"ss4o_traces-kubernetes-opni*",
-	"opni-cluster-metadata",
+	"ss4o_traces-kubernetes-monty*",
+	"monty-cluster-metadata",
 }
 
 type LoggingManagerV2 struct {
@@ -128,7 +128,7 @@ func (m *LoggingManagerV2) CreateOrUpdateOpensearchCluster(ctx context.Context, 
 
 	version := strings.TrimPrefix(versions.Version, "v")
 	if version == "unversioned" {
-		version = defaultOpniVersion
+		version = defaultMontyVersion
 	}
 
 	err := m.managementDriver.CreateOrUpdateCluster(ctx, cluster, version, m.natsRef.Name)
@@ -143,7 +143,7 @@ func (m *LoggingManagerV2) CreateOrUpdateOpensearchCluster(ctx context.Context, 
 func (m *LoggingManagerV2) UpgradeAvailable(ctx context.Context, _ *emptypb.Empty) (*loggingadmin.UpgradeAvailableResponse, error) {
 	version := strings.TrimPrefix(versions.Version, "v")
 	if version == "unversioned" {
-		version = defaultOpniVersion
+		version = defaultMontyVersion
 	}
 
 	upgrade, err := m.managementDriver.UpgradeAvailable(ctx, version)
@@ -159,7 +159,7 @@ func (m *LoggingManagerV2) UpgradeAvailable(ctx context.Context, _ *emptypb.Empt
 func (m *LoggingManagerV2) DoUpgrade(ctx context.Context, options *loggingadmin.UpgradeOptions) (*emptypb.Empty, error) {
 	version := strings.TrimPrefix(versions.Version, "v")
 	if version == "unversioned" {
-		version = defaultOpniVersion
+		version = defaultMontyVersion
 	}
 
 	if options.SnapshotCluster {

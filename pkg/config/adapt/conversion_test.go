@@ -5,10 +5,10 @@ import (
 	. "github.com/onsi/gomega"
 	"github.com/samber/lo"
 
-	"github.com/rancher/opni/pkg/config/adapt"
-	configv1 "github.com/rancher/opni/pkg/config/v1"
-	"github.com/rancher/opni/pkg/config/v1beta1"
-	"github.com/rancher/opni/pkg/test/testutil"
+	"github.com/aity-cloud/monty/pkg/config/adapt"
+	configv1 "github.com/aity-cloud/monty/pkg/config/v1"
+	"github.com/aity-cloud/monty/pkg/config/v1beta1"
+	"github.com/aity-cloud/monty/pkg/test/testutil"
 	"google.golang.org/protobuf/proto"
 )
 

@@ -8,6 +8,13 @@ import (
 	"reflect"
 	"time"
 
+	compactor_gen "github.com/aity-cloud/monty/internal/cortex/config/compactor"
+	querier_gen "github.com/aity-cloud/monty/internal/cortex/config/querier"
+	runtimeconfig_gen "github.com/aity-cloud/monty/internal/cortex/config/runtimeconfig"
+	validation_gen "github.com/aity-cloud/monty/internal/cortex/config/validation"
+	storagev1 "github.com/aity-cloud/monty/pkg/apis/storage/v1"
+	"github.com/aity-cloud/monty/pkg/metrics"
+	"github.com/aity-cloud/monty/pkg/util"
 	"github.com/cortexproject/cortex/pkg/alertmanager"
 	"github.com/cortexproject/cortex/pkg/compactor"
 	"github.com/cortexproject/cortex/pkg/cortex"
@@ -28,13 +35,6 @@ import (
 	cortextls "github.com/cortexproject/cortex/pkg/util/tls"
 	kyamlv3 "github.com/kralicky/yaml/v3"
 	"github.com/prometheus/prometheus/model/relabel"
-	compactor_gen "github.com/rancher/opni/internal/cortex/config/compactor"
-	querier_gen "github.com/rancher/opni/internal/cortex/config/querier"
-	runtimeconfig_gen "github.com/rancher/opni/internal/cortex/config/runtimeconfig"
-	validation_gen "github.com/rancher/opni/internal/cortex/config/validation"
-	storagev1 "github.com/rancher/opni/pkg/apis/storage/v1"
-	"github.com/rancher/opni/pkg/metrics"
-	"github.com/rancher/opni/pkg/util"
 	"github.com/weaveworks/common/server"
 )
 
@@ -486,7 +486,7 @@ func loadNonConfigurableStaticFields(config *cortex.Config) {
 	config.Ruler.AlertmanangerEnableV2API = true
 	config.Ruler.EnableAPI = true
 	config.LimitsConfig.MetricRelabelConfigs = []*relabel.Config{
-		metrics.OpniInternalLabelFilter(),
+		metrics.MontyInternalLabelFilter(),
 	}
 	config.Flusher.ExitAfterFlush = false
 }

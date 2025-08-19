@@ -5,8 +5,8 @@ import (
 
 	_ "embed" // embed should be a blank import
 
-	opensearchtypes "github.com/rancher/opni/pkg/opensearch/opensearch/types"
-	"github.com/rancher/opni/pkg/resources/opnicluster/elastic/indices"
+	opensearchtypes "github.com/aity-cloud/monty/pkg/opensearch/opensearch/types"
+	"github.com/aity-cloud/monty/pkg/resources/montycluster/elastic/indices"
 	"github.com/samber/lo"
 )
 
@@ -17,16 +17,16 @@ const (
 	LogIndexTemplateName = "logs_rollover_mapping"
 
 	TracePolicyName       = "tracing-policy"
-	SpanIndexPrefix       = "ss4o_traces-kubernetes-opni-v0.5.4"
-	SpanIndexAlias        = "ss4o_traces-kubernetes-opni"
+	SpanIndexPrefix       = "ss4o_traces-kubernetes-monty-v0.5.4"
+	SpanIndexAlias        = "ss4o_traces-kubernetes-monty"
 	SpanIndexTemplateName = "traces_rollover_mapping"
 
 	serviceMapIndexName         = "otel-v1-apm-service-map"
 	serviceMapTemplateName      = "servicemap-mapping"
-	preProcessingPipelineName   = "opni-ingest-pipeline"
+	preProcessingPipelineName   = "monty-ingest-pipeline"
 	kibanaDashboardVersionDocID = "latest"
 	kibanaDashboardVersion      = "v0.5.4"
-	kibanaDashboardVersionIndex = "opni-dashboard-version"
+	kibanaDashboardVersionIndex = "monty-dashboard-version"
 )
 
 var (
@@ -51,7 +51,7 @@ var (
 			{
 				IndexPatterns: []string{
 					"logs*",
-					"ss4o_traces-kubernetes-opni*",
+					"ss4o_traces-kubernetes-monty*",
 					serviceMapIndexName,
 				},
 				AllowedActions: []string{
@@ -63,7 +63,7 @@ var (
 		},
 	}
 
-	OpniSpanTemplate = opensearchtypes.IndexTemplateSpec{
+	MontySpanTemplate = opensearchtypes.IndexTemplateSpec{
 		TemplateName: SpanIndexTemplateName,
 		IndexPatterns: []string{
 			fmt.Sprintf("%s*", SpanIndexPrefix),
@@ -157,7 +157,7 @@ var (
 		Priority: 100,
 	}
 
-	opniServiceMapTemplate = opensearchtypes.IndexTemplateSpec{
+	montyServiceMapTemplate = opensearchtypes.IndexTemplateSpec{
 		TemplateName: serviceMapTemplateName,
 		IndexPatterns: []string{
 			serviceMapIndexName,
@@ -230,15 +230,15 @@ var (
 	}
 
 	preprocessingPipeline = opensearchtypes.IngestPipeline{
-		Description: "Opni preprocessing ingest pipeline",
+		Description: "Monty preprocessing ingest pipeline",
 		Processors: []opensearchtypes.Processor{
 			{
-				OpniPreProcessor: &opensearchtypes.OpniProcessorConfig{},
+				MontyPreProcessor: &opensearchtypes.MontyProcessorConfig{},
 			},
 		},
 	}
 
-	OpniLogTemplate = opensearchtypes.IndexTemplateSpec{
+	MontyLogTemplate = opensearchtypes.IndexTemplateSpec{
 		TemplateName: LogIndexTemplateName,
 		IndexPatterns: []string{
 			fmt.Sprintf("%s*", LogIndexPrefix),
@@ -308,7 +308,7 @@ func (r *Reconciler) logISMPolicy() opensearchtypes.ISMPolicySpec {
 			PolicyID:   LogPolicyName,
 			MarshallID: false,
 		},
-		Description:  "Opni policy with hot-warm-cold workflow",
+		Description:  "Monty policy with hot-warm-cold workflow",
 		DefaultState: "hot",
 		States: []opensearchtypes.StateSpec{
 			{
@@ -407,7 +407,7 @@ func (r *Reconciler) traceISMPolicy() opensearchtypes.ISMPolicySpec {
 			PolicyID:   TracePolicyName,
 			MarshallID: false,
 		},
-		Description:  "Opni policy with hot-warm-cold workflow",
+		Description:  "Monty policy with hot-warm-cold workflow",
 		DefaultState: "hot",
 		States: []opensearchtypes.StateSpec{
 			{

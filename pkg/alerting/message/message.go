@@ -8,32 +8,32 @@ const (
 	// Property that specifies the unique identifier for the notification
 	// Corresponds to condition id for `AlertCondition` and an opaque identifier for
 	// an each ephemeral `Notification` instance
-	NotificationPropertyOpniUuid = "opni_uuid"
+	NotificationPropertyMontyUuid = "monty_uuid"
 	// Any messages already in the notification queue with the same dedupe key will not be processed
 	// immediately, but will be deduplicated.
-	NotificationPropertyDedupeKey = "opni_dedupe_key"
+	NotificationPropertyDedupeKey = "monty_dedupe_key"
 	// Any messages with the same group key will be sent together
-	NotificationPropertyGroupKey = "opni_group_key"
+	NotificationPropertyGroupKey = "monty_group_key"
 	// Opaque identifier for the cluster that generated the notification
-	NotificationPropertyClusterId = "opni_clusterId"
+	NotificationPropertyClusterId = "monty_clusterId"
 	// Property that specifies how to classify the notification according to golden signal
-	NotificationPropertyGoldenSignal = "opni_goldenSignal"
+	NotificationPropertyGoldenSignal = "monty_goldenSignal"
 	// Property that specifies the severity of the notification. Severity impacts how quickly the
 	// notification is dispatched & repeated, as well as how long to persist it.
-	NotificationPropertySeverity = "opni_severity"
+	NotificationPropertySeverity = "monty_severity"
 	// Property that is used to correlate messages to particular incidents
-	NotificationPropertyFingerprint = "opni_fingerprint"
+	NotificationPropertyFingerprint = "monty_fingerprint"
 )
 
 const (
 	// Contains the contain of the alert title
-	NotificationContentHeader = "OpniHeader"
+	NotificationContentHeader = "MontyHeader"
 	// Contains the body of the alert message
-	NotificationContentSummary = "OpniSummary"
+	NotificationContentSummary = "MontySummary"
 	// Contains the friendly cluster name of the notification
-	NotificationContentClusterName = "OpniClusterName"
+	NotificationContentClusterName = "MontyClusterName"
 	// Contains the friendly alarm name of the notification
-	NotificationContentAlarmName = "OpniAlarmName"
+	NotificationContentAlarmName = "MontyAlarmName"
 )
 
 const (
@@ -83,7 +83,7 @@ func (p Properties) IsPushNotification() (oneTime, found bool) {
 }
 
 func (p Properties) GetUuid() (string, bool) {
-	prop, ok := p[NotificationPropertyOpniUuid]
+	prop, ok := p[NotificationPropertyMontyUuid]
 	return prop, ok
 }
 
@@ -139,7 +139,7 @@ func (p Properties) GetAlarmName() (string, bool) {
 
 func (p Properties) GetDetails() map[string]string {
 	partition := AssignByPartition(func(key, value string) string {
-		if strings.HasPrefix(strings.ToLower(key), "opni") {
+		if strings.HasPrefix(strings.ToLower(key), "monty") {
 			return NotificationPartitionByProperty
 		}
 		return NotificationPartitionByDetails

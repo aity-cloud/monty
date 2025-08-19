@@ -3,10 +3,10 @@ package management_test
 import (
 	"context"
 
+	managementv1 "github.com/aity-cloud/monty/pkg/apis/management/v1"
+	"github.com/aity-cloud/monty/pkg/management"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	managementv1 "github.com/rancher/opni/pkg/apis/management/v1"
-	"github.com/rancher/opni/pkg/management"
 )
 
 var _ = Describe("ManagementWatcherHooks", Ordered, Label("unit"), func() {

@@ -1,6 +1,6 @@
 package opensearch
 
 /*
-Contains the adapters required for opni alerting to
+Contains the adapters required for monty alerting to
 communicate with cortex.
 */

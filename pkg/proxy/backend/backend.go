@@ -8,9 +8,9 @@ import (
 
 	"net/http/httputil"
 
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	proxyv1 "github.com/rancher/opni/pkg/apis/proxy/v1"
-	"github.com/rancher/opni/pkg/logger"
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	proxyv1 "github.com/aity-cloud/monty/pkg/apis/proxy/v1"
+	"github.com/aity-cloud/monty/pkg/logger"
 )
 
 type Backend interface {

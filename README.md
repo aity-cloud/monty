@@ -2,26 +2,26 @@
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 
-[![](https://get.pulumi.com/new/button.svg)](https://app.pulumi.com/new?template=https://github.com/rancher/opni)
+[![](https://get.pulumi.com/new/button.svg)](https://app.pulumi.com/new?template=https://github.com/aity-cloud/monty)
 
 Observability data comes in the form of ***logs, metrics and traces***.
 The collection and storage of observability data is handled by observability backends and agents.
 AIOps helps makes sense of this observability data.
-[Opni](https://opni.io/) comes with all these nuts and bolts and can be used to self monitor a single cluster or be a centralized observability data sink for multiple clusters.
+[Monty](https://monty.io/) comes with all these nuts and bolts and can be used to self monitor a single cluster or be a centralized observability data sink for multiple clusters.
 
-You can easily create the following with Opni:
+You can easily create the following with Monty:
 * Backends
-  - **Opni Logging** - extends [Opensearch](https://opensearch.org) to make it easy to search, visualize and analyze **logs**, **traces** and **Kubernetes events**
-  - **Opni Monitoring** - extends [Cortex](https://cortexmetrics.io) to enable multi cluster, long term storage for **Prometheus metrics**
+  - **Monty Logging** - extends [Opensearch](https://opensearch.org) to make it easy to search, visualize and analyze **logs**, **traces** and **Kubernetes events**
+  - **Monty Monitoring** - extends [Cortex](https://cortexmetrics.io) to enable multi cluster, long term storage for **Prometheus metrics**
 
-* Opni Agent
+* Monty Agent
   - Collects logs, Kubernetes events, OpenTelemetry traces and Prometheus metrics with the click of a button
 * AIOps
 * Alerting and SLOs
 
-Check out the [docs page](https://opni.io/) to get started!
+Check out the [docs page](https://monty.io/) to get started!
 
-![alt text](https://opni-public.s3.us-east-2.amazonaws.com/v06_high_level_arch.png)
+![alt text](https://monty-public.s3.us-east-2.amazonaws.com/v06_high_level_arch.png)
 
 ----
 

@@ -1,7 +1,7 @@
 package cortex
 
 import (
-	"github.com/rancher/opni/pkg/resources"
+	"github.com/aity-cloud/monty/pkg/resources"
 	"github.com/samber/lo"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -79,7 +79,7 @@ func (r *Reconciler) memberlistService() resources.Resource {
 			},
 			Selector: map[string]string{
 				"app.kubernetes.io/name":     "cortex",
-				"app.kubernetes.io/part-of":  "opni",
+				"app.kubernetes.io/part-of":  "monty",
 				"app.kubernetes.io/instance": "cortex",
 			},
 		},

@@ -3,8 +3,8 @@ package opts
 import (
 	"time"
 
-	"github.com/rancher/opni/pkg/alerting/drivers/config"
-	"github.com/rancher/opni/pkg/alerting/drivers/routing"
+	"github.com/aity-cloud/monty/pkg/alerting/drivers/config"
+	"github.com/aity-cloud/monty/pkg/alerting/drivers/routing"
 	"log/slog"
 )
 
@@ -27,7 +27,7 @@ func (o *RequestOptions) Apply(opts ...RequestOption) {
 }
 
 type SyncOptions struct {
-	Router          routing.OpniRouting
+	Router          routing.MontyRouting
 	DefaultReceiver *config.WebhookConfig
 	Timeout         time.Duration
 }
@@ -40,7 +40,7 @@ func WithSyncTimeout(timeout time.Duration) SyncOption {
 	}
 }
 
-func WithInitialRouter(router routing.OpniRouting) SyncOption {
+func WithInitialRouter(router routing.MontyRouting) SyncOption {
 	return func(o *SyncOptions) {
 		o.Router = router
 	}

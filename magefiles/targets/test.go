@@ -159,7 +159,7 @@ var testbinConfig = fmt.Sprintf(`
 		},
 		{
 			"name": "otelcol-custom",
-			"sourceImage": "ghcr.io/rancher-sandbox/opni-otel-collector",
+			"sourceImage": "ghcr.io/rancher-sandbox/monty-otel-collector",
 			"version": "v0.1.2-0.74.0",
 			"path": "/otelcol-custom"
 		},

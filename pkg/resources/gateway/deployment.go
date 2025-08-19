@@ -1,8 +1,8 @@
 package gateway
 
 import (
-	"github.com/rancher/opni/pkg/resources"
-	"github.com/rancher/opni/pkg/util/nats"
+	"github.com/aity-cloud/monty/pkg/resources"
+	"github.com/aity-cloud/monty/pkg/util/nats"
 	"github.com/samber/lo"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
@@ -37,7 +37,7 @@ func (r *Reconciler) deployment(extraAnnotations map[string]string) ([]resources
 
 	oldGatewayDeployment := &appsv1.Deployment{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "opni-gateway",
+			Name:      "monty-gateway",
 			Namespace: r.gw.Namespace,
 			Labels:    labels,
 		},
@@ -45,7 +45,7 @@ func (r *Reconciler) deployment(extraAnnotations map[string]string) ([]resources
 
 	gatewayStatefulSet := &appsv1.StatefulSet{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "opni-gateway",
+			Name:      "monty-gateway",
 			Namespace: r.gw.Namespace,
 			Labels:    labels,
 		},
@@ -70,7 +70,7 @@ func (r *Reconciler) deployment(extraAnnotations map[string]string) ([]resources
 							Name:            "gateway",
 							Image:           r.gw.Status.Image,
 							ImagePullPolicy: r.gw.Status.ImagePullPolicy,
-							Command:         []string{"opni"},
+							Command:         []string{"monty"},
 							Args:            []string{"gateway"},
 							Env: append(r.gw.Spec.ExtraEnvVars,
 								corev1.EnvVar{
@@ -105,7 +105,7 @@ func (r *Reconciler) deployment(extraAnnotations map[string]string) ([]resources
 								},
 								{
 									Name:      "certs",
-									MountPath: "/run/opni/certs",
+									MountPath: "/run/monty/certs",
 								},
 								{
 									Name:      "cortex-client-certs",
@@ -133,11 +133,11 @@ func (r *Reconciler) deployment(extraAnnotations map[string]string) ([]resources
 								},
 								{
 									Name:      "plugin-cache",
-									MountPath: "/var/lib/opni/plugin-cache",
+									MountPath: "/var/lib/monty/plugin-cache",
 								},
 								{
 									Name:        "local-agent-key",
-									MountPath:   "/run/opni/keyring/session-attribute.json",
+									MountPath:   "/run/monty/keyring/session-attribute.json",
 									SubPathExpr: "session-attribute.json",
 									ReadOnly:    true,
 								},
@@ -197,7 +197,7 @@ func (r *Reconciler) deployment(extraAnnotations map[string]string) ([]resources
 							Name: "certs",
 							VolumeSource: corev1.VolumeSource{
 								Secret: &corev1.SecretVolumeSource{
-									SecretName: "opni-gateway-serving-cert",
+									SecretName: "monty-gateway-serving-cert",
 									Items: []corev1.KeyToPath{
 										{
 											Key:  "tls.key",
@@ -326,7 +326,7 @@ func (r *Reconciler) deployment(extraAnnotations map[string]string) ([]resources
 							Name: "local-agent-key",
 							VolumeSource: corev1.VolumeSource{
 								Secret: &corev1.SecretVolumeSource{
-									SecretName:  "opni-local-agent-key",
+									SecretName:  "monty-local-agent-key",
 									DefaultMode: lo.ToPtr[int32](0400),
 									Items: []corev1.KeyToPath{
 										{
@@ -341,7 +341,7 @@ func (r *Reconciler) deployment(extraAnnotations map[string]string) ([]resources
 					NodeSelector:       r.gw.Spec.NodeSelector,
 					Affinity:           r.gw.Spec.Affinity,
 					Tolerations:        r.gw.Spec.Tolerations,
-					ServiceAccountName: "opni",
+					ServiceAccountName: "monty",
 				},
 			},
 			VolumeClaimTemplates: []corev1.PersistentVolumeClaim{

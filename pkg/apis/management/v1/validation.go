@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/rancher/opni/pkg/validation"
+	"github.com/aity-cloud/monty/pkg/validation"
 )
 
 func (r *CreateBootstrapTokenRequest) Validate() error {

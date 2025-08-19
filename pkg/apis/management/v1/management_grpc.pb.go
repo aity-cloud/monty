@@ -2,14 +2,14 @@
 // versions:
 // - protoc-gen-go-grpc v1.3.0
 // - ragu               v1.0.0
-// source: github.com/rancher/opni/pkg/apis/management/v1/management.proto
+// source: github.com/aity-cloud/monty/pkg/apis/management/v1/management.proto
 
 package v1
 
 import (
 	context "context"
-	v11 "github.com/rancher/opni/pkg/apis/capability/v1"
-	v1 "github.com/rancher/opni/pkg/apis/core/v1"
+	v11 "github.com/aity-cloud/monty/pkg/apis/capability/v1"
+	v1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -106,7 +106,7 @@ var LocalPassword_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "github.com/rancher/opni/pkg/apis/management/v1/management.proto",
+	Metadata: "github.com/aity-cloud/monty/pkg/apis/management/v1/management.proto",
 }
 
 const (
@@ -1544,5 +1544,5 @@ var Management_ServiceDesc = grpc.ServiceDesc{
 			ServerStreams: true,
 		},
 	},
-	Metadata: "github.com/rancher/opni/pkg/apis/management/v1/management.proto",
+	Metadata: "github.com/aity-cloud/monty/pkg/apis/management/v1/management.proto",
 }

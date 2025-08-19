@@ -2,21 +2,21 @@
 
 ## Summary:
 
-Opni will eventually take ownership of the metrics monitoring functionality of the [rancher monitoring chart](https://github.com/rancher/charts/tree/dev-v2.7/charts/rancher-monitoring). In support of this Opni should be able to import data previously collected by that chart.
+Monty will eventually take ownership of the metrics monitoring functionality of the [rancher monitoring chart](https://github.com/rancher/charts/tree/dev-v2.7/charts/rancher-monitoring). In support of this Monty should be able to import data previously collected by that chart.
 
-should make a best-effort attempt to check the k8s cluster for available Prometheus instances to read from. Once a user has created one or more targets and initiated the import, the associated agent for each target serves as a proxy between the specified remote read target and Opni's cortex by funneling the responses from the remote read into Opni's existing remote write stream into cortex.
+should make a best-effort attempt to check the k8s cluster for available Prometheus instances to read from. Once a user has created one or more targets and initiated the import, the associated agent for each target serves as a proxy between the specified remote read target and Monty's cortex by funneling the responses from the remote read into Monty's existing remote write stream into cortex.
 
 ## Use case:
 
-The main use case will for current rancher customers looking to update their cluster from `rancher-monitoring` to opni.
+The main use case will for current rancher customers looking to update their cluster from `rancher-monitoring` to monty.
 
 ## Benefits:
 
-This feature will make the process of migrating data from the to-be-deprecated `rancher-monitoring` storage into Opni's cortex metrics storage, since there is currently no trivial method for users to do this manually, this will provide a smooth transition process for rancher users.
+This feature will make the process of migrating data from the to-be-deprecated `rancher-monitoring` storage into Monty's cortex metrics storage, since there is currently no trivial method for users to do this manually, this will provide a smooth transition process for rancher users.
 
 ## Impact:
 
-Won't impact any existing Opni functionality.
+Won't impact any existing Monty functionality.
 
 ## Implementation details:
 
@@ -24,12 +24,12 @@ Won't impact any existing Opni functionality.
 
 The data import relies primarily on the [remote read API](https://prometheus.io/docs/prometheus/latest/querying/remote_read_api/) provided by Prometheus and many long term Prometheus storage solutions. Once the user provides the import target, they can start the import.
 
-During the import, the Opni agent acts a proxy between the remote read endpoint and the Opni Cortex deployment. The agent will start to read from the specified remote read endpoint, and push that data to the existing Opni [remote write API](../../plugins/metrics/pkg/apis/remotewrite).
+During the import, the Monty agent acts a proxy between the remote read endpoint and the Monty Cortex deployment. The agent will start to read from the specified remote read endpoint, and push that data to the existing Monty [remote write API](../../plugins/metrics/pkg/apis/remotewrite).
 
 [![Architecutre Diagram](./images/data-import-oep-diagram.png)](https://lucid.app/lucidchart/9c8e433a-4180-46ec-a519-c275a1cd0ff9/edit?viewport_loc=-424%2C-230%2C3645%2C1773%2C0_0&invitationId=inv_ce2aee9e-b066-4fd7-8a54-4c48c403816f)
 ### Discovery
 
-Discovery will work by instructing the Opni agent to check the k8s cluster for any `monitoring.coreos.com/Pormetheus` on the cluster to read from, and return the data necessary for the user to point the import to the discovered `Prometheuses`.
+Discovery will work by instructing the Monty agent to check the k8s cluster for any `monitoring.coreos.com/Pormetheus` on the cluster to read from, and return the data necessary for the user to point the import to the discovered `Prometheuses`.
 
 ## Acceptance criteria:
 
@@ -44,7 +44,7 @@ Discovery will work by instructing the Opni agent to check the k8s cluster for a
 
 ## Dependencies:
 
-- [x] Opni needs to support direct communication from the gateway to the agent
+- [x] Monty needs to support direct communication from the gateway to the agent
 
 ## Risks and contingencies:
 

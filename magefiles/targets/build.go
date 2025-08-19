@@ -19,12 +19,12 @@ var verboseFlag = fmt.Sprintf("-v=%t", mg.Verbose())
 
 type Build mg.Namespace
 
-// Builds the opni binary and plugins
+// Builds the monty binary and plugins
 func (Build) All(ctx context.Context) {
 	ctx, tr := Tracer.Start(ctx, "target.build")
 	defer tr.End()
 
-	mg.CtxDeps(ctx, Build.Opni, Build.Plugins)
+	mg.CtxDeps(ctx, Build.Monty, Build.Plugins)
 }
 
 // Compiles all go packages except those named 'main'
@@ -107,7 +107,7 @@ func buildMainPackage(opts buildOpts) error {
 	}
 	if !opts.Debug {
 		args = append(args,
-			"-ldflags", fmt.Sprintf("-w -s -X github.com/rancher/opni/pkg/versions.Version=%s", version),
+			"-ldflags", fmt.Sprintf("-w -s -X github.com/aity-cloud/monty/pkg/versions.Version=%s", version),
 			"-trimpath",
 		)
 	} else {
@@ -141,7 +141,7 @@ func buildMainPackage(opts buildOpts) error {
 	}
 
 	files, err := archiver.FilesFromDisk(nil, map[string]string{
-		opts.Output: "opni",
+		opts.Output: "monty",
 	})
 	if err != nil {
 		return err

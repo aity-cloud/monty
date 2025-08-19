@@ -4,13 +4,13 @@ import (
 	"context"
 	"time"
 
+	managementv1 "github.com/aity-cloud/monty/pkg/apis/management/v1"
+	"github.com/aity-cloud/monty/pkg/config/v1beta1"
+	"github.com/aity-cloud/monty/pkg/test"
+	"github.com/aity-cloud/monty/pkg/test/testruntime"
+	"github.com/aity-cloud/monty/pkg/test/testutil"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	managementv1 "github.com/rancher/opni/pkg/apis/management/v1"
-	"github.com/rancher/opni/pkg/config/v1beta1"
-	"github.com/rancher/opni/pkg/test"
-	"github.com/rancher/opni/pkg/test/testruntime"
-	"github.com/rancher/opni/pkg/test/testutil"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/protobuf/types/known/emptypb"
 )

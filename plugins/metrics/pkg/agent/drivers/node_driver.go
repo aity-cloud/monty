@@ -3,12 +3,12 @@ package drivers
 import (
 	"context"
 
-	"github.com/rancher/opni/pkg/config/v1beta1"
-	"github.com/rancher/opni/pkg/plugins/driverutil"
-	"github.com/rancher/opni/pkg/rules"
-	"github.com/rancher/opni/pkg/util/notifier"
-	"github.com/rancher/opni/plugins/metrics/apis/node"
-	"github.com/rancher/opni/plugins/metrics/apis/remoteread"
+	"github.com/aity-cloud/monty/pkg/config/v1beta1"
+	"github.com/aity-cloud/monty/pkg/plugins/driverutil"
+	"github.com/aity-cloud/monty/pkg/rules"
+	"github.com/aity-cloud/monty/pkg/util/notifier"
+	"github.com/aity-cloud/monty/plugins/metrics/apis/node"
+	"github.com/aity-cloud/monty/plugins/metrics/apis/remoteread"
 )
 
 type MetricsNodeConfigurator interface {

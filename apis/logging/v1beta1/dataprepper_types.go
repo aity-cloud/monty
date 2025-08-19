@@ -1,7 +1,7 @@
 package v1beta1
 
 import (
-	opnimeta "github.com/rancher/opni/pkg/util/meta"
+	montymeta "github.com/aity-cloud/monty/pkg/util/meta"
 	"github.com/rancher/wrangler/pkg/crd"
 	"github.com/rancher/wrangler/pkg/schemas/openapi"
 	corev1 "k8s.io/api/core/v1"
@@ -33,7 +33,7 @@ type DataPrepperStatus struct {
 }
 
 type DataPrepperSpec struct {
-	*opnimeta.ImageSpec `json:",inline,omitempty"`
+	*montymeta.ImageSpec `json:",inline,omitempty"`
 	// +kubebuilder:default:=latest
 	Version string `json:"version"`
 	// +optional

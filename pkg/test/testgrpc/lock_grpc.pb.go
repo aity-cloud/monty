@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.3.0
 // - ragu               v1.0.0
-// source: github.com/rancher/opni/pkg/test/testgrpc/lock.proto
+// source: github.com/aity-cloud/monty/pkg/test/testgrpc/lock.proto
 
 package testgrpc
 
@@ -215,5 +215,5 @@ var TestLocker_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "github.com/rancher/opni/pkg/test/testgrpc/lock.proto",
+	Metadata: "github.com/aity-cloud/monty/pkg/test/testgrpc/lock.proto",
 }

@@ -4,9 +4,9 @@ import (
 	"errors"
 	"os/exec"
 
+	"github.com/aity-cloud/monty/pkg/test/testruntime"
 	"github.com/onsi/ginkgo/v2"
 	"github.com/onsi/gomega/gexec"
-	"github.com/rancher/opni/pkg/test/testruntime"
 )
 
 type Session interface {

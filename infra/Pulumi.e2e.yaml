@@ -2,18 +2,18 @@ config:
   aws:region: us-east-1
   aws:skipCredentialsValidation: "true"
   aws:skipRequestingAccountId: "true"
-  opni:cloud: aws
-  opni:cluster:
+  monty:cloud: aws
+  monty:cluster:
     nodeGroupDesiredSize: 3
     nodeGroupMaxSize: 3
     nodeGroupMinSize: 3
     nodeInstanceType: r6a.xlarge
-  opni:imageRepo: rancher/opni
-  opni:imageTag: main
-  opni:namePrefix: opni-e2e-test
-  opni:useLocalCharts: "true"
-  opni:useIdInDnsNames: "true"
-  opni:zoneID:
+  monty:imageRepo: rancher/monty
+  monty:imageTag: main
+  monty:namePrefix: monty-e2e-test
+  monty:useLocalCharts: "true"
+  monty:useIdInDnsNames: "true"
+  monty:zoneID:
     secure: AAABAEgKAveQVLuL3+ZeK4BI7td1AWO5Oojkr/eScHxNIr2OPoI4H61WGPnmOQ==
   pulumi:disable-default-providers:
     - kubernetes

@@ -15,11 +15,11 @@ import (
 
 	"log/slog"
 
-	controlv1 "github.com/rancher/opni/pkg/apis/control/v1"
-	"github.com/rancher/opni/pkg/plugins"
-	"github.com/rancher/opni/pkg/update"
-	"github.com/rancher/opni/pkg/update/patch"
-	"github.com/rancher/opni/pkg/urn"
+	controlv1 "github.com/aity-cloud/monty/pkg/apis/control/v1"
+	"github.com/aity-cloud/monty/pkg/plugins"
+	"github.com/aity-cloud/monty/pkg/update"
+	"github.com/aity-cloud/monty/pkg/update/patch"
+	"github.com/aity-cloud/monty/pkg/urn"
 	"github.com/spf13/afero"
 	"golang.org/x/crypto/blake2b"
 	"golang.org/x/sync/errgroup"
@@ -74,7 +74,7 @@ func NewPatchClient(pluginDir string, lg *slog.Logger, opts ...PatchClientOption
 		return nil, err
 	}
 
-	tempDir, err := afero.TempDir(options.baseFs, tempDirBase, ".opni-plugins-tmp-")
+	tempDir, err := afero.TempDir(options.baseFs, tempDirBase, ".monty-plugins-tmp-")
 	if err != nil {
 		return nil, fmt.Errorf("failed to create temporary directory: %w", err)
 	}
@@ -115,7 +115,7 @@ func findTempDirBase(baseFs afero.Fs, pluginDir string) (string, error) {
 		if stat, ok := sys.(*syscall.Stat_t); ok {
 			deviceInfoAvailable = true
 			// This cast is necessary for arm64 compilation.
-			// See https://github.com/rancher/opni/issues/1614
+			// See https://github.com/aity-cloud/monty/issues/1614
 			pluginDirDevice = uint64(stat.Dev)
 		}
 	}
@@ -128,7 +128,7 @@ func findTempDirBase(baseFs afero.Fs, pluginDir string) (string, error) {
 				if sys := info.Sys(); sys != nil {
 					if stat, ok := sys.(*syscall.Stat_t); ok {
 						// This cast is necessary for arm64 compilation.
-						// See https://github.com/rancher/opni/issues/1614
+						// See https://github.com/aity-cloud/monty/issues/1614
 						if uint64(stat.Dev) == pluginDirDevice {
 							return candidate, nil
 						}
@@ -141,7 +141,7 @@ func findTempDirBase(baseFs afero.Fs, pluginDir string) (string, error) {
 		// to a file in the plugin directory. If the rename succeeds, the
 		// two directories are on the same filesystem.
 		if err := func() error {
-			path, err := af.TempDir(candidate, ".opni-fs-test-")
+			path, err := af.TempDir(candidate, ".monty-fs-test-")
 			if err != nil {
 				return err
 			}
@@ -239,7 +239,7 @@ func (pc *patchClient) GetCurrentManifest(_ context.Context) (*controlv1.UpdateM
 	manifest := archive.ToManifest()
 	// if there are no items in the manifest add a placeholder
 	if len(manifest.GetItems()) == 0 {
-		packageURN := urn.NewOpniURN(urn.Plugin, patch.UpdateStrategy, "placeholder")
+		packageURN := urn.NewMontyURN(urn.Plugin, patch.UpdateStrategy, "placeholder")
 		manifest.Items = append(manifest.Items, &controlv1.UpdateManifestEntry{
 			Package: packageURN.String(),
 			Path:    "placeholder",
@@ -356,7 +356,7 @@ func (pc *patchClient) doUpdate(entry *controlv1.PatchSpec) error {
 		return internalErrf("unknown patch format for plugin %s", entry.Package)
 	}
 
-	tmp, err := pc.fs.TempFile(pc.fs.tempDir, ".opni-tmp-plugin-")
+	tmp, err := pc.fs.TempFile(pc.fs.tempDir, ".monty-tmp-plugin-")
 	if err != nil {
 		return internalErrf("could not create temporary file: %v", err)
 	}

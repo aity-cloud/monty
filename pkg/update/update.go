@@ -5,9 +5,9 @@ import (
 	"strings"
 	"sync"
 
+	controlv1 "github.com/aity-cloud/monty/pkg/apis/control/v1"
+	"github.com/aity-cloud/monty/pkg/urn"
 	"github.com/prometheus/client_golang/prometheus"
-	controlv1 "github.com/rancher/opni/pkg/apis/control/v1"
-	"github.com/rancher/opni/pkg/urn"
 	"google.golang.org/grpc"
 )
 
@@ -73,13 +73,13 @@ func GetType[T entry](entries []T) (urn.UpdateType, error) {
 		return "", ErrNoEntries
 	}
 	for _, entry := range entries {
-		opniURN, err := urn.ParseString(entry.GetPackage())
+		montyURN, err := urn.ParseString(entry.GetPackage())
 		if err != nil {
 			return "", err
 		}
 		//Validate the URN
 		switch {
-		case opniURN.Type == urn.Plugin:
+		case montyURN.Type == urn.Plugin:
 			// If update type is not empty or plugin, return error
 			switch updateType {
 			case "":
@@ -88,7 +88,7 @@ func GetType[T entry](entries []T) (urn.UpdateType, error) {
 			default:
 				return "", ErrMultipleTypes
 			}
-		case opniURN.Type == urn.Agent:
+		case montyURN.Type == urn.Agent:
 			// If update type is not empty or agent, return error
 			switch updateType {
 			case "":
@@ -110,14 +110,14 @@ func getStrategy[T entry](entries []T) (string, error) {
 		return "", ErrNoEntries
 	}
 	for _, entry := range entries {
-		opniURN, err := urn.ParseString(entry.GetPackage())
+		montyURN, err := urn.ParseString(entry.GetPackage())
 		if err != nil {
 			return "", err
 		}
 		switch strategy {
 		case "":
-			strategy = opniURN.Strategy
-		case opniURN.Strategy:
+			strategy = montyURN.Strategy
+		case montyURN.Strategy:
 		default:
 			return "", ErrMultipleStrategies
 		}

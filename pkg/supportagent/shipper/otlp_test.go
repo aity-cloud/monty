@@ -7,10 +7,10 @@ import (
 	"strings"
 	"time"
 
+	"github.com/aity-cloud/monty/pkg/supportagent/shipper"
+	"github.com/aity-cloud/monty/pkg/test/testlog"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/rancher/opni/pkg/supportagent/shipper"
-	"github.com/rancher/opni/pkg/test/testlog"
 	collogspb "go.opentelemetry.io/proto/otlp/collector/logs/v1"
 	otlpcommonv1 "go.opentelemetry.io/proto/otlp/common/v1"
 	"google.golang.org/grpc"

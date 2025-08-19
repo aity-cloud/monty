@@ -16,17 +16,17 @@ import (
 
 	"slices"
 
+	"github.com/aity-cloud/monty/pkg/alerting/message"
+	alertingv1 "github.com/aity-cloud/monty/pkg/apis/alerting/v1"
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	managementv1 "github.com/aity-cloud/monty/pkg/apis/management/v1"
+	"github.com/aity-cloud/monty/pkg/test"
+	"github.com/aity-cloud/monty/pkg/test/alerting"
+	"github.com/aity-cloud/monty/pkg/test/testruntime"
+	"github.com/aity-cloud/monty/plugins/alerting/apis/alertops"
 	"github.com/google/uuid"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/rancher/opni/pkg/alerting/message"
-	alertingv1 "github.com/rancher/opni/pkg/apis/alerting/v1"
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	managementv1 "github.com/rancher/opni/pkg/apis/management/v1"
-	"github.com/rancher/opni/pkg/test"
-	"github.com/rancher/opni/pkg/test/alerting"
-	"github.com/rancher/opni/pkg/test/testruntime"
-	"github.com/rancher/opni/plugins/alerting/apis/alertops"
 	"github.com/samber/lo"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -110,9 +110,9 @@ func BuildAlertingClusterIntegrationTests(
 
 		// contains agent id and other useful metadata and functions
 		var agents []*agentWithContext
-		// physical servers that receive opni alerting notifications
+		// physical servers that receive monty alerting notifications
 		var servers []*alerting.MockIntegrationWebhookServer
-		// physical servers that receive all opni alerting notifications
+		// physical servers that receive all monty alerting notifications
 		var notificationServers []*alerting.MockIntegrationWebhookServer
 		// conditionsIds => endopintIds
 		expectedRouting := map[string]*alertingv1.ConditionReferenceList{}
@@ -288,7 +288,7 @@ func BuildAlertingClusterIntegrationTests(
 							found := false
 							for _, ag := range res {
 								for _, alert := range ag.Alerts {
-									uuid, ok1 := alert.Labels[message.NotificationPropertyOpniUuid]
+									uuid, ok1 := alert.Labels[message.NotificationPropertyMontyUuid]
 									nsUuid, ok2 := alert.Labels[message.TestNamespace]
 									if ok1 && ok1 == ok2 && uuid == nsUuid {
 										foundMatchingRecv := false
@@ -393,10 +393,10 @@ func BuildAlertingClusterIntegrationTests(
 					By("verifying all the agents conditions are critical")
 
 					filterList, err := alertConditionsClient.ListAlertConditions(env.Context(), &alertingv1.ListAlertConditionRequest{
-						Severities: []alertingv1.OpniSeverity{
-							alertingv1.OpniSeverity_Warning,
-							alertingv1.OpniSeverity_Error,
-							alertingv1.OpniSeverity_Info,
+						Severities: []alertingv1.MontySeverity{
+							alertingv1.MontySeverity_Warning,
+							alertingv1.MontySeverity_Error,
+							alertingv1.MontySeverity_Info,
 						},
 					})
 					Expect(err).To(Succeed())
@@ -660,7 +660,7 @@ func BuildAlertingClusterIntegrationTests(
 							attachedEndpoints := cond.GetAttachedEndpoints().GetItems()
 							for _, ag := range res {
 								for _, alert := range ag.Alerts {
-									uuid, ok := alert.Labels[message.NotificationPropertyOpniUuid]
+									uuid, ok := alert.Labels[message.NotificationPropertyMontyUuid]
 									if ok && uuid == condId {
 										foundMatchingRecv := true
 										if len(attachedEndpoints) > 0 {

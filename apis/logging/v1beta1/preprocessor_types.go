@@ -1,7 +1,7 @@
 package v1beta1
 
 import (
-	opnimeta "github.com/rancher/opni/pkg/util/meta"
+	montymeta "github.com/aity-cloud/monty/pkg/util/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -14,10 +14,10 @@ const (
 )
 
 type PreprocessorSpec struct {
-	opnimeta.ImageSpec `json:",inline,omitempty"`
-	Replicas           *int32                         `json:"replicas,omitempty"`
-	WriteIndex         string                         `json:"writeIndex,omitempty"`
-	OpensearchCluster  *opnimeta.OpensearchClusterRef `json:"opensearch,omitempty"`
+	montymeta.ImageSpec `json:",inline,omitempty"`
+	Replicas            *int32                          `json:"replicas,omitempty"`
+	WriteIndex          string                          `json:"writeIndex,omitempty"`
+	OpensearchCluster   *montymeta.OpensearchClusterRef `json:"opensearch,omitempty"`
 }
 
 // PreprocessorStatus defines the observed state of Preprocessor

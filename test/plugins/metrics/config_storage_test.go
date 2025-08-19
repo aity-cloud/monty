@@ -4,23 +4,23 @@ import (
 	"context"
 	"net"
 
+	"github.com/aity-cloud/monty/apis"
+	montycorev1beta1 "github.com/aity-cloud/monty/apis/core/v1beta1"
+	configv1 "github.com/aity-cloud/monty/pkg/config/v1"
+	"github.com/aity-cloud/monty/pkg/config/v1beta1"
+	"github.com/aity-cloud/monty/pkg/machinery"
+	"github.com/aity-cloud/monty/pkg/plugins/apis/system"
+	"github.com/aity-cloud/monty/pkg/storage"
+	"github.com/aity-cloud/monty/pkg/storage/crds"
+	"github.com/aity-cloud/monty/pkg/storage/kvutil"
+	"github.com/aity-cloud/monty/pkg/test"
+	conformance_driverutil "github.com/aity-cloud/monty/pkg/test/conformance/driverutil"
+	"github.com/aity-cloud/monty/pkg/test/testk8s"
+	"github.com/aity-cloud/monty/pkg/util/k8sutil"
+	"github.com/aity-cloud/monty/plugins/metrics/apis/cortexops"
 	"github.com/google/uuid"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/rancher/opni/apis"
-	opnicorev1beta1 "github.com/rancher/opni/apis/core/v1beta1"
-	configv1 "github.com/rancher/opni/pkg/config/v1"
-	"github.com/rancher/opni/pkg/config/v1beta1"
-	"github.com/rancher/opni/pkg/machinery"
-	"github.com/rancher/opni/pkg/plugins/apis/system"
-	"github.com/rancher/opni/pkg/storage"
-	"github.com/rancher/opni/pkg/storage/crds"
-	"github.com/rancher/opni/pkg/storage/kvutil"
-	"github.com/rancher/opni/pkg/test"
-	conformance_driverutil "github.com/rancher/opni/pkg/test/conformance/driverutil"
-	"github.com/rancher/opni/pkg/test/testk8s"
-	"github.com/rancher/opni/pkg/util/k8sutil"
-	"github.com/rancher/opni/plugins/metrics/apis/cortexops"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/test/bufconn"
@@ -137,7 +137,7 @@ func (m methods) ControllerReference() (client.Object, bool) {
 }
 
 // FillConfigFromObject implements crds.ValueStoreMethods.
-func (methods) FillConfigFromObject(obj *opnicorev1beta1.MonitoringCluster, conf *cortexops.CapabilityBackendConfigSpec) {
+func (methods) FillConfigFromObject(obj *montycorev1beta1.MonitoringCluster, conf *cortexops.CapabilityBackendConfigSpec) {
 	conf.Enabled = obj.Spec.Cortex.Enabled
 	conf.CortexConfig = obj.Spec.Cortex.CortexConfig
 	conf.CortexWorkloads = obj.Spec.Cortex.CortexWorkloads
@@ -145,7 +145,7 @@ func (methods) FillConfigFromObject(obj *opnicorev1beta1.MonitoringCluster, conf
 }
 
 // FillObjectFromConfig implements crds.ValueStoreMethods.
-func (methods) FillObjectFromConfig(obj *opnicorev1beta1.MonitoringCluster, conf *cortexops.CapabilityBackendConfigSpec) {
+func (methods) FillObjectFromConfig(obj *montycorev1beta1.MonitoringCluster, conf *cortexops.CapabilityBackendConfigSpec) {
 	obj.Spec.Cortex.Enabled = conf.Enabled
 	obj.Spec.Cortex.CortexConfig = conf.CortexConfig
 	obj.Spec.Cortex.CortexWorkloads = conf.CortexWorkloads

@@ -1,7 +1,7 @@
 package v1beta1
 
 import (
-	opnimeta "github.com/rancher/opni/pkg/util/meta"
+	montymeta "github.com/aity-cloud/monty/pkg/util/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/types"
 )
@@ -29,9 +29,9 @@ type LoggingClusterBinding struct {
 }
 
 type LoggingClusterBindingSpec struct {
-	MulticlusterUser     *MulticlusterUserRef           `json:"user,omitempty"`
-	LoggingCluster       *LoggingClusterRef             `json:"loggingCluster,omitempty"`
-	OpensearchClusterRef *opnimeta.OpensearchClusterRef `json:"opensearchClusterRef"`
+	MulticlusterUser     *MulticlusterUserRef            `json:"user,omitempty"`
+	LoggingCluster       *LoggingClusterRef              `json:"loggingCluster,omitempty"`
+	OpensearchClusterRef *montymeta.OpensearchClusterRef `json:"opensearchClusterRef"`
 }
 
 type MulticlusterUserRef struct {

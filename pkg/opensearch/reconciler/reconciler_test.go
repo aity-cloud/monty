@@ -8,15 +8,15 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/aity-cloud/monty/pkg/opensearch/dashboards"
+	"github.com/aity-cloud/monty/pkg/opensearch/opensearch"
+	"github.com/aity-cloud/monty/pkg/opensearch/opensearch/errors"
+	"github.com/aity-cloud/monty/pkg/opensearch/opensearch/types"
+	"github.com/aity-cloud/monty/pkg/opensearch/reconciler"
 	"github.com/jarcoal/httpmock"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	"github.com/opensearch-project/opensearch-go/opensearchapi"
-	"github.com/rancher/opni/pkg/opensearch/dashboards"
-	"github.com/rancher/opni/pkg/opensearch/opensearch"
-	"github.com/rancher/opni/pkg/opensearch/opensearch/errors"
-	"github.com/rancher/opni/pkg/opensearch/opensearch/types"
-	"github.com/rancher/opni/pkg/opensearch/reconciler"
 	"github.com/samber/lo"
 )
 
@@ -29,7 +29,7 @@ var _ = Describe("Opensearch", Ordered, Label("unit"), func() {
 		logIndexAlias               = "logs"
 		kibanaDashboardVersionDocID = "latest"
 		kibanaDashboardVersion      = "v0.1.3"
-		kibanaDashboardVersionIndex = "opni-dashboard-version"
+		kibanaDashboardVersionIndex = "monty-dashboard-version"
 
 		opensearchURL          = "https://mock-opensearch.example.com"
 		dashboardsHost         = "mock-dashboards.example.com"
@@ -711,7 +711,7 @@ var _ = Describe("Opensearch", Ordered, Label("unit"), func() {
 			It("should create the tracking index and the kibana objects", func() {
 				transport.RegisterResponderWithQuery(
 					"GET",
-					fmt.Sprintf("%s/_cat/indices/opni-dashboard-version", opensearchURL),
+					fmt.Sprintf("%s/_cat/indices/monty-dashboard-version", opensearchURL),
 					map[string]string{
 						"format": "json",
 					},
@@ -727,7 +727,7 @@ var _ = Describe("Opensearch", Ordered, Label("unit"), func() {
 				)
 				transport.RegisterResponder(
 					"POST",
-					fmt.Sprintf("%s/opni-dashboard-version/_update/latest", opensearchURL),
+					fmt.Sprintf("%s/monty-dashboard-version/_update/latest", opensearchURL),
 					httpmock.NewStringResponder(200, "OK").Once(),
 				)
 				Expect(func() error {
@@ -744,7 +744,7 @@ var _ = Describe("Opensearch", Ordered, Label("unit"), func() {
 		When("kibana tracking index has version that is old", func() {
 			It("should update the tracking index and the kibana objects", func() {
 				kibanaResponse := types.DashboardsDocResponse{
-					Index:       "opni-dashboard-version",
+					Index:       "monty-dashboard-version",
 					ID:          "latest",
 					SeqNo:       1,
 					PrimaryTerm: 1,
@@ -755,7 +755,7 @@ var _ = Describe("Opensearch", Ordered, Label("unit"), func() {
 				}
 				transport.RegisterResponderWithQuery(
 					"GET",
-					fmt.Sprintf("%s/_cat/indices/opni-dashboard-version", opensearchURL),
+					fmt.Sprintf("%s/_cat/indices/monty-dashboard-version", opensearchURL),
 					map[string]string{
 						"format": "json",
 					},
@@ -763,7 +763,7 @@ var _ = Describe("Opensearch", Ordered, Label("unit"), func() {
 				)
 				transport.RegisterResponder(
 					"GET",
-					fmt.Sprintf("%s/opni-dashboard-version/_doc/latest", opensearchURL),
+					fmt.Sprintf("%s/monty-dashboard-version/_doc/latest", opensearchURL),
 					httpmock.NewJsonResponderOrPanic(200, kibanaResponse).Once(),
 				)
 				transport.RegisterResponderWithQuery(
@@ -776,7 +776,7 @@ var _ = Describe("Opensearch", Ordered, Label("unit"), func() {
 				)
 				transport.RegisterResponder(
 					"POST",
-					fmt.Sprintf("%s/opni-dashboard-version/_update/latest", opensearchURL),
+					fmt.Sprintf("%s/monty-dashboard-version/_update/latest", opensearchURL),
 					httpmock.NewStringResponder(200, "OK").Once(),
 				)
 				Expect(func() error {
@@ -793,7 +793,7 @@ var _ = Describe("Opensearch", Ordered, Label("unit"), func() {
 		When("kibana tracking index exists and is up to date", func() {
 			It("should do nothing", func() {
 				kibanaResponse := types.DashboardsDocResponse{
-					Index:       "opni-dashboard-version",
+					Index:       "monty-dashboard-version",
 					ID:          "latest",
 					SeqNo:       1,
 					PrimaryTerm: 1,
@@ -804,7 +804,7 @@ var _ = Describe("Opensearch", Ordered, Label("unit"), func() {
 				}
 				transport.RegisterResponderWithQuery(
 					"GET",
-					fmt.Sprintf("%s/_cat/indices/opni-dashboard-version", opensearchURL),
+					fmt.Sprintf("%s/_cat/indices/monty-dashboard-version", opensearchURL),
 					map[string]string{
 						"format": "json",
 					},
@@ -812,7 +812,7 @@ var _ = Describe("Opensearch", Ordered, Label("unit"), func() {
 				)
 				transport.RegisterResponder(
 					"GET",
-					fmt.Sprintf("%s/opni-dashboard-version/_doc/latest", opensearchURL),
+					fmt.Sprintf("%s/monty-dashboard-version/_doc/latest", opensearchURL),
 					httpmock.NewJsonResponderOrPanic(200, kibanaResponse).Once(),
 				)
 				Expect(func() error {

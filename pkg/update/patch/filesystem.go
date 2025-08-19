@@ -10,10 +10,10 @@ import (
 
 	"log/slog"
 
+	controlv1 "github.com/aity-cloud/monty/pkg/apis/control/v1"
+	configv1 "github.com/aity-cloud/monty/pkg/config/v1"
+	"github.com/aity-cloud/monty/pkg/logger"
 	"github.com/klauspost/compress/zstd"
-	controlv1 "github.com/rancher/opni/pkg/apis/control/v1"
-	configv1 "github.com/rancher/opni/pkg/config/v1"
-	"github.com/rancher/opni/pkg/logger"
 	"github.com/spf13/afero"
 	"golang.org/x/crypto/blake2b"
 	"golang.org/x/sync/errgroup"

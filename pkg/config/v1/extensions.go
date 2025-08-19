@@ -8,11 +8,11 @@ import (
 	"fmt"
 	"os"
 
-	cli "github.com/rancher/opni/internal/codegen/cli"
-	driverutil "github.com/rancher/opni/pkg/plugins/driverutil"
-	"github.com/rancher/opni/pkg/plugins/driverutil/dryrun"
-	"github.com/rancher/opni/pkg/plugins/driverutil/rollback"
-	"github.com/rancher/opni/pkg/tui"
+	cli "github.com/aity-cloud/monty/internal/codegen/cli"
+	driverutil "github.com/aity-cloud/monty/pkg/plugins/driverutil"
+	"github.com/aity-cloud/monty/pkg/plugins/driverutil/dryrun"
+	"github.com/aity-cloud/monty/pkg/plugins/driverutil/rollback"
+	"github.com/aity-cloud/monty/pkg/tui"
 	"golang.org/x/term"
 )
 

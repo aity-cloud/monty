@@ -10,9 +10,9 @@ import (
 	"errors"
 	"io"
 
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
 	"github.com/lestrrat-go/jwx/jwa"
 	"github.com/lestrrat-go/jwx/jws"
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
 )
 
 var ErrMalformedToken = errors.New("malformed token")

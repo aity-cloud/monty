@@ -2,12 +2,12 @@
 // versions:
 // 	protoc-gen-go v1.31.0-devel
 // 	protoc        v1.0.0
-// source: github.com/rancher/opni/pkg/apis/alerting/v1/alerting.endpoint.proto
+// source: github.com/aity-cloud/monty/pkg/apis/alerting/v1/alerting.endpoint.proto
 
 package v1
 
 import (
-	v1 "github.com/rancher/opni/pkg/apis/core/v1"
+	v1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	_ "google.golang.org/genproto/googleapis/rpc/status"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -43,7 +43,7 @@ type AlertEndpoint struct {
 	//	*AlertEndpoint_Webhook
 	Endpoint isAlertEndpoint_Endpoint `protobuf_oneof:"endpoint"`
 	// properties are used to flag properties of endpoints, for
-	// example opting into opni notifications
+	// example opting into monty notifications
 	// Properties starting with "_" are private
 	Properties map[string]string `protobuf:"bytes,9,rep,name=properties,proto3" json:"properties,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 	// the following are read only for consumers of the API
@@ -54,7 +54,7 @@ type AlertEndpoint struct {
 func (x *AlertEndpoint) Reset() {
 	*x = AlertEndpoint{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[0]
+		mi := &file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[0]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -67,7 +67,7 @@ func (x *AlertEndpoint) String() string {
 func (*AlertEndpoint) ProtoMessage() {}
 
 func (x *AlertEndpoint) ProtoReflect() protoreflect.Message {
-	mi := &file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[0]
+	mi := &file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -80,7 +80,7 @@ func (x *AlertEndpoint) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AlertEndpoint.ProtoReflect.Descriptor instead.
 func (*AlertEndpoint) Descriptor() ([]byte, []int) {
-	return file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescGZIP(), []int{0}
+	return file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *AlertEndpoint) GetName() string {
@@ -198,7 +198,7 @@ type EndpointImplementation struct {
 func (x *EndpointImplementation) Reset() {
 	*x = EndpointImplementation{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[1]
+		mi := &file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -211,7 +211,7 @@ func (x *EndpointImplementation) String() string {
 func (*EndpointImplementation) ProtoMessage() {}
 
 func (x *EndpointImplementation) ProtoReflect() protoreflect.Message {
-	mi := &file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[1]
+	mi := &file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -224,7 +224,7 @@ func (x *EndpointImplementation) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EndpointImplementation.ProtoReflect.Descriptor instead.
 func (*EndpointImplementation) Descriptor() ([]byte, []int) {
-	return file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescGZIP(), []int{1}
+	return file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *EndpointImplementation) GetTitle() string {
@@ -260,7 +260,7 @@ type SlackEndpoint struct {
 func (x *SlackEndpoint) Reset() {
 	*x = SlackEndpoint{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[2]
+		mi := &file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[2]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -273,7 +273,7 @@ func (x *SlackEndpoint) String() string {
 func (*SlackEndpoint) ProtoMessage() {}
 
 func (x *SlackEndpoint) ProtoReflect() protoreflect.Message {
-	mi := &file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[2]
+	mi := &file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[2]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -286,7 +286,7 @@ func (x *SlackEndpoint) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SlackEndpoint.ProtoReflect.Descriptor instead.
 func (*SlackEndpoint) Descriptor() ([]byte, []int) {
-	return file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescGZIP(), []int{2}
+	return file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *SlackEndpoint) GetWebhookUrl() string {
@@ -327,7 +327,7 @@ type EmailEndpoint struct {
 func (x *EmailEndpoint) Reset() {
 	*x = EmailEndpoint{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[3]
+		mi := &file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[3]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -340,7 +340,7 @@ func (x *EmailEndpoint) String() string {
 func (*EmailEndpoint) ProtoMessage() {}
 
 func (x *EmailEndpoint) ProtoReflect() protoreflect.Message {
-	mi := &file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[3]
+	mi := &file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[3]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -353,7 +353,7 @@ func (x *EmailEndpoint) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EmailEndpoint.ProtoReflect.Descriptor instead.
 func (*EmailEndpoint) Descriptor() ([]byte, []int) {
-	return file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescGZIP(), []int{3}
+	return file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *EmailEndpoint) GetTo() string {
@@ -418,7 +418,7 @@ type PagerDutyEndpoint struct {
 func (x *PagerDutyEndpoint) Reset() {
 	*x = PagerDutyEndpoint{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[4]
+		mi := &file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[4]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -431,7 +431,7 @@ func (x *PagerDutyEndpoint) String() string {
 func (*PagerDutyEndpoint) ProtoMessage() {}
 
 func (x *PagerDutyEndpoint) ProtoReflect() protoreflect.Message {
-	mi := &file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[4]
+	mi := &file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[4]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -444,7 +444,7 @@ func (x *PagerDutyEndpoint) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PagerDutyEndpoint.ProtoReflect.Descriptor instead.
 func (*PagerDutyEndpoint) Descriptor() ([]byte, []int) {
-	return file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescGZIP(), []int{4}
+	return file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *PagerDutyEndpoint) GetIntegrationKey() string {
@@ -475,7 +475,7 @@ type WebhookEndpoint struct {
 func (x *WebhookEndpoint) Reset() {
 	*x = WebhookEndpoint{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[5]
+		mi := &file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[5]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -488,7 +488,7 @@ func (x *WebhookEndpoint) String() string {
 func (*WebhookEndpoint) ProtoMessage() {}
 
 func (x *WebhookEndpoint) ProtoReflect() protoreflect.Message {
-	mi := &file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[5]
+	mi := &file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[5]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -501,7 +501,7 @@ func (x *WebhookEndpoint) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WebhookEndpoint.ProtoReflect.Descriptor instead.
 func (*WebhookEndpoint) Descriptor() ([]byte, []int) {
-	return file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescGZIP(), []int{5}
+	return file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *WebhookEndpoint) GetUrl() string {
@@ -549,7 +549,7 @@ type HTTPConfig struct {
 func (x *HTTPConfig) Reset() {
 	*x = HTTPConfig{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[6]
+		mi := &file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[6]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -562,7 +562,7 @@ func (x *HTTPConfig) String() string {
 func (*HTTPConfig) ProtoMessage() {}
 
 func (x *HTTPConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[6]
+	mi := &file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[6]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -575,7 +575,7 @@ func (x *HTTPConfig) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use HTTPConfig.ProtoReflect.Descriptor instead.
 func (*HTTPConfig) Descriptor() ([]byte, []int) {
-	return file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescGZIP(), []int{6}
+	return file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *HTTPConfig) GetBasicAuth() *BasicAuth {
@@ -640,7 +640,7 @@ type BasicAuth struct {
 func (x *BasicAuth) Reset() {
 	*x = BasicAuth{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[7]
+		mi := &file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[7]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -653,7 +653,7 @@ func (x *BasicAuth) String() string {
 func (*BasicAuth) ProtoMessage() {}
 
 func (x *BasicAuth) ProtoReflect() protoreflect.Message {
-	mi := &file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[7]
+	mi := &file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[7]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -666,7 +666,7 @@ func (x *BasicAuth) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BasicAuth.ProtoReflect.Descriptor instead.
 func (*BasicAuth) Descriptor() ([]byte, []int) {
-	return file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescGZIP(), []int{7}
+	return file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *BasicAuth) GetUsername() string {
@@ -703,7 +703,7 @@ type Authorization struct {
 func (x *Authorization) Reset() {
 	*x = Authorization{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[8]
+		mi := &file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[8]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -716,7 +716,7 @@ func (x *Authorization) String() string {
 func (*Authorization) ProtoMessage() {}
 
 func (x *Authorization) ProtoReflect() protoreflect.Message {
-	mi := &file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[8]
+	mi := &file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[8]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -729,7 +729,7 @@ func (x *Authorization) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Authorization.ProtoReflect.Descriptor instead.
 func (*Authorization) Descriptor() ([]byte, []int) {
-	return file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescGZIP(), []int{8}
+	return file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *Authorization) GetType() string {
@@ -771,7 +771,7 @@ type OAuth2 struct {
 func (x *OAuth2) Reset() {
 	*x = OAuth2{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[9]
+		mi := &file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[9]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -784,7 +784,7 @@ func (x *OAuth2) String() string {
 func (*OAuth2) ProtoMessage() {}
 
 func (x *OAuth2) ProtoReflect() protoreflect.Message {
-	mi := &file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[9]
+	mi := &file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[9]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -797,7 +797,7 @@ func (x *OAuth2) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OAuth2.ProtoReflect.Descriptor instead.
 func (*OAuth2) Descriptor() ([]byte, []int) {
-	return file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescGZIP(), []int{9}
+	return file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *OAuth2) GetClientId() string {
@@ -873,7 +873,7 @@ type TLSConfig struct {
 func (x *TLSConfig) Reset() {
 	*x = TLSConfig{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[10]
+		mi := &file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[10]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -886,7 +886,7 @@ func (x *TLSConfig) String() string {
 func (*TLSConfig) ProtoMessage() {}
 
 func (x *TLSConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[10]
+	mi := &file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[10]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -899,7 +899,7 @@ func (x *TLSConfig) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TLSConfig.ProtoReflect.Descriptor instead.
 func (*TLSConfig) Descriptor() ([]byte, []int) {
-	return file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescGZIP(), []int{10}
+	return file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *TLSConfig) GetCaFile() string {
@@ -962,7 +962,7 @@ type AlertEndpointList struct {
 func (x *AlertEndpointList) Reset() {
 	*x = AlertEndpointList{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[11]
+		mi := &file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[11]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -975,7 +975,7 @@ func (x *AlertEndpointList) String() string {
 func (*AlertEndpointList) ProtoMessage() {}
 
 func (x *AlertEndpointList) ProtoReflect() protoreflect.Message {
-	mi := &file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[11]
+	mi := &file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[11]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -988,7 +988,7 @@ func (x *AlertEndpointList) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AlertEndpointList.ProtoReflect.Descriptor instead.
 func (*AlertEndpointList) Descriptor() ([]byte, []int) {
-	return file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescGZIP(), []int{11}
+	return file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *AlertEndpointList) GetItems() []*AlertEndpointWithId {
@@ -1010,7 +1010,7 @@ type AlertEndpointWithId struct {
 func (x *AlertEndpointWithId) Reset() {
 	*x = AlertEndpointWithId{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[12]
+		mi := &file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[12]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1023,7 +1023,7 @@ func (x *AlertEndpointWithId) String() string {
 func (*AlertEndpointWithId) ProtoMessage() {}
 
 func (x *AlertEndpointWithId) ProtoReflect() protoreflect.Message {
-	mi := &file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[12]
+	mi := &file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[12]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1036,7 +1036,7 @@ func (x *AlertEndpointWithId) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AlertEndpointWithId.ProtoReflect.Descriptor instead.
 func (*AlertEndpointWithId) Descriptor() ([]byte, []int) {
-	return file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescGZIP(), []int{12}
+	return file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *AlertEndpointWithId) GetEndpoint() *AlertEndpoint {
@@ -1062,7 +1062,7 @@ type ListAlertEndpointsRequest struct {
 func (x *ListAlertEndpointsRequest) Reset() {
 	*x = ListAlertEndpointsRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[13]
+		mi := &file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[13]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1075,7 +1075,7 @@ func (x *ListAlertEndpointsRequest) String() string {
 func (*ListAlertEndpointsRequest) ProtoMessage() {}
 
 func (x *ListAlertEndpointsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[13]
+	mi := &file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[13]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1088,7 +1088,7 @@ func (x *ListAlertEndpointsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListAlertEndpointsRequest.ProtoReflect.Descriptor instead.
 func (*ListAlertEndpointsRequest) Descriptor() ([]byte, []int) {
-	return file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescGZIP(), []int{13}
+	return file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescGZIP(), []int{13}
 }
 
 type UpdateAlertEndpointRequest struct {
@@ -1104,7 +1104,7 @@ type UpdateAlertEndpointRequest struct {
 func (x *UpdateAlertEndpointRequest) Reset() {
 	*x = UpdateAlertEndpointRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[14]
+		mi := &file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[14]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1117,7 +1117,7 @@ func (x *UpdateAlertEndpointRequest) String() string {
 func (*UpdateAlertEndpointRequest) ProtoMessage() {}
 
 func (x *UpdateAlertEndpointRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[14]
+	mi := &file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[14]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1130,7 +1130,7 @@ func (x *UpdateAlertEndpointRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateAlertEndpointRequest.ProtoReflect.Descriptor instead.
 func (*UpdateAlertEndpointRequest) Descriptor() ([]byte, []int) {
-	return file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescGZIP(), []int{14}
+	return file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *UpdateAlertEndpointRequest) GetForceUpdate() bool {
@@ -1166,7 +1166,7 @@ type DeleteAlertEndpointRequest struct {
 func (x *DeleteAlertEndpointRequest) Reset() {
 	*x = DeleteAlertEndpointRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[15]
+		mi := &file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[15]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1179,7 +1179,7 @@ func (x *DeleteAlertEndpointRequest) String() string {
 func (*DeleteAlertEndpointRequest) ProtoMessage() {}
 
 func (x *DeleteAlertEndpointRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[15]
+	mi := &file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[15]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1192,7 +1192,7 @@ func (x *DeleteAlertEndpointRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteAlertEndpointRequest.ProtoReflect.Descriptor instead.
 func (*DeleteAlertEndpointRequest) Descriptor() ([]byte, []int) {
-	return file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescGZIP(), []int{15}
+	return file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *DeleteAlertEndpointRequest) GetForceDelete() bool {
@@ -1220,7 +1220,7 @@ type TestAlertEndpointRequest struct {
 func (x *TestAlertEndpointRequest) Reset() {
 	*x = TestAlertEndpointRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[16]
+		mi := &file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[16]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1233,7 +1233,7 @@ func (x *TestAlertEndpointRequest) String() string {
 func (*TestAlertEndpointRequest) ProtoMessage() {}
 
 func (x *TestAlertEndpointRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[16]
+	mi := &file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[16]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1246,7 +1246,7 @@ func (x *TestAlertEndpointRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TestAlertEndpointRequest.ProtoReflect.Descriptor instead.
 func (*TestAlertEndpointRequest) Descriptor() ([]byte, []int) {
-	return file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescGZIP(), []int{16}
+	return file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *TestAlertEndpointRequest) GetEndpoint() *AlertEndpoint {
@@ -1266,7 +1266,7 @@ type TestAlertEndpointResponse struct {
 func (x *TestAlertEndpointResponse) Reset() {
 	*x = TestAlertEndpointResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[17]
+		mi := &file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[17]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1279,7 +1279,7 @@ func (x *TestAlertEndpointResponse) String() string {
 func (*TestAlertEndpointResponse) ProtoMessage() {}
 
 func (x *TestAlertEndpointResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[17]
+	mi := &file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[17]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1292,7 +1292,7 @@ func (x *TestAlertEndpointResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TestAlertEndpointResponse.ProtoReflect.Descriptor instead.
 func (*TestAlertEndpointResponse) Descriptor() ([]byte, []int) {
-	return file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescGZIP(), []int{17}
+	return file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescGZIP(), []int{17}
 }
 
 type FullAttachedEndpoints struct {
@@ -1314,7 +1314,7 @@ type FullAttachedEndpoints struct {
 func (x *FullAttachedEndpoints) Reset() {
 	*x = FullAttachedEndpoints{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[18]
+		mi := &file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[18]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1327,7 +1327,7 @@ func (x *FullAttachedEndpoints) String() string {
 func (*FullAttachedEndpoints) ProtoMessage() {}
 
 func (x *FullAttachedEndpoints) ProtoReflect() protoreflect.Message {
-	mi := &file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[18]
+	mi := &file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[18]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1340,7 +1340,7 @@ func (x *FullAttachedEndpoints) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FullAttachedEndpoints.ProtoReflect.Descriptor instead.
 func (*FullAttachedEndpoints) Descriptor() ([]byte, []int) {
-	return file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescGZIP(), []int{18}
+	return file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *FullAttachedEndpoints) GetItems() []*FullAttachedEndpoint {
@@ -1395,7 +1395,7 @@ type RateLimitingConfig struct {
 func (x *RateLimitingConfig) Reset() {
 	*x = RateLimitingConfig{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[19]
+		mi := &file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[19]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1408,7 +1408,7 @@ func (x *RateLimitingConfig) String() string {
 func (*RateLimitingConfig) ProtoMessage() {}
 
 func (x *RateLimitingConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[19]
+	mi := &file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[19]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1421,7 +1421,7 @@ func (x *RateLimitingConfig) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RateLimitingConfig.ProtoReflect.Descriptor instead.
 func (*RateLimitingConfig) Descriptor() ([]byte, []int) {
-	return file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescGZIP(), []int{19}
+	return file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *RateLimitingConfig) GetInitialDelay() *durationpb.Duration {
@@ -1458,7 +1458,7 @@ type FullAttachedEndpoint struct {
 func (x *FullAttachedEndpoint) Reset() {
 	*x = FullAttachedEndpoint{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[20]
+		mi := &file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[20]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1471,7 +1471,7 @@ func (x *FullAttachedEndpoint) String() string {
 func (*FullAttachedEndpoint) ProtoMessage() {}
 
 func (x *FullAttachedEndpoint) ProtoReflect() protoreflect.Message {
-	mi := &file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[20]
+	mi := &file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[20]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1484,7 +1484,7 @@ func (x *FullAttachedEndpoint) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FullAttachedEndpoint.ProtoReflect.Descriptor instead.
 func (*FullAttachedEndpoint) Descriptor() ([]byte, []int) {
-	return file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescGZIP(), []int{20}
+	return file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *FullAttachedEndpoint) GetEndpointId() string {
@@ -1528,7 +1528,7 @@ type AttachedEndpoints struct {
 func (x *AttachedEndpoints) Reset() {
 	*x = AttachedEndpoints{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[21]
+		mi := &file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[21]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1541,7 +1541,7 @@ func (x *AttachedEndpoints) String() string {
 func (*AttachedEndpoints) ProtoMessage() {}
 
 func (x *AttachedEndpoints) ProtoReflect() protoreflect.Message {
-	mi := &file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[21]
+	mi := &file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[21]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1554,7 +1554,7 @@ func (x *AttachedEndpoints) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AttachedEndpoints.ProtoReflect.Descriptor instead.
 func (*AttachedEndpoints) Descriptor() ([]byte, []int) {
-	return file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescGZIP(), []int{21}
+	return file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *AttachedEndpoints) GetItems() []*AttachedEndpoint {
@@ -1603,7 +1603,7 @@ type AttachedEndpoint struct {
 func (x *AttachedEndpoint) Reset() {
 	*x = AttachedEndpoint{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[22]
+		mi := &file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[22]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1616,7 +1616,7 @@ func (x *AttachedEndpoint) String() string {
 func (*AttachedEndpoint) ProtoMessage() {}
 
 func (x *AttachedEndpoint) ProtoReflect() protoreflect.Message {
-	mi := &file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[22]
+	mi := &file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[22]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1629,7 +1629,7 @@ func (x *AttachedEndpoint) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AttachedEndpoint.ProtoReflect.Descriptor instead.
 func (*AttachedEndpoint) Descriptor() ([]byte, []int) {
-	return file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescGZIP(), []int{22}
+	return file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *AttachedEndpoint) GetEndpointId() string {
@@ -1639,7 +1639,7 @@ func (x *AttachedEndpoint) GetEndpointId() string {
 	return ""
 }
 
-// opni-alerting internal use
+// monty-alerting internal use
 type RoutingNode struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -1652,7 +1652,7 @@ type RoutingNode struct {
 func (x *RoutingNode) Reset() {
 	*x = RoutingNode{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[23]
+		mi := &file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[23]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1665,7 +1665,7 @@ func (x *RoutingNode) String() string {
 func (*RoutingNode) ProtoMessage() {}
 
 func (x *RoutingNode) ProtoReflect() protoreflect.Message {
-	mi := &file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[23]
+	mi := &file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[23]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1678,7 +1678,7 @@ func (x *RoutingNode) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RoutingNode.ProtoReflect.Descriptor instead.
 func (*RoutingNode) Descriptor() ([]byte, []int) {
-	return file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescGZIP(), []int{23}
+	return file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *RoutingNode) GetConditionId() *v1.Reference {
@@ -1695,7 +1695,7 @@ func (x *RoutingNode) GetFullAttachedEndpoints() *FullAttachedEndpoints {
 	return nil
 }
 
-// opni-alerting internal use
+// monty-alerting internal use
 type EndpointRoutingMap struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -1707,7 +1707,7 @@ type EndpointRoutingMap struct {
 func (x *EndpointRoutingMap) Reset() {
 	*x = EndpointRoutingMap{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[24]
+		mi := &file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[24]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1720,7 +1720,7 @@ func (x *EndpointRoutingMap) String() string {
 func (*EndpointRoutingMap) ProtoMessage() {}
 
 func (x *EndpointRoutingMap) ProtoReflect() protoreflect.Message {
-	mi := &file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[24]
+	mi := &file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[24]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1733,7 +1733,7 @@ func (x *EndpointRoutingMap) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EndpointRoutingMap.ProtoReflect.Descriptor instead.
 func (*EndpointRoutingMap) Descriptor() ([]byte, []int) {
-	return file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescGZIP(), []int{24}
+	return file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescGZIP(), []int{24}
 }
 
 func (x *EndpointRoutingMap) GetEndpoints() map[string]*EndpointMetadata {
@@ -1743,7 +1743,7 @@ func (x *EndpointRoutingMap) GetEndpoints() map[string]*EndpointMetadata {
 	return nil
 }
 
-// opni-alerting internal use
+// monty-alerting internal use
 type RoutingRelationships struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -1755,7 +1755,7 @@ type RoutingRelationships struct {
 func (x *RoutingRelationships) Reset() {
 	*x = RoutingRelationships{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[25]
+		mi := &file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[25]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1768,7 +1768,7 @@ func (x *RoutingRelationships) String() string {
 func (*RoutingRelationships) ProtoMessage() {}
 
 func (x *RoutingRelationships) ProtoReflect() protoreflect.Message {
-	mi := &file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[25]
+	mi := &file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[25]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1781,7 +1781,7 @@ func (x *RoutingRelationships) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RoutingRelationships.ProtoReflect.Descriptor instead.
 func (*RoutingRelationships) Descriptor() ([]byte, []int) {
-	return file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescGZIP(), []int{25}
+	return file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescGZIP(), []int{25}
 }
 
 func (x *RoutingRelationships) GetConditions() map[string]*EndpointRoutingMap {
@@ -1791,7 +1791,7 @@ func (x *RoutingRelationships) GetConditions() map[string]*EndpointRoutingMap {
 	return nil
 }
 
-// opni-alerting internal use
+// monty-alerting internal use
 type EndpointMetadata struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -1804,7 +1804,7 @@ type EndpointMetadata struct {
 func (x *EndpointMetadata) Reset() {
 	*x = EndpointMetadata{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[26]
+		mi := &file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[26]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1817,7 +1817,7 @@ func (x *EndpointMetadata) String() string {
 func (*EndpointMetadata) ProtoMessage() {}
 
 func (x *EndpointMetadata) ProtoReflect() protoreflect.Message {
-	mi := &file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[26]
+	mi := &file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[26]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1830,7 +1830,7 @@ func (x *EndpointMetadata) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EndpointMetadata.ProtoReflect.Descriptor instead.
 func (*EndpointMetadata) Descriptor() ([]byte, []int) {
-	return file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescGZIP(), []int{26}
+	return file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescGZIP(), []int{26}
 }
 
 func (x *EndpointMetadata) GetPosition() int32 {
@@ -1858,7 +1858,7 @@ type ToggleRequest struct {
 func (x *ToggleRequest) Reset() {
 	*x = ToggleRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[27]
+		mi := &file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[27]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1871,7 +1871,7 @@ func (x *ToggleRequest) String() string {
 func (*ToggleRequest) ProtoMessage() {}
 
 func (x *ToggleRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[27]
+	mi := &file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[27]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1884,7 +1884,7 @@ func (x *ToggleRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ToggleRequest.ProtoReflect.Descriptor instead.
 func (*ToggleRequest) Descriptor() ([]byte, []int) {
-	return file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescGZIP(), []int{27}
+	return file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescGZIP(), []int{27}
 }
 
 func (x *ToggleRequest) GetId() *v1.Reference {
@@ -1894,38 +1894,39 @@ func (x *ToggleRequest) GetId() *v1.Reference {
 	return nil
 }
 
-var File_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto protoreflect.FileDescriptor
+var File_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto protoreflect.FileDescriptor
 
-var file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDesc = []byte{
-	0x0a, 0x44, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x72, 0x61, 0x6e,
-	0x63, 0x68, 0x65, 0x72, 0x2f, 0x6f, 0x70, 0x6e, 0x69, 0x2f, 0x70, 0x6b, 0x67, 0x2f, 0x61, 0x70,
-	0x69, 0x73, 0x2f, 0x61, 0x6c, 0x65, 0x72, 0x74, 0x69, 0x6e, 0x67, 0x2f, 0x76, 0x31, 0x2f, 0x61,
-	0x6c, 0x65, 0x72, 0x74, 0x69, 0x6e, 0x67, 0x2e, 0x65, 0x6e, 0x64, 0x70, 0x6f, 0x69, 0x6e, 0x74,
-	0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x08, 0x61, 0x6c, 0x65, 0x72, 0x74, 0x69, 0x6e, 0x67,
-	0x1a, 0x1e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75,
-	0x66, 0x2f, 0x64, 0x75, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f,
-	0x1a, 0x1c, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75,
-	0x66, 0x2f, 0x73, 0x74, 0x72, 0x75, 0x63, 0x74, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x1b,
-	0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2f,
-	0x65, 0x6d, 0x70, 0x74, 0x79, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x20, 0x67, 0x6f, 0x6f,
-	0x67, 0x6c, 0x65, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2f, 0x64, 0x65, 0x73,
-	0x63, 0x72, 0x69, 0x70, 0x74, 0x6f, 0x72, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x1f, 0x67,
-	0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2f, 0x74,
-	0x69, 0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d, 0x70, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x15,
-	0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x68, 0x74, 0x74, 0x70, 0x2e,
-	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x1c, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2f, 0x61, 0x70,
-	0x69, 0x2f, 0x61, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x2e, 0x70, 0x72,
-	0x6f, 0x74, 0x6f, 0x1a, 0x17, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2f, 0x72, 0x70, 0x63, 0x2f,
-	0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x33, 0x67, 0x69,
-	0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x72, 0x61, 0x6e, 0x63, 0x68, 0x65, 0x72,
-	0x2f, 0x6f, 0x70, 0x6e, 0x69, 0x2f, 0x70, 0x6b, 0x67, 0x2f, 0x61, 0x70, 0x69, 0x73, 0x2f, 0x63,
-	0x6f, 0x72, 0x65, 0x2f, 0x76, 0x31, 0x2f, 0x63, 0x6f, 0x72, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74,
-	0x6f, 0x1a, 0x3b, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x72, 0x61,
-	0x6e, 0x63, 0x68, 0x65, 0x72, 0x2f, 0x6f, 0x70, 0x6e, 0x69, 0x2f, 0x70, 0x6b, 0x67, 0x2f, 0x61,
-	0x70, 0x69, 0x73, 0x2f, 0x61, 0x6c, 0x65, 0x72, 0x74, 0x69, 0x6e, 0x67, 0x2f, 0x76, 0x31, 0x2f,
-	0x61, 0x6c, 0x65, 0x72, 0x74, 0x69, 0x6e, 0x67, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x48,
-	0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x72, 0x61, 0x6e, 0x63, 0x68,
-	0x65, 0x72, 0x2f, 0x6f, 0x70, 0x6e, 0x69, 0x2f, 0x70, 0x6b, 0x67, 0x2f, 0x61, 0x70, 0x69, 0x73,
+var file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDesc = []byte{
+	0x0a, 0x48, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x61, 0x69, 0x74,
+	0x79, 0x2d, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2f, 0x6d, 0x6f, 0x6e, 0x74, 0x79, 0x2f, 0x70, 0x6b,
+	0x67, 0x2f, 0x61, 0x70, 0x69, 0x73, 0x2f, 0x61, 0x6c, 0x65, 0x72, 0x74, 0x69, 0x6e, 0x67, 0x2f,
+	0x76, 0x31, 0x2f, 0x61, 0x6c, 0x65, 0x72, 0x74, 0x69, 0x6e, 0x67, 0x2e, 0x65, 0x6e, 0x64, 0x70,
+	0x6f, 0x69, 0x6e, 0x74, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x08, 0x61, 0x6c, 0x65, 0x72,
+	0x74, 0x69, 0x6e, 0x67, 0x1a, 0x1e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2f, 0x70, 0x72, 0x6f,
+	0x74, 0x6f, 0x62, 0x75, 0x66, 0x2f, 0x64, 0x75, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x70,
+	0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x1c, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2f, 0x70, 0x72, 0x6f,
+	0x74, 0x6f, 0x62, 0x75, 0x66, 0x2f, 0x73, 0x74, 0x72, 0x75, 0x63, 0x74, 0x2e, 0x70, 0x72, 0x6f,
+	0x74, 0x6f, 0x1a, 0x1b, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f,
+	0x62, 0x75, 0x66, 0x2f, 0x65, 0x6d, 0x70, 0x74, 0x79, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a,
+	0x20, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66,
+	0x2f, 0x64, 0x65, 0x73, 0x63, 0x72, 0x69, 0x70, 0x74, 0x6f, 0x72, 0x2e, 0x70, 0x72, 0x6f, 0x74,
+	0x6f, 0x1a, 0x1f, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62,
+	0x75, 0x66, 0x2f, 0x74, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d, 0x70, 0x2e, 0x70, 0x72, 0x6f,
+	0x74, 0x6f, 0x1a, 0x15, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x68,
+	0x74, 0x74, 0x70, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x1c, 0x67, 0x6f, 0x6f, 0x67, 0x6c,
+	0x65, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x61, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e,
+	0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x17, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2f,
+	0x72, 0x70, 0x63, 0x2f, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f,
+	0x1a, 0x37, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x61, 0x69, 0x74,
+	0x79, 0x2d, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2f, 0x6d, 0x6f, 0x6e, 0x74, 0x79, 0x2f, 0x70, 0x6b,
+	0x67, 0x2f, 0x61, 0x70, 0x69, 0x73, 0x2f, 0x63, 0x6f, 0x72, 0x65, 0x2f, 0x76, 0x31, 0x2f, 0x63,
+	0x6f, 0x72, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x3f, 0x67, 0x69, 0x74, 0x68, 0x75,
+	0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x61, 0x69, 0x74, 0x79, 0x2d, 0x63, 0x6c, 0x6f, 0x75, 0x64,
+	0x2f, 0x6d, 0x6f, 0x6e, 0x74, 0x79, 0x2f, 0x70, 0x6b, 0x67, 0x2f, 0x61, 0x70, 0x69, 0x73, 0x2f,
+	0x61, 0x6c, 0x65, 0x72, 0x74, 0x69, 0x6e, 0x67, 0x2f, 0x76, 0x31, 0x2f, 0x61, 0x6c, 0x65, 0x72,
+	0x74, 0x69, 0x6e, 0x67, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x1a, 0x4c, 0x67, 0x69, 0x74, 0x68,
+	0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x61, 0x69, 0x74, 0x79, 0x2d, 0x63, 0x6c, 0x6f, 0x75,
+	0x64, 0x2f, 0x6d, 0x6f, 0x6e, 0x74, 0x79, 0x2f, 0x70, 0x6b, 0x67, 0x2f, 0x61, 0x70, 0x69, 0x73,
 	0x2f, 0x61, 0x6c, 0x65, 0x72, 0x74, 0x69, 0x6e, 0x67, 0x2f, 0x76, 0x31, 0x2f, 0x61, 0x6c, 0x65,
 	0x72, 0x74, 0x69, 0x6e, 0x67, 0x2e, 0x6e, 0x6f, 0x74, 0x69, 0x66, 0x69, 0x63, 0x61, 0x74, 0x69,
 	0x6f, 0x6e, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0xfd, 0x03, 0x0a, 0x0d, 0x41, 0x6c, 0x65,
@@ -2290,27 +2291,27 @@ var file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_ra
 	0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x20, 0x2e, 0x61, 0x6c, 0x65, 0x72, 0x74,
 	0x69, 0x6e, 0x67, 0x2e, 0x43, 0x6f, 0x6e, 0x64, 0x69, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x66,
 	0x65, 0x72, 0x65, 0x6e, 0x63, 0x65, 0x4c, 0x69, 0x73, 0x74, 0x22, 0x12, 0x82, 0xd3, 0xe4, 0x93,
-	0x02, 0x0c, 0x3a, 0x01, 0x2a, 0x22, 0x07, 0x2f, 0x64, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x42, 0x2e,
-	0x5a, 0x2c, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x72, 0x61, 0x6e,
-	0x63, 0x68, 0x65, 0x72, 0x2f, 0x6f, 0x70, 0x6e, 0x69, 0x2f, 0x70, 0x6b, 0x67, 0x2f, 0x61, 0x70,
-	0x69, 0x73, 0x2f, 0x61, 0x6c, 0x65, 0x72, 0x74, 0x69, 0x6e, 0x67, 0x2f, 0x76, 0x31, 0x62, 0x06,
-	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x02, 0x0c, 0x3a, 0x01, 0x2a, 0x22, 0x07, 0x2f, 0x64, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x42, 0x32,
+	0x5a, 0x30, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x61, 0x69, 0x74,
+	0x79, 0x2d, 0x63, 0x6c, 0x6f, 0x75, 0x64, 0x2f, 0x6d, 0x6f, 0x6e, 0x74, 0x79, 0x2f, 0x70, 0x6b,
+	0x67, 0x2f, 0x61, 0x70, 0x69, 0x73, 0x2f, 0x61, 0x6c, 0x65, 0x72, 0x74, 0x69, 0x6e, 0x67, 0x2f,
+	0x76, 0x31, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
-	file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescOnce sync.Once
-	file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescData = file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDesc
+	file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescOnce sync.Once
+	file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescData = file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDesc
 )
 
-func file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescGZIP() []byte {
-	file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescOnce.Do(func() {
-		file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescData = protoimpl.X.CompressGZIP(file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescData)
+func file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescGZIP() []byte {
+	file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescOnce.Do(func() {
+		file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescData = protoimpl.X.CompressGZIP(file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescData)
 	})
-	return file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescData
+	return file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDescData
 }
 
-var file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes = make([]protoimpl.MessageInfo, 32)
-var file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_goTypes = []interface{}{
+var file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes = make([]protoimpl.MessageInfo, 32)
+var file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_goTypes = []interface{}{
 	(*AlertEndpoint)(nil),              // 0: alerting.AlertEndpoint
 	(*EndpointImplementation)(nil),     // 1: alerting.EndpointImplementation
 	(*SlackEndpoint)(nil),              // 2: alerting.SlackEndpoint
@@ -2349,7 +2350,7 @@ var file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_go
 	(*emptypb.Empty)(nil),              // 35: google.protobuf.Empty
 	(*ConditionReferenceList)(nil),     // 36: alerting.ConditionReferenceList
 }
-var file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_depIdxs = []int32{
+var file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_depIdxs = []int32{
 	2,  // 0: alerting.AlertEndpoint.slack:type_name -> alerting.SlackEndpoint
 	3,  // 1: alerting.AlertEndpoint.email:type_name -> alerting.EmailEndpoint
 	4,  // 2: alerting.AlertEndpoint.pagerDuty:type_name -> alerting.PagerDutyEndpoint
@@ -2411,15 +2412,15 @@ var file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_de
 	0,  // [0:42] is the sub-list for field type_name
 }
 
-func init() { file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_init() }
-func file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_init() {
-	if File_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto != nil {
+func init() { file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_init() }
+func file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_init() {
+	if File_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto != nil {
 		return
 	}
-	file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_proto_init()
-	file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_notification_proto_init()
+	file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_proto_init()
+	file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_notification_proto_init()
 	if !protoimpl.UnsafeEnabled {
-		file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
+		file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*AlertEndpoint); i {
 			case 0:
 				return &v.state
@@ -2431,7 +2432,7 @@ func file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_i
 				return nil
 			}
 		}
-		file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
+		file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*EndpointImplementation); i {
 			case 0:
 				return &v.state
@@ -2443,7 +2444,7 @@ func file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_i
 				return nil
 			}
 		}
-		file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
+		file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*SlackEndpoint); i {
 			case 0:
 				return &v.state
@@ -2455,7 +2456,7 @@ func file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_i
 				return nil
 			}
 		}
-		file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
+		file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*EmailEndpoint); i {
 			case 0:
 				return &v.state
@@ -2467,7 +2468,7 @@ func file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_i
 				return nil
 			}
 		}
-		file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
+		file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*PagerDutyEndpoint); i {
 			case 0:
 				return &v.state
@@ -2479,7 +2480,7 @@ func file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_i
 				return nil
 			}
 		}
-		file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
+		file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*WebhookEndpoint); i {
 			case 0:
 				return &v.state
@@ -2491,7 +2492,7 @@ func file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_i
 				return nil
 			}
 		}
-		file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
+		file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*HTTPConfig); i {
 			case 0:
 				return &v.state
@@ -2503,7 +2504,7 @@ func file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_i
 				return nil
 			}
 		}
-		file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
+		file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*BasicAuth); i {
 			case 0:
 				return &v.state
@@ -2515,7 +2516,7 @@ func file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_i
 				return nil
 			}
 		}
-		file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
+		file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*Authorization); i {
 			case 0:
 				return &v.state
@@ -2527,7 +2528,7 @@ func file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_i
 				return nil
 			}
 		}
-		file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
+		file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*OAuth2); i {
 			case 0:
 				return &v.state
@@ -2539,7 +2540,7 @@ func file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_i
 				return nil
 			}
 		}
-		file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
+		file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*TLSConfig); i {
 			case 0:
 				return &v.state
@@ -2551,7 +2552,7 @@ func file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_i
 				return nil
 			}
 		}
-		file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
+		file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*AlertEndpointList); i {
 			case 0:
 				return &v.state
@@ -2563,7 +2564,7 @@ func file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_i
 				return nil
 			}
 		}
-		file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
+		file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*AlertEndpointWithId); i {
 			case 0:
 				return &v.state
@@ -2575,7 +2576,7 @@ func file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_i
 				return nil
 			}
 		}
-		file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
+		file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*ListAlertEndpointsRequest); i {
 			case 0:
 				return &v.state
@@ -2587,7 +2588,7 @@ func file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_i
 				return nil
 			}
 		}
-		file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[14].Exporter = func(v interface{}, i int) interface{} {
+		file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[14].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*UpdateAlertEndpointRequest); i {
 			case 0:
 				return &v.state
@@ -2599,7 +2600,7 @@ func file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_i
 				return nil
 			}
 		}
-		file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
+		file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*DeleteAlertEndpointRequest); i {
 			case 0:
 				return &v.state
@@ -2611,7 +2612,7 @@ func file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_i
 				return nil
 			}
 		}
-		file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[16].Exporter = func(v interface{}, i int) interface{} {
+		file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[16].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*TestAlertEndpointRequest); i {
 			case 0:
 				return &v.state
@@ -2623,7 +2624,7 @@ func file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_i
 				return nil
 			}
 		}
-		file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[17].Exporter = func(v interface{}, i int) interface{} {
+		file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[17].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*TestAlertEndpointResponse); i {
 			case 0:
 				return &v.state
@@ -2635,7 +2636,7 @@ func file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_i
 				return nil
 			}
 		}
-		file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[18].Exporter = func(v interface{}, i int) interface{} {
+		file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[18].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*FullAttachedEndpoints); i {
 			case 0:
 				return &v.state
@@ -2647,7 +2648,7 @@ func file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_i
 				return nil
 			}
 		}
-		file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[19].Exporter = func(v interface{}, i int) interface{} {
+		file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[19].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*RateLimitingConfig); i {
 			case 0:
 				return &v.state
@@ -2659,7 +2660,7 @@ func file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_i
 				return nil
 			}
 		}
-		file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[20].Exporter = func(v interface{}, i int) interface{} {
+		file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[20].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*FullAttachedEndpoint); i {
 			case 0:
 				return &v.state
@@ -2671,7 +2672,7 @@ func file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_i
 				return nil
 			}
 		}
-		file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[21].Exporter = func(v interface{}, i int) interface{} {
+		file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[21].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*AttachedEndpoints); i {
 			case 0:
 				return &v.state
@@ -2683,7 +2684,7 @@ func file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_i
 				return nil
 			}
 		}
-		file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[22].Exporter = func(v interface{}, i int) interface{} {
+		file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[22].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*AttachedEndpoint); i {
 			case 0:
 				return &v.state
@@ -2695,7 +2696,7 @@ func file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_i
 				return nil
 			}
 		}
-		file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[23].Exporter = func(v interface{}, i int) interface{} {
+		file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[23].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*RoutingNode); i {
 			case 0:
 				return &v.state
@@ -2707,7 +2708,7 @@ func file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_i
 				return nil
 			}
 		}
-		file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[24].Exporter = func(v interface{}, i int) interface{} {
+		file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[24].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*EndpointRoutingMap); i {
 			case 0:
 				return &v.state
@@ -2719,7 +2720,7 @@ func file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_i
 				return nil
 			}
 		}
-		file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[25].Exporter = func(v interface{}, i int) interface{} {
+		file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[25].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*RoutingRelationships); i {
 			case 0:
 				return &v.state
@@ -2731,7 +2732,7 @@ func file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_i
 				return nil
 			}
 		}
-		file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[26].Exporter = func(v interface{}, i int) interface{} {
+		file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[26].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*EndpointMetadata); i {
 			case 0:
 				return &v.state
@@ -2743,7 +2744,7 @@ func file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_i
 				return nil
 			}
 		}
-		file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[27].Exporter = func(v interface{}, i int) interface{} {
+		file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[27].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*ToggleRequest); i {
 			case 0:
 				return &v.state
@@ -2756,33 +2757,33 @@ func file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_i
 			}
 		}
 	}
-	file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[0].OneofWrappers = []interface{}{
+	file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[0].OneofWrappers = []interface{}{
 		(*AlertEndpoint_Slack)(nil),
 		(*AlertEndpoint_Email)(nil),
 		(*AlertEndpoint_PagerDuty)(nil),
 		(*AlertEndpoint_Webhook)(nil),
 	}
-	file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[1].OneofWrappers = []interface{}{}
-	file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[3].OneofWrappers = []interface{}{}
-	file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[18].OneofWrappers = []interface{}{}
-	file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[19].OneofWrappers = []interface{}{}
-	file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[21].OneofWrappers = []interface{}{}
+	file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[1].OneofWrappers = []interface{}{}
+	file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[3].OneofWrappers = []interface{}{}
+	file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[18].OneofWrappers = []interface{}{}
+	file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[19].OneofWrappers = []interface{}{}
+	file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes[21].OneofWrappers = []interface{}{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDesc,
+			RawDescriptor: file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDesc,
 			NumEnums:      0,
 			NumMessages:   32,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_goTypes,
-		DependencyIndexes: file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_depIdxs,
-		MessageInfos:      file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes,
+		GoTypes:           file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_goTypes,
+		DependencyIndexes: file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_depIdxs,
+		MessageInfos:      file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_msgTypes,
 	}.Build()
-	File_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto = out.File
-	file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDesc = nil
-	file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_goTypes = nil
-	file_github_com_rancher_opni_pkg_apis_alerting_v1_alerting_endpoint_proto_depIdxs = nil
+	File_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto = out.File
+	file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_rawDesc = nil
+	file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_goTypes = nil
+	file_github_com_aity_cloud_monty_pkg_apis_alerting_v1_alerting_endpoint_proto_depIdxs = nil
 }

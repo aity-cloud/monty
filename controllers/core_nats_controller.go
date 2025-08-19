@@ -5,10 +5,10 @@ package controllers
 import (
 	"context"
 
-	corev1beta1 "github.com/rancher/opni/apis/core/v1beta1"
-	"github.com/rancher/opni/pkg/resources"
-	"github.com/rancher/opni/pkg/resources/nats"
-	"github.com/rancher/opni/pkg/util/k8sutil"
+	corev1beta1 "github.com/aity-cloud/monty/apis/core/v1beta1"
+	"github.com/aity-cloud/monty/pkg/resources"
+	"github.com/aity-cloud/monty/pkg/resources/nats"
+	"github.com/aity-cloud/monty/pkg/util/k8sutil"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -21,9 +21,9 @@ type NatsClusterReonciler struct {
 	scheme *runtime.Scheme
 }
 
-// +kubebuilder:rbac:groups=core.opni.io,resources=natsclusters,verbs=get;list;watch;create;update;patch;delete
-// +kubebuilder:rbac:groups=core.opni.io,resources=natsclusters/status,verbs=get;update;patch
-// +kubebuilder:rbac:groups=core.opni.io,resources=natsclusters/finalizers,verbs=update
+// +kubebuilder:rbac:groups=core.monty.io,resources=natsclusters,verbs=get;list;watch;create;update;patch;delete
+// +kubebuilder:rbac:groups=core.monty.io,resources=natsclusters/status,verbs=get;update;patch
+// +kubebuilder:rbac:groups=core.monty.io,resources=natsclusters/finalizers,verbs=update
 
 func (r *NatsClusterReonciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
 	natsCluster := &corev1beta1.NatsCluster{}

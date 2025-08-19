@@ -10,13 +10,13 @@ import (
 
 	"log/slog"
 
+	streamv1 "github.com/aity-cloud/monty/pkg/apis/stream/v1"
+	"github.com/aity-cloud/monty/pkg/auth/cluster"
+	"github.com/aity-cloud/monty/pkg/logger"
+	"github.com/aity-cloud/monty/pkg/plugins/apis/apiextensions"
+	"github.com/aity-cloud/monty/pkg/util"
 	"github.com/hashicorp/go-plugin"
 	"github.com/kralicky/totem"
-	streamv1 "github.com/rancher/opni/pkg/apis/stream/v1"
-	"github.com/rancher/opni/pkg/auth/cluster"
-	"github.com/rancher/opni/pkg/logger"
-	"github.com/rancher/opni/pkg/plugins/apis/apiextensions"
-	"github.com/rancher/opni/pkg/util"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/sdk/metric"
 	"go.opentelemetry.io/otel/sdk/resource"
@@ -76,7 +76,7 @@ func NewGatewayPlugin(p StreamAPIExtension, opts ...GatewayStreamApiExtensionPlu
 			ext.meterProvider = metric.NewMeterProvider(metric.WithReader(options.metricsConfig.Reader),
 				metric.WithResource(resource.NewSchemaless(
 					attribute.Key("plugin").String(name),
-					attribute.String("system", "opni_gateway"),
+					attribute.String("system", "monty_gateway"),
 				)),
 			)
 		}

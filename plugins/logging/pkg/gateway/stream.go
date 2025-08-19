@@ -1,10 +1,10 @@
 package gateway
 
 import (
-	"github.com/rancher/opni/pkg/agent"
-	streamext "github.com/rancher/opni/pkg/plugins/apis/apiextensions/stream"
-	"github.com/rancher/opni/pkg/util"
-	"github.com/rancher/opni/plugins/logging/apis/node"
+	"github.com/aity-cloud/monty/pkg/agent"
+	streamext "github.com/aity-cloud/monty/pkg/plugins/apis/apiextensions/stream"
+	"github.com/aity-cloud/monty/pkg/util"
+	"github.com/aity-cloud/monty/plugins/logging/apis/node"
 	collogspb "go.opentelemetry.io/proto/otlp/collector/logs/v1"
 	coltracepb "go.opentelemetry.io/proto/otlp/collector/trace/v1"
 	"google.golang.org/grpc"

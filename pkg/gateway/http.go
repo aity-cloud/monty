@@ -20,18 +20,18 @@ import (
 	"google.golang.org/protobuf/reflect/protopath"
 	"google.golang.org/protobuf/reflect/protoreflect"
 
+	"github.com/aity-cloud/monty/pkg/config/reactive"
+	configv1 "github.com/aity-cloud/monty/pkg/config/v1"
+	"github.com/aity-cloud/monty/pkg/logger"
+	"github.com/aity-cloud/monty/pkg/plugins"
+	"github.com/aity-cloud/monty/pkg/plugins/apis/apiextensions"
+	"github.com/aity-cloud/monty/pkg/plugins/hooks"
+	"github.com/aity-cloud/monty/pkg/plugins/meta"
+	"github.com/aity-cloud/monty/pkg/plugins/types"
+	"github.com/aity-cloud/monty/pkg/util"
+	"github.com/aity-cloud/monty/pkg/util/fwd"
 	"github.com/gin-gonic/gin"
 	"github.com/prometheus/client_golang/prometheus"
-	"github.com/rancher/opni/pkg/config/reactive"
-	configv1 "github.com/rancher/opni/pkg/config/v1"
-	"github.com/rancher/opni/pkg/logger"
-	"github.com/rancher/opni/pkg/plugins"
-	"github.com/rancher/opni/pkg/plugins/apis/apiextensions"
-	"github.com/rancher/opni/pkg/plugins/hooks"
-	"github.com/rancher/opni/pkg/plugins/meta"
-	"github.com/rancher/opni/pkg/plugins/types"
-	"github.com/rancher/opni/pkg/util"
-	"github.com/rancher/opni/pkg/util/fwd"
 	"github.com/samber/lo"
 	slogsampling "github.com/samber/slog-sampling"
 	"go.opentelemetry.io/contrib/instrumentation/github.com/gin-gonic/gin/otelgin"
@@ -41,7 +41,7 @@ import (
 
 var (
 	httpRequestsTotal = prometheus.NewCounter(prometheus.CounterOpts{
-		Namespace: "opni",
+		Namespace: "monty",
 		Subsystem: "gateway",
 		Name:      "http_requests_total",
 		Help:      "Total number of HTTP requests handled by the gateway API",
@@ -159,7 +159,7 @@ func NewHTTPServer(
 	srv.metricsRegisterer.MustRegister(apiCollectors...)
 
 	exporter, err := otelprom.New(
-		otelprom.WithRegisterer(prometheus.WrapRegistererWithPrefix("opni_gateway_", srv.metricsRegisterer)),
+		otelprom.WithRegisterer(prometheus.WrapRegistererWithPrefix("monty_gateway_", srv.metricsRegisterer)),
 		otelprom.WithoutScopeInfo(),
 		otelprom.WithoutTargetInfo(),
 	)

@@ -2,8 +2,8 @@
 
 package apis
 
-import opnigrafanav1beta1 "github.com/rancher/opni/apis/grafana/v1beta1"
+import montygrafanav1beta1 "github.com/aity-cloud/monty/apis/grafana/v1beta1"
 
 func init() {
-	addSchemeBuilders(opnigrafanav1beta1.AddToScheme)
+	addSchemeBuilders(montygrafanav1beta1.AddToScheme)
 }

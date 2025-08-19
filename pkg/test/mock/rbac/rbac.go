@@ -8,9 +8,9 @@ import (
 	context "context"
 	reflect "reflect"
 
-	v1 "github.com/rancher/opni/pkg/apis/core/v1"
+	v1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	rbac "github.com/aity-cloud/monty/pkg/rbac"
 	gomock "go.uber.org/mock/gomock"
-	rbac "github.com/rancher/opni/pkg/rbac"
 )
 
 // MockProvider is a mock of Provider interface.

@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/rancher/opni/pkg/plugins/apis/system"
-	"github.com/rancher/opni/pkg/util"
-	loggingerrors "github.com/rancher/opni/plugins/logging/pkg/errors"
+	"github.com/aity-cloud/monty/pkg/plugins/apis/system"
+	"github.com/aity-cloud/monty/pkg/util"
+	loggingerrors "github.com/aity-cloud/monty/plugins/logging/pkg/errors"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 )

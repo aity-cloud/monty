@@ -4,20 +4,20 @@ import (
 	"context"
 	"os"
 
-	opnicorev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	managementv1 "github.com/rancher/opni/pkg/apis/management/v1"
-	"github.com/rancher/opni/pkg/logger"
+	montycorev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	managementv1 "github.com/aity-cloud/monty/pkg/apis/management/v1"
+	"github.com/aity-cloud/monty/pkg/logger"
 )
 
 func (b *LoggingBackend) updateClusterMetadata(ctx context.Context, event *managementv1.WatchEvent) error {
 	incomingLabels := event.GetCluster().GetMetadata().GetLabels()
 	previousLabels := event.GetPrevious().GetMetadata().GetLabels()
 	var newName, oldName string
-	if _, ok := incomingLabels[opnicorev1.NameLabel]; ok {
-		newName = incomingLabels[opnicorev1.NameLabel]
+	if _, ok := incomingLabels[montycorev1.NameLabel]; ok {
+		newName = incomingLabels[montycorev1.NameLabel]
 	}
-	if _, ok := previousLabels[opnicorev1.NameLabel]; ok {
-		oldName = previousLabels[opnicorev1.NameLabel]
+	if _, ok := previousLabels[montycorev1.NameLabel]; ok {
+		oldName = previousLabels[montycorev1.NameLabel]
 	}
 	if newName == oldName {
 		b.Logger.With(
@@ -69,9 +69,9 @@ outer:
 	}
 }
 
-func (b *LoggingBackend) reconcileClusterMetadata(ctx context.Context, clusters []*opnicorev1.Cluster) (retErr error) {
+func (b *LoggingBackend) reconcileClusterMetadata(ctx context.Context, clusters []*montycorev1.Cluster) (retErr error) {
 	for _, cluster := range clusters {
-		err := b.ClusterDriver.StoreClusterMetadata(ctx, cluster.GetId(), cluster.Metadata.Labels[opnicorev1.NameLabel])
+		err := b.ClusterDriver.StoreClusterMetadata(ctx, cluster.GetId(), cluster.Metadata.Labels[montycorev1.NameLabel])
 		if err != nil {
 			b.Logger.With(
 				logger.Err(err),

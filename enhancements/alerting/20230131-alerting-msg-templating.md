@@ -4,8 +4,8 @@ Alerting message templating
 
 ## Summary:
 
-Opni Alerting needs to define a templating system for users to consume.
-The templating system address the need to embed runtime or alarm specific information in the body or title of an Opni Alarm.
+Monty Alerting needs to define a templating system for users to consume.
+The templating system address the need to embed runtime or alarm specific information in the body or title of an Monty Alarm.
 
 ## Use case:
 
@@ -14,11 +14,11 @@ The templating system address the need to embed runtime or alarm specific inform
 ## Benefits:
 
 - Improved UX
-- Improved time to resolution of Opni Alarms
+- Improved time to resolution of Monty Alarms
 
 ## Impact:
 
-- Opni-Alerting will need to deploy a `config map` with templates
+- Monty-Alerting will need to deploy a `config map` with templates
 
 ## Implementation details:
 
@@ -28,7 +28,7 @@ The templating system address the need to embed runtime or alarm specific inform
 
 - `Plain` and `Alarm` messages should have different message templates, therefore each receiver template needs to condition expand to different templates based on the message type.
 - AlertManager identifies the message type at dispatch time by AlertManager annotations on the incoming message.
-- Opni-Alerting plugin determines the type of the message sent, not the caller of the respective APIs, for example `PushMessage` API or other.
+- Monty-Alerting plugin determines the type of the message sent, not the caller of the respective APIs, for example `PushMessage` API or other.
 
 ### Alarms
 
@@ -36,7 +36,7 @@ The templating system address the need to embed runtime or alarm specific inform
 - Each template file should come with a prebuilt header including:
   - ClusterId & ClusterName
   - Installed capabilities
-  - Opni Alarm name
+  - Monty Alarm name
   - Status of the Alarm (firing, resolved, …) + (any string explanation of the state found)
   - Link-back URL to admin dashboard
 - A `ListTemplateVariables` API will index the variables in the API files and template variables specific to the conditions
@@ -47,7 +47,7 @@ The templating system address the need to embed runtime or alarm specific inform
 
 ### Plain
 
-- `Plain` messages sent from should include a header with the `backend`,for example AiOps service versus some other opni service, that's sending them the message.
+- `Plain` messages sent from should include a header with the `backend`,for example AiOps service versus some other monty service, that's sending them the message.
 - No template variables will be available for plain messages to consume.
 
 ## Acceptance criteria:
@@ -64,8 +64,8 @@ The templating system address the need to embed runtime or alarm specific inform
 
 ## Dependencies:
 
-- Improved management broadcast event watcher : https://github.com/rancher/opni/pull/969
-- Alerting Cluster as a messaging system : https://github.com/rancher/opni/pull/973
+- Improved management broadcast event watcher : https://github.com/aity-cloud/monty/pull/969
+- Alerting Cluster as a messaging system : https://github.com/aity-cloud/monty/pull/973
 
 ## Risks and contingencies:
 
@@ -82,4 +82,4 @@ The templating system address the need to embed runtime or alarm specific inform
 
 ## Resources:
 
-1 Opni upstream cluster & 1 Opni downstream cluster
+1 Monty upstream cluster & 1 Monty downstream cluster

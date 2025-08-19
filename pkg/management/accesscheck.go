@@ -5,11 +5,11 @@ import (
 	"log/slog"
 	"slices"
 
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	"github.com/aity-cloud/monty/pkg/plugins/apis/apiextensions"
+	"github.com/aity-cloud/monty/pkg/proxy"
+	"github.com/aity-cloud/monty/pkg/storage"
 	"github.com/gin-gonic/gin"
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	"github.com/rancher/opni/pkg/plugins/apis/apiextensions"
-	"github.com/rancher/opni/pkg/proxy"
-	"github.com/rancher/opni/pkg/storage"
 	ginoauth2 "github.com/zalando/gin-oauth2"
 )
 

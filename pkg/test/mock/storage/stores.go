@@ -9,10 +9,10 @@ import (
 	reflect "reflect"
 	time "time"
 
-	v1 "github.com/rancher/opni/pkg/apis/core/v1"
-	keyring "github.com/rancher/opni/pkg/keyring"
-	storage "github.com/rancher/opni/pkg/storage"
-	lock "github.com/rancher/opni/pkg/storage/lock"
+	v1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	keyring "github.com/aity-cloud/monty/pkg/keyring"
+	storage "github.com/aity-cloud/monty/pkg/storage"
+	lock "github.com/aity-cloud/monty/pkg/storage/lock"
 	gomock "go.uber.org/mock/gomock"
 )
 

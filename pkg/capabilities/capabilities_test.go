@@ -1,10 +1,10 @@
 package capabilities_test
 
 import (
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	"github.com/aity-cloud/monty/pkg/capabilities"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	"github.com/rancher/opni/pkg/capabilities"
 )
 
 var _ = Describe("Capabilities", Label("unit"), func() {

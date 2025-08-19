@@ -6,11 +6,11 @@ import (
 	"slices"
 	"strings"
 
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	"github.com/rancher/opni/pkg/auth"
-	"github.com/rancher/opni/pkg/logger"
-	"github.com/rancher/opni/pkg/storage"
-	"github.com/rancher/opni/pkg/validation"
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	"github.com/aity-cloud/monty/pkg/auth"
+	"github.com/aity-cloud/monty/pkg/logger"
+	"github.com/aity-cloud/monty/pkg/storage"
+	"github.com/aity-cloud/monty/pkg/validation"
 	"github.com/samber/lo"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -19,7 +19,7 @@ import (
 
 const (
 	managmentCapability = "mgmt"
-	reservedPrefix      = "opni.io_"
+	reservedPrefix      = "monty.io_"
 )
 
 func (s *Server) ListRBACBackends(_ context.Context, _ *emptypb.Empty) (*corev1.CapabilityTypeList, error) {

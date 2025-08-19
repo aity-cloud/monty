@@ -1,6 +1,6 @@
 package v1
 
-import "github.com/rancher/opni/pkg/validation"
+import "github.com/aity-cloud/monty/pkg/validation"
 
 func (r *InstallRequest) Validate() error {
 	if err := validation.Validate(r.Capability); err != nil {

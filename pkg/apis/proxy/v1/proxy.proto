@@ -2,10 +2,10 @@ syntax = "proto3";
 
 package proxy;
 
-import "github.com/rancher/opni/pkg/apis/core/v1/core.proto";
+import "github.com/aity-cloud/monty/pkg/apis/core/v1/core.proto";
 import "google/protobuf/empty.proto";
 
-option go_package = "github.com/rancher/opni/pkg/apis/proxy/v1";
+option go_package = "github.com/aity-cloud/monty/pkg/apis/proxy/v1";
 
 service RegisterProxy {
   rpc Backend(google.protobuf.Empty) returns (BackendInfo);

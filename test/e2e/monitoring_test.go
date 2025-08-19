@@ -10,6 +10,20 @@ import (
 	"strings"
 	"time"
 
+	"github.com/aity-cloud/monty/internal/bench"
+	capabilityv1 "github.com/aity-cloud/monty/pkg/apis/capability/v1"
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	managementv1 "github.com/aity-cloud/monty/pkg/apis/management/v1"
+	storagev1 "github.com/aity-cloud/monty/pkg/apis/storage/v1"
+	"github.com/aity-cloud/monty/pkg/auth/openid"
+	"github.com/aity-cloud/monty/pkg/capabilities/wellknown"
+	"github.com/aity-cloud/monty/pkg/metrics/compat"
+	"github.com/aity-cloud/monty/pkg/plugins/driverutil"
+	"github.com/aity-cloud/monty/pkg/task"
+	"github.com/aity-cloud/monty/pkg/test/testbench"
+	"github.com/aity-cloud/monty/pkg/util"
+	"github.com/aity-cloud/monty/plugins/metrics/apis/cortexadmin"
+	"github.com/aity-cloud/monty/plugins/metrics/apis/cortexops"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
@@ -18,20 +32,6 @@ import (
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	"github.com/prometheus/common/model"
-	"github.com/rancher/opni/internal/bench"
-	capabilityv1 "github.com/rancher/opni/pkg/apis/capability/v1"
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	managementv1 "github.com/rancher/opni/pkg/apis/management/v1"
-	storagev1 "github.com/rancher/opni/pkg/apis/storage/v1"
-	"github.com/rancher/opni/pkg/auth/openid"
-	"github.com/rancher/opni/pkg/capabilities/wellknown"
-	"github.com/rancher/opni/pkg/metrics/compat"
-	"github.com/rancher/opni/pkg/plugins/driverutil"
-	"github.com/rancher/opni/pkg/task"
-	"github.com/rancher/opni/pkg/test/testbench"
-	"github.com/rancher/opni/pkg/util"
-	"github.com/rancher/opni/plugins/metrics/apis/cortexadmin"
-	"github.com/rancher/opni/plugins/metrics/apis/cortexops"
 	"github.com/samber/lo"
 	"google.golang.org/protobuf/types/known/emptypb"
 	"gopkg.in/ini.v1"
@@ -85,7 +85,7 @@ var _ = Describe("Monitoring Test", Ordered, Label("e2e", "slow"), func() {
 
 		err := k8sClient.Get(context.Background(), types.NamespacedName{
 			Name:      "grafana-config",
-			Namespace: "opni",
+			Namespace: "monty",
 		}, &grafanaConfig)
 
 		Expect(err).NotTo(HaveOccurred())

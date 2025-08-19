@@ -14,15 +14,15 @@ import (
 
 	"slices"
 
+	"github.com/aity-cloud/monty/pkg/alerting/drivers/config"
+	"github.com/aity-cloud/monty/pkg/alerting/interfaces"
+	"github.com/aity-cloud/monty/pkg/alerting/shared"
+	alertingv1 "github.com/aity-cloud/monty/pkg/apis/alerting/v1"
+	"github.com/aity-cloud/monty/pkg/capabilities/wellknown"
+	"github.com/aity-cloud/monty/pkg/util"
+	"github.com/aity-cloud/monty/pkg/validation"
 	amCfg "github.com/prometheus/alertmanager/config"
 	"github.com/prometheus/alertmanager/pkg/labels"
-	"github.com/rancher/opni/pkg/alerting/drivers/config"
-	"github.com/rancher/opni/pkg/alerting/interfaces"
-	"github.com/rancher/opni/pkg/alerting/shared"
-	alertingv1 "github.com/rancher/opni/pkg/apis/alerting/v1"
-	"github.com/rancher/opni/pkg/capabilities/wellknown"
-	"github.com/rancher/opni/pkg/util"
-	"github.com/rancher/opni/pkg/validation"
 	"github.com/samber/lo"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -36,9 +36,9 @@ type ProductionConfigSyncer interface {
 	Walk(map[string]string, func(depth int, r *config.Route) error) error
 	// Returns the routes that match the given labels
 	Search(labels map[string]string) []*config.Route
-	// Merges two OpniRouting objects (also includes merging plain AlertManager configs for users)
-	Merge(other OpniRouting) (OpniRouting, error)
-	// Converts a valid AlertManager config to OpniRouting
+	// Merges two MontyRouting objects (also includes merging plain AlertManager configs for users)
+	Merge(other MontyRouting) (MontyRouting, error)
+	// Converts a valid AlertManager config to MontyRouting
 	// Returns an FailedPrecondition error if the config cannot be unmarshalled,
 	// Returns an InternalServerError if the config is invalid
 	SyncExternalConfig(content []byte) error
@@ -51,9 +51,9 @@ type RoutingIdentifer interface {
 	SetDefaultReceiver(config.WebhookConfig)
 }
 
-// OpniRouting Responsible for handling the mapping of ids
+// MontyRouting Responsible for handling the mapping of ids
 // to configured endpoints, including indexing external configs
-type OpniRouting interface {
+type MontyRouting interface {
 	ProductionConfigSyncer
 	RoutingIdentifer
 
@@ -66,16 +66,16 @@ type OpniRouting interface {
 
 	// Builders
 
-	// Converts OpniRouting to a valid AlertManager config
+	// Converts MontyRouting to a valid AlertManager config
 	// Returns a NotFound error if the a route to update or delete is not found
 	// Returns a Conflict error if we try to insert a duplicate config, unique up to its keys
 	BuildConfig() (*config.Config, error)
-	Clone() OpniRouting
+	Clone() MontyRouting
 }
 
-func NewDefaultOpniRouting() OpniRouting {
+func NewDefaultMontyRouting() MontyRouting {
 	url := util.Must(url.Parse(fmt.Sprintf("http://localhost:3000%s", shared.AlertingDefaultHookName)))
-	return NewOpniRouterV1(config.WebhookConfig{
+	return NewMontyRouterV1(config.WebhookConfig{
 		NotifierConfig: config.NotifierConfig{
 			VSendResolved: false,
 		},
@@ -85,11 +85,11 @@ func NewDefaultOpniRouting() OpniRouting {
 	})
 }
 
-var _ interfaces.Cloneable[OpniRouting] = (OpniRouting)(nil)
+var _ interfaces.Cloneable[MontyRouting] = (MontyRouting)(nil)
 
-var _ OpniRouting = (*OpniRouterV1)(nil)
+var _ MontyRouting = (*MontyRouterV1)(nil)
 
-type namespacedSpecs map[string]map[string]map[string]config.OpniReceiver
+type namespacedSpecs map[string]map[string]map[string]config.MontyReceiver
 
 func (n *namespacedSpecs) UnmarshalYAML(unmarshal func(interface{}) error) error {
 	n = &namespacedSpecs{}
@@ -100,24 +100,24 @@ func (n *namespacedSpecs) UnmarshalYAML(unmarshal func(interface{}) error) error
 	for namespace, routes := range out {
 		for routeId, endpoints := range routes {
 			for endpointId, spec := range endpoints {
-				opniRecv, err := config.ExtractReceiver(unmarshal, spec)
+				montyRecv, err := config.ExtractReceiver(unmarshal, spec)
 				if err != nil {
 					return err
 				}
 				if _, ok := (*n)[namespace]; !ok {
-					(*n)[namespace] = map[string]map[string]config.OpniReceiver{}
+					(*n)[namespace] = map[string]map[string]config.MontyReceiver{}
 				}
 				if _, ok := (*n)[namespace][routeId]; !ok {
-					(*n)[namespace][routeId] = map[string]config.OpniReceiver{}
+					(*n)[namespace][routeId] = map[string]config.MontyReceiver{}
 				}
-				(*n)[namespace][routeId][endpointId] = opniRecv
+				(*n)[namespace][routeId][endpointId] = montyRecv
 			}
 		}
 	}
 	return nil
 }
 
-type defaultNamespaceConfigs map[string]map[string]config.OpniReceiver
+type defaultNamespaceConfigs map[string]map[string]config.MontyReceiver
 
 func (n *defaultNamespaceConfigs) UnmarshalYAML(unmarshal func(interface{}) error) error {
 	n = &defaultNamespaceConfigs{}
@@ -127,14 +127,14 @@ func (n *defaultNamespaceConfigs) UnmarshalYAML(unmarshal func(interface{}) erro
 	}
 	for defaultNamespaceValue, endpoints := range out {
 		for endpointId, spec := range endpoints {
-			opniRecv, err := config.ExtractReceiver(unmarshal, spec)
+			montyRecv, err := config.ExtractReceiver(unmarshal, spec)
 			if err != nil {
 				return err
 			}
 			if _, ok := (*n)[defaultNamespaceValue]; !ok {
-				(*n)[defaultNamespaceValue] = map[string]config.OpniReceiver{}
+				(*n)[defaultNamespaceValue] = map[string]config.MontyReceiver{}
 			}
-			(*n)[defaultNamespaceValue][endpointId] = opniRecv
+			(*n)[defaultNamespaceValue][endpointId] = montyRecv
 		}
 	}
 	return nil
@@ -149,33 +149,33 @@ type rateLimitingConfig struct {
 }
 
 // indexes using endpointId for scalability
-type OpniRouterV1 struct {
+type MontyRouterV1 struct {
 	mu              sync.Mutex
 	DefaultReceiver config.WebhookConfig `yaml:"defaultReceiver,omitempty" json:"hookEndpoint,omitempty"`
-	// Contains an AlertManager config not created and managed by Opni
+	// Contains an AlertManager config not created and managed by Monty
 	SyncedConfig *config.Config `yaml:"embeddedConfig,omitempty" json:"embeddedConfig,omitempty"`
 
-	// defaultNamespaceValue -> endpointId -> OpniConfig
+	// defaultNamespaceValue -> endpointId -> MontyConfig
 	DefaultNamespaceConfigs defaultNamespaceConfigs `yaml:"defaultNamespaceConfigs,omitempty" json:"defaultNamespaceConfigs,omitempty"`
-	// namespace -> routeId -> endpointId -> OpniConfig
+	// namespace -> routeId -> endpointId -> MontyConfig
 	NamespacedSpecs namespacedSpecs `yaml:"namespacedSpecs,omitempty" json:"namespacedSpecs,omitempty"`
 	// namespace -> routeId -> 	rateLimitingConfig
 	NamespacedRateLimiting namespaceRateLimiting `yaml:"namespacedRateLimiting,omitempty" json:"namespacedRateLimiting,omitempty"`
 }
 
-func NewOpniRouterV1(defaultRevc config.WebhookConfig) *OpniRouterV1 {
-	return &OpniRouterV1{
+func NewMontyRouterV1(defaultRevc config.WebhookConfig) *MontyRouterV1 {
+	return &MontyRouterV1{
 		// am empty config.Config is invalid in many ways, so it is easier to mark no config as nil
 		SyncedConfig:            nil,
-		DefaultNamespaceConfigs: make(map[string]map[string]config.OpniReceiver),
-		NamespacedSpecs:         make(map[string]map[string]map[string]config.OpniReceiver),
+		DefaultNamespaceConfigs: make(map[string]map[string]config.MontyReceiver),
+		NamespacedSpecs:         make(map[string]map[string]map[string]config.MontyReceiver),
 		NamespacedRateLimiting:  make(map[string]map[string]rateLimitingConfig),
 		DefaultReceiver:         defaultRevc,
 	}
 }
 
-func newReceiverImplementationFromEndpoint(endp *alertingv1.AlertEndpoint, details *alertingv1.EndpointImplementation) config.OpniReceiver {
-	var newConfig config.OpniReceiver
+func newReceiverImplementationFromEndpoint(endp *alertingv1.AlertEndpoint, details *alertingv1.EndpointImplementation) config.MontyReceiver {
+	var newConfig config.MontyReceiver
 	switch endp.GetEndpoint().(type) {
 	case *alertingv1.AlertEndpoint_Email:
 		newConfig = (&config.EmailConfig{}).Configure(endp)
@@ -199,7 +199,7 @@ func newReceiverImplementationFromEndpoint(endp *alertingv1.AlertEndpoint, detai
 	return newConfig
 }
 
-func (o *OpniRouterV1) HasLabels(routingId string) []*labels.Matcher {
+func (o *MontyRouterV1) HasLabels(routingId string) []*labels.Matcher {
 	for namespaceName, routes := range o.NamespacedSpecs {
 		if _, ok := routes[routingId]; ok {
 			return []*labels.Matcher{
@@ -214,11 +214,11 @@ func (o *OpniRouterV1) HasLabels(routingId string) []*labels.Matcher {
 	return nil
 }
 
-func (o *OpniRouterV1) HasReceivers(routingId string) []string {
+func (o *MontyRouterV1) HasReceivers(routingId string) []string {
 	for namespaceName, routes := range o.NamespacedSpecs {
 		if _, ok := routes[routingId]; ok {
 			return []string{
-				shared.NewOpniReceiverName(shared.OpniReceiverId{
+				shared.NewMontyReceiverName(shared.MontyReceiverId{
 					Namespace:  namespaceName,
 					ReceiverId: routingId,
 				}),
@@ -228,13 +228,13 @@ func (o *OpniRouterV1) HasReceivers(routingId string) []string {
 	return []string{}
 }
 
-func (o *OpniRouterV1) SetDefaultReceiver(cfg config.WebhookConfig) {
+func (o *MontyRouterV1) SetDefaultReceiver(cfg config.WebhookConfig) {
 	o.mu.Lock()
 	defer o.mu.Unlock()
 	o.DefaultReceiver = cfg
 }
 
-func (o *OpniRouterV1) SyncExternalConfig(content []byte) error {
+func (o *MontyRouterV1) SyncExternalConfig(content []byte) error {
 	// the default alertmanager validation is embedded into the implementation of yaml.Unmarshallable
 	var cfg *config.Config
 	if err := yaml.Unmarshal(content, &cfg); err != nil {
@@ -244,7 +244,7 @@ func (o *OpniRouterV1) SyncExternalConfig(content []byte) error {
 	return nil
 }
 
-func (o *OpniRouterV1) SetDefaultNamespaceConfig(endpoints []*alertingv1.AlertEndpoint) error {
+func (o *MontyRouterV1) SetDefaultNamespaceConfig(endpoints []*alertingv1.AlertEndpoint) error {
 	for _, val := range NotificationSubTreeValues() {
 		if len(endpoints) == 0 { // delete
 			delete(o.DefaultNamespaceConfigs, val.A)
@@ -259,10 +259,10 @@ func (o *OpniRouterV1) SetDefaultNamespaceConfig(endpoints []*alertingv1.AlertEn
 		}
 
 		details := &alertingv1.EndpointImplementation{
-			Title: fmt.Sprintf("{{ .%s }}", shared.OpniTitleLabel),
-			Body:  fmt.Sprintf("{{ .%s }}", shared.OpniBodyLabel),
+			Title: fmt.Sprintf("{{ .%s }}", shared.MontyTitleLabel),
+			Body:  fmt.Sprintf("{{ .%s }}", shared.MontyBodyLabel),
 		}
-		o.DefaultNamespaceConfigs[val.A] = map[string]config.OpniReceiver{}
+		o.DefaultNamespaceConfigs[val.A] = map[string]config.MontyReceiver{}
 		for _, spec := range endpoints {
 			o.DefaultNamespaceConfigs[val.A][spec.Id] = newReceiverImplementationFromEndpoint(spec, details)
 		}
@@ -270,7 +270,7 @@ func (o *OpniRouterV1) SetDefaultNamespaceConfig(endpoints []*alertingv1.AlertEn
 	return nil
 }
 
-func (o *OpniRouterV1) SetNamespaceSpec(namespace, routeId string, specs *alertingv1.FullAttachedEndpoints) error {
+func (o *MontyRouterV1) SetNamespaceSpec(namespace, routeId string, specs *alertingv1.FullAttachedEndpoints) error {
 	o.mu.Lock()
 	defer o.mu.Unlock()
 	if namespace == "" {
@@ -286,12 +286,12 @@ func (o *OpniRouterV1) SetNamespaceSpec(namespace, routeId string, specs *alerti
 		}
 	}
 	if _, ok := o.NamespacedSpecs[namespace]; !ok {
-		o.NamespacedSpecs[namespace] = make(map[string]map[string]config.OpniReceiver)
+		o.NamespacedSpecs[namespace] = make(map[string]map[string]config.MontyReceiver)
 	}
 	if _, ok := o.NamespacedSpecs[namespace][routeId]; !ok {
-		o.NamespacedSpecs[namespace][routeId] = make(map[string]config.OpniReceiver)
+		o.NamespacedSpecs[namespace][routeId] = make(map[string]config.MontyReceiver)
 	}
-	o.NamespacedSpecs[namespace][routeId] = make(map[string]config.OpniReceiver)
+	o.NamespacedSpecs[namespace][routeId] = make(map[string]config.MontyReceiver)
 	for _, spec := range specs.GetItems() {
 		o.NamespacedSpecs[namespace][routeId][spec.EndpointId] = newReceiverImplementationFromEndpoint(spec.GetAlertEndpoint(), specs.GetDetails())
 	}
@@ -308,7 +308,7 @@ func (o *OpniRouterV1) SetNamespaceSpec(namespace, routeId string, specs *alerti
 	return nil
 }
 
-func (o *OpniRouterV1) UpdateEndpoint(id string, spec *alertingv1.AlertEndpoint) error {
+func (o *MontyRouterV1) UpdateEndpoint(id string, spec *alertingv1.AlertEndpoint) error {
 	if err := spec.Validate(); err != nil {
 		return validation.Errorf("invalid endpoint : %s", err)
 	}
@@ -330,7 +330,7 @@ func (o *OpniRouterV1) UpdateEndpoint(id string, spec *alertingv1.AlertEndpoint)
 	return nil
 }
 
-func (o *OpniRouterV1) DeleteEndpoint(id string) error {
+func (o *MontyRouterV1) DeleteEndpoint(id string) error {
 	for _, route := range o.NamespacedSpecs {
 		for _, endpoint := range route {
 			delete(endpoint, id)
@@ -349,7 +349,7 @@ func (o *OpniRouterV1) DeleteEndpoint(id string) error {
 	return nil
 }
 
-func (o *OpniRouterV1) BuildConfig() (*config.Config, error) {
+func (o *MontyRouterV1) BuildConfig() (*config.Config, error) {
 	o.mu.Lock()
 	defer o.mu.Unlock()
 	root := NewRoutingTree(&o.DefaultReceiver)
@@ -360,23 +360,23 @@ func (o *OpniRouterV1) BuildConfig() (*config.Config, error) {
 			continue
 		}
 
-		opniReceiverId, err := shared.ExtractReceiverId(recv.Name)
+		montyReceiverId, err := shared.ExtractReceiverId(recv.Name)
 		if err != nil {
 			panic(err)
 		}
-		recvName := opniReceiverId.ReceiverId
+		recvName := montyReceiverId.ReceiverId
 
 		if _, ok := o.DefaultNamespaceConfigs[recvName]; ok {
 			endpIds := lo.Keys(o.DefaultNamespaceConfigs[recvName])
 			slices.SortFunc(endpIds, strings.Compare)
-			opniReceivers := make([]config.OpniReceiver, len(endpIds))
+			montyReceivers := make([]config.MontyReceiver, len(endpIds))
 			for i, endpId := range endpIds {
-				opniReceivers[i] = o.DefaultNamespaceConfigs[recvName][endpId]
+				montyReceivers[i] = o.DefaultNamespaceConfigs[recvName][endpId]
 			}
-			recv, err := config.BuildReceiver(shared.NewOpniReceiverName(shared.OpniReceiverId{
-				Namespace:  opniReceiverId.Namespace,
+			recv, err := config.BuildReceiver(shared.NewMontyReceiverName(shared.MontyReceiverId{
+				Namespace:  montyReceiverId.Namespace,
 				ReceiverId: recvName,
-			}), opniReceivers)
+			}), montyReceivers)
 			if err != nil {
 				panic(fmt.Sprintf("name : %s : %s", recvName, err))
 			}
@@ -385,8 +385,8 @@ func (o *OpniRouterV1) BuildConfig() (*config.Config, error) {
 	}
 
 	// build each namespaced tree that isn't the default namespace
-	opniRoutes := []*config.Route{}
-	opniReceivers := []config.Receiver{}
+	montyRoutes := []*config.Route{}
+	montyReceivers := []config.Receiver{}
 	namespaces := lo.Keys(o.NamespacedSpecs) // needs to be deterministically ordered
 	slices.SortFunc(namespaces, strings.Compare)
 	for _, namespace := range namespaces {
@@ -395,12 +395,12 @@ func (o *OpniRouterV1) BuildConfig() (*config.Config, error) {
 		namespacedSubTree, _ := NewNamespaceTree(namespace)
 		for _, routeId := range routeIds {
 			if len(o.NamespacedSpecs[namespace][routeId]) == 0 {
-				// no opni receivers attached, do not build & skip...
+				// no monty receivers attached, do not build & skip...
 				continue
 			}
 			endpointIds := lo.Keys(o.NamespacedSpecs[namespace][routeId]) // needs to be deterministically ordered
 			slices.SortFunc(endpointIds, strings.Compare)
-			endpoints := make([]config.OpniReceiver, len(endpointIds))
+			endpoints := make([]config.MontyReceiver, len(endpointIds))
 			for i, endpointId := range endpointIds {
 				endpoints[i] = o.NamespacedSpecs[namespace][routeId][endpointId]
 			}
@@ -412,17 +412,17 @@ func (o *OpniRouterV1) BuildConfig() (*config.Config, error) {
 			)
 			// prepend
 			namespacedSubTree.Routes = append([]*config.Route{namespacedValueSubTree}, namespacedSubTree.Routes...)
-			opniReceivers = append(opniReceivers, namespacedReceivers)
+			montyReceivers = append(montyReceivers, namespacedReceivers)
 		}
-		opniRoutes = append(opniRoutes, namespacedSubTree)
+		montyRoutes = append(montyRoutes, namespacedSubTree)
 	}
 
-	// add opni subtree dependencies (opni namespaced & metrics)
+	// add monty subtree dependencies (monty namespaced & metrics)
 	for _, subRoute := range root.Route.Routes {
 		for _, m := range subRoute.Matchers {
 			if m.Name == alertingv1.RoutingPropertyDatasource && m.Type == labels.MatchEqual && m.Value == "" { // if isDefaultSubTree() {}
 				// prepend
-				subRoute.Routes = append(opniRoutes, subRoute.Routes...)
+				subRoute.Routes = append(montyRoutes, subRoute.Routes...)
 			}
 
 			// production configs get added here, to the metrics subtree
@@ -443,33 +443,33 @@ func (o *OpniRouterV1) BuildConfig() (*config.Config, error) {
 			}
 		}
 	}
-	slices.SortFunc(opniReceivers, func(a, b config.Receiver) int {
+	slices.SortFunc(montyReceivers, func(a, b config.Receiver) int {
 		return strings.Compare(a.Name, b.Name)
 	})
 	//prepend
-	root.Receivers = append(opniReceivers, root.Receivers...)
+	root.Receivers = append(montyReceivers, root.Receivers...)
 	if root.Receivers[len(root.Receivers)-1].Name != shared.AlertingHookReceiverName {
 		panic("default receiver should always be last")
 	}
 	return root, nil
 }
 
-func (o *OpniRouterV1) Clone() OpniRouting {
-	oCopy := NewOpniRouterV1(o.DefaultReceiver)
+func (o *MontyRouterV1) Clone() MontyRouting {
+	oCopy := NewMontyRouterV1(o.DefaultReceiver)
 	if o.SyncedConfig != nil {
 		oCopy.SyncedConfig = util.DeepCopy(o.SyncedConfig)
 	}
 
 	// the internal maps are not compatible with deepcopy, since interfaces don't support new() builtin
-	oCopy.DefaultNamespaceConfigs = map[string]map[string]config.OpniReceiver{}
-	oCopy.NamespacedSpecs = map[string]map[string]map[string]config.OpniReceiver{}
+	oCopy.DefaultNamespaceConfigs = map[string]map[string]config.MontyReceiver{}
+	oCopy.NamespacedSpecs = map[string]map[string]map[string]config.MontyReceiver{}
 	oCopy.NamespacedRateLimiting = map[string]map[string]rateLimitingConfig{}
 
 	for namespace, namespaceSpecs := range o.NamespacedSpecs {
-		oCopy.NamespacedSpecs[namespace] = map[string]map[string]config.OpniReceiver{}
+		oCopy.NamespacedSpecs[namespace] = map[string]map[string]config.MontyReceiver{}
 		oCopy.NamespacedRateLimiting[namespace] = map[string]rateLimitingConfig{}
 		for routeId, routeSpecs := range namespaceSpecs {
-			oCopy.NamespacedSpecs[namespace][routeId] = map[string]config.OpniReceiver{}
+			oCopy.NamespacedSpecs[namespace][routeId] = map[string]config.MontyReceiver{}
 			for receiverName, receiver := range routeSpecs {
 				oCopy.NamespacedSpecs[namespace][routeId][receiverName] = receiver.Clone()
 			}
@@ -478,7 +478,7 @@ func (o *OpniRouterV1) Clone() OpniRouting {
 	}
 
 	for namespace, namespaceSpecs := range o.DefaultNamespaceConfigs {
-		oCopy.DefaultNamespaceConfigs[namespace] = map[string]config.OpniReceiver{}
+		oCopy.DefaultNamespaceConfigs[namespace] = map[string]config.MontyReceiver{}
 		for receiverName, receiver := range namespaceSpecs {
 			oCopy.DefaultNamespaceConfigs[namespace][receiverName] = receiver.Clone()
 		}
@@ -487,14 +487,14 @@ func (o *OpniRouterV1) Clone() OpniRouting {
 	return oCopy
 }
 
-func (o *OpniRouterV1) Walk(map[string]string, func(int, *config.Route) error) error {
-	return status.Error(codes.Unimplemented, "OpniRouterV1 does not implement Walk")
+func (o *MontyRouterV1) Walk(map[string]string, func(int, *config.Route) error) error {
+	return status.Error(codes.Unimplemented, "MontyRouterV1 does not implement Walk")
 }
 
-func (o *OpniRouterV1) Search(map[string]string) []*config.Route {
+func (o *MontyRouterV1) Search(map[string]string) []*config.Route {
 	return []*config.Route{}
 }
 
-func (o *OpniRouterV1) Merge(_ OpniRouting) (OpniRouting, error) {
-	return nil, status.Error(codes.Unimplemented, "OpniRouterV1 does not implement Merge")
+func (o *MontyRouterV1) Merge(_ MontyRouting) (MontyRouting, error) {
+	return nil, status.Error(codes.Unimplemented, "MontyRouterV1 does not implement Merge")
 }

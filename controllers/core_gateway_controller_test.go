@@ -5,19 +5,19 @@ import (
 	"strings"
 	"time"
 
+	apicorev1 "github.com/aity-cloud/monty/apis/core/v1"
+	corev1beta1 "github.com/aity-cloud/monty/apis/core/v1beta1"
+	configv1 "github.com/aity-cloud/monty/pkg/config/v1"
+	"github.com/aity-cloud/monty/pkg/test/testutil"
+	"github.com/aity-cloud/monty/pkg/util/flagutil"
+	"github.com/aity-cloud/monty/pkg/util/k8sutil"
+	montymeta "github.com/aity-cloud/monty/pkg/util/meta"
 	cmv1 "github.com/cert-manager/cert-manager/pkg/apis/certmanager/v1"
 	cmmeta "github.com/cert-manager/cert-manager/pkg/apis/meta/v1"
 	. "github.com/kralicky/kmatch"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	monitoringv1 "github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring/v1"
-	apicorev1 "github.com/rancher/opni/apis/core/v1"
-	corev1beta1 "github.com/rancher/opni/apis/core/v1beta1"
-	configv1 "github.com/rancher/opni/pkg/config/v1"
-	"github.com/rancher/opni/pkg/test/testutil"
-	"github.com/rancher/opni/pkg/util/flagutil"
-	"github.com/rancher/opni/pkg/util/k8sutil"
-	opnimeta "github.com/rancher/opni/pkg/util/meta"
 	"github.com/samber/lo"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	appsv1 "k8s.io/api/apps/v1"
@@ -47,7 +47,7 @@ var _ = Describe("Core Gateway Controller", Ordered, Label("controller", "slow")
 			// patch the certificates and create secrets to simulate cert-manager behavior
 			Expect(k8sClient.Create(context.Background(), &corev1.Secret{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      "opni-gateway-ca-keys",
+					Name:      "monty-gateway-ca-keys",
 					Namespace: gw.Namespace,
 				},
 				Data: map[string][]byte{
@@ -57,7 +57,7 @@ var _ = Describe("Core Gateway Controller", Ordered, Label("controller", "slow")
 			})).To(Succeed())
 			Expect(k8sClient.Create(context.Background(), &corev1.Secret{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      "opni-gateway-serving-cert",
+					Name:      "monty-gateway-serving-cert",
 					Namespace: gw.Namespace,
 				},
 				Data: map[string][]byte{
@@ -68,7 +68,7 @@ var _ = Describe("Core Gateway Controller", Ordered, Label("controller", "slow")
 
 			cert1 := &cmv1.Certificate{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      "opni-gateway-ca",
+					Name:      "monty-gateway-ca",
 					Namespace: gw.Namespace,
 				},
 			}
@@ -77,7 +77,7 @@ var _ = Describe("Core Gateway Controller", Ordered, Label("controller", "slow")
 
 			cert2 := &cmv1.Certificate{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      "opni-gateway-serving-cert",
+					Name:      "monty-gateway-serving-cert",
 					Namespace: gw.Namespace,
 				},
 			}
@@ -113,7 +113,7 @@ var _ = Describe("Core Gateway Controller", Ordered, Label("controller", "slow")
 					Certs: &configv1.CertsSpec{
 						CaCertData:      lo.ToPtr("test-ca"),
 						ServingCertData: lo.ToPtr("test-cert"),
-						ServingKey:      lo.ToPtr("/run/opni/certs/tls.key"),
+						ServingKey:      lo.ToPtr("/run/monty/certs/tls.key"),
 					},
 					Server: &configv1.ServerSpec{
 						HttpListenAddress: defaults.Server.HttpListenAddress,
@@ -148,7 +148,7 @@ var _ = Describe("Core Gateway Controller", Ordered, Label("controller", "slow")
 					},
 					Plugins: defaults.Plugins,
 					Keyring: &configv1.KeyringSpec{
-						RuntimeKeyDirs: []string{"/run/opni/keyring"},
+						RuntimeKeyDirs: []string{"/run/monty/keyring"},
 					},
 					Upgrades:     defaults.Upgrades,
 					RateLimiting: defaults.RateLimiting,
@@ -200,8 +200,8 @@ var _ = XDescribe("Core Gateway Controller", Ordered, Label("controller", "slow"
 						Name: "test",
 					},
 					Spec: apicorev1.GatewaySpec{
-						Image: &opnimeta.ImageSpec{
-							Image: lo.ToPtr("rancher/opni:latest"),
+						Image: &montymeta.ImageSpec{
+							Image: lo.ToPtr("rancher/monty:latest"),
 						},
 						Config: &configv1.GatewayConfigSpec{
 							Storage: &configv1.StorageSpec{
@@ -231,8 +231,8 @@ var _ = XDescribe("Core Gateway Controller", Ordered, Label("controller", "slow"
 						Name: "test",
 					},
 					Spec: apicorev1.GatewaySpec{
-						Image: &opnimeta.ImageSpec{
-							Image: lo.ToPtr("rancher/opni:latest"),
+						Image: &montymeta.ImageSpec{
+							Image: lo.ToPtr("rancher/monty:latest"),
 						},
 						NatsRef: corev1.LocalObjectReference{
 							Name: "test",
@@ -255,8 +255,8 @@ var _ = XDescribe("Core Gateway Controller", Ordered, Label("controller", "slow"
 						Name: "test",
 					},
 					Spec: apicorev1.GatewaySpec{
-						Image: &opnimeta.ImageSpec{
-							Image: lo.ToPtr("rancher/opni:latest"),
+						Image: &montymeta.ImageSpec{
+							Image: lo.ToPtr("rancher/monty:latest"),
 						},
 						Config: &configv1.GatewayConfigSpec{
 							Auth: &configv1.AuthSpec{
@@ -298,13 +298,13 @@ var _ = XDescribe("Core Gateway Controller", Ordered, Label("controller", "slow"
 			It("should create the gateway statefulset", func() {
 				Eventually(Object(&appsv1.StatefulSet{
 					ObjectMeta: metav1.ObjectMeta{
-						Name:      "opni-gateway",
+						Name:      "monty-gateway",
 						Namespace: gw.Namespace,
 					},
 				})).Should(ExistAnd(
 					HaveOwner(gw),
 					HaveMatchingContainer(And(
-						HaveImage("rancher/opni:latest"),
+						HaveImage("rancher/monty:latest"),
 						HavePorts(
 							"http",
 							"metrics",
@@ -348,7 +348,7 @@ var _ = XDescribe("Core Gateway Controller", Ordered, Label("controller", "slow"
 			It("should create the gateway services", func() {
 				Eventually(Object(&corev1.Service{
 					ObjectMeta: metav1.ObjectMeta{
-						Name:      "opni",
+						Name:      "monty",
 						Namespace: gw.Namespace,
 					},
 				})).Should(ExistAnd(
@@ -360,7 +360,7 @@ var _ = XDescribe("Core Gateway Controller", Ordered, Label("controller", "slow"
 				))
 				Eventually(Object(&corev1.Service{
 					ObjectMeta: metav1.ObjectMeta{
-						Name:      "opni-internal",
+						Name:      "monty-internal",
 						Namespace: gw.Namespace,
 					},
 				})).Should(ExistAnd(
@@ -377,7 +377,7 @@ var _ = XDescribe("Core Gateway Controller", Ordered, Label("controller", "slow"
 				))
 				Eventually(Object(&corev1.Service{
 					ObjectMeta: metav1.ObjectMeta{
-						Name:      "opni-admin-dashboard",
+						Name:      "monty-admin-dashboard",
 						Namespace: gw.Namespace,
 					},
 				})).Should(ExistAnd(
@@ -391,7 +391,7 @@ var _ = XDescribe("Core Gateway Controller", Ordered, Label("controller", "slow"
 			It("should create the gateway configmap", func() {
 				Eventually(Object(&corev1.ConfigMap{
 					ObjectMeta: metav1.ObjectMeta{
-						Name:      "opni-gateway",
+						Name:      "monty-gateway",
 						Namespace: gw.Namespace,
 					},
 				})).Should(ExistAnd(
@@ -403,7 +403,7 @@ var _ = XDescribe("Core Gateway Controller", Ordered, Label("controller", "slow"
 			It("should create gateway rbac", func() {
 				Eventually(Object(&corev1.ServiceAccount{
 					ObjectMeta: metav1.ObjectMeta{
-						Name:      "opni",
+						Name:      "monty",
 						Namespace: gw.Namespace,
 					},
 				})).Should(ExistAnd(
@@ -411,7 +411,7 @@ var _ = XDescribe("Core Gateway Controller", Ordered, Label("controller", "slow"
 				))
 				Eventually(Object(&rbacv1.Role{
 					ObjectMeta: metav1.ObjectMeta{
-						Name:      "opni-crd",
+						Name:      "monty-crd",
 						Namespace: gw.Namespace,
 					},
 				})).Should(ExistAnd(
@@ -419,7 +419,7 @@ var _ = XDescribe("Core Gateway Controller", Ordered, Label("controller", "slow"
 				))
 				Eventually(Object(&rbacv1.RoleBinding{
 					ObjectMeta: metav1.ObjectMeta{
-						Name:      "opni-crd",
+						Name:      "monty-crd",
 						Namespace: gw.Namespace,
 					},
 				})).Should(ExistAnd(
@@ -430,7 +430,7 @@ var _ = XDescribe("Core Gateway Controller", Ordered, Label("controller", "slow"
 			It("should create the gateway servicemonitor", func() {
 				Eventually(Object(&monitoringv1.ServiceMonitor{
 					ObjectMeta: metav1.ObjectMeta{
-						Name:      "opni-gateway",
+						Name:      "monty-gateway",
 						Namespace: gw.Namespace,
 					},
 				})).Should(ExistAnd(

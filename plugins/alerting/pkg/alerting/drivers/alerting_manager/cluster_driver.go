@@ -6,18 +6,18 @@ import (
 	"os"
 	"strings"
 
+	"github.com/aity-cloud/monty/apis"
+	corev1beta1 "github.com/aity-cloud/monty/apis/core/v1beta1"
+	alertingClient "github.com/aity-cloud/monty/pkg/alerting/client"
+	"github.com/aity-cloud/monty/pkg/alerting/drivers/config"
+	"github.com/aity-cloud/monty/pkg/alerting/shared"
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	"github.com/aity-cloud/monty/pkg/logger"
+	"github.com/aity-cloud/monty/pkg/plugins/driverutil"
+	"github.com/aity-cloud/monty/pkg/util/k8sutil"
+	"github.com/aity-cloud/monty/plugins/alerting/apis/alertops"
+	"github.com/aity-cloud/monty/plugins/alerting/pkg/alerting/drivers"
 	"github.com/cisco-open/k8s-objectmatcher/patch"
-	"github.com/rancher/opni/apis"
-	corev1beta1 "github.com/rancher/opni/apis/core/v1beta1"
-	alertingClient "github.com/rancher/opni/pkg/alerting/client"
-	"github.com/rancher/opni/pkg/alerting/drivers/config"
-	"github.com/rancher/opni/pkg/alerting/shared"
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	"github.com/rancher/opni/pkg/logger"
-	"github.com/rancher/opni/pkg/plugins/driverutil"
-	"github.com/rancher/opni/pkg/util/k8sutil"
-	"github.com/rancher/opni/plugins/alerting/apis/alertops"
-	"github.com/rancher/opni/plugins/alerting/pkg/alerting/drivers"
 	"github.com/samber/lo"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -73,7 +73,7 @@ func NewAlertingClusterManager(options AlertingDriverOptions) (*AlertingClusterM
 func (a *AlertingClusterManager) newAlertingClusterCrd() *corev1beta1.AlertingCluster {
 	return &corev1beta1.AlertingCluster{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "opni-alerting",
+			Name:      "monty-alerting",
 			Namespace: a.GatewayRef.Namespace,
 		},
 		Spec: corev1beta1.AlertingClusterSpec{
@@ -276,7 +276,7 @@ func (a *AlertingClusterManager) controllerStatus(ctx context.Context) (*alertop
 						State: alertops.InstallState_InstallUpdating,
 					}, nil
 				}
-				return nil, fmt.Errorf("failed to get opni alerting status %w", status.A)
+				return nil, fmt.Errorf("failed to get monty alerting status %w", status.A)
 			}
 			if status.B.Status.Replicas != status.B.Status.AvailableReplicas {
 				return &alertops.InstallStatus{
@@ -304,7 +304,7 @@ func (a *AlertingClusterManager) controllerStatus(ctx context.Context) (*alertop
 				State: alertops.InstallState_NotInstalled,
 			}, nil
 		}
-		return nil, fmt.Errorf("failed to get opni alerting controller status %w", workErr)
+		return nil, fmt.Errorf("failed to get monty alerting controller status %w", workErr)
 	}
 
 	return &alertops.InstallStatus{

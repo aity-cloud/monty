@@ -1,10 +1,10 @@
 package query_test
 
 import (
+	"github.com/aity-cloud/monty/pkg/slo/query"
+	api "github.com/aity-cloud/monty/plugins/slo/apis/slo"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/rancher/opni/pkg/slo/query"
-	api "github.com/rancher/opni/plugins/slo/apis/slo"
 )
 
 func constructionShouldSucceed(q *query.SLOQueryResult, err error) {

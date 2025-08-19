@@ -1,7 +1,7 @@
 package ext
 
 import (
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
 	"google.golang.org/protobuf/reflect/protoreflect"
 )
 

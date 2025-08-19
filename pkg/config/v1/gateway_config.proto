@@ -2,11 +2,11 @@ syntax = "proto3";
 
 package config.v1;
 
-import "github.com/rancher/opni/internal/codegen/cli/cli.proto";
-import "github.com/rancher/opni/pkg/apis/core/v1/core.proto";
-import "github.com/rancher/opni/pkg/validation/validate.proto";
+import "github.com/aity-cloud/monty/internal/codegen/cli/cli.proto";
+import "github.com/aity-cloud/monty/pkg/apis/core/v1/core.proto";
+import "github.com/aity-cloud/monty/pkg/validation/validate.proto";
 
-option go_package      = "github.com/rancher/opni/pkg/config/v1;configv1";
+option go_package      = "github.com/aity-cloud/monty/pkg/config/v1;configv1";
 option (cli.generator) = {
   generate:                        true
   generate_flags_for_all_messages: true
@@ -417,7 +417,7 @@ message PluginsSpec {
 
   // Directory to search for plugin binaries.
   optional string dir = 1 [
-    (cli.flag).default            = "/var/lib/opni/plugins",
+    (cli.flag).default            = "/var/lib/monty/plugins",
     (buf.validate.field).required = true
   ];
 
@@ -470,7 +470,7 @@ message CacheSpec {
 message FilesystemCacheSpec {
   // Directory to store plugin binaries and patches in.
   optional string dir = 1 [
-    (cli.flag).default            = "/var/lib/opni/plugin-cache",
+    (cli.flag).default            = "/var/lib/monty/plugin-cache",
     (buf.validate.field).required = true
   ];
 }

@@ -1,7 +1,7 @@
 package v1beta1
 
 import (
-	opnimeta "github.com/rancher/opni/pkg/util/meta"
+	montymeta "github.com/aity-cloud/monty/pkg/util/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -25,8 +25,8 @@ type OpensearchRepository struct {
 }
 
 type OpensearchRepositorySpec struct {
-	Settings             RepositorySettings             `json:"settings"`
-	OpensearchClusterRef *opnimeta.OpensearchClusterRef `json:"opensearchClusterRef"`
+	Settings             RepositorySettings              `json:"settings"`
+	OpensearchClusterRef *montymeta.OpensearchClusterRef `json:"opensearchClusterRef"`
 }
 
 type RepositorySettings struct {

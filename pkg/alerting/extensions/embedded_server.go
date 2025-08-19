@@ -1,7 +1,7 @@
 package extensions
 
 /*
-Contains the AlertManager Opni embedded server implementation.
+Contains the AlertManager Monty embedded server implementation.
 The embedded service must be run within the same process as each
 deploymed node in the AlertManager cluster.
 */
@@ -11,26 +11,26 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/rancher/opni/pkg/alerting/cache"
-	"github.com/rancher/opni/pkg/alerting/extensions/destination"
-	"github.com/rancher/opni/pkg/alerting/shared"
-	alertingv1 "github.com/rancher/opni/pkg/apis/alerting/v1"
-	"github.com/rancher/opni/pkg/logger"
+	"github.com/aity-cloud/monty/pkg/alerting/cache"
+	"github.com/aity-cloud/monty/pkg/alerting/extensions/destination"
+	"github.com/aity-cloud/monty/pkg/alerting/shared"
+	alertingv1 "github.com/aity-cloud/monty/pkg/apis/alerting/v1"
+	"github.com/aity-cloud/monty/pkg/logger"
 	"log/slog"
 
 	// add profiles
 	_ "net/http/pprof"
 )
 
-var defaultSeverity = alertingv1.OpniSeverity_Info.String()
+var defaultSeverity = alertingv1.MontySeverity_Info.String()
 
 type EmbeddedServer struct {
 	logger *slog.Logger
 	// maxSize of the combined caches
 	lub int
 	// layered caches
-	notificationCache cache.MessageCache[alertingv1.OpniSeverity, *alertingv1.MessageInstance]
-	alarmCache        cache.MessageCache[alertingv1.OpniSeverity, *alertingv1.MessageInstance]
+	notificationCache cache.MessageCache[alertingv1.MontySeverity, *alertingv1.MessageInstance]
+	alarmCache        cache.MessageCache[alertingv1.MontySeverity, *alertingv1.MessageInstance]
 	sendK8s           bool
 	k8sDestination    destination.Destination
 }
@@ -59,12 +59,12 @@ func NewEmbeddedServer(
 	return e
 }
 
-func StartOpniEmbeddedServer(
+func StartMontyEmbeddedServer(
 	ctx context.Context,
-	opniAddr string,
+	montyAddr string,
 	sendK8s bool,
 ) *http.Server {
-	lg := logger.NewPluginLogger().WithGroup("opni.alerting")
+	lg := logger.NewPluginLogger().WithGroup("monty.alerting")
 	es := NewEmbeddedServer(lg, 125, sendK8s)
 	mux := http.NewServeMux()
 
@@ -81,11 +81,11 @@ func StartOpniEmbeddedServer(
 
 	hookServer := &http.Server{
 		// explicitly set this to 0.0.0.0 for test environment
-		Addr:    opniAddr,
+		Addr:    montyAddr,
 		Handler: mux,
 	}
 	go func() {
-		lg.With("addr", opniAddr).Info("starting opni embedded server")
+		lg.With("addr", montyAddr).Info("starting monty embedded server")
 		err := hookServer.ListenAndServe()
 		if !errors.Is(err, http.ErrServerClosed) {
 			panic(err)

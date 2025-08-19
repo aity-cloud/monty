@@ -6,8 +6,8 @@ import (
 	"log/slog"
 	"sync/atomic"
 
-	"github.com/rancher/opni/pkg/config/reactive"
-	configv1 "github.com/rancher/opni/pkg/config/v1"
+	"github.com/aity-cloud/monty/pkg/config/reactive"
+	configv1 "github.com/aity-cloud/monty/pkg/config/v1"
 	tokenbucket "golang.org/x/time/rate"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"

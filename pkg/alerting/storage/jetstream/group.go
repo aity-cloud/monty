@@ -7,9 +7,9 @@ import (
 	"regexp"
 	"sort"
 
+	"github.com/aity-cloud/monty/pkg/alerting/interfaces"
+	"github.com/aity-cloud/monty/pkg/alerting/storage/spec"
 	"github.com/nats-io/nats.go"
-	"github.com/rancher/opni/pkg/alerting/interfaces"
-	"github.com/rancher/opni/pkg/alerting/storage/spec"
 	"github.com/samber/lo"
 )
 

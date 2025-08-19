@@ -3,12 +3,12 @@ package managementext
 import (
 	"context"
 
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	"github.com/aity-cloud/monty/pkg/plugins"
+	"github.com/aity-cloud/monty/pkg/plugins/apis/apiextensions"
+	"github.com/aity-cloud/monty/pkg/plugins/driverutil"
+	"github.com/aity-cloud/monty/pkg/util"
 	"github.com/hashicorp/go-plugin"
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	"github.com/rancher/opni/pkg/plugins"
-	"github.com/rancher/opni/pkg/plugins/apis/apiextensions"
-	"github.com/rancher/opni/pkg/plugins/driverutil"
-	"github.com/rancher/opni/pkg/util"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/health"
@@ -18,7 +18,7 @@ import (
 )
 
 const (
-	ManagementAPIExtensionPluginID = "opni.apiextensions.ManagementAPIExtension"
+	ManagementAPIExtensionPluginID = "monty.apiextensions.ManagementAPIExtension"
 	ServiceID                      = "apiextensions.ManagementAPIExtension"
 )
 

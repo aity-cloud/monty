@@ -8,12 +8,12 @@ import (
 
 	"slices"
 
+	"github.com/aity-cloud/monty/pkg/alerting/message"
+	"github.com/aity-cloud/monty/pkg/alerting/shared"
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	"github.com/aity-cloud/monty/pkg/util"
+	"github.com/aity-cloud/monty/pkg/validation"
 	promql "github.com/prometheus/prometheus/promql/parser"
-	"github.com/rancher/opni/pkg/alerting/message"
-	"github.com/rancher/opni/pkg/alerting/shared"
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	"github.com/rancher/opni/pkg/util"
-	"github.com/rancher/opni/pkg/validation"
 	"github.com/samber/lo"
 )
 
@@ -517,10 +517,10 @@ func (n *Notification) Sanitize() {
 		n.Properties[message.NotificationPropertyGoldenSignal] = GoldenSignal_Custom.String()
 	}
 	if _, ok := n.Properties[message.NotificationPropertySeverity]; !ok {
-		n.Properties[message.NotificationPropertySeverity] = OpniSeverity_Info.String()
+		n.Properties[message.NotificationPropertySeverity] = MontySeverity_Info.String()
 	}
-	if _, ok := n.Properties[message.NotificationPropertyOpniUuid]; !ok {
-		n.Properties[message.NotificationPropertyOpniUuid] = util.HashStrings([]string{n.Title, n.Body})
+	if _, ok := n.Properties[message.NotificationPropertyMontyUuid]; !ok {
+		n.Properties[message.NotificationPropertyMontyUuid] = util.HashStrings([]string{n.Title, n.Body})
 	}
 }
 
@@ -539,7 +539,7 @@ func (n *Notification) Validate() error {
 		return validation.Errorf("property map must include a golden signal property '%s'", message.NotificationPropertyGoldenSignal)
 	}
 	if v, ok := n.Properties[message.NotificationPropertySeverity]; ok {
-		if _, ok := OpniSeverity_value[v]; !ok {
+		if _, ok := MontySeverity_value[v]; !ok {
 			return validation.Errorf("invalid severity value %s", v)
 		}
 	} else {
@@ -560,7 +560,7 @@ func (l *ListNotificationRequest) Sanitize() {
 		l.GoldenSignalFilters = []GoldenSignal{}
 	}
 	if l.SeverityFilters == nil {
-		l.SeverityFilters = []OpniSeverity{}
+		l.SeverityFilters = []MontySeverity{}
 	}
 	if len(l.GoldenSignalFilters) == 0 {
 		for _, t := range GoldenSignal_value {
@@ -568,8 +568,8 @@ func (l *ListNotificationRequest) Sanitize() {
 		}
 	}
 	if len(l.SeverityFilters) == 0 {
-		for _, t := range OpniSeverity_value {
-			l.SeverityFilters = append(l.SeverityFilters, OpniSeverity(t))
+		for _, t := range MontySeverity_value {
+			l.SeverityFilters = append(l.SeverityFilters, MontySeverity(t))
 		}
 	}
 }
@@ -588,7 +588,7 @@ func (l *ListNotificationRequest) Validate() error {
 	}
 
 	for _, t := range l.SeverityFilters {
-		if _, ok := OpniSeverity_name[int32(t)]; !ok {
+		if _, ok := MontySeverity_name[int32(t)]; !ok {
 			return validation.Errorf("invalid severity type %s", t.String())
 		}
 	}

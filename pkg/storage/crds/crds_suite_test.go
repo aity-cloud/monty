@@ -6,29 +6,29 @@ import (
 	"testing"
 	"time"
 
+	montycorev1 "github.com/aity-cloud/monty/apis/core/v1"
+	montycorev1beta1 "github.com/aity-cloud/monty/apis/core/v1beta1"
+	monitoringv1beta1 "github.com/aity-cloud/monty/apis/monitoring/v1beta1"
+	"github.com/aity-cloud/monty/pkg/config/reactive"
+	"github.com/aity-cloud/monty/pkg/config/reactive/subtle"
+	configv1 "github.com/aity-cloud/monty/pkg/config/v1"
+	"github.com/aity-cloud/monty/pkg/storage"
+	"github.com/aity-cloud/monty/pkg/storage/crds"
+	"github.com/aity-cloud/monty/pkg/storage/inmemory"
+	. "github.com/aity-cloud/monty/pkg/test/conformance/storage"
+	_ "github.com/aity-cloud/monty/pkg/test/setup"
+	"github.com/aity-cloud/monty/pkg/test/testk8s"
+	"github.com/aity-cloud/monty/pkg/test/testruntime"
+	"github.com/aity-cloud/monty/pkg/test/testutil"
+	"github.com/aity-cloud/monty/pkg/util"
+	"github.com/aity-cloud/monty/pkg/util/flagutil"
+	"github.com/aity-cloud/monty/pkg/util/future"
+	"github.com/aity-cloud/monty/pkg/util/k8sutil"
+	"github.com/aity-cloud/monty/pkg/util/protorand"
+	"github.com/aity-cloud/monty/plugins/metrics/apis/cortexops"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	"github.com/onsi/gomega/types"
-	opnicorev1 "github.com/rancher/opni/apis/core/v1"
-	opnicorev1beta1 "github.com/rancher/opni/apis/core/v1beta1"
-	monitoringv1beta1 "github.com/rancher/opni/apis/monitoring/v1beta1"
-	"github.com/rancher/opni/pkg/config/reactive"
-	"github.com/rancher/opni/pkg/config/reactive/subtle"
-	configv1 "github.com/rancher/opni/pkg/config/v1"
-	"github.com/rancher/opni/pkg/storage"
-	"github.com/rancher/opni/pkg/storage/crds"
-	"github.com/rancher/opni/pkg/storage/inmemory"
-	. "github.com/rancher/opni/pkg/test/conformance/storage"
-	_ "github.com/rancher/opni/pkg/test/setup"
-	"github.com/rancher/opni/pkg/test/testk8s"
-	"github.com/rancher/opni/pkg/test/testruntime"
-	"github.com/rancher/opni/pkg/test/testutil"
-	"github.com/rancher/opni/pkg/util"
-	"github.com/rancher/opni/pkg/util/flagutil"
-	"github.com/rancher/opni/pkg/util/future"
-	"github.com/rancher/opni/pkg/util/k8sutil"
-	"github.com/rancher/opni/pkg/util/protorand"
-	"github.com/rancher/opni/plugins/metrics/apis/cortexops"
 	"github.com/samber/lo"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protopath"
@@ -112,7 +112,7 @@ func (b *gatewayBroker) KeyValueStore(namespace string) storage.KeyValueStoreT[*
 		vs := crds.NewCRDValueStore(client.ObjectKey{
 			Namespace: namespace,
 			Name:      key,
-		}, opnicorev1.ValueStoreMethods{}, crds.WithClient(b.k8sClient))
+		}, montycorev1.ValueStoreMethods{}, crds.WithClient(b.k8sClient))
 		return vs
 	})
 }
@@ -122,7 +122,7 @@ func sanitizeKey(key string) string {
 }
 
 // FillConfigFromObject implements crds.ValueStoreMethods.
-func (methods) FillConfigFromObject(obj *opnicorev1beta1.MonitoringCluster, conf *cortexops.CapabilityBackendConfigSpec) {
+func (methods) FillConfigFromObject(obj *montycorev1beta1.MonitoringCluster, conf *cortexops.CapabilityBackendConfigSpec) {
 	conf.Enabled = obj.Spec.Cortex.Enabled
 	conf.CortexConfig = obj.Spec.Cortex.CortexConfig
 	conf.CortexWorkloads = obj.Spec.Cortex.CortexWorkloads
@@ -130,10 +130,10 @@ func (methods) FillConfigFromObject(obj *opnicorev1beta1.MonitoringCluster, conf
 }
 
 // FillObjectFromConfig implements crds.ValueStoreMethods.
-func (methods) FillObjectFromConfig(obj *opnicorev1beta1.MonitoringCluster, conf *cortexops.CapabilityBackendConfigSpec) {
+func (methods) FillObjectFromConfig(obj *montycorev1beta1.MonitoringCluster, conf *cortexops.CapabilityBackendConfigSpec) {
 	if conf == nil {
-		obj.Spec.Cortex = opnicorev1beta1.CortexSpec{}
-		obj.Spec.Grafana = opnicorev1beta1.GrafanaSpec{}
+		obj.Spec.Cortex = montycorev1beta1.CortexSpec{}
+		obj.Spec.Grafana = montycorev1beta1.GrafanaSpec{}
 		return
 	}
 	obj.Spec.Cortex.Enabled = conf.Enabled
@@ -167,7 +167,7 @@ func newGatewayObject(seed ...int64) *configv1.GatewayConfigSpec {
 	return out
 }
 
-var _ crds.ValueStoreMethods[*opnicorev1beta1.MonitoringCluster, *cortexops.CapabilityBackendConfigSpec] = methods{}
+var _ crds.ValueStoreMethods[*montycorev1beta1.MonitoringCluster, *cortexops.CapabilityBackendConfigSpec] = methods{}
 
 var k8sClient client.WithWatch
 
@@ -176,7 +176,7 @@ var _ = BeforeSuite(func() {
 	conf := protorand.New[*cortexops.CapabilityBackendConfigSpec]().MustGen()
 	conf.Revision = nil
 
-	var obj opnicorev1beta1.MonitoringCluster
+	var obj montycorev1beta1.MonitoringCluster
 	methods{}.FillObjectFromConfig(&obj, conf.DeepCopy())
 
 	conf2 := util.NewMessage[*cortexops.CapabilityBackendConfigSpec]()
@@ -187,8 +187,8 @@ var _ = BeforeSuite(func() {
 	testruntime.IfLabelFilterMatches(Label("integration", "slow"), func() {
 		ctx, ca := context.WithCancel(context.Background())
 		s := scheme.Scheme
-		opnicorev1.AddToScheme(s)
-		opnicorev1beta1.AddToScheme(s)
+		montycorev1.AddToScheme(s)
+		montycorev1beta1.AddToScheme(s)
 		monitoringv1beta1.AddToScheme(s)
 		config, _, err := testk8s.StartK8s(ctx, []string{"../../../config/crd/bases"}, s)
 		Expect(err).NotTo(HaveOccurred())
@@ -228,10 +228,10 @@ var _ = Describe("Gateway Config Manager", Ordered, Label("integration", "slow")
 			panic(err)
 		}
 		defaultStore := inmemory.NewValueStore[*configv1.GatewayConfigSpec](util.ProtoClone)
-		activeStore := crds.NewCRDValueStore[*opnicorev1.Gateway, *configv1.GatewayConfigSpec](k8stypes.NamespacedName{
+		activeStore := crds.NewCRDValueStore[*montycorev1.Gateway, *configv1.GatewayConfigSpec](k8stypes.NamespacedName{
 			Namespace: ns,
 			Name:      "test",
-		}, opnicorev1.ValueStoreMethods{}, crds.WithClient(k8sClient))
+		}, montycorev1.ValueStoreMethods{}, crds.WithClient(k8sClient))
 		mgr := configv1.NewGatewayConfigManager(
 			defaultStore, activeStore,
 			flagutil.LoadDefaults,
@@ -252,8 +252,8 @@ var _ = Describe("Gateway Config Manager", Ordered, Label("integration", "slow")
 		conf.Management.AdvertiseAddress = lo.ToPtr("${POD_IP}:11090")
 		conf.Relay.AdvertiseAddress = lo.ToPtr("${POD_IP}:11190")
 		conf.Dashboard.AdvertiseAddress = lo.ToPtr("${POD_IP}:12080")
-		conf.Keyring.RuntimeKeyDirs = []string{"/run/opni/keyring"}
-		conf.Plugins.Dir = lo.ToPtr("/var/lib/opni/plugins")
+		conf.Keyring.RuntimeKeyDirs = []string{"/run/monty/keyring"}
+		conf.Plugins.Dir = lo.ToPtr("/var/lib/monty/plugins")
 		conf.Certs = &configv1.CertsSpec{}
 
 		conf.Storage.Etcd = &configv1.EtcdSpec{
@@ -266,12 +266,12 @@ var _ = Describe("Gateway Config Manager", Ordered, Label("integration", "slow")
 			},
 		}
 
-		gw := &opnicorev1.Gateway{
+		gw := &montycorev1.Gateway{
 			ObjectMeta: metav1.ObjectMeta{
 				Name:      "test",
 				Namespace: ns,
 			},
-			Spec: opnicorev1.GatewaySpec{
+			Spec: montycorev1.GatewaySpec{
 				Config: conf,
 			},
 		}

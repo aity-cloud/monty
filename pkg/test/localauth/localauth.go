@@ -3,7 +3,7 @@ package localauth
 import (
 	"context"
 
-	"github.com/rancher/opni/pkg/auth/local"
+	"github.com/aity-cloud/monty/pkg/auth/local"
 )
 
 const testPassword = "test"

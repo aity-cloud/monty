@@ -1,9 +1,9 @@
 package setup
 
 import (
+	"github.com/aity-cloud/monty/pkg/logger"
 	"github.com/gin-gonic/gin"
 	"github.com/onsi/ginkgo/v2"
-	"github.com/rancher/opni/pkg/logger"
 )
 
 func init() {

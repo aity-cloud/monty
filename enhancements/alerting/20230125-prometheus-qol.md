@@ -4,7 +4,7 @@ Prometheus Alerting Rule Extensions
 
 ## Summary:
 
-Opni Alerting currently offers a means of creating custom Prometheus rules for evaluating alerts sent to the Alerting Cluster. To fully leverage the power of the abstractions built into Opni-Alerting, Opni-Alerting should provide enhancement options that apply to generic Prometheus rules.
+Monty Alerting currently offers a means of creating custom Prometheus rules for evaluating alerts sent to the Alerting Cluster. To fully leverage the power of the abstractions built into Monty-Alerting, Monty-Alerting should provide enhancement options that apply to generic Prometheus rules.
 
 More concretely, provide an abstraction for adding optional alerting rules derived from the user's custom Prometheus query, or, `Alert rule extensions`.
 
@@ -29,7 +29,7 @@ The following options can be considered `Alert rule extensions` :
 ## Implementation details:
 
 - Go interface for wrapping mutations to PromQL queries in a safe and predictable way
-- OpniAlerting manages external dependencies by naming convention in the external source; this needs to change so that OpniAlerting `AlertConditions` track a list of dependencies by reference:
+- MontyAlerting manages external dependencies by naming convention in the external source; this needs to change so that MontyAlerting `AlertConditions` track a list of dependencies by reference:
 
 ```proto
 message AlertCondition {
@@ -52,7 +52,7 @@ message Reference {
 
 ## Acceptance criteria:
 
-- [ ] Enhancements to the management of external dependencies by Opni-Alerting
+- [ ] Enhancements to the management of external dependencies by Monty-Alerting
 - [ ] Implement abstractions over scrape metric(s)
 - [ ] Implement empty rule extensions
 - [ ] Implement scrape source rule extensions
@@ -62,7 +62,7 @@ message Reference {
 
 ## Dependencies:
 
-- Condition Status Optimizations https://github.com/rancher/opni/pull/971
+- Condition Status Optimizations https://github.com/aity-cloud/monty/pull/971
 
 ## Risks and contingencies:
 
@@ -79,4 +79,4 @@ message Reference {
 
 ## Resources:
 
-1 Upstream & 1 Downstream opni cluster
+1 Upstream & 1 Downstream monty cluster

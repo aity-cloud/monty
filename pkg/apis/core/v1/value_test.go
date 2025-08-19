@@ -3,10 +3,10 @@ package v1_test
 import (
 	"math"
 
+	v1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	"github.com/aity-cloud/monty/pkg/test/testdata/plugins/ext"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	v1 "github.com/rancher/opni/pkg/apis/core/v1"
-	"github.com/rancher/opni/pkg/test/testdata/plugins/ext"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 )
 

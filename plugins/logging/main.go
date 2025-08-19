@@ -1,14 +1,14 @@
 package main
 
 import (
-	"github.com/rancher/opni/pkg/plugins"
-	"github.com/rancher/opni/pkg/plugins/meta"
-	"github.com/rancher/opni/plugins/logging/pkg/agent"
-	"github.com/rancher/opni/plugins/logging/pkg/gateway"
+	"github.com/aity-cloud/monty/pkg/plugins"
+	"github.com/aity-cloud/monty/pkg/plugins/meta"
+	"github.com/aity-cloud/monty/plugins/logging/pkg/agent"
+	"github.com/aity-cloud/monty/plugins/logging/pkg/gateway"
 
-	_ "github.com/rancher/opni/plugins/logging/pkg/agent/drivers/kubernetes_manager"
-	_ "github.com/rancher/opni/plugins/logging/pkg/gateway/drivers/backend/kubernetes_manager"
-	_ "github.com/rancher/opni/plugins/logging/pkg/gateway/drivers/management/kubernetes_manager"
+	_ "github.com/aity-cloud/monty/plugins/logging/pkg/agent/drivers/kubernetes_manager"
+	_ "github.com/aity-cloud/monty/plugins/logging/pkg/gateway/drivers/backend/kubernetes_manager"
+	_ "github.com/aity-cloud/monty/plugins/logging/pkg/gateway/drivers/management/kubernetes_manager"
 )
 
 func main() {

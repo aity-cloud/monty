@@ -6,9 +6,9 @@ import (
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 
-	"github.com/rancher/opni/pkg/keyring"
-	"github.com/rancher/opni/pkg/pkp"
-	"github.com/rancher/opni/pkg/trust"
+	"github.com/aity-cloud/monty/pkg/keyring"
+	"github.com/aity-cloud/monty/pkg/pkp"
+	"github.com/aity-cloud/monty/pkg/trust"
 )
 
 var _ = Describe("Strategy", Label("unit"), func() {

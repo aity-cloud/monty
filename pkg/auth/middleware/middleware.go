@@ -8,14 +8,14 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/aity-cloud/monty/pkg/auth"
+	"github.com/aity-cloud/monty/pkg/auth/local"
+	"github.com/aity-cloud/monty/pkg/logger"
+	"github.com/aity-cloud/monty/pkg/proxy"
+	"github.com/aity-cloud/monty/pkg/storage"
+	"github.com/aity-cloud/monty/pkg/util/oidc"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/render"
-	"github.com/rancher/opni/pkg/auth"
-	"github.com/rancher/opni/pkg/auth/local"
-	"github.com/rancher/opni/pkg/logger"
-	"github.com/rancher/opni/pkg/proxy"
-	"github.com/rancher/opni/pkg/storage"
-	"github.com/rancher/opni/pkg/util/oidc"
 	ginoauth2 "github.com/zalando/gin-oauth2"
 	"golang.org/x/oauth2"
 )
@@ -86,7 +86,7 @@ func (m *MultiMiddleware) Handler(authCheck ...ginoauth2.AccessCheckFunction) gi
 		}
 		err := m.LocalAuthenticator.ComparePassword(c, password)
 		if err == nil {
-			c.Set(proxy.SubjectKey, "opni.io_admin")
+			c.Set(proxy.SubjectKey, "monty.io_admin")
 			return
 		}
 		if errors.Is(err, local.ErrInvalidPassword) {

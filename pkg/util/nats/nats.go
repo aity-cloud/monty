@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"regexp"
 
-	opnicorev1beta1 "github.com/rancher/opni/apis/core/v1beta1"
+	montycorev1beta1 "github.com/aity-cloud/monty/apis/core/v1beta1"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -43,7 +43,7 @@ func ExternalNatsObjects(
 	volumes []corev1.Volume,
 ) {
 	lg := log.FromContext(ctx)
-	nats := &opnicorev1beta1.NatsCluster{}
+	nats := &montycorev1beta1.NatsCluster{}
 	if err := k8sClient.Get(ctx, namespacedNats, nats); err != nil {
 		lg.Error(err, "could not fetch nats cluster")
 		return
@@ -60,7 +60,7 @@ func ExternalNatsObjects(
 	})
 
 	switch nats.Spec.AuthMethod {
-	case opnicorev1beta1.NatsAuthPassword:
+	case montycorev1beta1.NatsAuthPassword:
 		var username string
 		if nats.Spec.Username == "" {
 			username = "nats-user"
@@ -80,7 +80,7 @@ func ExternalNatsObjects(
 			},
 		}
 		envVars = append(envVars, newEnvVars...)
-	case opnicorev1beta1.NatsAuthNkey:
+	case montycorev1beta1.NatsAuthNkey:
 		volumes = append(volumes, corev1.Volume{
 			Name: "nkey",
 			VolumeSource: corev1.VolumeSource{

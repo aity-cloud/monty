@@ -1,7 +1,7 @@
 syntax = "proto3";
 package alerting;
 
-option go_package = "github.com/rancher/opni/pkg/apis/alerting/v1";
+option go_package = "github.com/aity-cloud/monty/pkg/apis/alerting/v1";
 
 import "google/protobuf/duration.proto";
 import "google/protobuf/struct.proto";
@@ -12,9 +12,9 @@ import "google/api/http.proto";
 import "google/api/annotations.proto";
 import "google/rpc/status.proto";
 
-import "github.com/rancher/opni/pkg/apis/core/v1/core.proto";
-import "github.com/rancher/opni/pkg/apis/alerting/v1/alerting.proto";
-import "github.com/rancher/opni/pkg/apis/alerting/v1/alerting.notification.proto";
+import "github.com/aity-cloud/monty/pkg/apis/core/v1/core.proto";
+import "github.com/aity-cloud/monty/pkg/apis/alerting/v1/alerting.proto";
+import "github.com/aity-cloud/monty/pkg/apis/alerting/v1/alerting.notification.proto";
 
 
 service AlertEndpoints{
@@ -35,7 +35,7 @@ service AlertEndpoints{
   }
 
 
-  // update the endpoint to opt in/out of opni notifications
+  // update the endpoint to opt in/out of monty notifications
   rpc ToggleNotifications(ToggleRequest) returns (google.protobuf.Empty) {
     option (google.api.http) = {
       post : "/toggleNotifications"
@@ -87,7 +87,7 @@ message AlertEndpoint {
     WebhookEndpoint webhook = 8;
   }
   // properties are used to flag properties of endpoints, for
-  // example opting into opni notifications
+  // example opting into monty notifications
   // Properties starting with "_" are private 
   map<string,string> properties = 9;
 
@@ -259,23 +259,23 @@ message AttachedEndpoint {
 }
 
 
-// opni-alerting internal use
+// monty-alerting internal use
 message RoutingNode {
   core.Reference conditionId = 1;
   FullAttachedEndpoints fullAttachedEndpoints = 2;
 }
 
-// opni-alerting internal use
+// monty-alerting internal use
 message EndpointRoutingMap {
   map<string, EndpointMetadata> endpoints = 1;
 }
 
-// opni-alerting internal use
+// monty-alerting internal use
 message RoutingRelationships {
   map<string, EndpointRoutingMap> conditions = 1;
 }
 
-// opni-alerting internal use
+// monty-alerting internal use
 message EndpointMetadata {
   int32 position = 1;
   string endpointType = 2;

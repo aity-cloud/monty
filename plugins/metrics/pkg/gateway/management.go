@@ -3,9 +3,9 @@ package gateway
 import (
 	"context"
 
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	managementext "github.com/rancher/opni/pkg/plugins/apis/apiextensions/management"
-	"github.com/rancher/opni/pkg/util"
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	managementext "github.com/aity-cloud/monty/pkg/plugins/apis/apiextensions/management"
+	"github.com/aity-cloud/monty/pkg/util"
 )
 
 // ManagementServices implements managementext.ManagementAPIExtension.

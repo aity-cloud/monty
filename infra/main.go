@@ -8,12 +8,12 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/aity-cloud/monty/infra/pkg/aws"
+	"github.com/aity-cloud/monty/infra/pkg/resources"
 	"github.com/pulumi/pulumi-kubernetes/sdk/v3/go/kubernetes"
 	corev1 "github.com/pulumi/pulumi-kubernetes/sdk/v3/go/kubernetes/core/v1"
 	"github.com/pulumi/pulumi-kubernetes/sdk/v3/go/kubernetes/helm/v3"
 	. "github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/rancher/opni/infra/pkg/aws"
-	"github.com/rancher/opni/infra/pkg/resources"
 	"golang.org/x/mod/semver"
 
 	"github.com/pkg/errors"
@@ -75,68 +75,68 @@ func run(ctx *Context) (runErr error) {
 	if err != nil {
 		return err
 	}
-	var opniCrdChart, opniPrometheusCrdChart, opniChart string
+	var montyCrdChart, montyPrometheusCrdChart, montyChart string
 	var chartRepoOpts *helm.RepositoryOptsArgs
 	if conf.UseLocalCharts {
 		var ok bool
-		if opniCrdChart, ok = findLocalChartDir("opni-crd"); !ok {
-			return errors.New("could not find local opni-crd chart")
+		if montyCrdChart, ok = findLocalChartDir("monty-crd"); !ok {
+			return errors.New("could not find local monty-crd chart")
 		}
-		if opniPrometheusCrdChart, ok = findLocalChartDir("opni-prometheus-crd"); !ok {
-			return errors.New("could not find local opni-prometheus-crd chart")
+		if montyPrometheusCrdChart, ok = findLocalChartDir("monty-prometheus-crd"); !ok {
+			return errors.New("could not find local monty-prometheus-crd chart")
 		}
-		if opniChart, ok = findLocalChartDir("opni"); !ok {
-			return errors.New("could not find local opni chart")
+		if montyChart, ok = findLocalChartDir("monty"); !ok {
+			return errors.New("could not find local monty chart")
 		}
 	} else {
 		chartRepoOpts = &helm.RepositoryOptsArgs{
 			Repo: StringPtr(conf.ChartsRepo),
 		}
-		opniCrdChart = "opni-crd"
-		opniPrometheusCrdChart = "opni-prometheus-crd"
-		opniChart = "opni"
+		montyCrdChart = "monty-crd"
+		montyPrometheusCrdChart = "monty-prometheus-crd"
+		montyChart = "monty"
 	}
 
-	opniServiceLB := mainCluster.Provider.ApplyT(func(k *kubernetes.Provider) (StringOutput, error) {
-		opniCrd, err := helm.NewRelease(ctx, "opni-crd", &helm.ReleaseArgs{
-			Chart:          String(opniCrdChart),
+	montyServiceLB := mainCluster.Provider.ApplyT(func(k *kubernetes.Provider) (StringOutput, error) {
+		montyCrd, err := helm.NewRelease(ctx, "monty-crd", &helm.ReleaseArgs{
+			Chart:          String(montyCrdChart),
 			RepositoryOpts: chartRepoOpts,
 			Version:        StringPtr(conf.ChartVersion),
-			Namespace:      String("opni"),
+			Namespace:      String("monty"),
 			Timeout:        Int(60),
 		}, Provider(k), RetainOnDelete(true))
 		if err != nil {
 			return StringOutput{}, errors.WithStack(err)
 		}
 
-		var opniChartExtraDeps []Resource
+		var montyChartExtraDeps []Resource
 
 		if conf.PrometheusCrdChartMode == "separate" {
-			opniPrometheusCrd, err := helm.NewRelease(ctx, "opni-prometheus-crd", &helm.ReleaseArgs{
-				Chart:          String(opniPrometheusCrdChart),
+			montyPrometheusCrd, err := helm.NewRelease(ctx, "monty-prometheus-crd", &helm.ReleaseArgs{
+				Chart:          String(montyPrometheusCrdChart),
 				RepositoryOpts: chartRepoOpts,
-				Namespace:      String("opni"),
+				Namespace:      String("monty"),
 				Timeout:        Int(60),
 			}, Provider(k), RetainOnDelete(true))
 			if err != nil {
 				return StringOutput{}, errors.WithStack(err)
 			}
-			opniChartExtraDeps = append(opniChartExtraDeps, opniPrometheusCrd)
+			montyChartExtraDeps = append(montyChartExtraDeps, montyPrometheusCrd)
 		}
 
-		opni, err := helm.NewRelease(ctx, "opni", &helm.ReleaseArgs{
-			Name:           String("opni"),
-			Chart:          String(opniChart),
+		monty, err := helm.NewRelease(ctx, "monty", &helm.ReleaseArgs{
+			Name:           String("monty"),
+			Chart:          String(montyChart),
 			RepositoryOpts: chartRepoOpts,
 			Version:        StringPtr(conf.ChartVersion),
 			SkipCrds:       Bool(true),
-			Namespace:      String("opni"),
+			Namespace:      String("monty"),
 			Values: Map{
 				"image": Map{
 					"repository": String(conf.ImageRepo),
 					"tag":        String(conf.ImageTag),
 				},
-				"opni-prometheus-crd": Map{
+				"monty-prometheus-crd": Map{
 					"enabled": Bool(conf.PrometheusCrdChartMode == "embedded"),
 				},
 				"gateway": Map{
@@ -160,14 +160,14 @@ func run(ctx *Context) (runErr error) {
 						},
 					},
 				},
-				"opni-agent": Map{
+				"monty-agent": Map{
 					"image": Map{
 						"repository": String(conf.ImageRepo),
 						"tag":        String(conf.MinimalImageTag),
 					},
 					"enabled":          Bool(true),
-					"address":          String("opni"),
-					"fullnameOverride": String("opni-agent"),
+					"address":          String("monty"),
+					"fullnameOverride": String("monty-agent"),
 					"bootstrapInCluster": Map{
 						"enabled": Bool(true),
 					},
@@ -184,30 +184,30 @@ func run(ctx *Context) (runErr error) {
 			},
 			Timeout:     Int(300),
 			WaitForJobs: Bool(true),
-		}, Provider(k), DependsOn(append([]Resource{opniCrd}, opniChartExtraDeps...)), RetainOnDelete(true))
+		}, Provider(k), DependsOn(append([]Resource{montyCrd}, montyChartExtraDeps...)), RetainOnDelete(true))
 		if err != nil {
 			return StringOutput{}, errors.WithStack(err)
 		}
 
-		opniServiceLB := All(opni.Status.Namespace(), opni.Status.Name()).
+		montyServiceLB := All(monty.Status.Namespace(), monty.Status.Name()).
 			ApplyT(func(args []any) (StringOutput, error) {
 				namespace := args[0].(*string)
-				opniLBSvc, err := corev1.GetService(ctx, "opni", ID(
-					fmt.Sprintf("%s/opni", *namespace),
-				), nil, Provider(k), Parent(opni))
+				montyLBSvc, err := corev1.GetService(ctx, "monty", ID(
+					fmt.Sprintf("%s/monty", *namespace),
+				), nil, Provider(k), Parent(monty))
 				if err != nil {
 					return StringOutput{}, err
 				}
-				return opniLBSvc.Status.LoadBalancer().Ingress().Index(Int(0)).Hostname().Elem(), nil
+				return montyLBSvc.Status.LoadBalancer().Ingress().Index(Int(0)).Hostname().Elem(), nil
 			}).(StringOutput)
-		return opniServiceLB, nil
+		return montyServiceLB, nil
 	}).(StringOutput)
 
 	_, err = provisioner.ProvisionDNSRecord(ctx, "gateway", resources.DNSRecordConfig{
 		Name:    mainCluster.GatewayHostname,
 		Type:    "CNAME",
 		ZoneID:  conf.ZoneID,
-		Records: StringArray{opniServiceLB},
+		Records: StringArray{montyServiceLB},
 		TTL:     60,
 	})
 	if err != nil {

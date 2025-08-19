@@ -33,37 +33,37 @@ The new preprocessing service will authenticate to Opensearch using client certs
 
 ![High Level Architecture](./img/20230130-otel-logging-arch.png)
 
-The controller will be controlled by multiple CRDs.  The main one will be a `core.opni.io.collectors`.  This will be a collection of enabled collectors.  Each collector will have a field that is a reference to a specific CRD for collector specific configuration.  The logging config will be `logging.opni.io.collectorconfigs`.  This schema is extensible so more collectors (e.g. metrics) can be added as we move things to use the OTEL collector.
+The controller will be controlled by multiple CRDs.  The main one will be a `core.monty.io.collectors`.  This will be a collection of enabled collectors.  Each collector will have a field that is a reference to a specific CRD for collector specific configuration.  The logging config will be `logging.monty.io.collectorconfigs`.  This schema is extensible so more collectors (e.g. metrics) can be added as we move things to use the OTEL collector.
 
 e.g
 ```yaml
 ---
-apiVersion: core.opni.io/v1beta1
+apiVersion: core.monty.io/v1beta1
 kind: Collector
 metadata:
   name: agent-collector
-  namespace: opni
+  namespace: monty
 spec:
   logging:
     name: logging-config
   metrics: {}
 ---
-apiVersion: logging.opni.io/v1beta1
+apiVersion: logging.monty.io/v1beta1
 kind: CollectorConfig
 metadata:
   name: logging-collector
-  namespace: opni
+  namespace: monty
 spec:
   # Spec will contain logging specific configuration items.
 ```
 
 **Migration**
-Ingest plugin will be updated to skip processing if the `opni-collector` field exists on the log and is equal to `otel`. The OTEL preprocessing service will add this field to the log documents.  This will allow us to deprecate the ingest plugin and remove it in a later release.
+Ingest plugin will be updated to skip processing if the `monty-collector` field exists on the log and is equal to `otel`. The OTEL preprocessing service will add this field to the log documents.  This will allow us to deprecate the ingest plugin and remove it in a later release.
 
 For downstream cluster migrations this will be transparent to the user.  When the logging plugin runs a sync operation it will detect if the LogAdapter resource exists and if so delete it and then create the appropriate OTEL resources.
 
 ## Acceptance criteria: 
-* Ingest plugin logic updated to skip processing if the `opni-collector` field exists on the log and is equal to `otel`
+* Ingest plugin logic updated to skip processing if the `monty-collector` field exists on the log and is equal to `otel`
 * OTLP Server/Client architecture registered in Logging plugins
 * OTLP messages able to be forwarded over Gateway stream
 * New Agent controller generates log scraping services

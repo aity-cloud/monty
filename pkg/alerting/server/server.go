@@ -3,8 +3,8 @@ package server
 import (
 	"context"
 
-	"github.com/rancher/opni/pkg/alerting/client"
-	"github.com/rancher/opni/pkg/alerting/server/sync"
+	"github.com/aity-cloud/monty/pkg/alerting/client"
+	"github.com/aity-cloud/monty/pkg/alerting/server/sync"
 )
 
 type InitializerF interface {

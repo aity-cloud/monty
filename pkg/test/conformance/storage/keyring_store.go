@@ -8,16 +8,16 @@ import (
 	"sync"
 	"time"
 
+	"github.com/aity-cloud/monty/pkg/test/testruntime"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/rancher/opni/pkg/test/testruntime"
 	"github.com/samber/lo"
 
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	"github.com/rancher/opni/pkg/keyring"
-	"github.com/rancher/opni/pkg/pkp"
-	"github.com/rancher/opni/pkg/storage"
-	"github.com/rancher/opni/pkg/util/future"
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	"github.com/aity-cloud/monty/pkg/keyring"
+	"github.com/aity-cloud/monty/pkg/pkp"
+	"github.com/aity-cloud/monty/pkg/storage"
+	"github.com/aity-cloud/monty/pkg/util/future"
 )
 
 func pkpKey(pinCount int) *keyring.PKPKey {

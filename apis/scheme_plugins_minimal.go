@@ -3,13 +3,13 @@
 package apis
 
 import (
-	opniloggingv1beta1 "github.com/rancher/opni/apis/logging/v1beta1"
-	opnimonitoringv1beta1 "github.com/rancher/opni/apis/monitoring/v1beta1"
+	montyloggingv1beta1 "github.com/aity-cloud/monty/apis/logging/v1beta1"
+	montymonitoringv1beta1 "github.com/aity-cloud/monty/apis/monitoring/v1beta1"
 )
 
 func init() {
 	addSchemeBuilders(
-		opniloggingv1beta1.AddToScheme,
-		opnimonitoringv1beta1.AddToScheme,
+		montyloggingv1beta1.AddToScheme,
+		montymonitoringv1beta1.AddToScheme,
 	)
 }

@@ -4,7 +4,7 @@ Downstream Agent Notification System
 
 ## Summary:
 
-Enable the downstream opni agents to push notifications to alerting's notification system.
+Enable the downstream monty agents to push notifications to alerting's notification system.
 
 For example, an interesting feature that requires this functionality is allowing SRE's to subscribe to
 kubernetes event notifications in real time for their cluster
@@ -101,7 +101,7 @@ service PushNotificationService {
 message AgentNotification{
   // opaque id
   string id = 1;
-  // same format as the gateway notification from OEP https://github.com/rancher/opni/blob/main/enhancements/alerting/20230131-alerting-msg-templating.md
+  // same format as the gateway notification from OEP https://github.com/aity-cloud/monty/blob/main/enhancements/alerting/20230131-alerting-msg-templating.md
   Notification message = 2;
 }
 ```
@@ -138,7 +138,7 @@ N/A
 
 ## Dependencies:
 
-Implementation of [messaging system](https://github.com/rancher/opni/blob/main/enhancements/alerting/20230124-messaging-system.md)
+Implementation of [messaging system](https://github.com/aity-cloud/monty/blob/main/enhancements/alerting/20230124-messaging-system.md)
 
 ## Risks and contingencies:
 
@@ -156,4 +156,4 @@ Implementation of [messaging system](https://github.com/rancher/opni/blob/main/e
 
 ## Resources:
 
-1 Upstream Opni cluster & 1 Downstream Opni cluster
+1 Upstream Monty cluster & 1 Downstream Monty cluster

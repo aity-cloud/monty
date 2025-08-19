@@ -3,12 +3,12 @@ package plugins_test
 import (
 	"testing"
 
+	_ "github.com/aity-cloud/monty/pkg/test/setup"
+	_ "github.com/aity-cloud/monty/plugins/alerting/test"
+	_ "github.com/aity-cloud/monty/plugins/metrics/test"
+	_ "github.com/aity-cloud/monty/plugins/slo/test"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	_ "github.com/rancher/opni/pkg/test/setup"
-	_ "github.com/rancher/opni/plugins/alerting/test"
-	_ "github.com/rancher/opni/plugins/metrics/test"
-	_ "github.com/rancher/opni/plugins/slo/test"
 )
 
 func TestSloPlugin(t *testing.T) {

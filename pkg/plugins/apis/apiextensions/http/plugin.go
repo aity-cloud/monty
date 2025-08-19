@@ -11,13 +11,13 @@ import (
 	"go.opentelemetry.io/contrib/instrumentation/github.com/gin-gonic/gin/otelgin"
 	"google.golang.org/grpc"
 
-	configv1 "github.com/rancher/opni/pkg/config/v1"
-	"github.com/rancher/opni/pkg/plugins"
-	"github.com/rancher/opni/pkg/plugins/apis/apiextensions"
+	configv1 "github.com/aity-cloud/monty/pkg/config/v1"
+	"github.com/aity-cloud/monty/pkg/plugins"
+	"github.com/aity-cloud/monty/pkg/plugins/apis/apiextensions"
 )
 
 const (
-	HTTPAPIExtensionPluginID = "opni.apiextensions.HTTPAPIExtension"
+	HTTPAPIExtensionPluginID = "monty.apiextensions.HTTPAPIExtension"
 	ServiceID                = "apiextensions.HTTPAPIExtension"
 )
 

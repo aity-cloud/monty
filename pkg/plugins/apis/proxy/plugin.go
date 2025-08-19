@@ -3,14 +3,14 @@ package proxy
 import (
 	"context"
 
+	proxyv1 "github.com/aity-cloud/monty/pkg/apis/proxy/v1"
+	"github.com/aity-cloud/monty/pkg/plugins"
 	"github.com/hashicorp/go-plugin"
-	proxyv1 "github.com/rancher/opni/pkg/apis/proxy/v1"
-	"github.com/rancher/opni/pkg/plugins"
 	"google.golang.org/grpc"
 )
 
 const (
-	ProxyPluginID = "opni.Proxy"
+	ProxyPluginID = "monty.Proxy"
 	ServiceID     = "proxy.RegisterProxy"
 )
 

@@ -4,10 +4,10 @@ import (
 	"errors"
 	"log/slog"
 
-	configv1 "github.com/rancher/opni/pkg/config/v1"
-	"github.com/rancher/opni/pkg/config/v1beta1"
-	"github.com/rancher/opni/pkg/oci"
-	"github.com/rancher/opni/pkg/update"
+	configv1 "github.com/aity-cloud/monty/pkg/config/v1"
+	"github.com/aity-cloud/monty/pkg/config/v1beta1"
+	"github.com/aity-cloud/monty/pkg/oci"
+	"github.com/aity-cloud/monty/pkg/update"
 )
 
 func ConfigurePluginUpgrader(cfg v1beta1.PluginUpgradeSpec, pluginDir string, lg *slog.Logger) (update.SyncHandler, error) {

@@ -10,7 +10,7 @@ needs to have a way of managing external dependencies
 ## Use case:
 
 - A generic and "type-safe" system for alarms depending on metric exporter libraries
-- Enables implementing generic composite alarms : alarms requiring other alarms or alarms that require multiple opni capabilities or multiple external dependencies
+- Enables implementing generic composite alarms : alarms requiring other alarms or alarms that require multiple monty capabilities or multiple external dependencies
 - Intuitive visualization of how alarms connect to each other
 
 ## Benefits:
@@ -83,7 +83,7 @@ type Consumer[Cfg Referenceable] interface {
 // This is our existing filter message on all alarm objects
 message ListAlertConditionRequest {
   repeated string clusters = 1;
-  repeated alerting.OpniSeverity severities = 2;
+  repeated alerting.MontySeverity severities = 2;
   repeated string labels = 3;
   repeated AlertType alertTypes = 4;
 }
@@ -152,7 +152,7 @@ service DependencyManager{
 - [`gonum`](https://pkg.go.dev/gonum.org/v1/gonum)
 - [`gonum` graph](https://pkg.go.dev/gonum.org/v1/gonum/graph)
 - [`gonum` graph serialization](https://pkg.go.dev/gonum.org/v1/gonum/graph/encoding)
-- [`Opni task.Controller`](https://github.com/rancher/opni/blob/e128a9ee122dec86e055cbc763d8184a77b6f1cf/pkg/task/controller.go#L27)
+- [`Monty task.Controller`](https://github.com/aity-cloud/monty/blob/e128a9ee122dec86e055cbc763d8184a77b6f1cf/pkg/task/controller.go#L27)
 
 ## Dependencies:
 
@@ -172,4 +172,4 @@ service DependencyManager{
 
 ## Resources:
 
-1 Opni upstream cluster & 1 Opni downstream cluster
+1 Monty upstream cluster & 1 Monty downstream cluster

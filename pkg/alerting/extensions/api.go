@@ -8,11 +8,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/rancher/opni/pkg/alerting/cache"
-	"github.com/rancher/opni/pkg/alerting/drivers/config"
-	"github.com/rancher/opni/pkg/alerting/message"
-	alertingv1 "github.com/rancher/opni/pkg/apis/alerting/v1"
-	"github.com/rancher/opni/pkg/logger"
+	"github.com/aity-cloud/monty/pkg/alerting/cache"
+	"github.com/aity-cloud/monty/pkg/alerting/drivers/config"
+	"github.com/aity-cloud/monty/pkg/alerting/message"
+	alertingv1 "github.com/aity-cloud/monty/pkg/apis/alerting/v1"
+	"github.com/aity-cloud/monty/pkg/logger"
 	"github.com/samber/lo"
 	"google.golang.org/protobuf/encoding/protojson"
 )
@@ -41,11 +41,11 @@ func (e *EmbeddedServer) handleWebhook(wr http.ResponseWriter, req *http.Request
 	req.Body.Close()
 
 	for _, alert := range wMsg.Alerts {
-		msgMeta := parseAlertToOpniMd(alert)
+		msgMeta := parseAlertToMontyMd(alert)
 		if msgMeta.Uuid == "" {
-			// we assume a non-opni "indexed" source is pushing messages to us
+			// we assume a non-monty "indexed" source is pushing messages to us
 			// we do not persist these as their format is not known
-			e.logger.Debug("received message from non-opni source, ignoring")
+			e.logger.Debug("received message from non-monty source, ignoring")
 			wr.WriteHeader(http.StatusOK)
 			continue
 		}
@@ -108,7 +108,7 @@ func (e *EmbeddedServer) handleListNotifications(wr http.ResponseWriter, req *ht
 			if _, ok := goldenSignals[lo.ValueOr(
 				msg.Notification.Properties,
 				message.NotificationPropertyGoldenSignal,
-				alertingv1.OpniSeverity_Info.String(),
+				alertingv1.MontySeverity_Info.String(),
 			)]; !ok {
 				continue
 			}
@@ -199,12 +199,12 @@ func isAlarmMessage(annotations map[string]string) bool {
 	return ok
 }
 
-func parseAlertToOpniMd(alert config.Alert) cache.MessageMetadata {
+func parseAlertToMontyMd(alert config.Alert) cache.MessageMetadata {
 	return cache.MessageMetadata{
 		IsAlarm:        isAlarmMessage(alert.Annotations),
-		Uuid:           lo.ValueOr(alert.Labels, message.NotificationPropertyOpniUuid, ""),
+		Uuid:           lo.ValueOr(alert.Labels, message.NotificationPropertyMontyUuid, ""),
 		GroupDedupeKey: lo.ValueOr(alert.Labels, message.NotificationPropertyDedupeKey, ""),
-		Severity: lo.ValueOr(alertingv1.OpniSeverity_value,
+		Severity: lo.ValueOr(alertingv1.MontySeverity_value,
 			lo.ValueOr(alert.Labels, message.NotificationPropertySeverity, defaultSeverity),
 			0,
 		),

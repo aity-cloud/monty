@@ -8,12 +8,12 @@ import (
 
 	"log/slog"
 
+	healthpkg "github.com/aity-cloud/monty/pkg/health"
+	"github.com/aity-cloud/monty/pkg/logger"
+	"github.com/aity-cloud/monty/plugins/alerting/pkg/agent/drivers"
+	"github.com/aity-cloud/monty/plugins/alerting/pkg/apis/node"
+	"github.com/aity-cloud/monty/plugins/alerting/pkg/apis/rules"
 	backoffv2 "github.com/lestrrat-go/backoff/v2"
-	healthpkg "github.com/rancher/opni/pkg/health"
-	"github.com/rancher/opni/pkg/logger"
-	"github.com/rancher/opni/plugins/alerting/pkg/agent/drivers"
-	"github.com/rancher/opni/plugins/alerting/pkg/apis/node"
-	"github.com/rancher/opni/plugins/alerting/pkg/apis/rules"
 )
 
 var RuleSyncInterval = time.Minute * 2

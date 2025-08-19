@@ -2,25 +2,25 @@ lint = true
 test = true
 
 [releaser]
-	repo = "github.com/rancher/opni"
+	repo = "github.com/aity-cloud/monty"
 	os = ["darwin", "linux"]
 	arch = ["amd64"]
 
 [charts.git]
-	repo = "github.com/rancher/opni"
+	repo = "github.com/aity-cloud/monty"
 	branch = "charts-repo"
 [charts.git.auth]
 	email = "rancherbot@rancher.com"
 	username = "Rancher Bot"
 
 [charts.oci]
-	repo = "docker.io/rancher"
+	repo = "registry.aity.tech/monty"
 
-[images.opni]
-	repo = "docker.io/rancher/opni"
+[images.monty]
+	repo = "registry.aity.tech/monty/monty"
 
 [images.minimal]
-	repo = "docker.io/rancher/opni"
+	repo = "registry.aity.tech/monty/monty"
 	tag-suffix = "-minimal"
 
 [images.opensearch.build]
@@ -29,21 +29,21 @@ test = true
 	plugin-version = "0.12.1"
 
 [images.opensearch.dashboards]
-	repo = "docker.io/rancher/opensearch-dashboards"
+	repo = "registry.aity.tech/monty/opensearch-dashboards"
 	tag-suffix = "-2.8.0"
 
 [images.opensearch.opensearch]
-	repo = "docker.io/rancher/opensearch"
+	repo = "registry.aity.tech/monty/opensearch"
 	tag-suffix = "-2.8.0"
 
 [images.opensearch.update-service]
-	repo = "docker.io/rancher/opni-opensearch-update-service"
+	repo = "registry.aity.tech/monty/monty-opensearch-update-service"
 
 [images.python-base]
-	repo = "docker.io/rancher/opni-python-base"
+	repo = "registry.aity.tech/monty/monty-python-base"
 	tag = "3.9"
 
 [images.python-torch]
-	repo = "docker.io/rancher/opni-python-base"
+	repo = "registry.aity.tech/monty/monty-python-base"
 	tag = "3.9"
 	tag-suffix = "-torch"

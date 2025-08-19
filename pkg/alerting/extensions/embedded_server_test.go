@@ -11,32 +11,32 @@ import (
 	"path"
 	"time"
 
+	"github.com/aity-cloud/monty/pkg/alerting/client"
+	"github.com/aity-cloud/monty/pkg/alerting/drivers/config"
+	"github.com/aity-cloud/monty/pkg/alerting/drivers/routing"
+	"github.com/aity-cloud/monty/pkg/alerting/extensions"
+	"github.com/aity-cloud/monty/pkg/alerting/message"
+	"github.com/aity-cloud/monty/pkg/alerting/shared"
+	alertingv1 "github.com/aity-cloud/monty/pkg/apis/alerting/v1"
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	"github.com/aity-cloud/monty/pkg/test"
+	"github.com/aity-cloud/monty/pkg/test/alerting"
+	"github.com/aity-cloud/monty/pkg/test/freeport"
 	"github.com/google/uuid"
 	"github.com/kralicky/yaml/v3"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	amCfg "github.com/prometheus/alertmanager/config"
-	"github.com/rancher/opni/pkg/alerting/client"
-	"github.com/rancher/opni/pkg/alerting/drivers/config"
-	"github.com/rancher/opni/pkg/alerting/drivers/routing"
-	"github.com/rancher/opni/pkg/alerting/extensions"
-	"github.com/rancher/opni/pkg/alerting/message"
-	"github.com/rancher/opni/pkg/alerting/shared"
-	alertingv1 "github.com/rancher/opni/pkg/apis/alerting/v1"
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	"github.com/rancher/opni/pkg/test"
-	"github.com/rancher/opni/pkg/test/alerting"
-	"github.com/rancher/opni/pkg/test/freeport"
 	"github.com/samber/lo"
 
-	"github.com/rancher/opni/pkg/util"
+	"github.com/aity-cloud/monty/pkg/util"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/types/known/durationpb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 func BuildEmbeddedServerNotificationTests(
-	routerConstructor func(int) routing.OpniRouting,
+	routerConstructor func(int) routing.MontyRouting,
 	dataset *alerting.RoutableDataset,
 ) bool {
 
@@ -48,12 +48,12 @@ func BuildEmbeddedServerNotificationTests(
 		var tmpConfigDir string
 
 		var webPort int
-		var opniPort int
+		var montyPort int
 		var alertingClient client.AlertingClient
-		sendMsg := func(client *http.Client, msg config.WebhookMessage, opniPort int) {
+		sendMsg := func(client *http.Client, msg config.WebhookMessage, montyPort int) {
 			content, err := json.Marshal(msg)
 			Expect(err).NotTo(HaveOccurred())
-			req, err := http.NewRequest(http.MethodPost, fmt.Sprintf("http://localhost:%d%s", opniPort, shared.AlertingDefaultHookName), bytes.NewReader(content))
+			req, err := http.NewRequest(http.MethodPost, fmt.Sprintf("http://localhost:%d%s", montyPort, shared.AlertingDefaultHookName), bytes.NewReader(content))
 			Expect(err).NotTo(HaveOccurred())
 			resp, err := client.Do(req)
 			Expect(err).NotTo(HaveOccurred())
@@ -65,7 +65,7 @@ func BuildEmbeddedServerNotificationTests(
 				fmt.Sprintf("127.0.0.1:%d", webPort),
 			),
 			client.WithQuerierAddress(
-				fmt.Sprintf("127.0.0.1:%d", opniPort),
+				fmt.Sprintf("127.0.0.1:%d", montyPort),
 			),
 			client.WithTLSConfig(
 				env.AlertingClientTLSConfig(),
@@ -74,7 +74,7 @@ func BuildEmbeddedServerNotificationTests(
 		Expect(err).NotTo(HaveOccurred())
 		sendMsgAlertManager := func(ctx context.Context, labels, annotations map[string]string, alertManagerPort int) {
 			err := alertingClient.AlertClient().PostNotification(ctx, client.AlertObject{
-				Id:          labels[message.NotificationPropertyOpniUuid],
+				Id:          labels[message.NotificationPropertyMontyUuid],
 				Labels:      labels,
 				Annotations: annotations,
 			})
@@ -82,13 +82,13 @@ func BuildEmbeddedServerNotificationTests(
 
 		}
 
-		listNotif := func(client *http.Client, listReq *alertingv1.ListNotificationRequest, opniPort int) *alertingv1.ListMessageResponse {
+		listNotif := func(client *http.Client, listReq *alertingv1.ListNotificationRequest, montyPort int) *alertingv1.ListMessageResponse {
 			listReq.Sanitize()
 			err := listReq.Validate()
 			Expect(err).NotTo(HaveOccurred())
 			content, err := protojson.Marshal(listReq)
 			Expect(err).NotTo(HaveOccurred())
-			req, err := http.NewRequest(http.MethodPost, fmt.Sprintf("http://localhost:%d%s", opniPort, "/notifications/list"), bytes.NewReader(content))
+			req, err := http.NewRequest(http.MethodPost, fmt.Sprintf("http://localhost:%d%s", montyPort, "/notifications/list"), bytes.NewReader(content))
 			Expect(err).NotTo(HaveOccurred())
 			resp, err := client.Do(req)
 			Expect(err).NotTo(HaveOccurred())
@@ -99,13 +99,13 @@ func BuildEmbeddedServerNotificationTests(
 			return listResp
 		}
 
-		listAlarm := func(client *http.Client, listReq *alertingv1.ListAlarmMessageRequest, opniPort int) *alertingv1.ListMessageResponse {
+		listAlarm := func(client *http.Client, listReq *alertingv1.ListAlarmMessageRequest, montyPort int) *alertingv1.ListMessageResponse {
 			listReq.Sanitize()
 			err := listReq.Validate()
 			Expect(err).NotTo(HaveOccurred())
 			content, err := protojson.Marshal(listReq)
 			Expect(err).NotTo(HaveOccurred())
-			req, err := http.NewRequest(http.MethodPost, fmt.Sprintf("http://localhost:%d%s", opniPort, "/alarms/list"), bytes.NewReader(content))
+			req, err := http.NewRequest(http.MethodPost, fmt.Sprintf("http://localhost:%d%s", montyPort, "/alarms/list"), bytes.NewReader(content))
 			Expect(err).NotTo(HaveOccurred())
 			resp, err := client.Do(req)
 			Expect(err).NotTo(HaveOccurred())
@@ -126,14 +126,14 @@ func BuildEmbeddedServerNotificationTests(
 			Expect(err).NotTo(HaveOccurred())
 			Expect(tmpConfigDir).NotTo(Equal(""))
 
-			// start embedded alert manager with config that points to opni embedded server
+			// start embedded alert manager with config that points to monty embedded server
 
 			freeport := freeport.GetFreePort()
 			Expect(freeport).NotTo(BeZero())
-			opniPort = freeport
-			extensions.StartOpniEmbeddedServer(env.Context(), fmt.Sprintf(":%d", opniPort), false)
+			montyPort = freeport
+			extensions.StartMontyEmbeddedServer(env.Context(), fmt.Sprintf(":%d", montyPort), false)
 
-			router := routerConstructor(opniPort)
+			router := routerConstructor(montyPort)
 			Expect(tmpConfigDir).NotTo(BeEmpty())
 			confFile := path.Join(tmpConfigDir, "alertmanager.yml")
 			Expect(confFile).NotTo(BeEmpty())
@@ -148,17 +148,17 @@ func BuildEmbeddedServerNotificationTests(
 			httpClient = http.DefaultClient
 		})
 
-		When("we use the embedded opni embedded server", func() {
-			It("should handle webhook messages indexed by Opni", func() {
+		When("we use the embedded monty embedded server", func() {
+			It("should handle webhook messages indexed by Monty", func() {
 				Expect(webPort).NotTo(BeZero())
-				Expect(opniPort).NotTo(BeZero())
+				Expect(montyPort).NotTo(BeZero())
 				msg := config.WebhookMessage{
 					Alerts: config.Alerts{
 						{
 							Status: "firing",
 							Labels: map[string]string{
-								message.NotificationPropertyOpniUuid: uuid.New().String(),
-								message.NotificationPropertySeverity: alertingv1.OpniSeverity_Info.String(),
+								message.NotificationPropertyMontyUuid: uuid.New().String(),
+								message.NotificationPropertySeverity:  alertingv1.MontySeverity_Info.String(),
 							},
 							Annotations: map[string]string{},
 						},
@@ -170,23 +170,23 @@ func BuildEmbeddedServerNotificationTests(
 					GroupKey:        uuid.New().String(),
 					ExternalURL:     fmt.Sprintf("http://localhost:%d", webPort),
 				}
-				sendMsg(httpClient, msg, opniPort)
+				sendMsg(httpClient, msg, montyPort)
 			})
 
-			It("should list notification messages indexed by Opni", func() {
+			It("should list notification messages indexed by Monty", func() {
 				Expect(webPort).NotTo(BeZero())
-				Expect(opniPort).NotTo(BeZero())
+				Expect(montyPort).NotTo(BeZero())
 
 				listReq := &alertingv1.ListNotificationRequest{}
-				respList := listNotif(httpClient, listReq, opniPort)
+				respList := listNotif(httpClient, listReq, montyPort)
 				Expect(respList.Items).NotTo(BeNil())
 				Expect(respList.Items).To(HaveLen(1))
 			})
 
 			Specify("it should dedupe frequency-based persistenced based on group keys and id keys based on what is available", func() {
 				listRequest := &alertingv1.ListNotificationRequest{
-					SeverityFilters: []alertingv1.OpniSeverity{
-						alertingv1.OpniSeverity_Warning,
+					SeverityFilters: []alertingv1.MontySeverity{
+						alertingv1.MontySeverity_Warning,
 					},
 				}
 				groupKey := uuid.New().String()
@@ -196,8 +196,8 @@ func BuildEmbeddedServerNotificationTests(
 						{
 							Status: "firing",
 							Labels: map[string]string{
-								message.NotificationPropertyOpniUuid:  msgId,
-								message.NotificationPropertySeverity:  alertingv1.OpniSeverity_Warning.String(),
+								message.NotificationPropertyMontyUuid: msgId,
+								message.NotificationPropertySeverity:  alertingv1.MontySeverity_Warning.String(),
 								message.NotificationPropertyDedupeKey: groupKey,
 							},
 							Annotations: map[string]string{},
@@ -210,36 +210,36 @@ func BuildEmbeddedServerNotificationTests(
 					GroupKey:        groupKey,
 					ExternalURL:     fmt.Sprintf("http://localhost:%d", webPort),
 				}
-				sendMsg(httpClient, msg, opniPort)
-				respList := listNotif(httpClient, listRequest, opniPort)
+				sendMsg(httpClient, msg, montyPort)
+				respList := listNotif(httpClient, listRequest, montyPort)
 				Expect(respList.Items).NotTo(BeNil())
 				Expect(respList.Items).To(HaveLen(1))
 
 				// send the same message again with group key but different uuid
-				msg.Alerts[0].Labels[message.NotificationPropertyOpniUuid] = uuid.New().String()
-				sendMsg(httpClient, msg, opniPort)
-				respList = listNotif(httpClient, listRequest, opniPort)
+				msg.Alerts[0].Labels[message.NotificationPropertyMontyUuid] = uuid.New().String()
+				sendMsg(httpClient, msg, montyPort)
+				respList = listNotif(httpClient, listRequest, montyPort)
 				Expect(respList.Items).NotTo(BeNil())
 				Expect(respList.Items).To(HaveLen(1))
 
 				// send the same message again with uuid but different group key but same uuid
-				msg.Alerts[0].Labels[message.NotificationPropertyOpniUuid] = msgId
+				msg.Alerts[0].Labels[message.NotificationPropertyMontyUuid] = msgId
 				msg.Alerts[0].Labels[message.NotificationPropertyDedupeKey] = uuid.New().String()
 
-				sendMsg(httpClient, msg, opniPort)
-				respList = listNotif(httpClient, listRequest, opniPort)
+				sendMsg(httpClient, msg, montyPort)
+				respList = listNotif(httpClient, listRequest, montyPort)
 				Expect(respList.Items).NotTo(BeNil())
 				Expect(respList.Items).To(HaveLen(2))
 
-				msg.Alerts[0].Labels[message.NotificationPropertyOpniUuid] = uuid.New().String()
+				msg.Alerts[0].Labels[message.NotificationPropertyMontyUuid] = uuid.New().String()
 				msg.Alerts[0].Labels[message.NotificationPropertyDedupeKey] = uuid.New().String()
-				sendMsg(httpClient, msg, opniPort)
-				respList = listNotif(httpClient, listRequest, opniPort)
+				sendMsg(httpClient, msg, montyPort)
+				respList = listNotif(httpClient, listRequest, montyPort)
 				Expect(respList.Items).NotTo(BeNil())
 				Expect(respList.Items).To(HaveLen(3))
 
-				sendMsg(httpClient, msg, opniPort)
-				respList = listNotif(httpClient, listRequest, opniPort)
+				sendMsg(httpClient, msg, montyPort)
+				respList = listNotif(httpClient, listRequest, montyPort)
 				Expect(respList.Items).NotTo(BeNil())
 				Expect(respList.Items).To(HaveLen(3))
 
@@ -256,10 +256,10 @@ func BuildEmbeddedServerNotificationTests(
 				By("restarting the embedded server")
 				freeport := freeport.GetFreePort()
 				Expect(freeport).NotTo(BeZero())
-				opniPort = freeport
-				extensions.StartOpniEmbeddedServer(env.Context(), fmt.Sprintf(":%d", opniPort), false)
+				montyPort = freeport
+				extensions.StartMontyEmbeddedServer(env.Context(), fmt.Sprintf(":%d", montyPort), false)
 
-				router := routerConstructor(opniPort)
+				router := routerConstructor(montyPort)
 				By("building the required routes for the routables")
 				for _, r := range dataset.Routables {
 					if r.Namespace() == routing.NotificationSubTreeLabel() {
@@ -268,7 +268,7 @@ func BuildEmbeddedServerNotificationTests(
 					}
 					err := router.SetNamespaceSpec(
 						r.Namespace(),
-						r.GetRoutingLabels()[message.NotificationPropertyOpniUuid],
+						r.GetRoutingLabels()[message.NotificationPropertyMontyUuid],
 						&alertingv1.FullAttachedEndpoints{
 							Items: []*alertingv1.FullAttachedEndpoint{},
 						},
@@ -291,7 +291,7 @@ func BuildEmbeddedServerNotificationTests(
 						fmt.Sprintf("127.0.0.1:%d", ports.ApiPort),
 					),
 					client.WithQuerierAddress(
-						fmt.Sprintf("127.0.0.1:%d", opniPort),
+						fmt.Sprintf("127.0.0.1:%d", montyPort),
 					),
 					client.WithTLSConfig(env.AlertingClientTLSConfig()),
 				)
@@ -325,7 +325,7 @@ func BuildEmbeddedServerNotificationTests(
 					Name:        "fingerprint test",
 					Description: "fingerprint test",
 					Id:          id,
-					Severity:    alertingv1.OpniSeverity_Critical,
+					Severity:    alertingv1.MontySeverity_Critical,
 					AlertType: &alertingv1.AlertTypeDetails{
 						Type: &alertingv1.AlertTypeDetails_System{
 							System: &alertingv1.AlertConditionSystem{
@@ -356,10 +356,10 @@ func BuildEmbeddedServerNotificationTests(
 				}
 				Eventually(func() error {
 					_ = webPort
-					_ = opniPort
+					_ = montyPort
 					_ = tmpConfigDir
 					for _, pair := range dataset.ExpectedNotifications {
-						listResp := listNotif(httpClient, pair.A, opniPort)
+						listResp := listNotif(httpClient, pair.A, montyPort)
 						if len(listResp.Items) != pair.B {
 							return fmt.Errorf(
 								"notification pair failed %s : %d vs %d",
@@ -371,7 +371,7 @@ func BuildEmbeddedServerNotificationTests(
 					}
 
 					for _, pair := range dataset.ExpectedAlarms {
-						listResp := listAlarm(httpClient, pair.A, opniPort)
+						listResp := listAlarm(httpClient, pair.A, montyPort)
 						if len(listResp.Items) != pair.B {
 							return fmt.Errorf(
 								"alarm pair failed %s : %d vs %d",
@@ -417,7 +417,7 @@ func BuildEmbeddedServerNotificationTests(
 						Start:        timestamppb.New(time.Now().Add(-time.Hour)),
 						End:          timestamppb.New(time.Now().Add(time.Hour)),
 					},
-					opniPort)
+					montyPort)
 				if len(listResp.GetItems()) != len(fingerprints) {
 					return fmt.Errorf(
 						"expected to match %d=%d persisted alarm messages & number of fingerprints",
@@ -431,7 +431,7 @@ func BuildEmbeddedServerNotificationTests(
 	})
 }
 
-var _ = BuildEmbeddedServerNotificationTests(func(dynamicPort int) routing.OpniRouting {
+var _ = BuildEmbeddedServerNotificationTests(func(dynamicPort int) routing.MontyRouting {
 	cfg := config.WebhookConfig{
 		NotifierConfig: config.NotifierConfig{
 			VSendResolved: false,
@@ -440,5 +440,5 @@ var _ = BuildEmbeddedServerNotificationTests(func(dynamicPort int) routing.OpniR
 			URL: util.Must(url.Parse(fmt.Sprintf("http://localhost:%d%s", dynamicPort, shared.AlertingDefaultHookName))),
 		},
 	}
-	return routing.NewOpniRouterV1(cfg)
+	return routing.NewMontyRouterV1(cfg)
 }, alerting.NewRoutableDataset())

@@ -3,7 +3,7 @@ package sync
 import (
 	"context"
 
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
 )
 
 type SyncTask func(ctx context.Context, syncInfo SyncInfo) error

@@ -4,15 +4,15 @@ import (
 	"testing"
 	"time"
 
+	"github.com/aity-cloud/monty/pkg/alerting/drivers/routing"
+	"github.com/aity-cloud/monty/pkg/test"
+	_ "github.com/aity-cloud/monty/pkg/test/setup"
+	"github.com/aity-cloud/monty/pkg/test/testruntime"
+	_ "github.com/aity-cloud/monty/plugins/alerting/test"
+	_ "github.com/aity-cloud/monty/plugins/metrics/test"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	"github.com/prometheus/common/model"
-	"github.com/rancher/opni/pkg/alerting/drivers/routing"
-	"github.com/rancher/opni/pkg/test"
-	_ "github.com/rancher/opni/pkg/test/setup"
-	"github.com/rancher/opni/pkg/test/testruntime"
-	_ "github.com/rancher/opni/plugins/alerting/test"
-	_ "github.com/rancher/opni/plugins/metrics/test"
 	"github.com/samber/lo"
 )
 

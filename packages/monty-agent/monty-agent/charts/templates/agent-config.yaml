@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: agent-config
+  namespace: {{ include "monty-agent.namespace" . }}
+  labels:
+    {{- include "monty-agent.labels" . | nindent 4 }}
+stringData:
+  config.yaml: |-
+    apiVersion: v1beta1
+    kind: AgentConfig
+    spec:
+      gatewayAddress: {{ include "monty-agent.gatewayAddress" . }}
+      identityProvider: kubernetes
+      listenAddress: :8080
+      trustStrategy: pkp
+      storage:
+        type: customResources
+      pluginDir: /var/lib/monty-agent/plugins
+      keyring:
+        ephemeralKeyDirs:
+          - /run/monty-agent/keyring
+      upgrade:
+        type: kubernetes
+        kubernetes:
+          namespace: {{ .Release.Namespace }}
+      pluginUpgrade:
+        type: binary
+        binary: {}
+      bootstrap:
+        {{- if .Values.bootstrapInCluster.enabled }}
+        inClusterManagementAddress: {{ .Values.bootstrapInCluster.managementAddress }}
+        {{- else }}
+        token: {{ .Values.token }}
+        pins: [{{ .Values.pin }}]
+        {{- if .Values.friendlyName }}
+        friendlyName: {{ .Values.friendlyName }}
+        {{- end }}
+        {{- end }}
+      {{- if .Values.logLevel }}
+      logLevel: {{ .Values.logLevel }}
+      {{- end }}
+      {{- if .Values.profiling }}
+      profiling: {{ .Values.profiling }}
+      {{- end }}

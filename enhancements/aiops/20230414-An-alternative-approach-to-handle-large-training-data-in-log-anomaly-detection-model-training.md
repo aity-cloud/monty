@@ -2,10 +2,10 @@
 An alternative approach to handle large training data in log anomaly detection model training
 
 ## Summary: 
-This proposal proposes an alternative approach to resolve issues when training-data-size of log anomaly detection model is large. Compare to the approach proposed in the [streaming-dataloader OEP](https://github.com/rancher/opni/blob/main/enhancements/aiops/20230203-introduce-streaming-dataloader-in-log-anomaly-detection-model-training.md), this approach can obtain more stable model quality and suffer less from Opensearch index-scroll issue. It also makes it easier to build the vocab file.
+This proposal proposes an alternative approach to resolve issues when training-data-size of log anomaly detection model is large. Compare to the approach proposed in the [streaming-dataloader OEP](https://github.com/aity-cloud/monty/blob/main/enhancements/aiops/20230203-introduce-streaming-dataloader-in-log-anomaly-detection-model-training.md), this approach can obtain more stable model quality and suffer less from Opensearch index-scroll issue. It also makes it easier to build the vocab file.
 
 ## Use case: 
-When Opni's user launches a workload log anomaly detection training job with huge size of training data (for example, 500GB logs), the current approach that loads all data into memory won't be feasible. This approach can resolve this problem because it only processes a reasonable subset of training dataset each time.
+When Monty's user launches a workload log anomaly detection training job with huge size of training data (for example, 500GB logs), the current approach that loads all data into memory won't be feasible. This approach can resolve this problem because it only processes a reasonable subset of training dataset each time.
 
 ## Benefits: 
 * Compare to streaming-dataloader:
@@ -24,9 +24,9 @@ When Opni's user launches a workload log anomaly detection training job with hug
 Let the total size of training data be `s`(for example `s` could be 10 million)
 the target size of preprocessed/masked/resampled training data be `t` (for example `t` could be `128000`)
 
-* Opni-inference-service:
+* Monty-inference-service:
 	*  Data downloading & preprocessing: 
-		1. For every batch `b` of training data downloaded(say size(`b`) = 100k), pre-process and mask logs in `b` and then use [weighted random sampling](https://github.com/rancher/opni-inference-service/blob/main/opni_inference_service/opnilog_trainer.py#L120) to down-sample `b` to `sampled_b`. `size(sampled_b) = size(b) * t / s`. 
+		1. For every batch `b` of training data downloaded(say size(`b`) = 100k), pre-process and mask logs in `b` and then use [weighted random sampling](https://github.com/aity-cloud/monty-inference-service/blob/main/monty_inference_service/montylog_trainer.py#L120) to down-sample `b` to `sampled_b`. `size(sampled_b) = size(b) * t / s`. 
 		   Return: Append `sampled_b` in each batch and return.
 		2. Apply `weighted random sampling` again to re-sample the output from step 1. 
 		3. Use the data from step 2 to train model.
@@ -53,4 +53,4 @@ the target size of preprocessed/masked/resampled training data be `t` (for examp
 * Testing and debugging: 4 days. Requires manually test it with larger training dataset in a long running cluster many times.
 
 ## Resources: 
-* A upstream Opni cluster with a GPU node attached, and 1+ downstream cluster.
+* A upstream Monty cluster with a GPU node attached, and 1+ downstream cluster.

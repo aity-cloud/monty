@@ -1,8 +1,8 @@
 package util
 
 import (
+	"github.com/aity-cloud/monty/plugins/metrics/pkg/constants"
 	"github.com/gin-gonic/gin"
-	"github.com/rancher/opni/plugins/metrics/pkg/constants"
 )
 
 func AuthorizedClusterIDs(c *gin.Context) []string {

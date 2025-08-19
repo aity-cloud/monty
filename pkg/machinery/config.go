@@ -1,8 +1,8 @@
 package machinery
 
 import (
-	"github.com/rancher/opni/pkg/config"
-	"github.com/rancher/opni/pkg/config/meta"
+	"github.com/aity-cloud/monty/pkg/config"
+	"github.com/aity-cloud/monty/pkg/config/meta"
 )
 
 type JsonDocument interface {

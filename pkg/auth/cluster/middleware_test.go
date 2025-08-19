@@ -8,13 +8,13 @@ import (
 
 	"slices"
 
+	"github.com/aity-cloud/monty/pkg/auth/cluster"
+	mock_auth "github.com/aity-cloud/monty/pkg/test/mock/auth"
+	"github.com/aity-cloud/monty/pkg/test/testgrpc"
+	"github.com/aity-cloud/monty/pkg/util/streams"
 	"github.com/google/uuid"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/rancher/opni/pkg/auth/cluster"
-	mock_auth "github.com/rancher/opni/pkg/test/mock/auth"
-	"github.com/rancher/opni/pkg/test/testgrpc"
-	"github.com/rancher/opni/pkg/util/streams"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/credentials/insecure"

@@ -12,7 +12,7 @@ Customers scale up to many alarms & want to check their status.
 
 ## Benefits
 
-- Optimize Opni Alerting resource usage
+- Optimize Monty Alerting resource usage
 - Improved user experience when using the Alerting UI
 
 ## Impact
@@ -35,7 +35,7 @@ The new `ListStatus` API handles listing the Condition Specs and Getting the Sta
 
 #### Caching
 
-Caching will be implemented using interceptors over the protocols Opni uses
+Caching will be implemented using interceptors over the protocols Monty uses
 
 ##### GRPC
 
@@ -62,7 +62,7 @@ Caching will be implemented using interceptors over the protocols Opni uses
 
 ## Supporting documents
 
-Addresses https://github.com/rancher/opni/wiki/Alerting-Condition-Server#performance-issues
+Addresses https://github.com/aity-cloud/monty/wiki/Alerting-Condition-Server#performance-issues
 
 ## Dependencies
 
@@ -85,4 +85,4 @@ None
 
 ## Resources
 
-1 Upstream Opni Cluster
+1 Upstream Monty Cluster

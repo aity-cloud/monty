@@ -3,7 +3,7 @@ package challenges
 import (
 	"context"
 
-	"github.com/rancher/opni/pkg/util/streams"
+	"github.com/aity-cloud/monty/pkg/util/streams"
 )
 
 type ChallengeHandler interface {

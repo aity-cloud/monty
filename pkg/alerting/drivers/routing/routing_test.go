@@ -5,17 +5,17 @@ import (
 	"net/url"
 	"path"
 
+	"github.com/aity-cloud/monty/pkg/alerting/drivers/config"
+	"github.com/aity-cloud/monty/pkg/alerting/drivers/routing"
+	alertingv1 "github.com/aity-cloud/monty/pkg/apis/alerting/v1"
+	"github.com/aity-cloud/monty/pkg/test/alerting"
+	"github.com/aity-cloud/monty/pkg/test/freeport"
+	"github.com/aity-cloud/monty/pkg/test/testdata"
+	"github.com/aity-cloud/monty/pkg/test/testruntime"
+	"github.com/aity-cloud/monty/pkg/util"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	amCfg "github.com/prometheus/alertmanager/config"
-	"github.com/rancher/opni/pkg/alerting/drivers/config"
-	"github.com/rancher/opni/pkg/alerting/drivers/routing"
-	alertingv1 "github.com/rancher/opni/pkg/apis/alerting/v1"
-	"github.com/rancher/opni/pkg/test/alerting"
-	"github.com/rancher/opni/pkg/test/freeport"
-	"github.com/rancher/opni/pkg/test/testdata"
-	"github.com/rancher/opni/pkg/test/testruntime"
-	"github.com/rancher/opni/pkg/util"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/encoding/protojson"
@@ -28,7 +28,7 @@ func init() {
 		sharedEndpointSet = make(map[string]*alertingv1.FullAttachedEndpoint)
 		sharedEndpointSet = alerting.CreateRandomSetOfEndpoints()
 		var _ = BuildRoutingTreeSuiteTest(
-			routing.NewDefaultOpniRouting(),
+			routing.NewDefaultMontyRouting(),
 			alerting.CreateRandomNamespacedTestCases(45, sharedEndpointSet),
 			alerting.CreateRandomDefaultNamespacedTestcases(sharedEndpointSet),
 			alerting.CreateRandomIndividualEndpointTestcases(sharedEndpointSet),
@@ -44,7 +44,7 @@ var _ = Describe("Alerting Router defaults", Ordered, Serial, Label("integration
 
 	When("creating the default routing tree", func() {
 
-		Specify("The default opni routing tree root should be valid for alertmanager", func() {
+		Specify("The default monty routing tree root should be valid for alertmanager", func() {
 
 			fp := freeport.GetFreePort()
 			cfg := config.WebhookConfig{
@@ -60,7 +60,7 @@ var _ = Describe("Alerting Router defaults", Ordered, Serial, Label("integration
 			alerting.ExpectAlertManagerConfigToBeValid(env.Context(), env, tmpConfigDir, "routingTreeRoot.yaml", route, fp)
 		})
 
-		Specify("the opni subtree should be in a valid alertmanager format", func() {
+		Specify("the monty subtree should be in a valid alertmanager format", func() {
 			fp := freeport.GetFreePort()
 			cfg := config.WebhookConfig{
 				NotifierConfig: config.NotifierConfig{
@@ -71,13 +71,13 @@ var _ = Describe("Alerting Router defaults", Ordered, Serial, Label("integration
 				},
 			}
 			route := routing.NewRootNode(&cfg)
-			subtree, recvs := routing.NewOpniSubRoutingTree()
+			subtree, recvs := routing.NewMontySubRoutingTree()
 			route.Route.Routes = append(route.Route.Routes, subtree)
 			route.Receivers = append(route.Receivers, recvs...)
 			alerting.ExpectAlertManagerConfigToBeValid(env.Context(), env, tmpConfigDir, "routingSubtree.yaml", route, fp)
 		})
 
-		Specify("the default routing tree of opni routing should be in a valid alertmanager format", func() {
+		Specify("the default routing tree of monty routing should be in a valid alertmanager format", func() {
 			fp := freeport.GetFreePort()
 			cfg := config.WebhookConfig{
 				NotifierConfig: config.NotifierConfig{
@@ -94,7 +94,7 @@ var _ = Describe("Alerting Router defaults", Ordered, Serial, Label("integration
 })
 
 func BuildRoutingTreeSuiteTest(
-	router routing.OpniRouting,
+	router routing.MontyRouting,
 	conditionSubtreeTestcases []alerting.NamespaceSubTreeTestcase,
 	broadcastSubtreeTestcases []alerting.DefaultNamespaceSubTreeTestcase,
 	individualEndpointTestcases []alerting.IndividualEndpointTestcase,
@@ -102,7 +102,7 @@ func BuildRoutingTreeSuiteTest(
 	return Describe("Alerting Routing tree building tests", Ordered, Serial, Label("integration", "slow"), func() {
 		var currentCfg *config.Config
 		var step string
-		When("manipulating the opni condition routing tree", func() {
+		When("manipulating the monty condition routing tree", func() {
 			AfterEach(func() {
 				By("expecting that the formed alertmanager config is correct")
 				fp := freeport.GetFreePort()
@@ -174,7 +174,7 @@ func BuildRoutingTreeSuiteTest(
 			})
 		})
 
-		When("manipulating the opni default namespaced routing tree", func() {
+		When("manipulating the monty default namespaced routing tree", func() {
 			AfterEach(func() {
 				By("expecting that the formed alertmanager config is correct")
 				fp := freeport.GetFreePort()
@@ -201,9 +201,9 @@ func BuildRoutingTreeSuiteTest(
 			})
 		})
 
-		When("propagating updates for individual endpoints to the rest of opni routing", func() {
+		When("propagating updates for individual endpoints to the rest of monty routing", func() {
 			step = "update-individual"
-			It("should be able to update individual endpoints in opni routing", func() {
+			It("should be able to update individual endpoints in monty routing", func() {
 				for _, tc := range individualEndpointTestcases {
 					if tc.Op == alerting.OpUpdate || tc.Op == alerting.OpCreate {
 						err := router.UpdateEndpoint(tc.EndpointId, tc.UpdateEndpoint)
@@ -222,7 +222,7 @@ func BuildRoutingTreeSuiteTest(
 				currentCfg = calculatedConfig
 			})
 
-			It("should be able to delete individual endpoints in opni routing", func() {
+			It("should be able to delete individual endpoints in monty routing", func() {
 				step = "delete-individual"
 				for _, tc := range individualEndpointTestcases {
 					if tc.Op == alerting.OpDelete {
@@ -249,7 +249,7 @@ func BuildRoutingTreeSuiteTest(
 		})
 
 		When("syncing user's production configs", func() {
-			It("should sync the user's production config into opni's routing tree", func() {
+			It("should sync the user's production config into monty's routing tree", func() {
 				step = "sync-production-config"
 				testcaseFilenames := []string{
 					"alerting/alertmanager/basic.yaml",

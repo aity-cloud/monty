@@ -1,15 +1,15 @@
 package gateway
 
 import (
-	managementv1 "github.com/rancher/opni/pkg/apis/management/v1"
-	configv1 "github.com/rancher/opni/pkg/config/v1"
-	"github.com/rancher/opni/pkg/logger"
-	"github.com/rancher/opni/pkg/machinery"
-	"github.com/rancher/opni/pkg/plugins/apis/system"
-	"github.com/rancher/opni/pkg/plugins/driverutil"
+	managementv1 "github.com/aity-cloud/monty/pkg/apis/management/v1"
+	configv1 "github.com/aity-cloud/monty/pkg/config/v1"
+	"github.com/aity-cloud/monty/pkg/logger"
+	"github.com/aity-cloud/monty/pkg/machinery"
+	"github.com/aity-cloud/monty/pkg/plugins/apis/system"
+	"github.com/aity-cloud/monty/pkg/plugins/driverutil"
 
-	_ "github.com/rancher/opni/pkg/storage/etcd"
-	_ "github.com/rancher/opni/pkg/storage/jetstream"
+	_ "github.com/aity-cloud/monty/pkg/storage/etcd"
+	_ "github.com/aity-cloud/monty/pkg/storage/jetstream"
 )
 
 // UseManagementAPI implements system.SystemPluginServer.

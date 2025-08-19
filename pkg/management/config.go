@@ -4,12 +4,12 @@ import (
 	"context"
 	"encoding/json"
 
+	managementv1 "github.com/aity-cloud/monty/pkg/apis/management/v1"
+	"github.com/aity-cloud/monty/pkg/config"
+	"github.com/aity-cloud/monty/pkg/config/meta"
+	"github.com/aity-cloud/monty/pkg/logger"
+	"github.com/aity-cloud/monty/pkg/validation"
 	"github.com/alecthomas/jsonschema"
-	managementv1 "github.com/rancher/opni/pkg/apis/management/v1"
-	"github.com/rancher/opni/pkg/config"
-	"github.com/rancher/opni/pkg/config/meta"
-	"github.com/rancher/opni/pkg/logger"
-	"github.com/rancher/opni/pkg/validation"
 	"google.golang.org/protobuf/types/known/emptypb"
 	"gopkg.in/yaml.v2"
 )

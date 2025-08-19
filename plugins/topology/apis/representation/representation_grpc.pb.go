@@ -2,13 +2,13 @@
 // versions:
 // - protoc-gen-go-grpc v1.3.0
 // - ragu               v1.0.0
-// source: github.com/rancher/opni/plugins/topology/apis/representation/representation.proto
+// source: github.com/aity-cloud/monty/plugins/topology/apis/representation/representation.proto
 
 package representation
 
 import (
 	context "context"
-	v1 "github.com/rancher/opni/pkg/apis/core/v1"
+	v1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -28,7 +28,7 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type TopologyRepresentationClient interface {
-	// opni internal use
+	// monty internal use
 	GetGraph(ctx context.Context, in *v1.Reference, opts ...grpc.CallOption) (*TopologyGraph, error)
 	// cluster id  --> kubernetes graph SVG
 	RenderGraph(ctx context.Context, in *v1.Reference, opts ...grpc.CallOption) (*DOTRepresentation, error)
@@ -64,7 +64,7 @@ func (c *topologyRepresentationClient) RenderGraph(ctx context.Context, in *v1.R
 // All implementations should embed UnimplementedTopologyRepresentationServer
 // for forward compatibility
 type TopologyRepresentationServer interface {
-	// opni internal use
+	// monty internal use
 	GetGraph(context.Context, *v1.Reference) (*TopologyGraph, error)
 	// cluster id  --> kubernetes graph SVG
 	RenderGraph(context.Context, *v1.Reference) (*DOTRepresentation, error)
@@ -145,5 +145,5 @@ var TopologyRepresentation_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "github.com/rancher/opni/plugins/topology/apis/representation/representation.proto",
+	Metadata: "github.com/aity-cloud/monty/plugins/topology/apis/representation/representation.proto",
 }

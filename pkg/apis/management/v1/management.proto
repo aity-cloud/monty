@@ -2,16 +2,16 @@ syntax = "proto3";
 
 package management;
 
-import "github.com/rancher/opni/internal/codegen/cli/cli.proto";
-import "github.com/rancher/opni/pkg/apis/capability/v1/capability.proto";
-import "github.com/rancher/opni/pkg/apis/core/v1/core.proto";
+import "github.com/aity-cloud/monty/internal/codegen/cli/cli.proto";
+import "github.com/aity-cloud/monty/pkg/apis/capability/v1/capability.proto";
+import "github.com/aity-cloud/monty/pkg/apis/core/v1/core.proto";
 import "google/api/annotations.proto";
 import "google/api/http.proto";
 import "google/protobuf/descriptor.proto";
 import "google/protobuf/duration.proto";
 import "google/protobuf/empty.proto";
 
-option go_package = "github.com/rancher/opni/pkg/apis/management/v1";
+option go_package = "github.com/aity-cloud/monty/pkg/apis/management/v1";
 
 option (cli.generator) = {
   generate: true

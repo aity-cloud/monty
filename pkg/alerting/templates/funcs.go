@@ -8,8 +8,8 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/aity-cloud/monty/pkg/util"
 	"github.com/prometheus/common/model"
-	"github.com/rancher/opni/pkg/util"
 )
 
 func floatToTime(v float64) (*time.Time, error) {

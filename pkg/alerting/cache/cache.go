@@ -6,10 +6,10 @@ import (
 
 	"slices"
 
+	"github.com/aity-cloud/monty/pkg/alerting/drivers/config"
+	"github.com/aity-cloud/monty/pkg/alerting/message"
+	alertingv1 "github.com/aity-cloud/monty/pkg/apis/alerting/v1"
 	lru "github.com/hashicorp/golang-lru/v2"
-	"github.com/rancher/opni/pkg/alerting/drivers/config"
-	"github.com/rancher/opni/pkg/alerting/message"
-	alertingv1 "github.com/rancher/opni/pkg/apis/alerting/v1"
 	"github.com/samber/lo"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
@@ -67,16 +67,16 @@ type MessageCache[L comparable, T any] interface {
 	Key(msg MessageMetadata) string
 }
 
-type LfuMessageCache map[alertingv1.OpniSeverity]*lru.TwoQueueCache[string, *alertingv1.MessageInstance]
+type LfuMessageCache map[alertingv1.MontySeverity]*lru.TwoQueueCache[string, *alertingv1.MessageInstance]
 
-var _ MessageCache[alertingv1.OpniSeverity, *alertingv1.MessageInstance] = (*LfuMessageCache)(nil)
+var _ MessageCache[alertingv1.MontySeverity, *alertingv1.MessageInstance] = (*LfuMessageCache)(nil)
 
-func NewLFUMessageCache(lub int) MessageCache[alertingv1.OpniSeverity, *alertingv1.MessageInstance] {
+func NewLFUMessageCache(lub int) MessageCache[alertingv1.MontySeverity, *alertingv1.MessageInstance] {
 	c := make(LfuMessageCache)
 	i := float64(0)
-	n := float64(len(alertingv1.OpniSeverity_value))
+	n := float64(len(alertingv1.MontySeverity_value))
 
-	sortedKeys := lo.Values(alertingv1.OpniSeverity_value)
+	sortedKeys := lo.Values(alertingv1.MontySeverity_value)
 	slices.SortFunc(sortedKeys, func(i, j int32) int {
 		return int(i - j)
 	})
@@ -88,13 +88,13 @@ func NewLFUMessageCache(lub int) MessageCache[alertingv1.OpniSeverity, *alerting
 		if err != nil {
 			panic(err)
 		}
-		c[alertingv1.OpniSeverity(severity)] = notificationLayer
+		c[alertingv1.MontySeverity(severity)] = notificationLayer
 		i++
 	}
 	return c
 }
 
-func (l LfuMessageCache) Get(severity alertingv1.OpniSeverity, key string) (*alertingv1.MessageInstance, bool) {
+func (l LfuMessageCache) Get(severity alertingv1.MontySeverity, key string) (*alertingv1.MessageInstance, bool) {
 	v, ok := l[severity]
 	if !ok {
 		return nil, ok
@@ -108,7 +108,7 @@ func (l LfuMessageCache) Get(severity alertingv1.OpniSeverity, key string) (*ale
 	return msg, true
 }
 
-func (l LfuMessageCache) Set(severity alertingv1.OpniSeverity, key string, alert config.Alert) {
+func (l LfuMessageCache) Set(severity alertingv1.MontySeverity, key string, alert config.Alert) {
 	v, ok := l[severity]
 	if !ok {
 		return
@@ -118,7 +118,7 @@ func (l LfuMessageCache) Set(severity alertingv1.OpniSeverity, key string, alert
 	if ok {
 		msg := data
 		mapPartitions := assignByPartition(func(key, value string) string {
-			if strings.HasPrefix(strings.ToLower(key), "opni") {
+			if strings.HasPrefix(strings.ToLower(key), "monty") {
 				return partitionProperty
 			}
 			return partitionDetails
@@ -147,7 +147,7 @@ func toMessageInstance(alert config.Alert) *alertingv1.MessageInstance {
 				message.NotificationPropertySeverity: lo.ValueOr(
 					alert.Labels,
 					message.NotificationPropertySeverity,
-					alertingv1.OpniSeverity_Info.String(),
+					alertingv1.MontySeverity_Info.String(),
 				),
 				message.NotificationPropertyGoldenSignal: lo.ValueOr(
 					alert.Annotations,
@@ -160,7 +160,7 @@ func toMessageInstance(alert config.Alert) *alertingv1.MessageInstance {
 		LastDetails:  map[string]string{},
 	}
 	mapPartitions := assignByPartition(func(key, value string) string {
-		if strings.HasPrefix(key, "opni") || strings.HasPrefix(key, "Opni") {
+		if strings.HasPrefix(key, "monty") || strings.HasPrefix(key, "Monty") {
 			return partitionProperty
 		}
 		return partitionDetails
@@ -184,20 +184,20 @@ func (l LfuMessageCache) Key(msgMeta MessageMetadata) string {
 	return msgMeta.Uuid
 }
 
-func (l LfuMessageCache) PartitionedKeys() map[alertingv1.OpniSeverity][]string {
-	traverseMessageKeys := lo.Values(alertingv1.OpniSeverity_value)
+func (l LfuMessageCache) PartitionedKeys() map[alertingv1.MontySeverity][]string {
+	traverseMessageKeys := lo.Values(alertingv1.MontySeverity_value)
 	// traverse by descending severity
 	slices.SortFunc(traverseMessageKeys, func(a, b int32) int {
 		return int(b - a)
 	})
-	returnKeys := map[alertingv1.OpniSeverity][]string{}
+	returnKeys := map[alertingv1.MontySeverity][]string{}
 	for _, severityKey := range traverseMessageKeys {
-		kk := l[alertingv1.OpniSeverity(severityKey)].Keys()
+		kk := l[alertingv1.MontySeverity(severityKey)].Keys()
 		s := make([]string, len(kk))
 		for i, v := range kk {
 			s[i] = fmt.Sprint(v)
 		}
-		returnKeys[alertingv1.OpniSeverity(severityKey)] = s
+		returnKeys[alertingv1.MontySeverity(severityKey)] = s
 	}
 	return returnKeys
 }

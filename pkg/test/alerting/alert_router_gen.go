@@ -9,20 +9,20 @@ import (
 	"path"
 	"time"
 
+	"github.com/aity-cloud/monty/pkg/alerting/client"
+	"github.com/aity-cloud/monty/pkg/alerting/drivers/config"
+	"github.com/aity-cloud/monty/pkg/alerting/drivers/routing"
+	"github.com/aity-cloud/monty/pkg/alerting/interfaces"
+	"github.com/aity-cloud/monty/pkg/alerting/message"
+	"github.com/aity-cloud/monty/pkg/alerting/shared"
+	alertingv1 "github.com/aity-cloud/monty/pkg/apis/alerting/v1"
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	"github.com/aity-cloud/monty/pkg/test"
+	"github.com/aity-cloud/monty/pkg/test/freeport"
+	"github.com/aity-cloud/monty/pkg/util"
 	"github.com/google/uuid"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/rancher/opni/pkg/alerting/client"
-	"github.com/rancher/opni/pkg/alerting/drivers/config"
-	"github.com/rancher/opni/pkg/alerting/drivers/routing"
-	"github.com/rancher/opni/pkg/alerting/interfaces"
-	"github.com/rancher/opni/pkg/alerting/message"
-	"github.com/rancher/opni/pkg/alerting/shared"
-	alertingv1 "github.com/rancher/opni/pkg/apis/alerting/v1"
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	"github.com/rancher/opni/pkg/test"
-	"github.com/rancher/opni/pkg/test/freeport"
-	"github.com/rancher/opni/pkg/util"
 	"github.com/samber/lo"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/protobuf/types/known/durationpb"
@@ -311,7 +311,7 @@ func CreateRandomIndividualEndpointTestcases(endpSet map[string]*alertingv1.Full
 
 func RunAlertManager(
 	e *test.Environment,
-	router routing.OpniRouting,
+	router routing.MontyRouting,
 	tmpWritePath string,
 	debugFile string,
 ) (int, context.CancelFunc) {
@@ -322,7 +322,7 @@ func RunAlertManager(
 	By("checking that the config passes the marshalling validation")
 	bytes, err := yaml.Marshal(cfg)
 	Expect(err).To(Succeed())
-	if _, ok := os.LookupEnv("OPNI_ROUTING_DEBUG"); ok {
+	if _, ok := os.LookupEnv("MONTY_ROUTING_DEBUG"); ok {
 		err = os.WriteFile(debugFile, bytes, 0644)
 		Expect(err).To(Succeed())
 	}
@@ -337,7 +337,7 @@ func RunAlertManager(
 	Expect(err).To(Succeed())
 	err = os.WriteFile(tmpPath, bytes, 0644)
 	Expect(err).To(Succeed())
-	if _, ok := os.LookupEnv("OPNI_ROUTING_DEBUG"); ok {
+	if _, ok := os.LookupEnv("MONTY_ROUTING_DEBUG"); ok {
 		err = os.WriteFile(debugFile, bytes, 0644)
 		Expect(err).To(Succeed())
 	}
@@ -373,7 +373,7 @@ func ExpectAlertManagerConfigToBeValid(
 	By("checking that the config passes the marshalling validation")
 	bytes, err := yaml.Marshal(cfg)
 	Expect(err).To(Succeed())
-	if _, ok := os.LookupEnv("OPNI_ROUTING_DEBUG"); ok {
+	if _, ok := os.LookupEnv("MONTY_ROUTING_DEBUG"); ok {
 		err = os.WriteFile("./test.yaml", bytes, 0644)
 		Expect(err).To(Succeed())
 	}
@@ -389,7 +389,7 @@ func ExpectAlertManagerConfigToBeValid(
 	Expect(err).To(Succeed())
 	err = os.WriteFile(tmpPath, bytes, 0644)
 	Expect(err).To(Succeed())
-	if _, ok := os.LookupEnv("OPNI_ROUTING_DEBUG"); ok {
+	if _, ok := os.LookupEnv("MONTY_ROUTING_DEBUG"); ok {
 		err = os.WriteFile(writeFile, bytes, 0644)
 		Expect(err).To(Succeed())
 	}
@@ -414,7 +414,7 @@ func ExpectAlertManagerConfigToBeValid(
 
 }
 
-func ExpectToRecoverConfig(router routing.OpniRouting, name ...string) {
+func ExpectToRecoverConfig(router routing.MontyRouting, name ...string) {
 	initialConstruct, err := router.BuildConfig()
 	Expect(err).To(Succeed())
 	By("expecting it to be marshallable/unmarshallable")
@@ -438,20 +438,20 @@ func ExpectToRecoverConfig(router routing.OpniRouting, name ...string) {
 	ExpectConfigEqual(ic, rc, name...)
 }
 
-func ExpectRouterEqual(r1, r2 routing.OpniRouting, name ...string) {
+func ExpectRouterEqual(r1, r2 routing.MontyRouting, name ...string) {
 	c1, c2 := util.Must(r1.BuildConfig()), util.Must(r2.BuildConfig())
 	ExpectConfigEqual(c1, c2, name...)
 
 }
 
-func ExpectRouterNotEqual(r1, r2 routing.OpniRouting, name ...string) {
+func ExpectRouterNotEqual(r1, r2 routing.MontyRouting, name ...string) {
 	c1, c2 := util.Must(r1.BuildConfig()), util.Must(r2.BuildConfig())
 	ExpectConfigNotEqual(c1, c2, name...)
 }
 
 func ExpectConfigEqual(c1, c2 *config.Config, name ...string) {
 	if len(name) > 0 {
-		if _, ok := os.LookupEnv("OPNI_ROUTING_DEBUG"); ok {
+		if _, ok := os.LookupEnv("MONTY_ROUTING_DEBUG"); ok {
 			err := os.WriteFile(fmt.Sprintf("%s1.yaml", name[0]), util.Must(yaml.Marshal(c1)), 0644)
 			Expect(err).To(Succeed())
 			err = os.WriteFile(fmt.Sprintf("%s2.yaml", name[0]), util.Must(yaml.Marshal(c2)), 0644)
@@ -464,7 +464,7 @@ func ExpectConfigEqual(c1, c2 *config.Config, name ...string) {
 func ExpectConfigNotEqual(c1, c2 *config.Config, name ...string) {
 	if len(name) > 0 {
 		if len(name) > 0 {
-			if _, ok := os.LookupEnv("OPNI_ROUTING_DEBUG"); ok {
+			if _, ok := os.LookupEnv("MONTY_ROUTING_DEBUG"); ok {
 				err := os.WriteFile(fmt.Sprintf("%s1.yaml", name[0]), util.Must(yaml.Marshal(c1)), 0644)
 				Expect(err).To(Succeed())
 				err = os.WriteFile(fmt.Sprintf("%s2.yaml", name[0]), util.Must(yaml.Marshal(c2)), 0644)
@@ -489,13 +489,13 @@ type RoutableDataset struct {
 func NewRoutableDataset() *RoutableDataset {
 	r := []interfaces.Routable{}
 	i := 0
-	for _, name := range alertingv1.OpniSeverity_name {
+	for _, name := range alertingv1.MontySeverity_name {
 		notif := &alertingv1.Notification{
 			Title: fmt.Sprintf("test %d", i),
 			Body:  "test",
 			Properties: map[string]string{
-				message.NotificationPropertySeverity: name,
-				message.NotificationPropertyOpniUuid: uuid.New().String(),
+				message.NotificationPropertySeverity:  name,
+				message.NotificationPropertyMontyUuid: uuid.New().String(),
 			},
 		}
 		notif.Sanitize()
@@ -513,7 +513,7 @@ func NewRoutableDataset() *RoutableDataset {
 			Name:        "test header 1",
 			Description: "test header 2",
 			Id:          condId1,
-			Severity:    alertingv1.OpniSeverity_Error,
+			Severity:    alertingv1.MontySeverity_Error,
 			AlertType: &alertingv1.AlertTypeDetails{
 				Type: &alertingv1.AlertTypeDetails_System{
 					System: &alertingv1.AlertConditionSystem{
@@ -528,7 +528,7 @@ func NewRoutableDataset() *RoutableDataset {
 		Name:        "test header 2",
 		Description: "body 2",
 		Id:          condId2,
-		Severity:    alertingv1.OpniSeverity_Error,
+		Severity:    alertingv1.MontySeverity_Error,
 		AlertType: &alertingv1.AlertTypeDetails{
 			Type: &alertingv1.AlertTypeDetails_System{
 				System: &alertingv1.AlertConditionSystem{

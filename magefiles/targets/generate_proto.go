@@ -7,16 +7,16 @@ import (
 	"os/exec"
 	"path/filepath"
 
+	"github.com/aity-cloud/monty/internal/codegen"
+	"github.com/aity-cloud/monty/internal/codegen/cli"
+	"github.com/aity-cloud/monty/internal/codegen/pathbuilder"
+	"github.com/aity-cloud/monty/internal/codegen/templating"
 	"github.com/kralicky/ragu"
 	"github.com/kralicky/ragu/pkg/plugins/external"
 	"github.com/kralicky/ragu/pkg/plugins/golang"
 	"github.com/kralicky/ragu/pkg/plugins/golang/grpc"
 	"github.com/kralicky/ragu/pkg/plugins/python"
 	"github.com/magefile/mage/mg"
-	"github.com/rancher/opni/internal/codegen"
-	"github.com/rancher/opni/internal/codegen/cli"
-	"github.com/rancher/opni/internal/codegen/pathbuilder"
-	"github.com/rancher/opni/internal/codegen/templating"
 	_ "go.opentelemetry.io/proto/otlp/metrics/v1"
 	"google.golang.org/protobuf/reflect/protoreflect"
 )
@@ -98,7 +98,7 @@ func (Generate) ProtobufPython(ctx context.Context) error {
 
 func (Generate) ProtobufTypescript() error {
 	mg.Deps(Build.TypescriptServiceGenerator)
-	destDir := "web/pkg/opni/generated"
+	destDir := "web/pkg/monty/generated"
 
 	searchDirs := []string{
 		"pkg/config/v1",

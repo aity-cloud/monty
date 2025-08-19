@@ -4,11 +4,11 @@ import (
 	"crypto/x509"
 	"encoding/base64"
 
+	"github.com/aity-cloud/monty/pkg/pkp"
+	"github.com/aity-cloud/monty/pkg/test/testdata"
+	"github.com/aity-cloud/monty/pkg/util"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/rancher/opni/pkg/pkp"
-	"github.com/rancher/opni/pkg/test/testdata"
-	"github.com/rancher/opni/pkg/util"
 )
 
 // Fingerprints computed using:

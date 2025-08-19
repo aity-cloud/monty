@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/rancher/opni/pkg/plugins/driverutil"
-	"github.com/rancher/opni/pkg/util"
+	"github.com/aity-cloud/monty/pkg/plugins/driverutil"
+	"github.com/aity-cloud/monty/pkg/util"
 	"github.com/spf13/cobra"
 	"google.golang.org/protobuf/reflect/protoreflect"
 )

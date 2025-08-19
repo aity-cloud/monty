@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: monty-manager-metrics
+  namespace: {{ include "monty.namespace" . }}
+  labels:
+    {{- include "monty.labels" . | nindent 4 }}
+spec:
+  ports:
+    - name: https
+      port: 8443
+      targetPort: https
+  selector:
+    {{- include "monty.selectorLabels" . | nindent 4 }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: monty-webhook
+  namespace: {{ include "monty.namespace" . }}
+  labels:
+    {{- include "monty.labels" . | nindent 4 }}
+spec:
+  ports:
+    - port: 443
+      targetPort: 9443
+  selector:
+    {{- include "monty.selectorLabels" . | nindent 4 }}

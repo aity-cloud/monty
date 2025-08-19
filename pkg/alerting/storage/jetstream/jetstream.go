@@ -10,11 +10,11 @@ import (
 	"sync"
 	"time"
 
+	"github.com/aity-cloud/monty/pkg/alerting/drivers/routing"
+	"github.com/aity-cloud/monty/pkg/alerting/interfaces"
+	storage_opts "github.com/aity-cloud/monty/pkg/alerting/storage/opts"
+	alertingv1 "github.com/aity-cloud/monty/pkg/apis/alerting/v1"
 	"github.com/nats-io/nats.go"
-	"github.com/rancher/opni/pkg/alerting/drivers/routing"
-	"github.com/rancher/opni/pkg/alerting/interfaces"
-	storage_opts "github.com/rancher/opni/pkg/alerting/storage/opts"
-	alertingv1 "github.com/rancher/opni/pkg/apis/alerting/v1"
 	"github.com/samber/lo"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -24,7 +24,7 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-type JetstreamRouterStore[T routing.OpniRouting] struct {
+type JetstreamRouterStore[T routing.MontyRouting] struct {
 	obj      nats.ObjectStore
 	basePath string
 }
@@ -72,8 +72,8 @@ func NewJetStreamAlertingIncidentTracker(kv nats.KeyValue, prefix string, ttl ti
 	}
 }
 
-func NewJetstreamRouterStore(obj nats.ObjectStore, prefix string) *JetstreamRouterStore[routing.OpniRouting] {
-	return &JetstreamRouterStore[routing.OpniRouting]{
+func NewJetstreamRouterStore(obj nats.ObjectStore, prefix string) *JetstreamRouterStore[routing.MontyRouting] {
+	return &JetstreamRouterStore[routing.MontyRouting]{
 		obj:      obj,
 		basePath: prefix,
 	}
