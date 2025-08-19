@@ -98,7 +98,7 @@ func (c *Config) LoadDefaults() {
 		c.Cloud = "aws"
 	}
 	if c.ImageRepo == "" {
-		c.ImageRepo = "rancher/monty"
+		c.ImageRepo = "registry.aity.tech/monty/monty"
 	}
 	if c.ImageTag == "" {
 		c.ImageTag = "latest"

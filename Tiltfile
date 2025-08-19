@@ -60,7 +60,7 @@ else:
 if cfg.get('defaultRegistry') != None:
   default_registry(cfg.get('defaultRegistry'))
 
-custom_build("rancher/monty",
+custom_build("registry.aity.tech/monty/monty",
   command="go run ./dagger --images.monty.push --images.monty.repo=${EXPECTED_IMAGE} --images.monty.tag=${EXPECTED_TAG}",
   deps=['controllers', 'apis', 'pkg', 'plugins'],
   ignore=ignore,

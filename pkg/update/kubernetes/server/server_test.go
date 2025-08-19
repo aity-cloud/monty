@@ -63,7 +63,7 @@ var _ = Describe("Kubernetes sync server", Label("unit"), func() {
 			Items: []*controlv1.UpdateManifestEntry{
 				{
 					Package: packageURN.String(),
-					Path:    "rancher/monty",
+					Path:    "registry.aity.tech/monty/monty",
 					Digest:  "latest",
 				},
 			},
@@ -78,7 +78,7 @@ var _ = Describe("Kubernetes sync server", Label("unit"), func() {
 			Items: []*controlv1.UpdateManifestEntry{
 				{
 					Package: "urn:malformed",
-					Path:    "rancher/monty",
+					Path:    "registry.aity.tech/monty/monty",
 					Digest:  "latest",
 				},
 			},

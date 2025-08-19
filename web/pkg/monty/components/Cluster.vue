@@ -114,7 +114,7 @@ export default {
     installCommand() {
       const prometheus = this.installPrometheus ? '--set kube-prometheus-stack.enabled=true' : '';
       const defaultImageRepository = this.defaultImageRepository ? `--set image.repository=${ this.defaultImageRepository }` : '';
-      const imageMain = this.useOCI ? 'oci://ghcr.io/rancher/monty-agent' : 'monty/monty-agent';
+      const imageMain = this.useOCI ? 'oci://registry.aity.tech/monty/helm/monty-agent' : 'monty/monty-agent';
 
       return `helm -n ${ this.namespace } install monty-agent ${ imageMain } ${ prometheus } --set address=${ this.gatewayAddress } --set pin=${ this.pin } --set token=${ this.token } --set friendlyName=${ this.friendlyName } --create-namespace ${ defaultImageRepository }`;
     },

@@ -9,15 +9,17 @@ test = true
 [charts.git]
 	repo = "github.com/aity-cloud/monty"
 	branch = "charts-repo"
+
 [charts.git.auth]
-	email = "rancherbot@rancher.com"
-	username = "Rancher Bot"
+	email = "aitybot@aity.cloud"
+	username = "Aity Bot"
 
 [charts.oci]
-	repo = "registry.aity.tech/monty"
+	repo = "registry.aity.tech/monty/helm"
 
 [images.monty]
 	repo = "registry.aity.tech/monty/monty"
+	tag-suffix = ""
 
 [images.minimal]
 	repo = "registry.aity.tech/monty/monty"

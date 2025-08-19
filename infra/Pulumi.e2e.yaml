@@ -8,7 +8,7 @@ config:
     nodeGroupMaxSize: 3
     nodeGroupMinSize: 3
     nodeInstanceType: r6a.xlarge
-  monty:imageRepo: rancher/monty
+  monty:imageRepo: registry.aity.tech/monty/monty
   monty:imageTag: main
   monty:namePrefix: monty-e2e-test
   monty:useLocalCharts: "true"

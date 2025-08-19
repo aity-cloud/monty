@@ -201,7 +201,7 @@ var _ = XDescribe("Core Gateway Controller", Ordered, Label("controller", "slow"
 					},
 					Spec: apicorev1.GatewaySpec{
 						Image: &montymeta.ImageSpec{
-							Image: lo.ToPtr("rancher/monty:latest"),
+							Image: lo.ToPtr("registry.aity.tech/monty/monty:latest"),
 						},
 						Config: &configv1.GatewayConfigSpec{
 							Storage: &configv1.StorageSpec{
@@ -232,7 +232,7 @@ var _ = XDescribe("Core Gateway Controller", Ordered, Label("controller", "slow"
 					},
 					Spec: apicorev1.GatewaySpec{
 						Image: &montymeta.ImageSpec{
-							Image: lo.ToPtr("rancher/monty:latest"),
+							Image: lo.ToPtr("registry.aity.tech/monty/monty:latest"),
 						},
 						NatsRef: corev1.LocalObjectReference{
 							Name: "test",
@@ -256,7 +256,7 @@ var _ = XDescribe("Core Gateway Controller", Ordered, Label("controller", "slow"
 					},
 					Spec: apicorev1.GatewaySpec{
 						Image: &montymeta.ImageSpec{
-							Image: lo.ToPtr("rancher/monty:latest"),
+							Image: lo.ToPtr("registry.aity.tech/monty/monty:latest"),
 						},
 						Config: &configv1.GatewayConfigSpec{
 							Auth: &configv1.AuthSpec{
@@ -304,7 +304,7 @@ var _ = XDescribe("Core Gateway Controller", Ordered, Label("controller", "slow"
 				})).Should(ExistAnd(
 					HaveOwner(gw),
 					HaveMatchingContainer(And(
-						HaveImage("rancher/monty:latest"),
+						HaveImage("registry.aity.tech/monty/monty:latest"),
 						HavePorts(
 							"http",
 							"metrics",

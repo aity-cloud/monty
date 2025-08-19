@@ -72,13 +72,13 @@ var _ = Describe("Kubernetes OCI handler", Ordered, Label("unit", "slow"), func(
 	When("gateway status is set", Ordered, func() {
 		BeforeEach(func() {
 			gateway.Status = apicorev1.GatewayStatus{
-				Image: fmt.Sprintf("rancher/monty-test@%s", imageDigest),
+				Image: fmt.Sprintf("registry.aity.tech/monty/monty-test@%s", imageDigest),
 			}
 			Expect(k8sClient.Status().Update(context.Background(), gateway)).To(Succeed())
 		})
 		When("the minimal image is available from the environment", func() {
 			It("should return the minimal image", func() {
-				minimalRef := fmt.Sprintf("rancher/monty-test@%s", imageDigest2)
+				minimalRef := fmt.Sprintf("registry.aity.tech/monty/monty-test@%s", imageDigest2)
 				os.Setenv("MONTY_MINIMAL_IMAGE_REF", minimalRef)
 				DeferCleanup(func() {
 					os.Unsetenv("MONTY_MINIMAL_IMAGE_REF")
@@ -95,12 +95,12 @@ var _ = Describe("Kubernetes OCI handler", Ordered, Label("unit", "slow"), func(
 			It("should return the monty image", func() {
 				image, err := k8sOCI.GetImage(context.Background(), oci.ImageTypeMonty)
 				Expect(err).NotTo(HaveOccurred())
-				Expect(image.String()).To(Equal(fmt.Sprintf("rancher/monty-test@%s", imageDigest)))
+				Expect(image.String()).To(Equal(fmt.Sprintf("registry.aity.tech/monty/monty-test@%s", imageDigest)))
 			})
 			It("should return the monty image as the minimal image", func() {
 				image, err := k8sOCI.GetImage(context.Background(), oci.ImageTypeMinimal)
 				Expect(err).NotTo(HaveOccurred())
-				Expect(image.String()).To(Equal(fmt.Sprintf("rancher/monty-test@%s", imageDigest)))
+				Expect(image.String()).To(Equal(fmt.Sprintf("registry.aity.tech/monty/monty-test@%s", imageDigest)))
 			})
 		})
 		When("version is set", func() {
@@ -110,7 +110,7 @@ var _ = Describe("Kubernetes OCI handler", Ordered, Label("unit", "slow"), func(
 			It("should return the minimal image", func() {
 				image, err := k8sOCI.GetImage(context.Background(), oci.ImageTypeMinimal)
 				Expect(err).NotTo(HaveOccurred())
-				Expect(image.String()).To(Equal("rancher/monty-test:v1.0.0-minimal"))
+				Expect(image.String()).To(Equal("registry.aity.tech/monty/monty-test:v1.0.0-minimal"))
 			})
 		})
 	})

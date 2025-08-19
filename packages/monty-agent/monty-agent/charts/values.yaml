@@ -3,7 +3,7 @@ nameOverride: ""
 fullnameOverride: ""
 
 image:
-  repository: rancher/monty
+  repository: registry.aity.tech/monty/monty
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
   pullPolicy: Always

@@ -2,4 +2,4 @@
 	push = true
 
 [charts.git]
-	push = true
+	push = false
