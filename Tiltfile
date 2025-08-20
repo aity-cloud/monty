@@ -33,11 +33,11 @@ ignore=[
   'packages/'
 ]
 
-#local_resource('build charts',
-#  deps='packages/**/templates',
-#  cmd='dagger run go run ./dagger --charts.git.export',
-#  ignore=ignore,
-#)
+local_resource('build charts',
+  deps='packages/**/templates',
+  cmd='dagger run go run ./dagger --charts.git.export',
+  ignore=ignore,
+)
 
 k8s_yaml(helm('./charts/monty-crd/'+version,
   name='monty-crd',
