@@ -33,11 +33,11 @@ ignore=[
   'packages/'
 ]
 
-local_resource('build charts',
-  deps='packages/**/templates',
-  cmd='go run ./dagger --charts.git.export',
-  ignore=ignore,
-)
+#local_resource('build charts',
+#  deps='packages/**/templates',
+#  cmd='dagger run go run ./dagger --charts.git.export',
+#  ignore=ignore,
+#)
 
 k8s_yaml(helm('./charts/monty-crd/'+version,
   name='monty-crd',
@@ -60,8 +60,8 @@ else:
 if cfg.get('defaultRegistry') != None:
   default_registry(cfg.get('defaultRegistry'))
 
-custom_build("monty/monty",
-  command="go run ./dagger --images.monty.push --images.monty.repo=${EXPECTED_IMAGE} --images.monty.tag=${EXPECTED_TAG}",
+custom_build("registry.aity.tech/monty/monty",
+  command="dagger run go run ./dagger --images.monty.push --images.monty.repo=registry.aity.tech/${EXPECTED_IMAGE} --images.monty.tag=${EXPECTED_TAG}",
   deps=['controllers', 'apis', 'pkg', 'plugins'],
   ignore=ignore,
   skips_local_docker=True,
