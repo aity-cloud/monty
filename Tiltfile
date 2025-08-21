@@ -9,6 +9,7 @@ config.define_string_list('allowedContexts')
 config.define_string_list('montyChartValues')
 config.define_string('defaultRegistry')
 config.define_string('valuesPath')
+config.define_bool('buildCharts')
 
 cfg = config.parse()
 
@@ -33,11 +34,12 @@ ignore=[
   'packages/'
 ]
 
-local_resource('build charts',
-  deps='packages/**/templates',
-  cmd='dagger run go run ./dagger --charts.git.export',
-  ignore=ignore,
-)
+if cfg.get('buildCharts') == True:
+    local_resource('build charts',
+      deps='packages/**/templates',
+      cmd='dagger run go run ./dagger --charts.git.export',
+      ignore=ignore,
+    )
 
 k8s_yaml(helm('./charts/monty-crd/'+version,
   name='monty-crd',

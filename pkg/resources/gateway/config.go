@@ -97,7 +97,19 @@ func (r *Reconciler) checkConfiguration() k8sutil.RequeueOp {
 		r.gw.Spec.Config.Certs.GetServingCertData() != certs.GetServingCertData() {
 		r.lg.Info("gateway certificates have changed, updating config")
 		r.gw.Spec.Config.Certs = certs
-		err := r.client.Patch(r.ctx, r.gw, client.Apply, client.ForceOwnership, client.FieldOwner(crds.FieldManagerName))
+		err := r.client.Patch(r.ctx, &apicorev1.Gateway{
+			TypeMeta: r.gw.TypeMeta,
+			ObjectMeta: metav1.ObjectMeta{
+				Name:      r.gw.Name,
+				Namespace: r.gw.Namespace,
+				UID:       r.gw.UID,
+			},
+			Spec: apicorev1.GatewaySpec{
+				Config: &configv1.GatewayConfigSpec{
+					Certs: certs,
+				},
+			},
+		}, client.Apply, client.ForceOwnership, client.FieldOwner(crds.FieldManagerName))
 
 		if err != nil {
 			return k8sutil.RequeueErr(err)

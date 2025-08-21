@@ -13,7 +13,7 @@ type GatewaySpec struct {
 	Replicas              *int32                       `json:"replicas,omitempty"`
 	Image                 *montymeta.ImageSpec         `json:"image,omitempty"`
 	AgentImageTagOverride string                       `json:"agentImageTagOverride,omitempty"`
-	NatsRef               corev1.LocalObjectReference  `json:"natsCluster,omitempty"`
+	NatsRef               *corev1.LocalObjectReference `json:"natsCluster,omitempty"`
 	ServiceType           corev1.ServiceType           `json:"serviceType,omitempty"`
 	ServiceAnnotations    map[string]string            `json:"serviceAnnotations,omitempty"`
 	NodeSelector          map[string]string            `json:"nodeSelector,omitempty"`
