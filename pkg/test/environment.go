@@ -1485,7 +1485,8 @@ func (e *Environment) StartNodeExporter() {
 	}
 	e.Logger.Info("Waiting for node_exporter to start...")
 	for e.ctx.Err() == nil {
-		resp, err := http.Get(fmt.Sprintf("http://localhost:%d/-/ready", e.ports.NodeExporterPort))
+		e.Logger.Info("Starting ...")
+		resp, err := http.Get(fmt.Sprintf("http://localhost:%d/metrics", e.ports.NodeExporterPort))
 		if err == nil {
 			defer resp.Body.Close()
 			if resp.StatusCode == http.StatusOK {
