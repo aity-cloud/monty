@@ -1,0 +1,80 @@
+replicaCount: 1
+
+image:
+  repository: registry.aity.tech/monty/monty
+  pullPolicy: Always
+  tag: ""
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+podAnnotations: {}
+podSecurityContext: {}
+securityContext: {}
+resources: {}
+nodeSelector: {}
+tolerations: []
+affinity: {}
+volumes: []
+volumeMounts: []
+
+disableUsage: false
+
+gateway:
+  enabled: true
+  # Service type for the external gateway APIs
+  serviceType: LoadBalancer
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+  extraVolumeMounts: []
+  serviceAnnotations: {}
+
+  # Alerting
+  alerting:
+    enabled: false
+  s3:
+    internal: {}
+
+prometheus-crds:
+  enabled: false # set to false if `monty-agent.kube-prometheus-stack.enabled` is true
+
+monty-agent:
+  enabled: true
+  address: monty
+  fullnameOverride: monty-agent
+  bootstrapInCluster:
+    enabled: true
+    managementAddress: monty-internal:11090
+  volumeMounts:
+    - name: local-agent-key
+      mountPath: /run/monty-agent/keyring/session-attribute.json
+      subPath: session-attribute.json
+      readOnly: true
+  volumes:
+    - name: local-agent-key
+      secret:
+        secretName: monty-local-agent-key
+        defaultMode: 256
+        items:
+          - key: session-attribute.json
+            path: session-attribute.json
+  agent:
+    version: v2
+  kube-prometheus-stack:
+    enabled: true
+  disableUsage: false
+
+global:
+  cattle:
+    systemDefaultRegistry: ""
+  storageClass: ""
+
+kube-prometheus-stack:
+  grafana:
+    enabled: false # disable the default Grafana deployment
+  prometheus:
+    enabled: false # disable the default Prometheus deployment
+  alertmanager:
+    enabled: false # disable the default Alertmanager deployment

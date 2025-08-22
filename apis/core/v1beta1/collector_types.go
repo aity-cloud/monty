@@ -1,7 +1,7 @@
 package v1beta1
 
 import (
-	opnimeta "github.com/rancher/opni/pkg/util/meta"
+	montymeta "github.com/aity-cloud/monty/pkg/util/meta"
 	"github.com/rancher/wrangler/pkg/crd"
 	"github.com/rancher/wrangler/pkg/schemas/openapi"
 	corev1 "k8s.io/api/core/v1"
@@ -17,7 +17,7 @@ const (
 )
 
 type CollectorSpec struct {
-	opnimeta.ImageSpec       `json:",inline,omitempty"`
+	montymeta.ImageSpec      `json:",inline,omitempty"`
 	AgentEndpoint            string                       `json:"agentEndpoint,omitempty"`
 	SystemNamespace          string                       `json:"systemNamespace,omitempty"`
 	LoggingConfig            *corev1.LocalObjectReference `json:"loggingConfig,omitempty"`
@@ -30,7 +30,7 @@ type CollectorSpec struct {
 }
 
 type ConfigReloaderSpec struct {
-	opnimeta.ImageSpec `json:",inline,omitempty"`
+	montymeta.ImageSpec `json:",inline,omitempty"`
 }
 
 type AggregatorOTELConfigSpec struct {

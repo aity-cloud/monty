@@ -5,11 +5,11 @@ import (
 	"fmt"
 
 	opsterv1 "github.com/Opster/opensearch-k8s-operator/opensearch-operator/api/v1"
+	montyloggingv1beta1 "github.com/aity-cloud/monty/apis/logging/v1beta1"
+	montymeta "github.com/aity-cloud/monty/pkg/util/meta"
 	. "github.com/kralicky/kmatch"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	opniloggingv1beta1 "github.com/rancher/opni/apis/logging/v1beta1"
-	opnimeta "github.com/rancher/opni/pkg/util/meta"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -18,7 +18,7 @@ import (
 var _ = Describe("Logging Preprocessor Controller", Ordered, Label("controller"), func() {
 	var (
 		ns       string
-		instance *opniloggingv1beta1.Preprocessor
+		instance *montyloggingv1beta1.Preprocessor
 	)
 
 	When("creating a preprocessor resource", func() {
@@ -49,14 +49,14 @@ var _ = Describe("Logging Preprocessor Controller", Ordered, Label("controller")
 			Expect(err).NotTo(HaveOccurred())
 			Eventually(Object(opensearch)).Should(Exist())
 
-			instance = &opniloggingv1beta1.Preprocessor{
+			instance = &montyloggingv1beta1.Preprocessor{
 				ObjectMeta: metav1.ObjectMeta{
 					Name:      "test",
 					Namespace: ns,
 				},
-				Spec: opniloggingv1beta1.PreprocessorSpec{
+				Spec: montyloggingv1beta1.PreprocessorSpec{
 					WriteIndex: "test-index",
-					OpensearchCluster: &opnimeta.OpensearchClusterRef{
+					OpensearchCluster: &montymeta.OpensearchClusterRef{
 						Name: opensearch.Name,
 					},
 				},

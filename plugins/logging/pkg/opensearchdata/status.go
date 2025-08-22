@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/rancher/opni/pkg/logger"
-	"github.com/rancher/opni/pkg/util"
+	"github.com/aity-cloud/monty/pkg/logger"
+	"github.com/aity-cloud/monty/pkg/util"
 	"github.com/tidwall/gjson"
 )
 

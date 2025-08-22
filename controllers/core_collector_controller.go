@@ -3,13 +3,13 @@ package controllers
 import (
 	"context"
 
+	corev1beta1 "github.com/aity-cloud/monty/apis/core/v1beta1"
+	montyloggingv1beta1 "github.com/aity-cloud/monty/apis/logging/v1beta1"
+	montymonitoringv1beta1 "github.com/aity-cloud/monty/apis/monitoring/v1beta1"
+	"github.com/aity-cloud/monty/pkg/resources"
+	"github.com/aity-cloud/monty/pkg/resources/collector"
+	"github.com/aity-cloud/monty/pkg/util/k8sutil"
 	promoperatorv1 "github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring/v1"
-	corev1beta1 "github.com/rancher/opni/apis/core/v1beta1"
-	opniloggingv1beta1 "github.com/rancher/opni/apis/logging/v1beta1"
-	opnimonitoringv1beta1 "github.com/rancher/opni/apis/monitoring/v1beta1"
-	"github.com/rancher/opni/pkg/resources"
-	"github.com/rancher/opni/pkg/resources/collector"
-	"github.com/rancher/opni/pkg/util/k8sutil"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -25,12 +25,12 @@ type CoreCollectorReconciler struct {
 	scheme *runtime.Scheme
 }
 
-// +kubebuilder:rbac:groups=core.opni.io,resources=collectors,verbs=get;list;watch;create;update;patch;delete
-// +kubebuilder:rbac:groups=core.opni.io,resources=collectors/status,verbs=get;update;patch
-// +kubebuilder:rbac:groups=core.opni.io,resources=collectors/finalizers,verbs=update
-// +kubebuilder:rbac:groups=logging.opni.io,resources=collectorconfigs,verbs=get;list;watch;create;update;patch;delete
-// +kubebuilder:rbac:groups=logging.opni.io,resources=collectorconfigs/status,verbs=get;update;patch
-// +kubebuilder:rbac:groups=logging.opni.io,resources=collectorconfigs/finalizers,verbs=update
+// +kubebuilder:rbac:groups=core.monty.io,resources=collectors,verbs=get;list;watch;create;update;patch;delete
+// +kubebuilder:rbac:groups=core.monty.io,resources=collectors/status,verbs=get;update;patch
+// +kubebuilder:rbac:groups=core.monty.io,resources=collectors/finalizers,verbs=update
+// +kubebuilder:rbac:groups=logging.monty.io,resources=collectorconfigs,verbs=get;list;watch;create;update;patch;delete
+// +kubebuilder:rbac:groups=logging.monty.io,resources=collectorconfigs/status,verbs=get;update;patch
+// +kubebuilder:rbac:groups=logging.monty.io,resources=collectorconfigs/finalizers,verbs=update
 
 func (r *CoreCollectorReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
 	collectorInstance := &corev1beta1.Collector{}
@@ -79,8 +79,8 @@ func (r *CoreCollectorReconciler) SetupWithManager(mgr ctrl.Manager) error {
 
 	return ctrl.NewControllerManagedBy(mgr).
 		For(&corev1beta1.Collector{}).
-		Watches(&opnimonitoringv1beta1.CollectorConfig{}, requestMapper).
-		Watches(&opniloggingv1beta1.CollectorConfig{}, requestMapper).
+		Watches(&montymonitoringv1beta1.CollectorConfig{}, requestMapper).
+		Watches(&montyloggingv1beta1.CollectorConfig{}, requestMapper).
 		// for metrics, we want to watch changes to the spec of objects that drive discovery
 		Watches(&promoperatorv1.ServiceMonitor{}, watchAllRequestMapper).
 		Watches(&promoperatorv1.PodMonitor{}, watchAllRequestMapper).

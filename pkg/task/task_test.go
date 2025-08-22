@@ -4,14 +4,14 @@ import (
 	"context"
 	"time"
 
+	"github.com/aity-cloud/monty/pkg/storage/inmemory"
+	"github.com/aity-cloud/monty/pkg/util"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/rancher/opni/pkg/storage/inmemory"
-	"github.com/rancher/opni/pkg/util"
 
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
 
-	"github.com/rancher/opni/pkg/task"
+	"github.com/aity-cloud/monty/pkg/task"
 )
 
 var _ = Describe("Task", Ordered, Label("unit"), func() {

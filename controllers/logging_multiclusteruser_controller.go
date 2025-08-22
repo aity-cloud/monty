@@ -6,11 +6,11 @@ import (
 	"context"
 
 	opsterv1 "github.com/Opster/opensearch-k8s-operator/opensearch-operator/api/v1"
-	loggingv1beta1 "github.com/rancher/opni/apis/logging/v1beta1"
-	"github.com/rancher/opni/pkg/resources"
-	"github.com/rancher/opni/pkg/resources/multiclusteruser"
-	"github.com/rancher/opni/pkg/util/k8sutil"
-	"github.com/rancher/opni/pkg/util/meta"
+	loggingv1beta1 "github.com/aity-cloud/monty/apis/logging/v1beta1"
+	"github.com/aity-cloud/monty/pkg/resources"
+	"github.com/aity-cloud/monty/pkg/resources/multiclusteruser"
+	"github.com/aity-cloud/monty/pkg/util/k8sutil"
+	"github.com/aity-cloud/monty/pkg/util/meta"
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -22,9 +22,9 @@ type LoggingMulticlusterUserReconciler struct {
 	scheme *runtime.Scheme
 }
 
-// +kubebuilder:rbac:groups=opni.io,resources=multiclusterusers,verbs=get;list;watch;create;update;patch;delete
-// +kubebuilder:rbac:groups=opni.io,resources=multiclusterusers/status,verbs=get;update;patch
-// +kubebuilder:rbac:groups=opni.io,resources=multiclusterusers/finalizers,verbs=update
+// +kubebuilder:rbac:groups=monty.io,resources=multiclusterusers,verbs=get;list;watch;create;update;patch;delete
+// +kubebuilder:rbac:groups=monty.io,resources=multiclusterusers/status,verbs=get;update;patch
+// +kubebuilder:rbac:groups=monty.io,resources=multiclusterusers/finalizers,verbs=update
 // +kubebuilder:rbac:groups=opensearch.opster.io,resources=opensearchclusters,verbs=get;list;watch;create;update;patch;delete
 // +kubebuilder:rbac:groups=opensearch.opster.io,resources=opensearchclusters/status,verbs=get;update;patch
 // +kubebuilder:rbac:groups=opensearch.opster.io,resources=opensearchclusters/finalizers,verbs=update

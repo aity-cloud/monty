@@ -115,7 +115,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "count(opni_slo_info)",
+          "expr": "count(monty_slo_info)",
           "interval": "",
           "legendFormat": "SLOs",
           "queryType": "randomWalk",
@@ -184,7 +184,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "count(max(opni_slo_info) by (slo_opni_service))",
+          "expr": "count(max(monty_slo_info) by (slo_monty_service))",
           "interval": "",
           "legendFormat": "Services",
           "queryType": "randomWalk",
@@ -330,7 +330,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "count(ALERTS{slo_opni_id!=\"\",slo_severity=\"page\"}) OR on() vector(0)",
+          "expr": "count(ALERTS{slo_monty_id!=\"\",slo_severity=\"page\"}) OR on() vector(0)",
           "interval": "",
           "legendFormat": "Warning alerts",
           "queryType": "randomWalk",
@@ -400,7 +400,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "count(ALERTS{slo_opni_id!=\"\",slo_severity=\"ticket\"}) OR on() vector(0)",
+          "expr": "count(ALERTS{slo_monty_id!=\"\",slo_severity=\"ticket\"}) OR on() vector(0)",
           "interval": "",
           "legendFormat": "Critical alerts",
           "queryType": "randomWalk",
@@ -527,7 +527,7 @@
           "exemplar": true,
           "expr": "slo:current_burn_rate:ratio >= ${min_burning_rate}",
           "interval": "",
-          "legendFormat": "{{slo_opni_service}}/{{slo_opni_name}}",
+          "legendFormat": "{{slo_monty_service}}/{{slo_monty_name}}",
           "queryType": "randomWalk",
           "range": true,
           "refId": "A"
@@ -673,8 +673,8 @@
           "options": {
             "include": {
               "names": [
-                "slo_opni_service",
-                "slo_opni_name",
+                "slo_monty_service",
+                "slo_monty_name",
                 "Value"
               ]
             }
@@ -690,14 +690,14 @@
         {
           "id": "renameByRegex",
           "options": {
-            "regex": "slo_opni_service",
+            "regex": "slo_monty_service",
             "renamePattern": "Service"
           }
         },
         {
           "id": "renameByRegex",
           "options": {
-            "regex": "slo_opni_name",
+            "regex": "slo_monty_name",
             "renamePattern": "SLO"
           }
         }
@@ -773,7 +773,7 @@
           "exemplar": true,
           "expr": "slo:current_burn_rate:ratio",
           "interval": "",
-          "legendFormat": "{{slo_opni_service}}/{{slo_opni_name}}",
+          "legendFormat": "{{slo_monty_service}}/{{slo_monty_name}}",
           "queryType": "randomWalk",
           "range": true,
           "refId": "A"
@@ -852,7 +852,7 @@
           "format": "time_series",
           "instant": true,
           "interval": "",
-          "legendFormat": "{{slo_opni_service}}/{{slo_opni_name}}",
+          "legendFormat": "{{slo_monty_service}}/{{slo_monty_name}}",
           "queryType": "randomWalk",
           "refId": "A"
         }
@@ -869,15 +869,15 @@
     "service levels",
     "sli",
     "slo",
-    "opni"
+    "monty"
   ],
   "templating": {
     "list": [
       {
         "current": {
           "selected": false,
-          "text": "Opni",
-          "value": "Opni"
+          "text": "Monty",
+          "value": "Monty"
         },
         "hide": 0,
         "includeAll": false,
@@ -920,8 +920,8 @@
   },
   "timepicker": {},
   "timezone": "",
-  "title": "Opni SLO Overview",
-  "uid": "opni-overview-slo",
+  "title": "Monty SLO Overview",
+  "uid": "monty-overview-slo",
   "version": 14,
   "weekStart": ""
 }

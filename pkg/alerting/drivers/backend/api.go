@@ -15,9 +15,9 @@ import (
 	// "time"
 
 	// backoffv2 "github.com/lestrrat-go/backoff/v2"
-	alertingv1 "github.com/rancher/opni/pkg/apis/alerting/v1"
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	// "github.com/rancher/opni/pkg/logger"
+	alertingv1 "github.com/aity-cloud/monty/pkg/apis/alerting/v1"
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	// "github.com/aity-cloud/monty/pkg/logger"
 	// "github.com/samber/lo"
 	// "slices"
 	// "google.golang.org/protobuf/encoding/protojson"
@@ -114,8 +114,8 @@ import (
 // func WithPostSilenceBody(conditionId string, duration time.Duration, silenceId *string) AlertManagerApiOption {
 // 	return func(o *AlertManagerApiOptions) {
 // 		p := &PostableSilence{}
-// 		p.CreatedBy = "opni admin"
-// 		p.Comment = "silence created by opni admin"
+// 		p.CreatedBy = "monty admin"
+// 		p.Comment = "silence created by monty admin"
 // 		p.WithCondition(conditionId)
 // 		p.WithDuration(duration)
 // 		if err := p.Must(); err != nil {
@@ -349,7 +349,7 @@ import (
 // 	}).WithAPIV2()
 // }
 
-// func NewAlertManagerOpniConfigClient(ctx context.Context, endpoint string, opts ...AlertManagerApiOption) *AlertManagerAPI {
+// func NewAlertManagerMontyConfigClient(ctx context.Context, endpoint string, opts ...AlertManagerApiOption) *AlertManagerAPI {
 // 	options := NewDefaultAlertManagerOptions()
 // 	options.apply(opts...)
 // 	return &AlertManagerAPI{

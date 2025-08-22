@@ -5,9 +5,9 @@ import (
 	. "github.com/onsi/gomega"
 	"google.golang.org/protobuf/reflect/protoreflect"
 
-	"github.com/rancher/opni/pkg/config/reactive"
-	"github.com/rancher/opni/pkg/test/testdata/plugins/ext"
-	"github.com/rancher/opni/pkg/test/testutil"
+	"github.com/aity-cloud/monty/pkg/config/reactive"
+	"github.com/aity-cloud/monty/pkg/test/testdata/plugins/ext"
+	"github.com/aity-cloud/monty/pkg/test/testutil"
 )
 
 var _ = Describe("Typed Reactive Messages", Label("unit"), func() {

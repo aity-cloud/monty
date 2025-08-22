@@ -5,9 +5,9 @@ import (
 	"sync"
 	"sync/atomic"
 
+	"github.com/aity-cloud/monty/pkg/storage/lock"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/rancher/opni/pkg/storage/lock"
 )
 
 var _ = Describe("Lock", Label("unit"), func() {

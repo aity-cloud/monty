@@ -1,7 +1,7 @@
 package annotations
 
 const (
-	AgentVersion = "opni.io/agent-version"
+	AgentVersion = "monty.io/agent-version"
 	Version1     = "v1"
 	Version2     = "v2"
 )

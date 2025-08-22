@@ -1,12 +1,12 @@
 package slo
 
 import (
-	alertingv1 "github.com/rancher/opni/pkg/apis/alerting/v1"
-	managementv1 "github.com/rancher/opni/pkg/apis/management/v1"
-	"github.com/rancher/opni/pkg/plugins/apis/system"
-	"github.com/rancher/opni/pkg/slo/shared"
-	"github.com/rancher/opni/plugins/metrics/apis/cortexadmin"
-	sloapi "github.com/rancher/opni/plugins/slo/apis/slo"
+	alertingv1 "github.com/aity-cloud/monty/pkg/apis/alerting/v1"
+	managementv1 "github.com/aity-cloud/monty/pkg/apis/management/v1"
+	"github.com/aity-cloud/monty/pkg/plugins/apis/system"
+	"github.com/aity-cloud/monty/pkg/slo/shared"
+	"github.com/aity-cloud/monty/plugins/metrics/apis/cortexadmin"
+	sloapi "github.com/aity-cloud/monty/plugins/slo/apis/slo"
 )
 
 func (p *Plugin) UseManagementAPI(client managementv1.ManagementClient) {

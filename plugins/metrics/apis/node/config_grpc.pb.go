@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.3.0
 // - ragu               v1.0.0
-// source: github.com/rancher/opni/plugins/metrics/apis/node/config.proto
+// source: github.com/aity-cloud/monty/plugins/metrics/apis/node/config.proto
 
 package node
 
@@ -623,5 +623,5 @@ var NodeConfiguration_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "github.com/rancher/opni/plugins/metrics/apis/node/config.proto",
+	Metadata: "github.com/aity-cloud/monty/plugins/metrics/apis/node/config.proto",
 }

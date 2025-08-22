@@ -1,7 +1,7 @@
 package v1beta1
 
 import (
-	opnimeta "github.com/rancher/opni/pkg/util/meta"
+	montymeta "github.com/aity-cloud/monty/pkg/util/meta"
 	"github.com/rancher/wrangler/pkg/crd"
 	"github.com/rancher/wrangler/pkg/schemas/openapi"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -42,7 +42,7 @@ type K3SSpec struct {
 }
 
 type RKESpec struct {
-	LogLevel opnimeta.LogLevel `json:"logLevel,omitempty"`
+	LogLevel montymeta.LogLevel `json:"logLevel,omitempty"`
 }
 
 type RKE2Spec struct {

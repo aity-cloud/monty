@@ -5,7 +5,7 @@ package alerting;
 import "google/protobuf/descriptor.proto";
 import "google/protobuf/timestamp.proto";
 
-option go_package = "github.com/rancher/opni/pkg/apis/alerting/v1";
+option go_package = "github.com/aity-cloud/monty/pkg/apis/alerting/v1";
 
 message ConditionReference {
   string id = 1;
@@ -19,7 +19,7 @@ message ConditionReferenceList {
 
 // ------------------ ENDPOINT ------------------
 
-enum OpniSeverity {
+enum MontySeverity {
   Info     = 0;
   Warning  = 1;
   Error    = 2;

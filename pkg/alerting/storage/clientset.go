@@ -9,20 +9,20 @@ import (
 
 	"slices"
 
-	"github.com/rancher/opni/pkg/util"
+	"github.com/aity-cloud/monty/pkg/util"
 	"golang.org/x/sync/errgroup"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/durationpb"
 	"gopkg.in/yaml.v3"
 
-	"github.com/rancher/opni/pkg/alerting/drivers/backend"
-	"github.com/rancher/opni/pkg/alerting/drivers/routing"
-	"github.com/rancher/opni/pkg/alerting/message"
-	"github.com/rancher/opni/pkg/alerting/shared"
-	storage_opts "github.com/rancher/opni/pkg/alerting/storage/opts"
-	"github.com/rancher/opni/pkg/alerting/storage/spec"
-	alertingv1 "github.com/rancher/opni/pkg/apis/alerting/v1"
+	"github.com/aity-cloud/monty/pkg/alerting/drivers/backend"
+	"github.com/aity-cloud/monty/pkg/alerting/drivers/routing"
+	"github.com/aity-cloud/monty/pkg/alerting/message"
+	"github.com/aity-cloud/monty/pkg/alerting/shared"
+	storage_opts "github.com/aity-cloud/monty/pkg/alerting/storage/opts"
+	"github.com/aity-cloud/monty/pkg/alerting/storage/spec"
+	alertingv1 "github.com/aity-cloud/monty/pkg/apis/alerting/v1"
 	"github.com/samber/lo"
 	"log/slog"
 )
@@ -119,7 +119,7 @@ func (c *CompositeAlertingClientSet) calculateRouters(ctx context.Context, syncO
 	})
 
 	if syncOpts.Router == nil {
-		syncOpts.Router = routing.NewDefaultOpniRouting()
+		syncOpts.Router = routing.NewDefaultMontyRouting()
 	}
 
 	endpKeys := lo.Keys(endpMap)

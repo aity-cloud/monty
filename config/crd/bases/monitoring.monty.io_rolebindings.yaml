@@ -1,0 +1,51 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.18.0
+  name: rolebindings.monitoring.monty.io
+spec:
+  group: monitoring.monty.io
+  names:
+    kind: RoleBinding
+    listKind: RoleBindingList
+    plural: rolebindings
+    singular: rolebinding
+  scope: Namespaced
+  versions:
+  - name: v1beta1
+    schema:
+      openAPIV3Schema:
+        properties:
+          apiVersion:
+            type: string
+          kind:
+            type: string
+          metadata:
+            type: object
+          spec:
+            properties:
+              id:
+                type: string
+              metadata:
+                properties:
+                  capability:
+                    type: string
+                  resourceVersion:
+                    type: string
+                type: object
+              roleId:
+                type: string
+              subjects:
+                items:
+                  type: string
+                type: array
+              taints:
+                items:
+                  type: string
+                type: array
+            type: object
+        type: object
+    served: true
+    storage: true

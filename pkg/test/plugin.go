@@ -8,15 +8,15 @@ import (
 	"runtime"
 	"sync"
 
+	"github.com/aity-cloud/monty/pkg/config/v1beta1"
+	"github.com/aity-cloud/monty/pkg/plugins"
+	"github.com/aity-cloud/monty/pkg/plugins/apis/apiextensions"
+	managementext "github.com/aity-cloud/monty/pkg/plugins/apis/apiextensions/management"
+	"github.com/aity-cloud/monty/pkg/plugins/meta"
+	"github.com/aity-cloud/monty/pkg/test/testdata"
+	"github.com/aity-cloud/monty/pkg/util"
 	"github.com/hashicorp/go-hclog"
 	"github.com/hashicorp/go-plugin"
-	"github.com/rancher/opni/pkg/config/v1beta1"
-	"github.com/rancher/opni/pkg/plugins"
-	"github.com/rancher/opni/pkg/plugins/apis/apiextensions"
-	managementext "github.com/rancher/opni/pkg/plugins/apis/apiextensions/management"
-	"github.com/rancher/opni/pkg/plugins/meta"
-	"github.com/rancher/opni/pkg/test/testdata"
-	"github.com/rancher/opni/pkg/util"
 	"google.golang.org/grpc"
 )
 
@@ -170,25 +170,25 @@ func (tp TestPluginSet) EnablePlugin(pkgName, pluginName string, mode meta.Plugi
 // caller's package. This will apply to all test environments in a suite.
 //
 // Must be called from init() in a package of the form
-// github.com/rancher/opni/plugins/<name>/test
+// github.com/aity-cloud/monty/plugins/<name>/test
 func EnablePlugin(mode meta.PluginMode, schemeFunc func(context.Context) meta.Scheme) {
-	// Get the top-level plugin package name, e.g. "github.com/rancher/opni/plugins/example"
+	// Get the top-level plugin package name, e.g. "github.com/aity-cloud/monty/plugins/example"
 	pc, _, _, ok := runtime.Caller(1)
 	if !ok {
 		panic("failed to get caller")
 	}
 
 	fn := runtime.FuncForPC(pc)
-	name := fn.Name() // "github.com/rancher/opni/plugins/<name>/test.init.x"
+	name := fn.Name() // "github.com/aity-cloud/monty/plugins/<name>/test.init.x"
 
-	regex := regexp.MustCompile(`^github.com/rancher/opni/plugins/(\w+)/test.init.\d+$`)
+	regex := regexp.MustCompile(`^github.com/aity-cloud/monty/plugins/(\w+)/test.init.\d+$`)
 
 	matches := regex.FindStringSubmatch(name)
 	if len(matches) != 2 {
 		panic("EnablePlugin must be called from init (caller: " + name + ")")
 	}
 
-	pkgName := "github.com/rancher/opni/plugins/" + matches[1]
+	pkgName := "github.com/aity-cloud/monty/plugins/" + matches[1]
 	pluginName := "plugin_" + matches[1]
 
 	globalTestPlugins.EnablePlugin(pkgName, pluginName, mode, schemeFunc)

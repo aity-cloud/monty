@@ -3,10 +3,10 @@ package test
 import (
 	"net/http"
 
+	"github.com/aity-cloud/monty/pkg/auth"
+	"github.com/aity-cloud/monty/pkg/rbac"
+	"github.com/aity-cloud/monty/pkg/util/streams"
 	"github.com/gin-gonic/gin"
-	"github.com/rancher/opni/pkg/auth"
-	"github.com/rancher/opni/pkg/rbac"
-	"github.com/rancher/opni/pkg/util/streams"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"

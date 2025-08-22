@@ -7,21 +7,21 @@
 
 ## Summary
 
-Currently Opni Metrics uses Prometheus running in agent mode to scrape metrics which are then remote written to the agent endpoint.  This enhancement will remove Prometheus in agent mode, and replace it with a deployment of the otel-collector.
+Currently Monty Metrics uses Prometheus running in agent mode to scrape metrics which are then remote written to the agent endpoint.  This enhancement will remove Prometheus in agent mode, and replace it with a deployment of the otel-collector.
 
 ### Related Issues
 
-[#956 Prometheus memory utilization in downstream cluster](https://github.com/rancher/opni/issues/956)
+[#956 Prometheus memory utilization in downstream cluster](https://github.com/aity-cloud/monty/issues/956)
 
 ## Use case
-Opni Monitoring should be able to run in a wide array of setups, including edge configurations.  To enable this the footprint needs to be as small as possible.  Currently Prometheus uses > 1GB of RAM, even when running in agent mode.  This coupled with the ~500mb of RAM the agent uses, along with the Prometheus operator results in a larger than desired footprint.
+Monty Monitoring should be able to run in a wide array of setups, including edge configurations.  To enable this the footprint needs to be as small as possible.  Currently Prometheus uses > 1GB of RAM, even when running in agent mode.  This coupled with the ~500mb of RAM the agent uses, along with the Prometheus operator results in a larger than desired footprint.
 
-[OpenTelemetry](https://opentelemetry.io) (or OTEL) is a vendor neutral opensource collection of tools, APIs, and SDKs.  Opni as a project has decided to align with OpenTelemetry
+[OpenTelemetry](https://opentelemetry.io) (or OTEL) is a vendor neutral opensource collection of tools, APIs, and SDKs.  Monty as a project has decided to align with OpenTelemetry
 
 The OpenTelemetry Collector is a collector for metrics/traces/logs maintained by the OTEL group.  From the [repo](https://github.com/open-telemetry/opentelemetry-collector)
 > The OpenTelemetry Collector offers a vendor-agnostic implementation on how to receive, process and export telemetry data. In addition, it removes the need to run, operate and maintain multiple agents/collectors in order to support open-source telemetry data formats (e.g. Jaeger, Prometheus, etc.) to multiple open-source or commercial back-ends.
 
-To more tightly align with the Open Telemetry ecosystem and reduce the memory footprint of Opni, we should switch to using the OTEL Collector rather than Prometheus
+To more tightly align with the Open Telemetry ecosystem and reduce the memory footprint of Monty, we should switch to using the OTEL Collector rather than Prometheus
 
 ## Benefits
  * Memory footprint become significantly smaller (~30mb for aggregator, ~40mb per node pod)
@@ -44,17 +44,17 @@ A controller will be deployed along with the agent to manage the OTEL Collector 
 
 There will be two components to the OTEL system:
 1) The node agent.  This is responsible for collecting host level metrics from the kubernetes node, along with the local kubelet metrics.
-1) The central aggregator.  This receives metrics from node agents and sends them to the the remote write endpoint, as well as scraping centralized metrics such as the opni agent metrics, and the kube-api data.
+1) The central aggregator.  This receives metrics from node agents and sends them to the the remote write endpoint, as well as scraping centralized metrics such as the monty agent metrics, and the kube-api data.
 
-The Opni Agent will continue to be responsible for proxying remote-write data to Cortex, as well as managing the local configuration of the monitoring system for the cluster
+The Monty Agent will continue to be responsible for proxying remote-write data to Cortex, as well as managing the local configuration of the monitoring system for the cluster
 
 ### Test plan
 Unit testing - full unit tests for the new controllers.  This should follow the existing controller test styles.
 E2E testing:
-1) Deploy Opni and install monitoring backend
+1) Deploy Monty and install monitoring backend
 1) Enable monitoring capbaility
 1) Confirm OTEL pods are deployed successfully and no errors
-1) Check Opni Agent logs to confirm remote write data is being sent
+1) Check Monty Agent logs to confirm remote write data is being sent
 1) Review Dashboards to confirm all data is available
 
 ## Acceptance criteria.

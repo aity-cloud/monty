@@ -5,7 +5,7 @@ package subtle
 import (
 	"context"
 
-	"github.com/rancher/opni/pkg/config/reactive"
+	"github.com/aity-cloud/monty/pkg/config/reactive"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
 )

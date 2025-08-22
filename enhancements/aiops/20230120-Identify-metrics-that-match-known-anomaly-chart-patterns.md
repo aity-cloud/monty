@@ -42,7 +42,7 @@ The 2 types of pre-defined patterns:
 		* What to do: split the 60 data points [t-60, t-59, ...t-1] into 2 groups, the normal window, aka the first 45 points [t-60, t-16], and the test window [t-15, t-1], use KS-test to compare them. If the p-value of the test `p < 0.05` then this metric is abnormal and will be pass forward to next step.
 		* Output: the same list of metrics as input, but with a label of either `Normal` or `Abnormal` with the corresponding p-value.
 	- Metric Pattarn Classification:
-		* Model pre-train: A pre-trained model will be prepared offline and uploaded to Opni's S3 bucket. It can then be downloaded to every central Opni cluster to serve. Initially, the training data will be simulated plus data argumentation. With more real world data available in the future, the model can be further improved.
+		* Model pre-train: A pre-trained model will be prepared offline and uploaded to Monty's S3 bucket. It can then be downloaded to every central Monty cluster to serve. Initially, the training data will be simulated plus data argumentation. With more real world data available in the future, the model can be further improved.
 		* Model inferencing: the pre-trained model will be downloaded from S3 and serve for inferencing. No GPU is needed for inferencing.
 		* Model details: 1D-[CNN](https://en.wikipedia.org/wiki/Convolutional_neural_network) deep learning model, 1D means its input is 1D time-series data. This model will consist of 3 conv1d layers with max pooling, 2 fully-connected layers and softmax layer at last. 
 		* Model input: A list of abnormal metrics from anomaly detection step, each metric with 60 data points.
@@ -73,7 +73,7 @@ The 2 types of pre-defined patterns:
 https://netman.aiops.org/wp-content/uploads/2021/10/wch_ISSRE-1.pdf. 
 
 ## Dependencies: 
-* the Opni monitoring back-end enabled.
+* the Monty monitoring back-end enabled.
 
 ## Risks and contingencies: 
 * Risks: None
@@ -89,5 +89,5 @@ A rough estimation:
 * week 4: Integration and testing.
 
 ## Resources: 
-* A upstream Opni cluster and several downstream cluster.
+* A upstream Monty cluster and several downstream cluster.
 * Likely need a GPU to train the classification model(convolutional neural network). Model inference probably won't require GPU.

@@ -6,7 +6,7 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/rancher/opni/internal/lock"
+	"github.com/aity-cloud/monty/internal/lock"
 )
 
 func main() {

@@ -9,9 +9,9 @@ import (
 	"testing"
 	"time"
 
+	"github.com/aity-cloud/monty/pkg/logger"
+	"github.com/aity-cloud/monty/pkg/metrics"
 	"github.com/cortexproject/cortex/pkg/cortexpb"
-	"github.com/rancher/opni/pkg/logger"
-	"github.com/rancher/opni/pkg/metrics"
 	"github.com/weaveworks/common/user"
 	"google.golang.org/grpc"
 )

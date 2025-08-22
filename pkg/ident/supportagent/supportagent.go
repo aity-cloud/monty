@@ -5,11 +5,11 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/aity-cloud/monty/pkg/config"
+	"github.com/aity-cloud/monty/pkg/config/v1beta1"
+	"github.com/aity-cloud/monty/pkg/ident"
+	"github.com/aity-cloud/monty/pkg/util"
 	"github.com/google/uuid"
-	"github.com/rancher/opni/pkg/config"
-	"github.com/rancher/opni/pkg/config/v1beta1"
-	"github.com/rancher/opni/pkg/ident"
-	"github.com/rancher/opni/pkg/util"
 )
 
 type supportAgentProvider struct {

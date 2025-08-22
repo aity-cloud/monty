@@ -1,0 +1,94 @@
+name: Build and Package
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - '*'
+  pull_request:
+    branches:
+      - main
+env:
+  DAGGER_VERSION: "0.8.7"
+
+jobs:
+  build-amd64:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.24'
+
+      - name: Build and Package (Main/Release)
+        if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/'))
+        uses: dagger/dagger-for-github@8.0.0
+        with:
+          workdir: dagger
+          verb: run
+          dagger-flags: '-c dagger/ci/defaults'
+          cloud-token: ${{ secrets.DAGGER_CLOUD_TOKEN }}
+          version: ${{ env.DAGGER_VERSION }}
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_BRANCH: ${{ github.head_ref || github.ref_name }}
+
+      - name: Build and Package (PR)
+        uses: dagger/dagger-for-github@8.0.0
+        if: github.event_name == 'pull_request'
+        with:
+          workdir: dagger
+          verb: run
+          dagger-flags: '-c dagger/ci/defaults --coverage.export=false'
+          cloud-token: ${{ secrets.DAGGER_CLOUD_TOKEN }}
+          version: ${{ env.DAGGER_VERSION }}
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_BRANCH: ${{ github.head_ref || github.ref_name }}
+
+      - name: Publish Tag
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+        uses: dagger/dagger-for-github@8.0.0
+        with:
+          workdir: dagger
+          verb: run
+          dagger-flags: '-c dagger/ci/defaults,dagger/ci/push,dagger/ci/push-charts,dagger/ci/tag-latest,dagger/ci/tag-release --lint=false --test=false'
+          cloud-token: ${{ secrets.DAGGER_CLOUD_TOKEN }}
+          version: ${{ env.DAGGER_VERSION }}
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_BRANCH: ${{ github.head_ref || github.ref_name }}
+
+      - name: Publish Main
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: dagger/dagger-for-github@8.0.0
+        with:
+          workdir: dagger
+          verb: run
+          dagger-flags: '-c dagger/ci/defaults,dagger/ci/push --lint=false --test=false'
+          cloud-token: ${{ secrets.DAGGER_CLOUD_TOKEN }}
+          version: ${{ env.DAGGER_VERSION }}
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_BRANCH: ${{ github.head_ref || github.ref_name }}
+
+      - name: Upload Coverage
+        if: github.event_name == 'pull_request'
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./cover.out
+          fail_ci_if_error: false

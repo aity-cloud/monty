@@ -3,9 +3,9 @@ package configv1
 import (
 	context "context"
 
-	"github.com/rancher/opni/pkg/config/reactive"
-	driverutil "github.com/rancher/opni/pkg/plugins/driverutil"
-	storage "github.com/rancher/opni/pkg/storage"
+	"github.com/aity-cloud/monty/pkg/config/reactive"
+	driverutil "github.com/aity-cloud/monty/pkg/plugins/driverutil"
+	storage "github.com/aity-cloud/monty/pkg/storage"
 )
 
 type GatewayConfigManagerOptions struct {

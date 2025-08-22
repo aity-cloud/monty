@@ -4,10 +4,10 @@
 syntax = "proto3";
 package runtimeconfig;
 
-import "github.com/rancher/opni/internal/codegen/cli/cli.proto";
-import "github.com/rancher/opni/internal/cortex/config/validation/limits.proto";
+import "github.com/aity-cloud/monty/internal/codegen/cli/cli.proto";
+import "github.com/aity-cloud/monty/internal/cortex/config/validation/limits.proto";
 
-option go_package      = "github.com/rancher/opni/internal/cortex/config/runtimeconfig";
+option go_package      = "github.com/aity-cloud/monty/internal/cortex/config/runtimeconfig";
 option (cli.generator) = {
   generate:          true
   generate_deepcopy: true

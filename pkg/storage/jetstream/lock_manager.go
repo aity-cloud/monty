@@ -4,9 +4,9 @@ import (
 	"context"
 	"log/slog"
 
+	"github.com/aity-cloud/monty/pkg/storage"
+	"github.com/aity-cloud/monty/pkg/storage/lock"
 	"github.com/nats-io/nats.go"
-	"github.com/rancher/opni/pkg/storage"
-	"github.com/rancher/opni/pkg/storage/lock"
 )
 
 // Requires jetstream 2.9+

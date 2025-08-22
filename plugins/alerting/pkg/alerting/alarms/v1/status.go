@@ -5,21 +5,21 @@ import (
 	"sync"
 	"time"
 
+	"github.com/aity-cloud/monty/pkg/alerting/drivers/cortex"
+	"github.com/aity-cloud/monty/pkg/alerting/drivers/routing"
+	"github.com/aity-cloud/monty/pkg/alerting/shared"
+	alertingv1 "github.com/aity-cloud/monty/pkg/apis/alerting/v1"
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	managementv1 "github.com/aity-cloud/monty/pkg/apis/management/v1"
+	"github.com/aity-cloud/monty/pkg/caching"
+	"github.com/aity-cloud/monty/pkg/capabilities"
+	"github.com/aity-cloud/monty/pkg/capabilities/wellknown"
+	"github.com/aity-cloud/monty/pkg/plugins/driverutil"
+	"github.com/aity-cloud/monty/pkg/util"
+	"github.com/aity-cloud/monty/plugins/metrics/apis/cortexadmin"
 	"github.com/prometheus/alertmanager/api/v2/models"
 	"github.com/prometheus/alertmanager/pkg/labels"
 	promClient "github.com/prometheus/client_golang/api/prometheus/v1"
-	"github.com/rancher/opni/pkg/alerting/drivers/cortex"
-	"github.com/rancher/opni/pkg/alerting/drivers/routing"
-	"github.com/rancher/opni/pkg/alerting/shared"
-	alertingv1 "github.com/rancher/opni/pkg/apis/alerting/v1"
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	managementv1 "github.com/rancher/opni/pkg/apis/management/v1"
-	"github.com/rancher/opni/pkg/caching"
-	"github.com/rancher/opni/pkg/capabilities"
-	"github.com/rancher/opni/pkg/capabilities/wellknown"
-	"github.com/rancher/opni/pkg/plugins/driverutil"
-	"github.com/rancher/opni/pkg/util"
-	"github.com/rancher/opni/plugins/metrics/apis/cortexadmin"
 	"github.com/samber/lo"
 	"golang.org/x/sync/errgroup"
 	"google.golang.org/grpc/codes"
@@ -238,7 +238,7 @@ func (a *AlarmServerComponent) loadMetricsInfo(ctx context.Context) (*metricsInf
 				return cl.Id
 			}),
 			RuleType:        []string{string(promClient.RuleTypeAlerting)},
-			NamespaceRegexp: shared.OpniAlertingCortexNamespace,
+			NamespaceRegexp: shared.MontyAlertingCortexNamespace,
 		})
 		if err != nil {
 			return nil, err
@@ -288,7 +288,7 @@ type metricsInfo struct {
 }
 
 type alertingInfo struct {
-	router          routing.OpniRouting
+	router          routing.MontyRouting
 	alertGroup      models.AlertGroups
 	loadedReceivers []string
 }

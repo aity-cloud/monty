@@ -3,14 +3,14 @@ package configutil_test
 import (
 	"flag"
 
+	"github.com/aity-cloud/monty/internal/cortex/config/querier"
+	v1 "github.com/aity-cloud/monty/pkg/apis/storage/v1"
+	"github.com/aity-cloud/monty/plugins/metrics/apis/cortexops"
+	"github.com/aity-cloud/monty/plugins/metrics/pkg/cortex/configutil"
 	"github.com/cortexproject/cortex/pkg/cortex"
 	"github.com/go-kit/log"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/rancher/opni/internal/cortex/config/querier"
-	v1 "github.com/rancher/opni/pkg/apis/storage/v1"
-	"github.com/rancher/opni/plugins/metrics/apis/cortexops"
-	"github.com/rancher/opni/plugins/metrics/pkg/cortex/configutil"
 	"github.com/samber/lo"
 	"gopkg.in/yaml.v2"
 )

@@ -4,9 +4,9 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"github.com/aity-cloud/monty/pkg/test"
+	"github.com/aity-cloud/monty/plugins/logging/pkg/otel"
 	"github.com/google/uuid"
-	"github.com/rancher/opni/pkg/test"
-	"github.com/rancher/opni/plugins/logging/pkg/otel"
 	"github.com/samber/lo"
 	"go.opentelemetry.io/collector/pdata/ptrace"
 	"go.opentelemetry.io/collector/pdata/ptrace/ptraceotlp"
@@ -22,10 +22,10 @@ import (
 	"text/template"
 	"time"
 
+	"github.com/aity-cloud/monty/pkg/test/freeport"
+	"github.com/aity-cloud/monty/pkg/test/testdata"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/rancher/opni/pkg/test/freeport"
-	"github.com/rancher/opni/pkg/test/testdata"
 )
 
 // aggregatorConfig is used to create the OTEL Collector that receives by OTLP

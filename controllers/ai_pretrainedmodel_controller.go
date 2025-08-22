@@ -21,10 +21,10 @@ package controllers
 import (
 	"context"
 
+	aiv1beta1 "github.com/aity-cloud/monty/apis/ai/v1beta1"
+	"github.com/aity-cloud/monty/pkg/resources/pretrainedmodel"
+	"github.com/aity-cloud/monty/pkg/util/k8sutil"
 	"github.com/cisco-open/operator-tools/pkg/reconciler"
-	aiv1beta1 "github.com/rancher/opni/apis/ai/v1beta1"
-	"github.com/rancher/opni/pkg/resources/pretrainedmodel"
-	"github.com/rancher/opni/pkg/util/k8sutil"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
@@ -37,9 +37,9 @@ type AIPretrainedModelReconciler struct {
 	scheme *runtime.Scheme
 }
 
-//+kubebuilder:rbac:groups=ai.opni.io,resources=pretrainedmodels,verbs=get;list;watch;create;update;patch;delete
-//+kubebuilder:rbac:groups=ai.opni.io,resources=pretrainedmodels/status,verbs=get;update;patch
-//+kubebuilder:rbac:groups=ai.opni.io,resources=pretrainedmodels/finalizers,verbs=update
+//+kubebuilder:rbac:groups=ai.monty.io,resources=pretrainedmodels,verbs=get;list;watch;create;update;patch;delete
+//+kubebuilder:rbac:groups=ai.monty.io,resources=pretrainedmodels/status,verbs=get;update;patch
+//+kubebuilder:rbac:groups=ai.monty.io,resources=pretrainedmodels/finalizers,verbs=update
 //+kubebuilder:rbac:groups=core,resources=configmaps,verbs=get;list;watch;create;update;patch;delete
 
 func (r *AIPretrainedModelReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {

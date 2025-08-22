@@ -1,8 +1,8 @@
 package v1
 
 import (
-	configv1 "github.com/rancher/opni/pkg/config/v1"
-	opnimeta "github.com/rancher/opni/pkg/util/meta"
+	configv1 "github.com/aity-cloud/monty/pkg/config/v1"
+	montymeta "github.com/aity-cloud/monty/pkg/util/meta"
 	"google.golang.org/protobuf/proto"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -10,17 +10,17 @@ import (
 )
 
 type GatewaySpec struct {
-	Replicas              *int32                      `json:"replicas,omitempty"`
-	Image                 *opnimeta.ImageSpec         `json:"image,omitempty"`
-	AgentImageTagOverride string                      `json:"agentImageTagOverride,omitempty"`
-	NatsRef               corev1.LocalObjectReference `json:"natsCluster,omitempty"`
-	ServiceType           corev1.ServiceType          `json:"serviceType,omitempty"`
-	ServiceAnnotations    map[string]string           `json:"serviceAnnotations,omitempty"`
-	NodeSelector          map[string]string           `json:"nodeSelector,omitempty"`
-	Tolerations           []corev1.Toleration         `json:"tolerations,omitempty"`
-	Affinity              *corev1.Affinity            `json:"affinity,omitempty"`
-	ExtraVolumeMounts     []opnimeta.ExtraVolumeMount `json:"extraVolumeMounts,omitempty"`
-	ExtraEnvVars          []corev1.EnvVar             `json:"extraEnvVars,omitempty"`
+	Replicas              *int32                       `json:"replicas,omitempty"`
+	Image                 *montymeta.ImageSpec         `json:"image,omitempty"`
+	AgentImageTagOverride string                       `json:"agentImageTagOverride,omitempty"`
+	NatsRef               *corev1.LocalObjectReference `json:"natsCluster,omitempty"`
+	ServiceType           corev1.ServiceType           `json:"serviceType,omitempty"`
+	ServiceAnnotations    map[string]string            `json:"serviceAnnotations,omitempty"`
+	NodeSelector          map[string]string            `json:"nodeSelector,omitempty"`
+	Tolerations           []corev1.Toleration          `json:"tolerations,omitempty"`
+	Affinity              *corev1.Affinity             `json:"affinity,omitempty"`
+	ExtraVolumeMounts     []montymeta.ExtraVolumeMount `json:"extraVolumeMounts,omitempty"`
+	ExtraEnvVars          []corev1.EnvVar              `json:"extraEnvVars,omitempty"`
 
 	//+kubebuilder:validation:Schemaless
 	//+kubebuilder:pruning:PreserveUnknownFields

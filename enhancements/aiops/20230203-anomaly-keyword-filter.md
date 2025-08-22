@@ -40,7 +40,7 @@ After retrieving all log messages for the training dataset, the GPU controller w
 
 ## Supporting documents: 
 User Story:
-As a user of Opni, I would like to receive the most accurate log anomaly insights from the workloads I added to the watchlist.
+As a user of Monty, I would like to receive the most accurate log anomaly insights from the workloads I added to the watchlist.
 
 This is an example of the query to be used. It has been verified in the dev console in a long running opensearch cluster:
 ```
@@ -68,10 +68,10 @@ This is an example of the query to be used. It has been verified in the dev cons
                         {'query_string': {'query': '(error) or (fail) or (fatal) or (exception) or (timeout) or (unavailable) or (crash) or (connection refused) or (network error) or (deadlock) or (out of disk) or (high load)', 'default_field': 'log'}}]}}}
 ```
 
-Additionally, for the keyword OOM, further investigation will be needed on how that keyword can be matched as well. This has been expressed as an [idea](https://github.com/rancher/opni/discussions/1049).
+Additionally, for the keyword OOM, further investigation will be needed on how that keyword can be matched as well. This has been expressed as an [idea](https://github.com/aity-cloud/monty/discussions/1049).
 
 ## Dependencies: 
-Besides the requirement of having Opni AIOps already enabled with an NVIDIA GPU setup on a cluster, no additional dependencies are present.
+Besides the requirement of having Monty AIOps already enabled with an NVIDIA GPU setup on a cluster, no additional dependencies are present.
 
 ## Risks and contingencies: 
 | Risk                                                                                                     | Contingency                                                                                    |

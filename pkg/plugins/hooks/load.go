@@ -1,8 +1,8 @@
 package hooks
 
 import (
+	"github.com/aity-cloud/monty/pkg/plugins/meta"
 	gsync "github.com/kralicky/gpkg/sync"
-	"github.com/rancher/opni/pkg/plugins/meta"
 	"google.golang.org/grpc"
 )
 

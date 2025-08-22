@@ -13,7 +13,7 @@ var (
 	tagRegexp       = regexp.MustCompile(`[\w][\w.-]{0,127}`)
 )
 
-const EnvPrefix = "_OPNI_"
+const EnvPrefix = "_MONTY_"
 
 type SpecialCaseEnv struct {
 	EnvVar    string
@@ -33,7 +33,7 @@ func SpecialCaseEnvVars(client *dagger.Client) []SpecialCaseEnv {
 		{
 			EnvVar: "DOCKER_USERNAME",
 			Keys: []string{
-				"images.opni.auth.username",
+				"images.monty.auth.username",
 				"images.minimal.auth.username",
 				"images.opensearch.opensearch.auth.username",
 				"images.opensearch.dashboards.auth.username",
@@ -46,7 +46,7 @@ func SpecialCaseEnvVars(client *dagger.Client) []SpecialCaseEnv {
 		{
 			EnvVar: "DOCKER_PASSWORD",
 			Keys: []string{
-				"images.opni.auth.secret",
+				"images.monty.auth.secret",
 				"images.minimal.auth.secret",
 				"images.opensearch.opensearch.auth.secret",
 				"images.opensearch.dashboards.auth.secret",
@@ -65,9 +65,9 @@ func SpecialCaseEnvVars(client *dagger.Client) []SpecialCaseEnv {
 			Converter: secret,
 		},
 		{
-			EnvVar: "DRONE_BRANCH",
+			EnvVar: "GITHUB_BRANCH",
 			Keys: []string{
-				"images.opni.tag",
+				"images.monty.tag",
 				"images.minimal.tag",
 				"images.opensearch.opensearch.tag",
 				"images.opensearch.dashboards.tag",
@@ -76,9 +76,9 @@ func SpecialCaseEnvVars(client *dagger.Client) []SpecialCaseEnv {
 			Converter: plaintext,
 		},
 		{
-			EnvVar: "DRONE_TAG", // if set, will override DRONE_BRANCH
+			EnvVar: "GITHUB_TAG", // if set, will override GITHUB_BRANCH
 			Keys: []string{
-				"images.opni.tag",
+				"images.monty.tag",
 				"images.minimal.tag",
 				"images.opensearch.opensearch.tag",
 				"images.opensearch.dashboards.tag",

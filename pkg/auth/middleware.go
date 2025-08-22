@@ -9,7 +9,7 @@ import (
 
 const (
 	AuthorizationKey     = "authorization"
-	AdminRoleBindingName = "opni.io_admin"
+	AdminRoleBindingName = "monty.io_admin"
 )
 
 type Protocol uint32

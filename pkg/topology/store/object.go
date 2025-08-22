@@ -4,8 +4,8 @@ import (
 	"errors"
 	"fmt"
 
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
 	"github.com/nats-io/nats.go"
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
 )
 
 const (

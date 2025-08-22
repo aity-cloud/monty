@@ -91,7 +91,7 @@ func Main(args []string) {
 	}
 
 	//////////////////////////////////////////////////////////////////////////////
-	// Opni Custom Logic: Create filesystem storage directory if it doesn't exist
+	// Monty Custom Logic: Create filesystem storage directory if it doesn't exist
 	if cfg.BlocksStorage.Bucket.Backend == "filesystem" {
 		dir := cfg.BlocksStorage.Bucket.Filesystem.Directory
 		if _, err := os.Stat(dir); os.IsNotExist(err) {
@@ -110,7 +110,7 @@ func Main(args []string) {
 	util_log.CheckFatal("initializing cortex", err)
 
 	//////////////////////////////////////////////////////////////////////////////
-	// Opni Custom Logic: Run the compactor in single-binary mode
+	// Monty Custom Logic: Run the compactor in single-binary mode
 	t.ModuleManager.AddDependency(cortex.All, cortex.Compactor)
 	//////////////////////////////////////////////////////////////////////////////
 
@@ -134,7 +134,7 @@ func Main(args []string) {
 		return
 	}
 
-	level.Info(util_log.Logger).Log("msg", "Starting Cortex", "version", "(opni embedded)")
+	level.Info(util_log.Logger).Log("msg", "Starting Cortex", "version", "(monty embedded)")
 	err = t.Run()
 	cancelFn()
 

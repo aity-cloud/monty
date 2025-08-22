@@ -21,8 +21,8 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/predicate"
 )
 
-// +kubebuilder:rbac:groups=grafana.opni.io,resources=grafanas;grafanas/finalizers,verbs=get;list;watch;create;update;patch;delete
-// +kubebuilder:rbac:groups=grafana.opni.io,resources=grafanas/status,verbs=get;update;patch
+// +kubebuilder:rbac:groups=grafana.monty.io,resources=grafanas;grafanas/finalizers,verbs=get;list;watch;create;update;patch;delete
+// +kubebuilder:rbac:groups=grafana.monty.io,resources=grafanas/status,verbs=get;update;patch
 // +kubebuilder:rbac:groups=apps,resources=deployments;deployments/finalizers,verbs=get;list;watch;create;update;patch;delete
 // +kubebuilder:rbac:groups="",resources=events,verbs=get;list;watch;create;patch
 // +kubebuilder:rbac:groups="",resources=pods,verbs=get;list;watch
@@ -35,8 +35,8 @@ type GrafanaReconciler struct {
 	scheme *runtime.Scheme
 }
 
-// +kubebuilder:rbac:groups=grafana.opni.io,resources=grafanadashboards,verbs=get;list;watch;create;update;patch;delete
-// +kubebuilder:rbac:groups=grafana.opni.io,resources=grafanadashboards/status,verbs=get;update;patch
+// +kubebuilder:rbac:groups=grafana.monty.io,resources=grafanadashboards,verbs=get;list;watch;create;update;patch;delete
+// +kubebuilder:rbac:groups=grafana.monty.io,resources=grafanadashboards/status,verbs=get;update;patch
 
 type GrafanaDashboardReconciler struct {
 	client.Client
@@ -44,8 +44,8 @@ type GrafanaDashboardReconciler struct {
 	scheme *runtime.Scheme
 }
 
-// +kubebuilder:rbac:groups=grafana.opni.io,resources=grafanadatasources,verbs=get;list;watch;create;update;patch;delete
-// +kubebuilder:rbac:groups=grafana.opni.io,resources=grafanadatasources/status,verbs=get;update;patch
+// +kubebuilder:rbac:groups=grafana.monty.io,resources=grafanadatasources,verbs=get;list;watch;create;update;patch;delete
+// +kubebuilder:rbac:groups=grafana.monty.io,resources=grafanadatasources/status,verbs=get;update;patch
 
 type GrafanaDatasourceReconciler struct {
 	client.Client

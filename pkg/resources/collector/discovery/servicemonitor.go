@@ -13,10 +13,10 @@ import (
 	"github.com/prometheus/prometheus/discovery"
 	"github.com/samber/lo"
 
+	monitoringv1beta1 "github.com/aity-cloud/monty/apis/monitoring/v1beta1"
 	promoperatorv1 "github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring/v1"
 	promcommon "github.com/prometheus/common/config"
 	"github.com/prometheus/common/model"
-	monitoringv1beta1 "github.com/rancher/opni/apis/monitoring/v1beta1"
 	"gopkg.in/yaml.v2"
 	corev1 "k8s.io/api/core/v1"
 	discoveryv1 "k8s.io/api/discovery/v1"
@@ -454,13 +454,13 @@ func (s *serviceMonitorScrapeConfigRetriever) generateStaticServiceConfig(
 		dur := parseStrToDuration(string(ep.Interval))
 		cfg.ScrapeInterval = dur
 	} else {
-		cfg.ScrapeInterval = model.Duration(opniDefaultScrapeInterval)
+		cfg.ScrapeInterval = model.Duration(montyDefaultScrapeInterval)
 	}
 	if ep.ScrapeTimeout != "" {
 		dur := parseStrToDuration(string(ep.ScrapeTimeout))
 		cfg.ScrapeTimeout = dur
 	} else {
-		cfg.ScrapeTimeout = model.Duration(opniDefaultScrapeTimeout)
+		cfg.ScrapeTimeout = model.Duration(montyDefaultScrapeTimeout)
 	}
 	if ep.Path != "" {
 		cfg.MetricsPath = ep.Path

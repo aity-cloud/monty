@@ -6,10 +6,10 @@ import (
 	"net"
 	"strings"
 
+	"github.com/aity-cloud/monty/pkg/test"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	promtestutil "github.com/prometheus/client_golang/prometheus/testutil"
-	"github.com/rancher/opni/pkg/test"
 )
 
 var _ = Describe("Impersonated Metrics", Ordered, Label("integration"), func() {
@@ -38,11 +38,11 @@ var _ = Describe("Impersonated Metrics", Ordered, Label("integration"), func() {
 
 			Eventually(func() error {
 				return promtestutil.ScrapeAndCompare(metricsUrl, strings.NewReader(`
-# HELP opni_agent_status_summary Agent status summary
-# TYPE opni_agent_status_summary gauge
-opni_agent_status_summary{summary="Healthy",zz_opni_impersonate_as="agent1"} 1
-opni_agent_status_summary{summary="Healthy",zz_opni_impersonate_as="agent2"} 1
-`[1:]), "opni_agent_status_summary")
+# HELP monty_agent_status_summary Agent status summary
+# TYPE monty_agent_status_summary gauge
+monty_agent_status_summary{summary="Healthy",zz_monty_impersonate_as="agent1"} 1
+monty_agent_status_summary{summary="Healthy",zz_monty_impersonate_as="agent2"} 1
+`[1:]), "monty_agent_status_summary")
 			}).Should(Succeed())
 		})
 	})
@@ -53,11 +53,11 @@ opni_agent_status_summary{summary="Healthy",zz_opni_impersonate_as="agent2"} 1
 
 			Eventually(func() error {
 				return promtestutil.ScrapeAndCompare(metricsUrl, strings.NewReader(`
-# HELP opni_agent_status_summary Agent status summary
-# TYPE opni_agent_status_summary gauge
-opni_agent_status_summary{summary="Disconnected",zz_opni_impersonate_as="agent1"} 1
-opni_agent_status_summary{summary="Healthy",zz_opni_impersonate_as="agent2"} 1
-`[1:]), "opni_agent_status_summary")
+# HELP monty_agent_status_summary Agent status summary
+# TYPE monty_agent_status_summary gauge
+monty_agent_status_summary{summary="Disconnected",zz_monty_impersonate_as="agent1"} 1
+monty_agent_status_summary{summary="Healthy",zz_monty_impersonate_as="agent2"} 1
+`[1:]), "monty_agent_status_summary")
 			}).Should(Succeed())
 		})
 	})
@@ -68,11 +68,11 @@ opni_agent_status_summary{summary="Healthy",zz_opni_impersonate_as="agent2"} 1
 			Eventually(errC).Should(Receive(BeNil()))
 			Eventually(func() error {
 				return promtestutil.ScrapeAndCompare(metricsUrl, strings.NewReader(`
-# HELP opni_agent_status_summary Agent status summary
-# TYPE opni_agent_status_summary gauge
-opni_agent_status_summary{summary="Healthy",zz_opni_impersonate_as="agent1"} 1
-opni_agent_status_summary{summary="Healthy",zz_opni_impersonate_as="agent2"} 1
-`[1:]), "opni_agent_status_summary")
+# HELP monty_agent_status_summary Agent status summary
+# TYPE monty_agent_status_summary gauge
+monty_agent_status_summary{summary="Healthy",zz_monty_impersonate_as="agent1"} 1
+monty_agent_status_summary{summary="Healthy",zz_monty_impersonate_as="agent2"} 1
+`[1:]), "monty_agent_status_summary")
 			}).Should(Succeed())
 		})
 	})

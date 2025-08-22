@@ -11,20 +11,20 @@ import (
 
 	opsterv1 "github.com/Opster/opensearch-k8s-operator/opensearch-operator/api/v1"
 	"github.com/Opster/opensearch-k8s-operator/opensearch-operator/pkg/builders"
-	"github.com/rancher/opni/apis"
-	opnicorev1beta1 "github.com/rancher/opni/apis/core/v1beta1"
-	loggingv1beta1 "github.com/rancher/opni/apis/logging/v1beta1"
-	capabilityv1 "github.com/rancher/opni/pkg/apis/capability/v1"
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	"github.com/rancher/opni/pkg/logger"
-	"github.com/rancher/opni/pkg/plugins/driverutil"
-	"github.com/rancher/opni/pkg/resources"
-	utilerrors "github.com/rancher/opni/pkg/util/errors"
-	k8sutilerrors "github.com/rancher/opni/pkg/util/errors/k8sutil"
-	"github.com/rancher/opni/pkg/util/k8sutil"
-	opnimeta "github.com/rancher/opni/pkg/util/meta"
-	loggingerrors "github.com/rancher/opni/plugins/logging/pkg/errors"
-	"github.com/rancher/opni/plugins/logging/pkg/gateway/drivers/backend"
+	"github.com/aity-cloud/monty/apis"
+	montycorev1beta1 "github.com/aity-cloud/monty/apis/core/v1beta1"
+	loggingv1beta1 "github.com/aity-cloud/monty/apis/logging/v1beta1"
+	capabilityv1 "github.com/aity-cloud/monty/pkg/apis/capability/v1"
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	"github.com/aity-cloud/monty/pkg/logger"
+	"github.com/aity-cloud/monty/pkg/plugins/driverutil"
+	"github.com/aity-cloud/monty/pkg/resources"
+	utilerrors "github.com/aity-cloud/monty/pkg/util/errors"
+	k8sutilerrors "github.com/aity-cloud/monty/pkg/util/errors/k8sutil"
+	"github.com/aity-cloud/monty/pkg/util/k8sutil"
+	montymeta "github.com/aity-cloud/monty/pkg/util/meta"
+	loggingerrors "github.com/aity-cloud/monty/plugins/logging/pkg/errors"
+	"github.com/aity-cloud/monty/plugins/logging/pkg/gateway/drivers/backend"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	k8serrors "k8s.io/apimachinery/pkg/api/errors"
@@ -42,10 +42,10 @@ type KubernetesManagerDriver struct {
 }
 
 type KubernetesManagerDriverOptions struct {
-	K8sClient         client.Client                  `option:"k8sClient"`
-	Namespace         string                         `option:"namespace"`
-	OpensearchCluster *opnimeta.OpensearchClusterRef `option:"opensearchCluster"`
-	Logger            *slog.Logger                   `option:"logger"`
+	K8sClient         client.Client                   `option:"k8sClient"`
+	Namespace         string                          `option:"namespace"`
+	OpensearchCluster *montymeta.OpensearchClusterRef `option:"opensearchCluster"`
+	Logger            *slog.Logger                    `option:"logger"`
 }
 
 func NewKubernetesManagerDriver(options KubernetesManagerDriverOptions) (*KubernetesManagerDriver, error) {
@@ -65,7 +65,7 @@ func NewKubernetesManagerDriver(options KubernetesManagerDriverOptions) (*Kubern
 }
 
 func (d *KubernetesManagerDriver) GetInstallStatus(ctx context.Context) backend.InstallState {
-	opensearch := &loggingv1beta1.OpniOpensearch{}
+	opensearch := &loggingv1beta1.MontyOpensearch{}
 	if err := d.K8sClient.Get(ctx, types.NamespacedName{
 		Name:      d.OpensearchCluster.Name,
 		Namespace: d.OpensearchCluster.Namespace,
@@ -104,16 +104,16 @@ func (d *KubernetesManagerDriver) StoreCluster(ctx context.Context, req *corev1.
 	}
 
 	labels := map[string]string{
-		resources.OpniClusterID: req.GetId(),
+		resources.MontyClusterID: req.GetId(),
 	}
 
-	loggingCluster := &opnicorev1beta1.LoggingCluster{
+	loggingCluster := &montycorev1beta1.LoggingCluster{
 		ObjectMeta: metav1.ObjectMeta{
 			GenerateName: "logging-",
 			Namespace:    d.Namespace,
 			Labels:       labels,
 		},
-		Spec: opnicorev1beta1.LoggingClusterSpec{
+		Spec: montycorev1beta1.LoggingClusterSpec{
 			OpensearchClusterRef: d.OpensearchCluster,
 			FriendlyName:         friendlyName,
 		},
@@ -134,13 +134,13 @@ func (d *KubernetesManagerDriver) StoreCluster(ctx context.Context, req *corev1.
 	return nil
 }
 
-func (d *KubernetesManagerDriver) getCluster(ctx context.Context, id string) (*opnicorev1beta1.LoggingCluster, error) {
-	loggingClusterList := &opnicorev1beta1.LoggingClusterList{}
+func (d *KubernetesManagerDriver) getCluster(ctx context.Context, id string) (*montycorev1beta1.LoggingCluster, error) {
+	loggingClusterList := &montycorev1beta1.LoggingClusterList{}
 	if err := d.K8sClient.List(
 		ctx,
 		loggingClusterList,
 		client.InNamespace(d.Namespace),
-		client.MatchingLabels{resources.OpniClusterID: id},
+		client.MatchingLabels{resources.MontyClusterID: id},
 	); err != nil {
 		d.Logger.Error(fmt.Sprintf("failed to list logging clusters: %v", err))
 		return nil, k8sutilerrors.GRPCFromK8s(err)
@@ -184,12 +184,12 @@ func (d *KubernetesManagerDriver) StoreClusterMetadata(ctx context.Context, id, 
 }
 
 func (d *KubernetesManagerDriver) DeleteCluster(ctx context.Context, id string) error {
-	loggingClusterList := &opnicorev1beta1.LoggingClusterList{}
+	loggingClusterList := &montycorev1beta1.LoggingClusterList{}
 	if err := d.K8sClient.List(
 		ctx,
 		loggingClusterList,
 		client.InNamespace(d.OpensearchCluster.Namespace),
-		client.MatchingLabels{resources.OpniClusterID: id},
+		client.MatchingLabels{resources.MontyClusterID: id},
 	); err != nil {
 		d.Logger.Error(fmt.Sprintf("failed to list logging clusters: %v", err))
 		return k8sutilerrors.GRPCFromK8s(err)
@@ -213,12 +213,12 @@ func (d *KubernetesManagerDriver) DeleteCluster(ctx context.Context, id string) 
 
 func (d *KubernetesManagerDriver) SetClusterStatus(ctx context.Context, id string, enabled bool) error {
 	syncTime := time.Now()
-	loggingClusterList := &opnicorev1beta1.LoggingClusterList{}
+	loggingClusterList := &montycorev1beta1.LoggingClusterList{}
 	if err := d.K8sClient.List(
 		ctx,
 		loggingClusterList,
 		client.InNamespace(d.Namespace),
-		client.MatchingLabels{resources.OpniClusterID: id},
+		client.MatchingLabels{resources.MontyClusterID: id},
 	); err != nil {
 		d.Logger.Error(fmt.Sprintf("failed to list logging clusters: %v", err))
 		return k8sutilerrors.GRPCFromK8s(err)
@@ -248,12 +248,12 @@ func (d *KubernetesManagerDriver) SetClusterStatus(ctx context.Context, id strin
 }
 
 func (d *KubernetesManagerDriver) GetClusterStatus(ctx context.Context, id string) (*capabilityv1.NodeCapabilityStatus, error) {
-	loggingClusterList := &opnicorev1beta1.LoggingClusterList{}
+	loggingClusterList := &montycorev1beta1.LoggingClusterList{}
 	if err := d.K8sClient.List(
 		ctx,
 		loggingClusterList,
 		client.InNamespace(d.Namespace),
-		client.MatchingLabels{resources.OpniClusterID: id},
+		client.MatchingLabels{resources.MontyClusterID: id},
 	); err != nil {
 		d.Logger.Error(fmt.Sprintf("failed to list logging clusters: %v", err))
 		return nil, k8sutilerrors.GRPCFromK8s(err)
@@ -375,8 +375,8 @@ func (d *KubernetesManagerDriver) UpdateRole(ctx context.Context, in *corev1.Rol
 	if err != nil {
 		return k8sutilerrors.GRPCFromK8s(err)
 	}
-	if _, ok := role.Labels[opniLabelKey]; !ok {
-		return utilerrors.New(codes.NotFound, errors.New("role exists but is not managed by opni"))
+	if _, ok := role.Labels[montyLabelKey]; !ok {
+		return utilerrors.New(codes.NotFound, errors.New("role exists but is not managed by monty"))
 	}
 
 	if in.GetMetadata().GetResourceVersion() != role.ResourceVersion {
@@ -412,8 +412,8 @@ func (d *KubernetesManagerDriver) DeleteRole(ctx context.Context, in *corev1.Ref
 		return k8sutilerrors.GRPCFromK8s(err)
 	}
 
-	if _, ok := role.Labels[opniLabelKey]; !ok {
-		return utilerrors.New(codes.NotFound, errors.New("role exists but is not managed by opni"))
+	if _, ok := role.Labels[montyLabelKey]; !ok {
+		return utilerrors.New(codes.NotFound, errors.New("role exists but is not managed by monty"))
 	}
 
 	err = d.K8sClient.Delete(ctx, role)
@@ -427,7 +427,7 @@ func (d *KubernetesManagerDriver) ListRoles(ctx context.Context) (*corev1.RoleLi
 	roleList := &opsterv1.OpensearchRoleList{}
 	err := d.K8sClient.List(ctx, roleList,
 		client.InNamespace(d.Namespace),
-		client.MatchingLabels{opniLabelKey: "true"},
+		client.MatchingLabels{montyLabelKey: "true"},
 	)
 	if err != nil {
 		return nil, err
@@ -466,8 +466,8 @@ func (d *KubernetesManagerDriver) fetchOpensearch(ctx context.Context) (*opsterv
 func init() {
 	backend.ClusterDrivers.Register("kubernetes-manager", func(_ context.Context, opts ...driverutil.Option) (backend.ClusterDriver, error) {
 		options := KubernetesManagerDriverOptions{
-			OpensearchCluster: &opnimeta.OpensearchClusterRef{
-				Name:      "opni",
+			OpensearchCluster: &montymeta.OpensearchClusterRef{
+				Name:      "monty",
 				Namespace: os.Getenv("POD_NAMESPACE"),
 			},
 			Namespace: os.Getenv("POD_NAMESPACE"),
@@ -479,8 +479,8 @@ func init() {
 	})
 	backend.RBACDrivers.Register("kubernetes-manager", func(_ context.Context, opts ...driverutil.Option) (backend.RBACDriver, error) {
 		options := KubernetesManagerDriverOptions{
-			OpensearchCluster: &opnimeta.OpensearchClusterRef{
-				Name:      "opni",
+			OpensearchCluster: &montymeta.OpensearchClusterRef{
+				Name:      "monty",
 				Namespace: os.Getenv("POD_NAMESPACE"),
 			},
 			Namespace: os.Getenv("POD_NAMESPACE"),

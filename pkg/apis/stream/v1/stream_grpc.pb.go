@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.3.0
 // - ragu               v1.0.0
-// source: github.com/rancher/opni/pkg/apis/stream/v1/stream.proto
+// source: github.com/aity-cloud/monty/pkg/apis/stream/v1/stream.proto
 
 package v1
 
@@ -179,7 +179,7 @@ var Stream_ServiceDesc = grpc.ServiceDesc{
 			ClientStreams: true,
 		},
 	},
-	Metadata: "github.com/rancher/opni/pkg/apis/stream/v1/stream.proto",
+	Metadata: "github.com/aity-cloud/monty/pkg/apis/stream/v1/stream.proto",
 }
 
 const (
@@ -310,7 +310,7 @@ var Delegate_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "github.com/rancher/opni/pkg/apis/stream/v1/stream.proto",
+	Metadata: "github.com/aity-cloud/monty/pkg/apis/stream/v1/stream.proto",
 }
 
 const (
@@ -398,5 +398,5 @@ var Relay_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "github.com/rancher/opni/pkg/apis/stream/v1/stream.proto",
+	Metadata: "github.com/aity-cloud/monty/pkg/apis/stream/v1/stream.proto",
 }

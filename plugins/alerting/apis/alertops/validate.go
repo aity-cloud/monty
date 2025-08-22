@@ -1,8 +1,8 @@
 package alertops
 
 import (
+	"github.com/aity-cloud/monty/pkg/validation"
 	prommodel "github.com/prometheus/common/model"
-	"github.com/rancher/opni/pkg/validation"
 	"k8s.io/apimachinery/pkg/api/resource"
 )
 
@@ -11,7 +11,7 @@ func (c *ClusterConfiguration) Validate() error {
 		return validation.Error("ClusterConfiguration must be set")
 	}
 	if c.NumReplicas < 1 {
-		return validation.Error("Number of opni alerting replicas must at least be 1")
+		return validation.Error("Number of monty alerting replicas must at least be 1")
 	}
 	if c.ResourceLimits == nil {
 		return validation.Error("ResourceSpec must be set")

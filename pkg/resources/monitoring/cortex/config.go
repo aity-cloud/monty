@@ -6,17 +6,17 @@ import (
 	"fmt"
 	"slices"
 
+	"github.com/aity-cloud/monty/pkg/alerting/shared"
+	"github.com/aity-cloud/monty/pkg/logger"
+	"github.com/aity-cloud/monty/plugins/metrics/apis/cortexops"
+	"github.com/aity-cloud/monty/plugins/metrics/pkg/cortex/configutil"
 	"github.com/cortexproject/cortex/pkg/storage/bucket/filesystem"
 	"github.com/go-kit/log"
-	"github.com/rancher/opni/pkg/alerting/shared"
-	"github.com/rancher/opni/pkg/logger"
-	"github.com/rancher/opni/plugins/metrics/apis/cortexops"
-	"github.com/rancher/opni/plugins/metrics/pkg/cortex/configutil"
 	"github.com/samber/lo"
 	"github.com/weaveworks/common/server"
 
+	"github.com/aity-cloud/monty/pkg/resources"
 	"github.com/cortexproject/cortex/pkg/util/tls"
-	"github.com/rancher/opni/pkg/resources"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	ctrl "sigs.k8s.io/controller-runtime"
@@ -94,7 +94,7 @@ func (r *Reconciler) config() ([]resources.Resource, string, error) {
 			QueryFrontendAddress: "cortex-query-frontend-headless:9095",
 			MemberlistJoinAddrs:  []string{"cortex-memberlist"},
 			AlertManager: configutil.AlertmanagerOverrideShape{
-				AlertmanagerURL: fmt.Sprintf("https://opni-internal.%s.svc:8080/plugin_alerting/alertmanager", r.mc.Namespace),
+				AlertmanagerURL: fmt.Sprintf("https://monty-internal.%s.svc:8080/plugin_alerting/alertmanager", r.mc.Namespace),
 				EnableV2:        true,
 				ClientTLS:       configutil.TLSClientConfigShape(tlsGatewayClientConfig),
 			},

@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"strings"
 
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	managementv1 "github.com/rancher/opni/pkg/apis/management/v1"
-	proxyv1 "github.com/rancher/opni/pkg/apis/proxy/v1"
-	"github.com/rancher/opni/pkg/auth"
-	utilerrors "github.com/rancher/opni/pkg/util/errors"
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	managementv1 "github.com/aity-cloud/monty/pkg/apis/management/v1"
+	proxyv1 "github.com/aity-cloud/monty/pkg/apis/proxy/v1"
+	"github.com/aity-cloud/monty/pkg/auth"
+	utilerrors "github.com/aity-cloud/monty/pkg/util/errors"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/protobuf/types/known/emptypb"
 )

@@ -9,28 +9,28 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/aity-cloud/monty/plugins/alerting/apis/alertops" //nolint:monty
 	"github.com/google/uuid"
-	"github.com/rancher/opni/plugins/alerting/apis/alertops" //nolint:opni
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/status"
 
+	"github.com/aity-cloud/monty/pkg/alerting/client"
+	"github.com/aity-cloud/monty/pkg/alerting/drivers/config"
+	"github.com/aity-cloud/monty/pkg/clients"
 	backoffv2 "github.com/lestrrat-go/backoff/v2"
-	"github.com/rancher/opni/pkg/alerting/client"
-	"github.com/rancher/opni/pkg/alerting/drivers/config"
-	"github.com/rancher/opni/pkg/clients"
 
 	"log/slog"
 
-	alertingv1 "github.com/rancher/opni/pkg/apis/alerting/v1"
-	"github.com/rancher/opni/pkg/logger"
-	"github.com/rancher/opni/pkg/util"
-	"github.com/rancher/opni/pkg/validation"
+	alertingv1 "github.com/aity-cloud/monty/pkg/apis/alerting/v1"
+	"github.com/aity-cloud/monty/pkg/logger"
+	"github.com/aity-cloud/monty/pkg/util"
+	"github.com/aity-cloud/monty/pkg/validation"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	managementv1 "github.com/rancher/opni/pkg/apis/management/v1"
+	managementv1 "github.com/aity-cloud/monty/pkg/apis/management/v1"
 	"gopkg.in/yaml.v2"
 )
 

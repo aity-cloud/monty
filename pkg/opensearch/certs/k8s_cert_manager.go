@@ -73,7 +73,7 @@ func WithRestConfig(restconfig *rest.Config) CertMgrOption {
 
 func NewCertMgrOpensearchCertManager(ctx context.Context, opts ...CertMgrOption) OpensearchCertManager {
 	options := certMgrOptions{
-		cluster: "opni",
+		cluster: "monty",
 	}
 	options.apply(opts...)
 

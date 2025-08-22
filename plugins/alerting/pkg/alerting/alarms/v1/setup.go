@@ -5,23 +5,23 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/aity-cloud/monty/pkg/alerting/drivers/cortex"
+	"github.com/aity-cloud/monty/pkg/alerting/metrics"
+	"github.com/aity-cloud/monty/pkg/alerting/metrics/naming"
+	alertingSync "github.com/aity-cloud/monty/pkg/alerting/server/sync"
+	"github.com/aity-cloud/monty/pkg/alerting/shared"
+	alertingv1 "github.com/aity-cloud/monty/pkg/apis/alerting/v1"
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	"github.com/aity-cloud/monty/plugins/metrics/apis/cortexadmin"
 	"github.com/prometheus/common/model"
-	"github.com/rancher/opni/pkg/alerting/drivers/cortex"
-	"github.com/rancher/opni/pkg/alerting/metrics"
-	"github.com/rancher/opni/pkg/alerting/metrics/naming"
-	alertingSync "github.com/rancher/opni/pkg/alerting/server/sync"
-	"github.com/rancher/opni/pkg/alerting/shared"
-	alertingv1 "github.com/rancher/opni/pkg/apis/alerting/v1"
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	"github.com/rancher/opni/plugins/metrics/apis/cortexadmin"
 	"github.com/samber/lo"
 	"gopkg.in/yaml.v3"
 )
 
 const (
-	metadataLastAppliedHashKey = "opni.io/alarm-hash"
+	metadataLastAppliedHashKey = "monty.io/alarm-hash"
 	// this metadata key indicates this has yet to be activated in a remote backend
-	metadataInactiveAlarm = "opni.io/alarm-inactive"
+	metadataInactiveAlarm = "monty.io/alarm-inactive"
 )
 
 func (p *AlarmServerComponent) shouldDelete(
@@ -241,7 +241,7 @@ func (p *AlarmServerComponent) handleKubeAlertCreation(ctx context.Context, cond
 	}
 	_, err = adminClient.LoadRules(ctx, &cortexadmin.LoadRuleRequest{
 		ClusterId:   k.GetClusterId(),
-		Namespace:   shared.OpniAlertingCortexNamespace,
+		Namespace:   shared.MontyAlertingCortexNamespace,
 		YamlContent: out,
 	})
 	if err != nil {
@@ -287,7 +287,7 @@ func (p *AlarmServerComponent) handleCpuSaturationAlertCreation(
 
 	_, err = adminClient.LoadRules(ctx, &cortexadmin.LoadRuleRequest{
 		ClusterId:   c.ClusterId.GetId(),
-		Namespace:   shared.OpniAlertingCortexNamespace,
+		Namespace:   shared.MontyAlertingCortexNamespace,
 		YamlContent: out,
 	})
 	return err
@@ -328,7 +328,7 @@ func (p *AlarmServerComponent) handleMemorySaturationAlertCreation(ctx context.C
 	}
 	_, err = adminClient.LoadRules(ctx, &cortexadmin.LoadRuleRequest{
 		ClusterId:   m.ClusterId.GetId(),
-		Namespace:   shared.OpniAlertingCortexNamespace,
+		Namespace:   shared.MontyAlertingCortexNamespace,
 		YamlContent: out,
 	})
 	return err
@@ -369,7 +369,7 @@ func (p *AlarmServerComponent) handleFsSaturationAlertCreation(ctx context.Conte
 	}
 	_, err = adminClient.LoadRules(ctx, &cortexadmin.LoadRuleRequest{
 		ClusterId:   fs.ClusterId.GetId(),
-		Namespace:   shared.OpniAlertingCortexNamespace,
+		Namespace:   shared.MontyAlertingCortexNamespace,
 		YamlContent: out,
 	})
 	return err
@@ -406,7 +406,7 @@ func (p *AlarmServerComponent) handlePrometheusQueryAlertCreation(ctx context.Co
 	}
 	_, err = adminClient.LoadRules(ctx, &cortexadmin.LoadRuleRequest{
 		ClusterId:   q.ClusterId.GetId(),
-		Namespace:   shared.OpniAlertingCortexNamespace,
+		Namespace:   shared.MontyAlertingCortexNamespace,
 		YamlContent: out.Bytes(),
 	})
 

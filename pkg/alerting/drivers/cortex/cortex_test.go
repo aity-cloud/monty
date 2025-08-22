@@ -3,13 +3,13 @@ package cortex_test
 import (
 	"encoding/json"
 
+	"github.com/aity-cloud/monty/pkg/alerting/drivers/cortex"
+	"github.com/aity-cloud/monty/pkg/alerting/shared"
+	alertingv1 "github.com/aity-cloud/monty/pkg/apis/alerting/v1"
+	"github.com/aity-cloud/monty/pkg/metrics/compat"
+	"github.com/aity-cloud/monty/pkg/test/testdata"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/rancher/opni/pkg/alerting/drivers/cortex"
-	"github.com/rancher/opni/pkg/alerting/shared"
-	alertingv1 "github.com/rancher/opni/pkg/apis/alerting/v1"
-	"github.com/rancher/opni/pkg/metrics/compat"
-	"github.com/rancher/opni/pkg/test/testdata"
 )
 
 func convertToMatrix(filepath string) []*alertingv1.ActiveWindow {
@@ -55,7 +55,7 @@ var _ = Describe("Alerting cortex suite", Label("unit"), func() {
 	})
 
 	When("We parse cortex webhook payloads", func() {
-		It("should parse valid payloads to appropriate opni alerting payloads", func() {
+		It("should parse valid payloads to appropriate monty alerting payloads", func() {
 			someId := shared.NewAlertingRefId()
 			somename := "some-alert-name"
 			exampleWorkingPayload := NewSimpleMockAlertManagerPayloadFromAnnotations(map[string]string{
@@ -68,14 +68,14 @@ var _ = Describe("Alerting cortex suite", Label("unit"), func() {
 			Expect(err).To(Succeed())
 			Expect(annotations).To(HaveLen(1))
 
-			opniResponses, errors := ParseAlertManagerWebhookPayload(annotations)
+			montyResponses, errors := ParseAlertManagerWebhookPayload(annotations)
 			Expect(errors).To(HaveLen(1))
-			Expect(len(opniResponses)).To(Equal(len(errors)))
+			Expect(len(montyResponses)).To(Equal(len(errors)))
 			for _, e := range errors {
 				Expect(e).To(Succeed())
 			}
-			Expect(opniResponses[0].ConditionId.GetId()).To(Equal(someId))
-			Expect(opniResponses[0].Annotations["alertname"]).To(Equal(somename))
+			Expect(montyResponses[0].ConditionId.GetId()).To(Equal(someId))
+			Expect(montyResponses[0].Annotations["alertname"]).To(Equal(somename))
 		})
 
 		It("Should errror on invalid cortex webhook payloads", func() {
@@ -87,11 +87,11 @@ var _ = Describe("Alerting cortex suite", Label("unit"), func() {
 			Expect(err).To(Succeed())
 			annotations, err := ParseCortexPayloadBytes(mockBody)
 			Expect(err).To(Succeed())
-			opniRequests, errors := ParseAlertManagerWebhookPayload(annotations)
+			montyRequests, errors := ParseAlertManagerWebhookPayload(annotations)
 			Expect(errors).To(HaveLen(1))
-			Expect(len(opniRequests)).To(Equal(len(errors)))
+			Expect(len(montyRequests)).To(Equal(len(errors)))
 			Expect(errors[0]).To(HaveOccurred())
-			Expect(opniRequests[0]).To(BeNil())
+			Expect(montyRequests[0]).To(BeNil())
 		})
 	})
 })

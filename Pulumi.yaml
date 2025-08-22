@@ -1,26 +1,26 @@
-name: opni
+name: monty
 runtime: go
-description: Deploy Opni on AWS
+description: Deploy Monty on AWS
 main: infra/
 stackConfigDir: infra/
 template:
   config:
-    opni:namePrefix:
+    monty:namePrefix:
       description: "Deployment Name"
-      default: opni
-    opni:cluster.nodeGroupDesiredSize:
+      default: monty
+    monty:cluster.nodeGroupDesiredSize:
       description: "Desired number of nodes in the cluster"
       default: 3
-    opni:cluster.nodeGroupMaxSize:
+    monty:cluster.nodeGroupMaxSize:
       description: "Maximum number of nodes in the cluster"
       default: 3
-    opni:cluster.nodeGroupMinSize:
+    monty:cluster.nodeGroupMinSize:
       description: "Minimum number of nodes in the cluster"
       default: 3
-    opni:cluster.nodeInstanceType:
+    monty:cluster.nodeInstanceType:
       description: "Instance type for worker nodes"
       default: r6a.xlarge
-    opni:zoneID:
+    monty:zoneID:
       description: "AWS Route53 Zone ID"
     aws:region:
       description: AWS Region

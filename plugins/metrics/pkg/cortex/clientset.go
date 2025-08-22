@@ -11,8 +11,8 @@ import (
 	"net/http"
 	"syscall"
 
-	"github.com/rancher/opni/plugins/metrics/apis/cortexadmin"
-	"github.com/rancher/opni/plugins/metrics/pkg/gateway/drivers"
+	"github.com/aity-cloud/monty/plugins/metrics/apis/cortexadmin"
+	"github.com/aity-cloud/monty/plugins/metrics/pkg/gateway/drivers"
 	"golang.org/x/tools/pkg/memoize"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -26,7 +26,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 
-	configv1 "github.com/rancher/opni/pkg/config/v1"
+	configv1 "github.com/aity-cloud/monty/pkg/config/v1"
 )
 
 type HTTPClientOptions struct {

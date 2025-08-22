@@ -7,10 +7,10 @@ import (
 	opensearchv1 "github.com/Opster/opensearch-k8s-operator/opensearch-operator/api/v1"
 	"github.com/Opster/opensearch-k8s-operator/opensearch-operator/pkg/helpers"
 	opensearchk8s "github.com/Opster/opensearch-k8s-operator/opensearch-operator/pkg/reconcilers/k8s"
-	"github.com/rancher/opni/pkg/opensearch/certs"
-	opensearchtypes "github.com/rancher/opni/pkg/opensearch/opensearch/types"
-	opensearch "github.com/rancher/opni/pkg/opensearch/reconciler"
-	"github.com/rancher/opni/pkg/resources"
+	"github.com/aity-cloud/monty/pkg/opensearch/certs"
+	opensearchtypes "github.com/aity-cloud/monty/pkg/opensearch/opensearch/types"
+	opensearch "github.com/aity-cloud/monty/pkg/opensearch/reconciler"
+	"github.com/aity-cloud/monty/pkg/resources"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 )
 
@@ -89,8 +89,8 @@ func (r *Reconciler) ReconcileOpensearchObjects(opensearchCluster *opensearchv1.
 	}
 
 	templates := []opensearchtypes.IndexTemplateSpec{
-		OpniLogTemplate,
-		OpniSpanTemplate,
+		MontyLogTemplate,
+		MontySpanTemplate,
 	}
 
 	for _, template := range templates {
@@ -131,7 +131,7 @@ func (r *Reconciler) ReconcileOpensearchObjects(opensearchCluster *opensearchv1.
 	}
 
 	mappings := map[string]opensearchtypes.TemplateMappingsSpec{
-		"mappings": opniServiceMapTemplate.Template.Mappings,
+		"mappings": montyServiceMapTemplate.Template.Mappings,
 	}
 	retErr = reconciler.MaybeCreateIndex(serviceMapIndexName, mappings)
 	if retErr != nil {

@@ -1,4 +1,4 @@
-module github.com/rancher/opni/dagger
+module github.com/aity-cloud/monty/dagger
 
 go 1.21
 

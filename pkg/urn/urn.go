@@ -8,7 +8,7 @@ import (
 
 var ErrInvalidURN = errors.New("invalid URN")
 
-const Namespace = "opni"
+const Namespace = "monty"
 
 type UpdateType string
 
@@ -21,32 +21,32 @@ func AllUpdateTypes() []UpdateType {
 	return []UpdateType{Agent, Plugin}
 }
 
-type OpniURN struct {
+type MontyURN struct {
 	Namespace string
 	Type      UpdateType
 	Strategy  string
 	Component string
 }
 
-func ParseString(urn string) (OpniURN, error) {
+func ParseString(urn string) (MontyURN, error) {
 	splitURN := strings.Split(urn, ":")
 	if len(splitURN) != 5 {
-		return OpniURN{}, fmt.Errorf("%w: incorrect number of fields", ErrInvalidURN)
+		return MontyURN{}, fmt.Errorf("%w: incorrect number of fields", ErrInvalidURN)
 	}
 
-	u := OpniURN{
+	u := MontyURN{
 		Namespace: splitURN[1],
 		Type:      UpdateType(splitURN[2]),
 		Strategy:  splitURN[3],
 		Component: splitURN[4],
 	}
 	if err := u.Validate(); err != nil {
-		return OpniURN{}, err
+		return MontyURN{}, err
 	}
 	return u, nil
 }
 
-func (u OpniURN) Validate() error {
+func (u MontyURN) Validate() error {
 	if u.Namespace == "" {
 		return fmt.Errorf("%w: missing namespace", ErrInvalidURN)
 	}
@@ -65,8 +65,8 @@ func (u OpniURN) Validate() error {
 	return nil
 }
 
-func NewOpniURN(updateType UpdateType, strategy, component string) OpniURN {
-	return OpniURN{
+func NewMontyURN(updateType UpdateType, strategy, component string) MontyURN {
+	return MontyURN{
 		Namespace: Namespace,
 		Type:      updateType,
 		Strategy:  strategy,
@@ -74,6 +74,6 @@ func NewOpniURN(updateType UpdateType, strategy, component string) OpniURN {
 	}
 }
 
-func (u OpniURN) String() string {
+func (u MontyURN) String() string {
 	return fmt.Sprintf("urn:%s:%s:%s:%s", u.Namespace, u.Type, u.Strategy, u.Component)
 }

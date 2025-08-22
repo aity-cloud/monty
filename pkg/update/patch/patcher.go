@@ -8,11 +8,11 @@ import (
 	"log/slog"
 	"sync"
 
+	"github.com/aity-cloud/monty/pkg/config/reactive"
+	configv1 "github.com/aity-cloud/monty/pkg/config/v1"
 	"github.com/gabstv/go-bsdiff/pkg/bsdiff"
 	"github.com/gabstv/go-bsdiff/pkg/bspatch"
 	"github.com/klauspost/compress/zstd"
-	"github.com/rancher/opni/pkg/config/reactive"
-	configv1 "github.com/rancher/opni/pkg/config/v1"
 	"google.golang.org/protobuf/reflect/protoreflect"
 )
 

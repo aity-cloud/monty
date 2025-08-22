@@ -4,41 +4,41 @@
 resources:
   - opensearch/opensearch.opster.io_opensearchclusters.yaml
   - opensearch/opensearch.opster.io_opensearchroles.yaml
-  - grafana/grafana.opni.io_grafanadashboards.yaml
-  - grafana/grafana.opni.io_grafanadatasources.yaml
-  - grafana/grafana.opni.io_grafanas.yaml
-  - bases/ai.opni.io_opniclusters.yaml
-  - bases/ai.opni.io_pretrainedmodels.yaml
-  - bases/core.opni.io_bootstraptokens.yaml
-  - bases/core.opni.io_keyrings.yaml
-  - bases/core.opni.io_gateways.yaml
-  - bases/core.opni.io_loggingclusters.yaml
-  - bases/core.opni.io_monitoringclusters.yaml
-  - bases/core.opni.io_alertingclusters.yaml
-  - bases/core.opni.io_natsclusters.yaml
-  #- bases/core.opni.io_collectors.yaml
-  - bases/logging.opni.io_datapreppers.yaml
-  - bases/logging.opni.io_logadapters.yaml
-  - bases/logging.opni.io_loggingclusterbindings.yaml
-  - bases/logging.opni.io_multiclusterrolebindings.yaml
-  - bases/logging.opni.io_multiclusterusers.yaml
-  - bases/logging.opni.io_opniopensearches.yaml
-  - bases/logging.opni.io_opensearchrepositories.yaml
-  - bases/logging.opni.io_snapshots.yaml
-  - bases/logging.opni.io_recurringsnapshots.yaml
-  #- bases/logging.opni.io_collectorconfigs.yaml
-  - bases/monitoring.opni.io_rolebindings.yaml
-  - bases/monitoring.opni.io_roles.yaml
-  #- bases/monitoring.opni.io_collectorconfigs.yaml
-  - bases/logging.opni.io_preprocessors.yaml
+  - grafana/grafana.monty.io_grafanadashboards.yaml
+  - grafana/grafana.monty.io_grafanadatasources.yaml
+  - grafana/grafana.monty.io_grafanas.yaml
+  - bases/ai.monty.io_montyclusters.yaml
+  - bases/ai.monty.io_pretrainedmodels.yaml
+  - bases/core.monty.io_bootstraptokens.yaml
+  - bases/core.monty.io_keyrings.yaml
+  - bases/core.monty.io_gateways.yaml
+  - bases/core.monty.io_loggingclusters.yaml
+  - bases/core.monty.io_monitoringclusters.yaml
+  - bases/core.monty.io_alertingclusters.yaml
+  - bases/core.monty.io_natsclusters.yaml
+  #- bases/core.monty.io_collectors.yaml
+  - bases/logging.monty.io_datapreppers.yaml
+  - bases/logging.monty.io_logadapters.yaml
+  - bases/logging.monty.io_loggingclusterbindings.yaml
+  - bases/logging.monty.io_multiclusterrolebindings.yaml
+  - bases/logging.monty.io_multiclusterusers.yaml
+  - bases/logging.monty.io_montyopensearches.yaml
+  - bases/logging.monty.io_opensearchrepositories.yaml
+  - bases/logging.monty.io_snapshots.yaml
+  - bases/logging.monty.io_recurringsnapshots.yaml
+  #- bases/logging.monty.io_collectorconfigs.yaml
+  - bases/monitoring.monty.io_rolebindings.yaml
+  - bases/monitoring.monty.io_roles.yaml
+  #- bases/monitoring.monty.io_collectorconfigs.yaml
+  - bases/logging.monty.io_preprocessors.yaml
 
 # +kubebuilder:scaffold:crdkustomizeresource
 
 #patchesStrategicMerge:
 # [WEBHOOK] To enable webhook, uncomment all the sections with [WEBHOOK] prefix.
 # patches here are for enabling the conversion webhook for each CRD
-#- patches/webhook_in_opniclusters.yaml
-# - patches/webhook_in_opnidemoes.yaml
+#- patches/webhook_in_montyclusters.yaml
+# - patches/webhook_in_montydemoes.yaml
 #- patches/webhook_in_logadapters.yaml
 #- patches/webhook_in_pretrainedmodels.yaml
 #- patches/webhook_in_gpupolicyadapters.yaml
@@ -46,8 +46,8 @@ resources:
 
 # [CERTMANAGER] To enable webhook, uncomment all the sections with [CERTMANAGER] prefix.
 # patches here are for enabling the CA injection for each CRD
-#- patches/cainjection_in_opniclusters.yaml
-#- patches/cainjection_in_opnidemoes.yaml
+#- patches/cainjection_in_montyclusters.yaml
+#- patches/cainjection_in_montydemoes.yaml
 #- patches/cainjection_in_logadapters.yaml
 #- patches/cainjection_in_pretrainedmodels.yaml
 #- patches/cainjection_in_gpupolicyadapters.yaml

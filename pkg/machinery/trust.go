@@ -3,9 +3,9 @@ package machinery
 import (
 	"fmt"
 
-	"github.com/rancher/opni/pkg/config/v1beta1"
-	"github.com/rancher/opni/pkg/keyring"
-	"github.com/rancher/opni/pkg/trust"
+	"github.com/aity-cloud/monty/pkg/config/v1beta1"
+	"github.com/aity-cloud/monty/pkg/keyring"
+	"github.com/aity-cloud/monty/pkg/trust"
 )
 
 func BuildTrustStrategy(kind v1beta1.TrustStrategyKind, kr keyring.Keyring) (trust.Strategy, error) {

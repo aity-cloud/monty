@@ -3,16 +3,16 @@ package controllers_test
 import (
 	"context"
 
+	aiv1beta1 "github.com/aity-cloud/monty/apis/ai/v1beta1"
 	. "github.com/kralicky/kmatch"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	aiv1beta1 "github.com/rancher/opni/apis/ai/v1beta1"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/intstr"
 )
 
-// FIXME: https://github.com/rancher/opni/issues/1742
+// FIXME: https://github.com/aity-cloud/monty/issues/1742
 var _ = XDescribe("AI PretrainedModel Controller", Ordered, Label("controller"), func() {
 	It("should reconcile pretrained model resources", func() {
 		By("Creating a pretrainedmodel")
@@ -37,7 +37,7 @@ var _ = XDescribe("AI PretrainedModel Controller", Ordered, Label("controller"),
 		By("checking if a configmap was created")
 		hpConfigMap := &corev1.ConfigMap{
 			ObjectMeta: metav1.ObjectMeta{
-				Name:      "opni-test-hyperparameters",
+				Name:      "monty-test-hyperparameters",
 				Namespace: model.Namespace,
 			},
 		}

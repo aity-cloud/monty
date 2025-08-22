@@ -8,10 +8,10 @@ import (
 	"strings"
 	"time"
 
+	"github.com/aity-cloud/monty/pkg/alerting/message"
 	"github.com/prometheus/common/model"
 	"github.com/prometheus/prometheus/model/rulefmt"
 	promql "github.com/prometheus/prometheus/promql/parser"
-	"github.com/rancher/opni/pkg/alerting/message"
 	"github.com/samber/lo"
 	"gopkg.in/yaml.v3"
 )
@@ -207,10 +207,10 @@ func (a *AlertingRule) Build(id string) (*rulefmt.RuleNode, error) {
 		return nil, fmt.Errorf("constructed rule : %s is not a valid prometheus rule %v", promRule.Expr.Value, err)
 	}
 	promRule.Annotations = lo.Assign(promRule.Annotations, map[string]string{
-		message.NotificationPropertyOpniUuid: id,
+		message.NotificationPropertyMontyUuid: id,
 	})
 	promRule.Labels = lo.Assign(promRule.Labels, map[string]string{
-		message.NotificationPropertyOpniUuid: id,
+		message.NotificationPropertyMontyUuid: id,
 	})
 	return promRule, nil
 }

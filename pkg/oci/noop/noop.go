@@ -3,8 +3,8 @@ package noop
 import (
 	"context"
 
+	"github.com/aity-cloud/monty/pkg/oci"
 	"github.com/opencontainers/go-digest"
-	"github.com/rancher/opni/pkg/oci"
 )
 
 const (
@@ -20,7 +20,7 @@ func NewNoopOCIFetcher() (oci.Fetcher, error) {
 func (d *noopOCIFetcher) GetImage(_ context.Context, _ oci.ImageType) (*oci.Image, error) {
 	return &oci.Image{
 		Registry:   "example.io",
-		Repository: "opni-noop",
+		Repository: "monty-noop",
 		Digest:     digest.Digest(imageDigest),
 	}, nil
 }

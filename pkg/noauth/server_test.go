@@ -10,17 +10,17 @@ import (
 	"strings"
 	"time"
 
+	"github.com/aity-cloud/monty/pkg/capabilities/wellknown"
+	"github.com/aity-cloud/monty/pkg/test/freeport"
+	"github.com/aity-cloud/monty/pkg/test/testlog"
 	"github.com/lestrrat-go/jwx/jwk"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/rancher/opni/pkg/capabilities/wellknown"
-	"github.com/rancher/opni/pkg/test/freeport"
-	"github.com/rancher/opni/pkg/test/testlog"
 
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	openidauth "github.com/rancher/opni/pkg/auth/openid"
-	"github.com/rancher/opni/pkg/noauth"
-	"github.com/rancher/opni/pkg/test"
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	openidauth "github.com/aity-cloud/monty/pkg/auth/openid"
+	"github.com/aity-cloud/monty/pkg/noauth"
+	"github.com/aity-cloud/monty/pkg/test"
 )
 
 var _ = Describe("Server", Ordered, Label("integration", "slow"), func() {

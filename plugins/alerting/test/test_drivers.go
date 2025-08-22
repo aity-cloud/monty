@@ -24,25 +24,25 @@ import (
 
 	"log/slog"
 
+	"github.com/aity-cloud/monty/pkg/alerting/client"
+	"github.com/aity-cloud/monty/pkg/alerting/drivers/config"
+	"github.com/aity-cloud/monty/pkg/alerting/drivers/routing"
+	"github.com/aity-cloud/monty/pkg/alerting/extensions"
+	"github.com/aity-cloud/monty/pkg/alerting/shared"
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	"github.com/aity-cloud/monty/pkg/logger"
+	"github.com/aity-cloud/monty/pkg/plugins"
+	"github.com/aity-cloud/monty/pkg/plugins/driverutil"
+	"github.com/aity-cloud/monty/pkg/test"
+	"github.com/aity-cloud/monty/pkg/test/freeport"
+	"github.com/aity-cloud/monty/pkg/test/testutil"
+	"github.com/aity-cloud/monty/pkg/util"
+	"github.com/aity-cloud/monty/plugins/alerting/apis/alertops"
+	node_drivers "github.com/aity-cloud/monty/plugins/alerting/pkg/agent/drivers"
+	alerting_drivers "github.com/aity-cloud/monty/plugins/alerting/pkg/alerting/drivers"
+	"github.com/aity-cloud/monty/plugins/alerting/pkg/apis/node"
+	"github.com/aity-cloud/monty/plugins/alerting/pkg/apis/rules"
 	"github.com/prometheus/common/model"
-	"github.com/rancher/opni/pkg/alerting/client"
-	"github.com/rancher/opni/pkg/alerting/drivers/config"
-	"github.com/rancher/opni/pkg/alerting/drivers/routing"
-	"github.com/rancher/opni/pkg/alerting/extensions"
-	"github.com/rancher/opni/pkg/alerting/shared"
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	"github.com/rancher/opni/pkg/logger"
-	"github.com/rancher/opni/pkg/plugins"
-	"github.com/rancher/opni/pkg/plugins/driverutil"
-	"github.com/rancher/opni/pkg/test"
-	"github.com/rancher/opni/pkg/test/freeport"
-	"github.com/rancher/opni/pkg/test/testutil"
-	"github.com/rancher/opni/pkg/util"
-	"github.com/rancher/opni/plugins/alerting/apis/alertops"
-	node_drivers "github.com/rancher/opni/plugins/alerting/pkg/agent/drivers"
-	alerting_drivers "github.com/rancher/opni/plugins/alerting/pkg/alerting/drivers"
-	"github.com/rancher/opni/plugins/alerting/pkg/apis/node"
-	"github.com/rancher/opni/plugins/alerting/pkg/apis/rules"
 	"github.com/samber/lo"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -125,14 +125,14 @@ func NewTestEnvAlertingClusterDriver(env *test.Environment, options TestEnvAlert
 	initial := &atomic.Bool{}
 	initial.Store(false)
 	ePort := freeport.GetFreePort()
-	opniAddr := fmt.Sprintf("127.0.0.1:%d", ePort)
-	_ = extensions.StartOpniEmbeddedServer(env.Context(), opniAddr, false)
+	montyAddr := fmt.Sprintf("127.0.0.1:%d", ePort)
+	_ = extensions.StartMontyEmbeddedServer(env.Context(), montyAddr, false)
 	rTree := routing.NewRoutingTree(&config.WebhookConfig{
 		NotifierConfig: config.NotifierConfig{
 			VSendResolved: false,
 		},
 		URL: &amCfg.URL{
-			URL: util.Must(url.Parse(fmt.Sprintf("http://%s%s", opniAddr, shared.AlertingDefaultHookName))),
+			URL: util.Must(url.Parse(fmt.Sprintf("http://%s%s", montyAddr, shared.AlertingDefaultHookName))),
 		},
 	})
 	rTreeBytes, err := yaml.Marshal(rTree)
@@ -156,7 +156,7 @@ func NewTestEnvAlertingClusterDriver(env *test.Environment, options TestEnvAlert
 		logger:            lg,
 		subscribers:       options.Subscribers,
 		stateMu:           &sync.RWMutex{},
-		embdServerAddress: opniAddr,
+		embdServerAddress: montyAddr,
 	}
 }
 
@@ -202,7 +202,7 @@ func (l *TestEnvAlertingClusterDriver) ConfigureCluster(_ context.Context, confi
 	if len(l.managedInstances) > 1 {
 		l.AlertingClusterOptions.WorkerNodesService = "127.0.0.1"
 		l.AlertingClusterOptions.WorkerNodePort = l.managedInstances[1].AlertManagerPort
-		l.AlertingClusterOptions.OpniPort = l.managedInstances[1].OpniPort
+		l.AlertingClusterOptions.MontyPort = l.managedInstances[1].MontyPort
 	}
 	l.ClusterConfiguration = configuration
 
@@ -307,7 +307,7 @@ func (l *TestEnvAlertingClusterDriver) InstallCluster(_ context.Context, _ *empt
 
 	l.AlertingClusterOptions.ControllerClusterPort = l.managedInstances[0].ClusterPort
 	l.AlertingClusterOptions.ControllerNodePort = l.managedInstances[0].AlertManagerPort
-	l.AlertingClusterOptions.OpniPort = l.managedInstances[0].OpniPort
+	l.AlertingClusterOptions.MontyPort = l.managedInstances[0].MontyPort
 	return &emptypb.Empty{}, nil
 }
 
@@ -340,7 +340,7 @@ func (l *TestEnvAlertingClusterDriver) ShouldDisableNode(_ *corev1.Reference) er
 type AlertingServerUnit struct {
 	AlertManagerPort int
 	ClusterPort      int
-	OpniPort         int
+	MontyPort        int
 	Ctx              context.Context
 	CancelFunc       context.CancelFunc
 }
@@ -349,9 +349,9 @@ func (l *TestEnvAlertingClusterDriver) StartAlertingBackendServer(
 	ctx context.Context,
 	configFilePath string,
 ) AlertingServerUnit {
-	opniBin := path.Join(l.env.TestBin, "../../bin/opni")
+	montyBin := path.Join(l.env.TestBin, "../../bin/monty")
 	webPort := freeport.GetFreePort()
-	opniPort := freeport.GetFreePort()
+	montyPort := freeport.GetFreePort()
 	syncerPort := freeport.GetFreePort()
 	syncerArgs := []string{
 		"alerting-server",
@@ -402,14 +402,14 @@ func (l *TestEnvAlertingClusterDriver) StartAlertingBackendServer(
 	}
 
 	ctxCa, cancelFunc := context.WithCancel(ctx)
-	alertmanagerCmd := exec.CommandContext(ctxCa, opniBin, alertmanagerArgs...)
+	alertmanagerCmd := exec.CommandContext(ctxCa, montyBin, alertmanagerArgs...)
 	plugins.ConfigureSysProcAttr(alertmanagerCmd)
-	l.logger.Debug("Starting opni alertmanagwer with : " + strings.Join(alertmanagerArgs, " "))
-	l.logger.With("alertmanager-port", webPort, "opni-port", opniPort).Info("Starting AlertManager")
+	l.logger.Debug("Starting monty alertmanagwer with : " + strings.Join(alertmanagerArgs, " "))
+	l.logger.With("alertmanager-port", webPort, "monty-port", montyPort).Info("Starting AlertManager")
 	session, err := testutil.StartCmd(alertmanagerCmd)
 	if err != nil {
 		if !errors.Is(ctx.Err(), context.Canceled) {
-			panic(fmt.Sprintf("%s : opni bin path : %s", err, opniBin))
+			panic(fmt.Sprintf("%s : monty bin path : %s", err, montyBin))
 		} else {
 			panic(err)
 		}
@@ -451,13 +451,13 @@ func (l *TestEnvAlertingClusterDriver) StartAlertingBackendServer(
 	}
 
 	l.logger.Debug("Syncer starting with : " + strings.Join(syncerArgs, " "))
-	syncerCmd := exec.CommandContext(ctxCa, opniBin, syncerArgs...)
+	syncerCmd := exec.CommandContext(ctxCa, montyBin, syncerArgs...)
 	plugins.ConfigureSysProcAttr(syncerCmd)
 	l.logger.With("port", syncerPort).Info("Starting AlertManager Syncer")
 	_, err = testutil.StartCmd(syncerCmd)
 	if err != nil {
 		if !errors.Is(ctx.Err(), context.Canceled) {
-			panic(fmt.Sprintf("%s : opni bin path : %s", err, opniBin))
+			panic(fmt.Sprintf("%s : monty bin path : %s", err, montyBin))
 		} else {
 			panic(err)
 		}
@@ -473,7 +473,7 @@ func (l *TestEnvAlertingClusterDriver) StartAlertingBackendServer(
 	return AlertingServerUnit{
 		AlertManagerPort: webPort,
 		ClusterPort:      clusterPort,
-		OpniPort:         opniPort,
+		MontyPort:        montyPort,
 		Ctx:              ctxCa,
 		CancelFunc:       cancelFunc,
 	}

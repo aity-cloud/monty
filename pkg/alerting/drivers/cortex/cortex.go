@@ -5,28 +5,28 @@ import (
 	"strings"
 	"time"
 
+	"github.com/aity-cloud/monty/pkg/alerting/message"
+	"github.com/aity-cloud/monty/pkg/alerting/metrics"
+	"github.com/aity-cloud/monty/pkg/alerting/shared"
+	alertingv1 "github.com/aity-cloud/monty/pkg/apis/alerting/v1"
 	prommodel "github.com/prometheus/common/model"
 	"github.com/prometheus/prometheus/model/rulefmt"
-	"github.com/rancher/opni/pkg/alerting/message"
-	"github.com/rancher/opni/pkg/alerting/metrics"
-	"github.com/rancher/opni/pkg/alerting/shared"
-	alertingv1 "github.com/rancher/opni/pkg/apis/alerting/v1"
 	"github.com/samber/lo"
 	"gopkg.in/yaml.v3"
 )
 
 /*
-Contains the struct/function adapters required for opni alerting to
+Contains the struct/function adapters required for monty alerting to
 communicate with cortex.
 */
 
 const (
-	MetadataCortexNamespace = "opni.io/cortex-rule-namespace"
-	MetadataCortexGroup     = "opni.io/cortex-rule-group"
-	MetadataCortexRuleName  = "opni.io/cortex-rule-name"
+	MetadataCortexNamespace = "monty.io/cortex-rule-namespace"
+	MetadataCortexGroup     = "monty.io/cortex-rule-group"
+	MetadataCortexRuleName  = "monty.io/cortex-rule-name"
 )
 
-const alertingSuffix = "-opni-alerting"
+const alertingSuffix = "-monty-alerting"
 
 // this enforces whatever default the remote prometheus instance has
 const defaultAlertingInterval = prommodel.Duration(0 * time.Minute)
@@ -40,12 +40,12 @@ func TimeDurationToPromStr(t time.Duration) string {
 }
 
 func ConstructRecordingRuleName(prefix, typeName string) string {
-	return fmt.Sprintf("opni:%s:%s", prefix, typeName)
+	return fmt.Sprintf("monty:%s:%s", prefix, typeName)
 }
 
 func ConstructIdLabelsForRecordingRule(alertId string) map[string]string {
 	return map[string]string{
-		message.NotificationPropertyOpniUuid: alertId,
+		message.NotificationPropertyMontyUuid: alertId,
 	}
 }
 
@@ -60,8 +60,8 @@ func ConstructFiltersFromMap(in map[string]string) string {
 func NewPrometheusAlertingRule(
 	alertId,
 	_ string,
-	opniLabels,
-	opniAnnotations map[string]string,
+	montyLabels,
+	montyAnnotations map[string]string,
 	info alertingv1.IndexableMetric,
 	interval *time.Duration,
 	rule metrics.AlertRuleBuilder,
@@ -85,8 +85,8 @@ func NewPrometheusAlertingRule(
 	}
 	// have the alerting rule instead point to the recording rule(s)
 	alertingRule.Expr.Value = fmt.Sprintf("%s{%s}", recordingRuleFmt.Record.Value, ConstructFiltersFromMap(idLabels))
-	alertingRule.Labels = lo.Assign(alertingRule.Labels, opniLabels)
-	alertingRule.Annotations = lo.Assign(alertingRule.Annotations, opniAnnotations)
+	alertingRule.Labels = lo.Assign(alertingRule.Labels, montyLabels)
+	alertingRule.Annotations = lo.Assign(alertingRule.Annotations, montyAnnotations)
 
 	var promInterval prommodel.Duration
 	if interval == nil {
@@ -102,7 +102,7 @@ func NewPrometheusAlertingRule(
 	}
 
 	return rg, map[string]string{
-		MetadataCortexNamespace: shared.OpniAlertingCortexNamespace,
+		MetadataCortexNamespace: shared.MontyAlertingCortexNamespace,
 		MetadataCortexGroup:     rg.Name,
 		MetadataCortexRuleName:  alertingRule.Alert.Value,
 	}, nil

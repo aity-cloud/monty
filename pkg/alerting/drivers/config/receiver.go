@@ -9,11 +9,11 @@ import (
 	"net/url"
 	"strings"
 
+	"github.com/aity-cloud/monty/pkg/alerting/shared"
+	"github.com/aity-cloud/monty/pkg/alerting/templates"
+	alertingv1 "github.com/aity-cloud/monty/pkg/apis/alerting/v1"
+	"github.com/aity-cloud/monty/pkg/util"
 	amCfg "github.com/prometheus/alertmanager/config"
-	"github.com/rancher/opni/pkg/alerting/shared"
-	"github.com/rancher/opni/pkg/alerting/templates"
-	alertingv1 "github.com/rancher/opni/pkg/apis/alerting/v1"
-	"github.com/rancher/opni/pkg/util"
 	"github.com/samber/lo"
 	"gopkg.in/yaml.v2"
 )
@@ -23,19 +23,19 @@ const missingTitle = "<missing title>"
 
 // Extends the receiver configs of AlertManager, e.g. SlackConfig, EmailConfig...
 // panics when the receiver type
-type OpniReceiver interface {
+type MontyReceiver interface {
 	InternalId() string
 	// extract non-specific receiver info
 	ExtractInfo() *alertingv1.EndpointImplementation
 	// set non-specific receiver info
 	StoreInfo(details *alertingv1.EndpointImplementation)
 	// configure receiver specific info
-	Configure(*alertingv1.AlertEndpoint) OpniReceiver
-	Clone() OpniReceiver
+	Configure(*alertingv1.AlertEndpoint) MontyReceiver
+	Clone() MontyReceiver
 	yaml.Unmarshaler
 }
 
-func ExtractReceiver(unmarshall func(interface{}) error, _ /*data*/ interface{}) (OpniReceiver, error) {
+func ExtractReceiver(unmarshall func(interface{}) error, _ /*data*/ interface{}) (MontyReceiver, error) {
 	type slack SlackConfig
 	type email EmailConfig
 	type pagerduty PagerdutyConfig
@@ -90,9 +90,9 @@ func ExtractReceiver(unmarshall func(interface{}) error, _ /*data*/ interface{})
 	return nil, fmt.Errorf("unknown receiver type")
 }
 
-// Takes a collection of OpniReceivers and converts them to a single AlertManager
+// Takes a collection of MontyReceivers and converts them to a single AlertManager
 // this function will panic if it cannot convert the receivers
-func BuildReceiver(receiverId string, recvs []OpniReceiver) (Receiver, error) {
+func BuildReceiver(receiverId string, recvs []MontyReceiver) (Receiver, error) {
 	var r Receiver
 	slackCfg := []*SlackConfig{}
 	emailCfg := []*EmailConfig{}
@@ -154,21 +154,21 @@ func BuildReceiver(receiverId string, recvs []OpniReceiver) (Receiver, error) {
 	}, nil
 }
 
-var _ OpniReceiver = (*EmailConfig)(nil)
-var _ OpniReceiver = (*SlackConfig)(nil)
-var _ OpniReceiver = (*PagerdutyConfig)(nil)
-var _ OpniReceiver = (*WebhookConfig)(nil)
-var _ OpniReceiver = (*OpsGenieConfig)(nil)
-var _ OpniReceiver = (*VictorOpsConfig)(nil)
-var _ OpniReceiver = (*WechatConfig)(nil)
-var _ OpniReceiver = (*PushoverConfig)(nil)
-var _ OpniReceiver = (*SNSConfig)(nil)
-var _ OpniReceiver = (*TelegramConfig)(nil)
+var _ MontyReceiver = (*EmailConfig)(nil)
+var _ MontyReceiver = (*SlackConfig)(nil)
+var _ MontyReceiver = (*PagerdutyConfig)(nil)
+var _ MontyReceiver = (*WebhookConfig)(nil)
+var _ MontyReceiver = (*OpsGenieConfig)(nil)
+var _ MontyReceiver = (*VictorOpsConfig)(nil)
+var _ MontyReceiver = (*WechatConfig)(nil)
+var _ MontyReceiver = (*PushoverConfig)(nil)
+var _ MontyReceiver = (*SNSConfig)(nil)
+var _ MontyReceiver = (*TelegramConfig)(nil)
 
-// var _ OpniReceiver = (*DiscordConfig)(nil)
-// var _ OpniReceiver = (*WebexConfig)(nil)
+// var _ MontyReceiver = (*DiscordConfig)(nil)
+// var _ MontyReceiver = (*WebexConfig)(nil)
 
-// --- OpniReceiver Implementations
+// --- MontyReceiver Implementations
 
 func (c *EmailConfig) InternalId() string {
 	return shared.InternalEmailId
@@ -197,7 +197,7 @@ func (c *EmailConfig) StoreInfo(details *alertingv1.EndpointImplementation) {
 	c.HTML = details.Body
 }
 
-func (c *EmailConfig) Configure(endp *alertingv1.AlertEndpoint) OpniReceiver {
+func (c *EmailConfig) Configure(endp *alertingv1.AlertEndpoint) MontyReceiver {
 	emailSpec := endp.GetEmail()
 	c.To = emailSpec.To
 	if emailSpec.SmtpFrom != nil {
@@ -227,7 +227,7 @@ func (c *EmailConfig) Configure(endp *alertingv1.AlertEndpoint) OpniReceiver {
 	return c
 }
 
-func (c *EmailConfig) Clone() OpniReceiver {
+func (c *EmailConfig) Clone() MontyReceiver {
 	return util.DeepCopy(c)
 }
 
@@ -253,7 +253,7 @@ func (c *SlackConfig) StoreInfo(details *alertingv1.EndpointImplementation) {
 	}
 }
 
-func (c *SlackConfig) Configure(endp *alertingv1.AlertEndpoint) OpniReceiver {
+func (c *SlackConfig) Configure(endp *alertingv1.AlertEndpoint) MontyReceiver {
 	slackSpec := endp.GetSlack()
 	parsedURL, err := url.Parse(slackSpec.WebhookUrl)
 	if err != nil {
@@ -268,7 +268,7 @@ func (c *SlackConfig) Configure(endp *alertingv1.AlertEndpoint) OpniReceiver {
 	return c
 }
 
-func (c *SlackConfig) Clone() OpniReceiver {
+func (c *SlackConfig) Clone() MontyReceiver {
 	return util.DeepCopy(c)
 }
 
@@ -294,7 +294,7 @@ func (c *PagerdutyConfig) StoreInfo(details *alertingv1.EndpointImplementation) 
 	}
 }
 
-func (c *PagerdutyConfig) Configure(endp *alertingv1.AlertEndpoint) OpniReceiver {
+func (c *PagerdutyConfig) Configure(endp *alertingv1.AlertEndpoint) MontyReceiver {
 	pagerdutySpec := endp.GetPagerDuty()
 	if pagerdutySpec.ServiceKey != "" {
 		c.ServiceKey = pagerdutySpec.ServiceKey
@@ -314,7 +314,7 @@ func (c *PagerdutyConfig) Configure(endp *alertingv1.AlertEndpoint) OpniReceiver
 	return c
 }
 
-func (c *PagerdutyConfig) Clone() OpniReceiver {
+func (c *PagerdutyConfig) Clone() MontyReceiver {
 	return util.DeepCopy(c)
 }
 
@@ -340,12 +340,12 @@ func (c *WebhookConfig) StoreInfo(details *alertingv1.EndpointImplementation) {
 	}
 }
 
-func (c *WebhookConfig) Configure(endp *alertingv1.AlertEndpoint) OpniReceiver {
+func (c *WebhookConfig) Configure(endp *alertingv1.AlertEndpoint) MontyReceiver {
 	webhookSpec := endp.GetWebhook()
 	return ToWebhook(webhookSpec)
 }
 
-func (c *WebhookConfig) Clone() OpniReceiver {
+func (c *WebhookConfig) Clone() MontyReceiver {
 	return util.DeepCopy(c)
 }
 
@@ -362,11 +362,11 @@ func (c *OpsGenieConfig) StoreInfo(_ *alertingv1.EndpointImplementation) {
 	//TODO
 }
 
-func (c *OpsGenieConfig) Configure(*alertingv1.AlertEndpoint) OpniReceiver {
+func (c *OpsGenieConfig) Configure(*alertingv1.AlertEndpoint) MontyReceiver {
 	return c
 }
 
-func (c *OpsGenieConfig) Clone() OpniReceiver {
+func (c *OpsGenieConfig) Clone() MontyReceiver {
 	return util.DeepCopy(c)
 }
 
@@ -383,11 +383,11 @@ func (c *VictorOpsConfig) StoreInfo(_ *alertingv1.EndpointImplementation) {
 	//TODO
 }
 
-func (c *VictorOpsConfig) Configure(*alertingv1.AlertEndpoint) OpniReceiver {
+func (c *VictorOpsConfig) Configure(*alertingv1.AlertEndpoint) MontyReceiver {
 	return c
 }
 
-func (c *VictorOpsConfig) Clone() OpniReceiver {
+func (c *VictorOpsConfig) Clone() MontyReceiver {
 	return util.DeepCopy(c)
 }
 
@@ -404,11 +404,11 @@ func (c *WechatConfig) StoreInfo(_ *alertingv1.EndpointImplementation) {
 	//TODO
 }
 
-func (c *WechatConfig) Configure(*alertingv1.AlertEndpoint) OpniReceiver {
+func (c *WechatConfig) Configure(*alertingv1.AlertEndpoint) MontyReceiver {
 	return c
 }
 
-func (c *WechatConfig) Clone() OpniReceiver {
+func (c *WechatConfig) Clone() MontyReceiver {
 	return util.DeepCopy(c)
 }
 
@@ -425,11 +425,11 @@ func (c *PushoverConfig) StoreInfo(_ *alertingv1.EndpointImplementation) {
 	//TODO
 }
 
-func (c *PushoverConfig) Configure(*alertingv1.AlertEndpoint) OpniReceiver {
+func (c *PushoverConfig) Configure(*alertingv1.AlertEndpoint) MontyReceiver {
 	return c
 }
 
-func (c *PushoverConfig) Clone() OpniReceiver {
+func (c *PushoverConfig) Clone() MontyReceiver {
 	return util.DeepCopy(c)
 }
 
@@ -446,11 +446,11 @@ func (c *SNSConfig) StoreInfo(_ *alertingv1.EndpointImplementation) {
 	//TODO
 }
 
-func (c *SNSConfig) Configure(*alertingv1.AlertEndpoint) OpniReceiver {
+func (c *SNSConfig) Configure(*alertingv1.AlertEndpoint) MontyReceiver {
 	return c
 }
 
-func (c *SNSConfig) Clone() OpniReceiver {
+func (c *SNSConfig) Clone() MontyReceiver {
 	return util.DeepCopy(c)
 }
 
@@ -467,10 +467,10 @@ func (c *TelegramConfig) StoreInfo(_ *alertingv1.EndpointImplementation) {
 	//TODO
 }
 
-func (c *TelegramConfig) Configure(*alertingv1.AlertEndpoint) OpniReceiver {
+func (c *TelegramConfig) Configure(*alertingv1.AlertEndpoint) MontyReceiver {
 	return c
 }
 
-func (c *TelegramConfig) Clone() OpniReceiver {
+func (c *TelegramConfig) Clone() MontyReceiver {
 	return util.DeepCopy(c)
 }

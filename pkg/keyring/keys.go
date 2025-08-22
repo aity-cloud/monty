@@ -5,8 +5,8 @@ import (
 
 	"slices"
 
-	"github.com/rancher/opni/pkg/keyring/ephemeral"
-	"github.com/rancher/opni/pkg/pkp"
+	"github.com/aity-cloud/monty/pkg/keyring/ephemeral"
+	"github.com/aity-cloud/monty/pkg/pkp"
 )
 
 // Key types are used indirectly via an interface, as most key values would

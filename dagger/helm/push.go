@@ -6,9 +6,9 @@ import (
 	"path/filepath"
 
 	"dagger.io/dagger"
+	"github.com/aity-cloud/monty/dagger/config"
+	"github.com/aity-cloud/monty/dagger/images"
 	"github.com/distribution/reference"
-	"github.com/rancher/opni/dagger/config"
-	"github.com/rancher/opni/dagger/images"
 )
 
 type PushOpts struct {

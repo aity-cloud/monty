@@ -6,7 +6,7 @@ local patchDashboard(d) = {
     list: [
       if x.name == 'cluster'
       then x {
-        query: 'query_result(opni_cluster_info)',
+        query: 'query_result(monty_cluster_info)',
         regex: '/__tenant_id__="(?<value>[^"]+)|friendly_name="(?<text>[^"]+)/g',
       }
       else x

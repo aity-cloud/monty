@@ -14,13 +14,13 @@ import (
 	"strings"
 	"time"
 
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	proxyv1 "github.com/aity-cloud/monty/pkg/apis/proxy/v1"
+	"github.com/aity-cloud/monty/pkg/logger"
+	"github.com/aity-cloud/monty/pkg/proxy"
+	"github.com/aity-cloud/monty/pkg/proxy/backend"
+	"github.com/aity-cloud/monty/pkg/storage"
 	"github.com/gin-gonic/gin"
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	proxyv1 "github.com/rancher/opni/pkg/apis/proxy/v1"
-	"github.com/rancher/opni/pkg/logger"
-	"github.com/rancher/opni/pkg/proxy"
-	"github.com/rancher/opni/pkg/proxy/backend"
-	"github.com/rancher/opni/pkg/storage"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
@@ -140,10 +140,10 @@ func (r *implRouter) handle(c *gin.Context) {
 }
 
 func (r *implRouter) fetchRoles(userID string) (*corev1.ReferenceList, error) {
-	if userID == "opni.io_admin" {
+	if userID == "monty.io_admin" {
 		return &corev1.ReferenceList{
 			Items: []*corev1.Reference{
-				{Id: "opni.io_admin"},
+				{Id: "monty.io_admin"},
 			},
 		}, nil
 	}

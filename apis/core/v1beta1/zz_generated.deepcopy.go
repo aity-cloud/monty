@@ -6,7 +6,7 @@ package v1beta1
 
 import (
 	apiv1 "github.com/Opster/opensearch-k8s-operator/opensearch-operator/api/v1"
-	"github.com/rancher/opni/pkg/util/meta"
+	"github.com/aity-cloud/monty/pkg/util/meta"
 	appsv1 "k8s.io/api/apps/v1"
 	"k8s.io/api/core/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"

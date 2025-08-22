@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"log/slog"
 
+	"github.com/aity-cloud/monty/pkg/logger"
 	"github.com/lestrrat-go/jwx/jwt"
 	"github.com/lestrrat-go/jwx/jwt/openid"
-	"github.com/rancher/opni/pkg/logger"
 	"golang.org/x/oauth2"
 )
 

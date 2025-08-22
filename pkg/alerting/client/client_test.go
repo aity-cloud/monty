@@ -5,23 +5,23 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/aity-cloud/monty/pkg/alerting/client"
+	"github.com/aity-cloud/monty/pkg/alerting/message"
+	"github.com/aity-cloud/monty/pkg/alerting/shared"
 	"github.com/google/uuid"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/rancher/opni/pkg/alerting/client"
-	"github.com/rancher/opni/pkg/alerting/message"
-	"github.com/rancher/opni/pkg/alerting/shared"
 	"github.com/samber/lo"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	alertingv1 "github.com/aity-cloud/monty/pkg/apis/alerting/v1"
 	alertmanagerv2 "github.com/prometheus/alertmanager/api/v2/models"
 	"github.com/prometheus/alertmanager/pkg/labels"
-	alertingv1 "github.com/rancher/opni/pkg/apis/alerting/v1"
 )
 
-func opniAlerts(ag alertmanagerv2.AlertGroups) alertmanagerv2.AlertGroups {
+func montyAlerts(ag alertmanagerv2.AlertGroups) alertmanagerv2.AlertGroups {
 	return lo.Filter(ag, func(item *alertmanagerv2.AlertGroup, _ int) bool {
-		_, ok := item.Labels["opni_uuid"]
+		_, ok := item.Labels["monty_uuid"]
 		return ok
 	})
 }
@@ -88,7 +88,7 @@ func BuildConfigClientTestSuite(
 					}
 					return resp
 					// default receivers for each severity + default hook
-				}).Should(HaveLen(len(alertingv1.OpniSeverity_value) + 1))
+				}).Should(HaveLen(len(alertingv1.MontySeverity_value) + 1))
 			})
 
 			It("should report specific receivers", func() {
@@ -122,13 +122,13 @@ func BuildAlertAndQuerierClientTestSuite(
 			sl = silenceBuilder()
 		})
 		When("Using the alert client", func() {
-			It("should intially report an empty list of opni alerts", func() {
+			It("should intially report an empty list of monty alerts", func() {
 				ag, err := cl.ListAlerts(env.Context())
 				Expect(err).To(Succeed())
 				Expect(ag).NotTo(BeNil())
 
-				opniAlerts := opniAlerts(ag)
-				Expect(opniAlerts).To(HaveLen(0))
+				montyAlerts := montyAlerts(ag)
+				Expect(montyAlerts).To(HaveLen(0))
 			})
 
 			It("Should be able to post an alarm", func() {
@@ -150,15 +150,15 @@ func BuildAlertAndQuerierClientTestSuite(
 					if ag == nil {
 						return fmt.Errorf("ag is nil")
 					}
-					opniAlerts := opniAlerts(ag)
-					if len(opniAlerts) != 1 {
-						return fmt.Errorf("length of opniAlerts is not 1")
+					montyAlerts := montyAlerts(ag)
+					if len(montyAlerts) != 1 {
+						return fmt.Errorf("length of montyAlerts is not 1")
 					}
-					if len(opniAlerts[0].Alerts) != 1 {
-						return fmt.Errorf("opniAlerts[0].Alerts is not of length 1")
+					if len(montyAlerts[0].Alerts) != 1 {
+						return fmt.Errorf("montyAlerts[0].Alerts is not of length 1")
 					}
-					if opniAlerts[0].Alerts[0].Labels["opni_uuid"] != "test" {
-						return fmt.Errorf("opni_uuid label is not test")
+					if montyAlerts[0].Alerts[0].Labels["monty_uuid"] != "test" {
+						return fmt.Errorf("monty_uuid label is not test")
 					}
 					return nil
 				}).Should(Succeed())
@@ -177,7 +177,7 @@ func BuildAlertAndQuerierClientTestSuite(
 					alert, err := cl.GetAlert(env.Context(), []*labels.Matcher{
 						{
 							Type:  labels.MatchEqual,
-							Name:  "opni_uuid",
+							Name:  "monty_uuid",
 							Value: "test2",
 						},
 					})
@@ -199,7 +199,7 @@ func BuildAlertAndQuerierClientTestSuite(
 				alert, err := cl.GetAlert(env.Context(), []*labels.Matcher{
 					{
 						Type:  labels.MatchEqual,
-						Name:  "opni_uuid",
+						Name:  "monty_uuid",
 						Value: "test2",
 					},
 				})
@@ -221,7 +221,7 @@ func BuildAlertAndQuerierClientTestSuite(
 					ag, err := cl.GetAlert(env.Context(), []*labels.Matcher{
 						{
 							Type:  labels.MatchEqual,
-							Name:  "opni_uuid",
+							Name:  "monty_uuid",
 							Value: "on-demand",
 						},
 					})
@@ -280,8 +280,8 @@ func BuildAlertAndQuerierClientTestSuite(
 						if *silence.ID != silenceId {
 							return fmt.Errorf("silence id is not %s", silenceId)
 						}
-						if *silence.Matchers[0].Name != "opni_uuid" {
-							return fmt.Errorf("silence matcher name is not opni_uuid")
+						if *silence.Matchers[0].Name != "monty_uuid" {
+							return fmt.Errorf("silence matcher name is not monty_uuid")
 						}
 						if *silence.Matchers[0].Value != id {
 							return fmt.Errorf("silence matcher value is not %s", id)
@@ -325,8 +325,8 @@ func BuildAlertAndQuerierClientTestSuite(
 						if *silence.ID != silenceId {
 							return fmt.Errorf("silence id is not %s", silenceId)
 						}
-						if *silence.Matchers[0].Name != "opni_uuid" {
-							return fmt.Errorf("silence matcher name is not opni_uuid")
+						if *silence.Matchers[0].Name != "monty_uuid" {
+							return fmt.Errorf("silence matcher name is not monty_uuid")
 						}
 						if *silence.Matchers[0].Value != id {
 							return fmt.Errorf("silence matcher value is not %s", id)
@@ -378,11 +378,11 @@ func BuildAlertAndQuerierClientTestSuite(
 						GoldenSignalFilters: []alertingv1.GoldenSignal{
 							alertingv1.GoldenSignal_Custom,
 						},
-						SeverityFilters: []alertingv1.OpniSeverity{
-							alertingv1.OpniSeverity_Critical,
-							alertingv1.OpniSeverity_Error,
-							alertingv1.OpniSeverity_Warning,
-							alertingv1.OpniSeverity_Info,
+						SeverityFilters: []alertingv1.MontySeverity{
+							alertingv1.MontySeverity_Critical,
+							alertingv1.MontySeverity_Error,
+							alertingv1.MontySeverity_Warning,
+							alertingv1.MontySeverity_Info,
 						},
 					})
 					if err != nil {

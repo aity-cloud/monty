@@ -5,11 +5,11 @@ import (
 	"errors"
 
 	opensearchv1 "github.com/Opster/opensearch-k8s-operator/opensearch-operator/api/v1"
+	corev1beta1 "github.com/aity-cloud/monty/apis/core/v1beta1"
+	"github.com/aity-cloud/monty/pkg/resources"
+	"github.com/aity-cloud/monty/pkg/util/k8sutil"
+	"github.com/aity-cloud/monty/pkg/util/meta"
 	"github.com/cisco-open/operator-tools/pkg/reconciler"
-	corev1beta1 "github.com/rancher/opni/apis/core/v1beta1"
-	"github.com/rancher/opni/pkg/resources"
-	"github.com/rancher/opni/pkg/util/k8sutil"
-	"github.com/rancher/opni/pkg/util/meta"
 	k8serrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/client-go/util/retry"
@@ -111,7 +111,7 @@ func (r *Reconciler) Reconcile() (retResult *reconcile.Result, retErr error) {
 		})
 		return
 	default:
-		_, ok := r.loggingCluster.Labels[resources.OpniClusterID]
+		_, ok := r.loggingCluster.Labels[resources.MontyClusterID]
 		if ok {
 			retResult, retErr = r.ReconcileOpensearchObjects(opensearchCluster)
 			if retErr != nil {

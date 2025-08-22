@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/rancher/opni/pkg/util"
+	"github.com/aity-cloud/monty/pkg/util"
 )
 
 type envProvider struct {
@@ -32,7 +32,7 @@ func WithVariableName(name string) EnvIdentOption {
 
 func NewEnvProvider(opts ...EnvIdentOption) Provider {
 	options := EnvIdentOptions{
-		variableName: "OPNI_UNIQUE_IDENTIFIER",
+		variableName: "MONTY_UNIQUE_IDENTIFIER",
 	}
 	options.apply(opts...)
 	return &envProvider{

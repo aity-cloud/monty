@@ -2,10 +2,10 @@ package multiclusteruser
 
 import (
 	opensearchv1 "github.com/Opster/opensearch-k8s-operator/opensearch-operator/api/v1"
-	"github.com/rancher/opni/pkg/opensearch/certs"
-	osapiext "github.com/rancher/opni/pkg/opensearch/opensearch/types"
-	opensearch "github.com/rancher/opni/pkg/opensearch/reconciler"
-	"github.com/rancher/opni/pkg/util/meta"
+	"github.com/aity-cloud/monty/pkg/opensearch/certs"
+	osapiext "github.com/aity-cloud/monty/pkg/opensearch/opensearch/types"
+	opensearch "github.com/aity-cloud/monty/pkg/opensearch/reconciler"
+	"github.com/aity-cloud/monty/pkg/util/meta"
 	"k8s.io/client-go/util/retry"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"

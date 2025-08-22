@@ -8,10 +8,10 @@ import (
 
 	"log/slog"
 
+	"github.com/aity-cloud/monty/pkg/logger"
+	"github.com/aity-cloud/monty/pkg/metrics"
 	"github.com/kralicky/totem"
 	"github.com/prometheus/client_golang/prometheus"
-	"github.com/rancher/opni/pkg/logger"
-	"github.com/rancher/opni/pkg/metrics"
 	"go.opentelemetry.io/otel/attribute"
 	otelprometheus "go.opentelemetry.io/otel/exporters/prometheus"
 	"go.opentelemetry.io/otel/sdk/metric"
@@ -21,14 +21,14 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	agentv1 "github.com/rancher/opni/pkg/agent"
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	streamv1 "github.com/rancher/opni/pkg/apis/stream/v1"
-	"github.com/rancher/opni/pkg/auth/cluster"
-	"github.com/rancher/opni/pkg/plugins/meta"
-	"github.com/rancher/opni/pkg/plugins/types"
-	"github.com/rancher/opni/pkg/storage"
-	"github.com/rancher/opni/pkg/util"
+	agentv1 "github.com/aity-cloud/monty/pkg/agent"
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	streamv1 "github.com/aity-cloud/monty/pkg/apis/stream/v1"
+	"github.com/aity-cloud/monty/pkg/auth/cluster"
+	"github.com/aity-cloud/monty/pkg/plugins/meta"
+	"github.com/aity-cloud/monty/pkg/plugins/types"
+	"github.com/aity-cloud/monty/pkg/storage"
+	"github.com/aity-cloud/monty/pkg/util"
 )
 
 type streamPlugin struct {
@@ -86,7 +86,7 @@ func (s *StreamServer) getProviderForId(agentId string) *metric.MeterProvider {
 		return prev
 	}
 	exporter, err := otelprometheus.New(
-		otelprometheus.WithRegisterer(prometheus.WrapRegistererWithPrefix("opni_gateway_", s.metricsRegisterer)),
+		otelprometheus.WithRegisterer(prometheus.WrapRegistererWithPrefix("monty_gateway_", s.metricsRegisterer)),
 		otelprometheus.WithoutScopeInfo(),
 		otelprometheus.WithoutTargetInfo(),
 	)

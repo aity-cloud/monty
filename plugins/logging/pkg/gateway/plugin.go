@@ -7,48 +7,48 @@ import (
 	"log/slog"
 	"os"
 
+	"github.com/aity-cloud/monty/plugins/logging/apis/loggingadmin"
+	"github.com/aity-cloud/monty/plugins/logging/apis/opensearch"
 	"github.com/dbason/featureflags"
-	"github.com/rancher/opni/plugins/logging/apis/loggingadmin"
-	"github.com/rancher/opni/plugins/logging/apis/opensearch"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/client-go/rest"
 
-	"github.com/rancher/opni/pkg/agent"
-	capabilityv1 "github.com/rancher/opni/pkg/apis/capability/v1"
-	opnicorev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	managementv1 "github.com/rancher/opni/pkg/apis/management/v1"
-	"github.com/rancher/opni/pkg/features"
-	"github.com/rancher/opni/pkg/logger"
-	managementext "github.com/rancher/opni/pkg/plugins/apis/apiextensions/management"
-	streamext "github.com/rancher/opni/pkg/plugins/apis/apiextensions/stream"
-	"github.com/rancher/opni/pkg/plugins/apis/capability"
-	"github.com/rancher/opni/pkg/plugins/apis/proxy"
-	"github.com/rancher/opni/pkg/plugins/apis/system"
-	"github.com/rancher/opni/pkg/plugins/driverutil"
-	"github.com/rancher/opni/pkg/plugins/meta"
-	"github.com/rancher/opni/pkg/resources/opniopensearch"
-	"github.com/rancher/opni/pkg/resources/preprocessor"
-	"github.com/rancher/opni/pkg/storage"
-	"github.com/rancher/opni/pkg/task"
-	"github.com/rancher/opni/pkg/util"
-	"github.com/rancher/opni/pkg/util/future"
-	opnimeta "github.com/rancher/opni/pkg/util/meta"
-	alertingapi "github.com/rancher/opni/plugins/logging/apis/alerting"
-	"github.com/rancher/opni/plugins/logging/pkg/backend"
-	"github.com/rancher/opni/plugins/logging/pkg/gateway/alerting"
-	backenddriver "github.com/rancher/opni/plugins/logging/pkg/gateway/drivers/backend"
-	managementdriver "github.com/rancher/opni/plugins/logging/pkg/gateway/drivers/management"
-	"github.com/rancher/opni/plugins/logging/pkg/opensearchdata"
-	"github.com/rancher/opni/plugins/logging/pkg/otel"
+	"github.com/aity-cloud/monty/pkg/agent"
+	capabilityv1 "github.com/aity-cloud/monty/pkg/apis/capability/v1"
+	montycorev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	managementv1 "github.com/aity-cloud/monty/pkg/apis/management/v1"
+	"github.com/aity-cloud/monty/pkg/features"
+	"github.com/aity-cloud/monty/pkg/logger"
+	managementext "github.com/aity-cloud/monty/pkg/plugins/apis/apiextensions/management"
+	streamext "github.com/aity-cloud/monty/pkg/plugins/apis/apiextensions/stream"
+	"github.com/aity-cloud/monty/pkg/plugins/apis/capability"
+	"github.com/aity-cloud/monty/pkg/plugins/apis/proxy"
+	"github.com/aity-cloud/monty/pkg/plugins/apis/system"
+	"github.com/aity-cloud/monty/pkg/plugins/driverutil"
+	"github.com/aity-cloud/monty/pkg/plugins/meta"
+	"github.com/aity-cloud/monty/pkg/resources/montyopensearch"
+	"github.com/aity-cloud/monty/pkg/resources/preprocessor"
+	"github.com/aity-cloud/monty/pkg/storage"
+	"github.com/aity-cloud/monty/pkg/task"
+	"github.com/aity-cloud/monty/pkg/util"
+	"github.com/aity-cloud/monty/pkg/util/future"
+	montymeta "github.com/aity-cloud/monty/pkg/util/meta"
+	alertingapi "github.com/aity-cloud/monty/plugins/logging/apis/alerting"
+	"github.com/aity-cloud/monty/plugins/logging/pkg/backend"
+	"github.com/aity-cloud/monty/plugins/logging/pkg/gateway/alerting"
+	backenddriver "github.com/aity-cloud/monty/plugins/logging/pkg/gateway/drivers/backend"
+	managementdriver "github.com/aity-cloud/monty/plugins/logging/pkg/gateway/drivers/management"
+	"github.com/aity-cloud/monty/plugins/logging/pkg/opensearchdata"
+	"github.com/aity-cloud/monty/plugins/logging/pkg/otel"
 	collogspb "go.opentelemetry.io/proto/otlp/collector/logs/v1"
 	coltracepb "go.opentelemetry.io/proto/otlp/collector/trace/v1"
 )
 
 const (
-	OpensearchBindingName = "opni-logging"
-	OpniPreprocessingPort = 4317
+	OpensearchBindingName  = "monty-logging"
+	MontyPreprocessingPort = 4317
 )
 
 type Plugin struct {
@@ -85,13 +85,13 @@ func (p *Plugin) ManagementServices(_ managementext.ServiceController) []util.Se
 }
 
 // Authorized checks whether a given set of roles is allowed to access a given request
-func (p *Plugin) CheckAuthz(_ context.Context, _ *opnicorev1.ReferenceList, _, _ string) bool {
+func (p *Plugin) CheckAuthz(_ context.Context, _ *montycorev1.ReferenceList, _, _ string) bool {
 	return true
 }
 
 type PluginOptions struct {
 	storageNamespace  string
-	opensearchCluster *opnimeta.OpensearchClusterRef
+	opensearchCluster *montymeta.OpensearchClusterRef
 	restconfig        *rest.Config
 	featureOverride   featureflags.FeatureFlag
 	natsRef           *corev1.LocalObjectReference
@@ -111,7 +111,7 @@ func WithNamespace(namespace string) PluginOption {
 	}
 }
 
-func WithOpensearchCluster(cluster *opnimeta.OpensearchClusterRef) PluginOption {
+func WithOpensearchCluster(cluster *montymeta.OpensearchClusterRef) PluginOption {
 	return func(o *PluginOptions) {
 		o.opensearchCluster = cluster
 	}
@@ -143,7 +143,7 @@ func NewPlugin(ctx context.Context, opts ...PluginOption) *Plugin {
 
 	if options.natsRef == nil {
 		options.natsRef = &corev1.LocalObjectReference{
-			Name: "opni",
+			Name: "monty",
 		}
 	}
 
@@ -170,8 +170,8 @@ func NewPlugin(ctx context.Context, opts ...PluginOption) *Plugin {
 				otel.WithLogger(lg.WithGroup("otel-logs-forwarder")),
 				otel.WithAddress(fmt.Sprintf(
 					"%s:%d",
-					preprocessor.PreprocessorServiceName(opniopensearch.OpniPreprocessingInstanceName),
-					OpniPreprocessingPort,
+					preprocessor.PreprocessorServiceName(montyopensearch.MontyPreprocessingInstanceName),
+					MontyPreprocessingPort,
 				)),
 				otel.WithDialOptions(grpc.WithTransportCredentials(insecure.NewCredentials())),
 				otel.WithPrivileged(true),
@@ -180,8 +180,8 @@ func NewPlugin(ctx context.Context, opts ...PluginOption) *Plugin {
 				otel.WithLogger(lg.WithGroup("otel-trace-forwarder")),
 				otel.WithAddress(fmt.Sprintf(
 					"%s:%d",
-					preprocessor.PreprocessorServiceName(opniopensearch.OpniPreprocessingInstanceName),
-					OpniPreprocessingPort,
+					preprocessor.PreprocessorServiceName(montyopensearch.MontyPreprocessingInstanceName),
+					MontyPreprocessingPort,
 				)),
 				otel.WithDialOptions(grpc.WithTransportCredentials(insecure.NewCredentials())),
 				otel.WithPrivileged(true),
@@ -318,7 +318,7 @@ func (p *Plugin) NewLoggingManagerForPlugin() *LoggingManagerV2 {
 		otelForwarder:     p.otelForwarder,
 		k8sObjectsName: func() string {
 			if p.opensearchCluster == nil {
-				return "opni"
+				return "monty"
 			}
 			return p.opensearchCluster.Name
 		}(),

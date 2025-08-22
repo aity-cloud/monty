@@ -8,11 +8,11 @@ import (
 
 	"log/slog"
 
+	"github.com/aity-cloud/monty/apis"
+	"github.com/aity-cloud/monty/pkg/logger"
+	"github.com/aity-cloud/monty/pkg/util/k8sutil"
+	"github.com/aity-cloud/monty/plugins/topology/apis/node"
 	"github.com/lestrrat-go/backoff/v2"
-	"github.com/rancher/opni/apis"
-	"github.com/rancher/opni/pkg/logger"
-	"github.com/rancher/opni/pkg/util/k8sutil"
-	"github.com/rancher/opni/plugins/topology/apis/node"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 

@@ -4,9 +4,9 @@ import (
 	"context"
 	"encoding/hex"
 
-	controlv1 "github.com/rancher/opni/pkg/apis/control/v1"
-	"github.com/rancher/opni/pkg/update"
-	"github.com/rancher/opni/pkg/urn"
+	controlv1 "github.com/aity-cloud/monty/pkg/apis/control/v1"
+	"github.com/aity-cloud/monty/pkg/update"
+	"github.com/aity-cloud/monty/pkg/urn"
 )
 
 const (
@@ -43,7 +43,7 @@ func (n *pluginSyncHandler) GetCurrentManifest(_ context.Context) (*controlv1.Up
 	return &controlv1.UpdateManifest{
 		Items: []*controlv1.UpdateManifestEntry{
 			{
-				Package: urn.NewOpniURN(urn.Plugin, updateStrategy, "unmanaged").String(),
+				Package: urn.NewMontyURN(urn.Plugin, updateStrategy, "unmanaged").String(),
 				Path:    "unmanaged",
 				Digest:  emptyDigest,
 			},
@@ -55,7 +55,7 @@ func (n *agentSyncHandler) GetCurrentManifest(_ context.Context) (*controlv1.Upd
 	return &controlv1.UpdateManifest{
 		Items: []*controlv1.UpdateManifestEntry{
 			{
-				Package: urn.NewOpniURN(urn.Agent, updateStrategy, "unmanaged").String(),
+				Package: urn.NewMontyURN(urn.Agent, updateStrategy, "unmanaged").String(),
 				Path:    "unmanaged",
 				Digest:  emptyDigest,
 			},

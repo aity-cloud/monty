@@ -7,9 +7,9 @@ import (
 	"path/filepath"
 	"regexp"
 
-	"github.com/rancher/opni/pkg/logger"
-	"github.com/rancher/opni/plugins/metrics/apis/cortexadmin"
-	sloapi "github.com/rancher/opni/plugins/slo/apis/slo"
+	"github.com/aity-cloud/monty/pkg/logger"
+	"github.com/aity-cloud/monty/plugins/metrics/apis/cortexadmin"
+	sloapi "github.com/aity-cloud/monty/plugins/slo/apis/slo"
 	"gopkg.in/yaml.v3"
 	"log/slog"
 )

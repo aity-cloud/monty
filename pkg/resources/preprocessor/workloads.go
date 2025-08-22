@@ -8,8 +8,8 @@ import (
 	"html/template"
 
 	opsterv1 "github.com/Opster/opensearch-k8s-operator/opensearch-operator/api/v1"
-	"github.com/rancher/opni/pkg/resources"
-	opnimeta "github.com/rancher/opni/pkg/util/meta"
+	"github.com/aity-cloud/monty/pkg/resources"
+	montymeta "github.com/aity-cloud/monty/pkg/util/meta"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -23,7 +23,7 @@ const (
 	configKey             = "config.yaml"
 	preprocessorVersion   = "v0.1.5-rc1-0.85.0"
 	preprocessorImageRepo = "ghcr.io/rancher-sandbox"
-	preprocessorImage     = "opni-otel-collector"
+	preprocessorImage     = "monty-otel-collector"
 	otlpGRPCPort          = 4317
 )
 
@@ -92,7 +92,7 @@ exporters:
         key_file: /etc/otel/certs/tls.key
     logs_index: {{ .WriteIndex }}
     dataset: kubernetes
-    namespace: opni
+    namespace: monty
     mapping:
       mode: flatten_attributes
       timestamp_field: time
@@ -201,7 +201,7 @@ func (r *Reconciler) configMap() (resources.Resource, string) {
 			Name:      r.configMapName(),
 			Namespace: r.preprocessor.Namespace,
 			Labels: map[string]string{
-				resources.PartOfLabel: "opni",
+				resources.PartOfLabel: "monty",
 			},
 		},
 		Data: map[string]string{},
@@ -241,7 +241,7 @@ func (r *Reconciler) deployment(configHash string) resources.Resource {
 			Namespace: r.preprocessor.Namespace,
 			Labels: map[string]string{
 				resources.AppNameLabel:  "otel-preprocessor",
-				resources.PartOfLabel:   "opni",
+				resources.PartOfLabel:   "monty",
 				resources.InstanceLabel: r.preprocessor.Name,
 			},
 		},
@@ -250,7 +250,7 @@ func (r *Reconciler) deployment(configHash string) resources.Resource {
 			Selector: &metav1.LabelSelector{
 				MatchLabels: map[string]string{
 					resources.AppNameLabel:  "otel-preprocessor",
-					resources.PartOfLabel:   "opni",
+					resources.PartOfLabel:   "monty",
 					resources.InstanceLabel: r.preprocessor.Name,
 				},
 			},
@@ -258,11 +258,11 @@ func (r *Reconciler) deployment(configHash string) resources.Resource {
 				ObjectMeta: metav1.ObjectMeta{
 					Labels: map[string]string{
 						resources.AppNameLabel:  "otel-preprocessor",
-						resources.PartOfLabel:   "opni",
+						resources.PartOfLabel:   "monty",
 						resources.InstanceLabel: r.preprocessor.Name,
 					},
 					Annotations: map[string]string{
-						resources.OpniConfigHash: configHash,
+						resources.MontyConfigHash: configHash,
 					},
 				},
 				Spec: corev1.PodSpec{
@@ -302,7 +302,7 @@ func (r *Reconciler) service() resources.Resource {
 			Namespace: r.preprocessor.Namespace,
 			Labels: map[string]string{
 				resources.AppNameLabel:  "otel-preprocessor",
-				resources.PartOfLabel:   "opni",
+				resources.PartOfLabel:   "monty",
 				resources.InstanceLabel: r.preprocessor.Name,
 			},
 		},
@@ -317,7 +317,7 @@ func (r *Reconciler) service() resources.Resource {
 			},
 			Selector: map[string]string{
 				resources.AppNameLabel:  "otel-preprocessor",
-				resources.PartOfLabel:   "opni",
+				resources.PartOfLabel:   "monty",
 				resources.InstanceLabel: r.preprocessor.Name,
 			},
 		},
@@ -357,8 +357,8 @@ func (r *Reconciler) caChain() resources.Resource {
 	return resources.Present(chainSecret)
 }
 
-func (r *Reconciler) imageSpec() opnimeta.ImageSpec {
-	return opnimeta.ImageResolver{
+func (r *Reconciler) imageSpec() montymeta.ImageSpec {
+	return montymeta.ImageResolver{
 		Version:       preprocessorVersion,
 		ImageName:     preprocessorImage,
 		DefaultRepo:   preprocessorImageRepo,

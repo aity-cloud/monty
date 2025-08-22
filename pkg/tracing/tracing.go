@@ -5,7 +5,7 @@ import (
 	"log/slog"
 	"os"
 
-	"github.com/rancher/opni/pkg/logger"
+	"github.com/aity-cloud/monty/pkg/logger"
 	"go.opentelemetry.io/contrib/propagators/autoprop"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/exporters/jaeger"

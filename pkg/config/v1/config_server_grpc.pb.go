@@ -2,14 +2,14 @@
 // versions:
 // - protoc-gen-go-grpc v1.3.0
 // - ragu               v1.0.0
-// source: github.com/rancher/opni/pkg/config/v1/config_server.proto
+// source: github.com/aity-cloud/monty/pkg/config/v1/config_server.proto
 
 package configv1
 
 import (
 	context "context"
-	v1 "github.com/rancher/opni/pkg/apis/core/v1"
-	driverutil "github.com/rancher/opni/pkg/plugins/driverutil"
+	v1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	driverutil "github.com/aity-cloud/monty/pkg/plugins/driverutil"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -430,5 +430,5 @@ var GatewayConfig_ServiceDesc = grpc.ServiceDesc{
 			ServerStreams: true,
 		},
 	},
-	Metadata: "github.com/rancher/opni/pkg/config/v1/config_server.proto",
+	Metadata: "github.com/aity-cloud/monty/pkg/config/v1/config_server.proto",
 }

@@ -5,6 +5,13 @@ import (
 	"fmt"
 	"time"
 
+	apicorev1 "github.com/aity-cloud/monty/apis/core/v1"
+	corev1beta1 "github.com/aity-cloud/monty/apis/core/v1beta1"
+	"github.com/aity-cloud/monty/internal/cortex/config/storage"
+	"github.com/aity-cloud/monty/internal/cortex/config/validation"
+	"github.com/aity-cloud/monty/pkg/test/testutil"
+	"github.com/aity-cloud/monty/pkg/util/flagutil"
+	"github.com/aity-cloud/monty/plugins/metrics/apis/cortexops"
 	cmv1 "github.com/cert-manager/cert-manager/pkg/apis/certmanager/v1"
 	cmmeta "github.com/cert-manager/cert-manager/pkg/apis/meta/v1"
 	"github.com/cortexproject/cortex/pkg/cortex"
@@ -12,13 +19,6 @@ import (
 	. "github.com/kralicky/kmatch"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	apicorev1 "github.com/rancher/opni/apis/core/v1"
-	corev1beta1 "github.com/rancher/opni/apis/core/v1beta1"
-	"github.com/rancher/opni/internal/cortex/config/storage"
-	"github.com/rancher/opni/internal/cortex/config/validation"
-	"github.com/rancher/opni/pkg/test/testutil"
-	"github.com/rancher/opni/pkg/util/flagutil"
-	"github.com/rancher/opni/plugins/metrics/apis/cortexops"
 	"github.com/samber/lo"
 	"google.golang.org/protobuf/types/known/durationpb"
 	"gopkg.in/yaml.v2"
@@ -67,7 +67,7 @@ var _ = Describe("Monitoring Controller", Ordered, Label("controller", "slow"), 
 		// patch the certificates and create secrets to simulate cert-manager behavior
 		Expect(k8sClient.Create(context.Background(), &corev1.Secret{
 			ObjectMeta: metav1.ObjectMeta{
-				Name:      "opni-gateway-ca-keys",
+				Name:      "monty-gateway-ca-keys",
 				Namespace: ns,
 			},
 			Data: map[string][]byte{
@@ -77,7 +77,7 @@ var _ = Describe("Monitoring Controller", Ordered, Label("controller", "slow"), 
 		})).To(Succeed())
 		Expect(k8sClient.Create(context.Background(), &corev1.Secret{
 			ObjectMeta: metav1.ObjectMeta{
-				Name:      "opni-gateway-serving-cert",
+				Name:      "monty-gateway-serving-cert",
 				Namespace: ns,
 			},
 			Data: map[string][]byte{
@@ -88,7 +88,7 @@ var _ = Describe("Monitoring Controller", Ordered, Label("controller", "slow"), 
 
 		cert1 := &cmv1.Certificate{
 			ObjectMeta: metav1.ObjectMeta{
-				Name:      "opni-gateway-ca",
+				Name:      "monty-gateway-ca",
 				Namespace: ns,
 			},
 		}
@@ -97,7 +97,7 @@ var _ = Describe("Monitoring Controller", Ordered, Label("controller", "slow"), 
 
 		cert2 := &cmv1.Certificate{
 			ObjectMeta: metav1.ObjectMeta{
-				Name:      "opni-gateway-serving-cert",
+				Name:      "monty-gateway-serving-cert",
 				Namespace: ns,
 			},
 		}
@@ -129,7 +129,7 @@ var _ = Describe("Monitoring Controller", Ordered, Label("controller", "slow"), 
 		newmcv0 := func() *unstructured.Unstructured {
 			return &unstructured.Unstructured{
 				Object: map[string]any{
-					"apiVersion": "core.opni.io/v1beta1",
+					"apiVersion": "core.monty.io/v1beta1",
 					"kind":       "MonitoringCluster",
 					"metadata": map[string]any{
 						"name":      "samplev0",
@@ -280,7 +280,7 @@ var _ = Describe("Monitoring Controller", Ordered, Label("controller", "slow"), 
 		unstructuredV1 := func() *unstructured.Unstructured {
 			return &unstructured.Unstructured{
 				Object: map[string]any{
-					"apiVersion": "core.opni.io/v1beta1",
+					"apiVersion": "core.monty.io/v1beta1",
 					"kind":       "MonitoringCluster",
 					"metadata": map[string]any{
 						"name":      "samplev1",
@@ -396,7 +396,7 @@ var _ = Describe("Monitoring Controller", Ordered, Label("controller", "slow"), 
 				mcv0 := newmcv0()
 				crd := &apiextensionsv1.CustomResourceDefinition{
 					ObjectMeta: metav1.ObjectMeta{
-						Name: "monitoringclusters.core.opni.io",
+						Name: "monitoringclusters.core.monty.io",
 					},
 				}
 				Expect(k8sClient.Get(context.Background(), client.ObjectKeyFromObject(crd), crd)).To(Succeed())
@@ -613,7 +613,7 @@ var _ = Describe("Monitoring Controller", Ordered, Label("controller", "slow"), 
 						HaveOwner(aio),
 						HaveMatchingContainer(And(
 							HaveName(target),
-							HaveImage("opni-test:latest"),
+							HaveImage("monty-test:latest"),
 							HaveVolumeMounts(volumeMounts...),
 						)),
 					))
@@ -628,7 +628,7 @@ var _ = Describe("Monitoring Controller", Ordered, Label("controller", "slow"), 
 						HaveOwner(aio),
 						HaveMatchingContainer(And(
 							HaveName(target),
-							HaveImage("opni-test:latest"),
+							HaveImage("monty-test:latest"),
 							HaveVolumeMounts(volumeMounts...),
 						)),
 					))

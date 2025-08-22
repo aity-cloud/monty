@@ -1,7 +1,7 @@
 syntax = "proto3";
 package alerting;
 
-option go_package = "github.com/rancher/opni/pkg/apis/alerting/v1";
+option go_package = "github.com/aity-cloud/monty/pkg/apis/alerting/v1";
 
 import "google/protobuf/duration.proto";
 import "google/protobuf/struct.proto";
@@ -12,9 +12,9 @@ import "google/api/http.proto";
 import "google/api/annotations.proto";
 import "google/rpc/status.proto";
 
-import "github.com/rancher/opni/pkg/apis/core/v1/core.proto";
-import "github.com/rancher/opni/pkg/apis/alerting/v1/alerting.proto";
-import "github.com/rancher/opni/pkg/apis/alerting/v1/alerting.endpoint.proto";
+import "github.com/aity-cloud/monty/pkg/apis/core/v1/core.proto";
+import "github.com/aity-cloud/monty/pkg/apis/alerting/v1/alerting.proto";
+import "github.com/aity-cloud/monty/pkg/apis/alerting/v1/alerting.endpoint.proto";
 
 
 // -------- CRUD for alerting conditions -------
@@ -128,7 +128,7 @@ message AlertCondition {
   string name = 1;
   string description = 2;
   repeated string labels = 3;
-  OpniSeverity severity = 4;
+  MontySeverity severity = 4;
   AlertTypeDetails alertType = 5;
   AttachedEndpoints attachedEndpoints = 6;
 
@@ -412,7 +412,7 @@ message AlertConditionWithId {
 
 message ListAlertConditionRequest {
   repeated string clusters = 1;
-  repeated alerting.OpniSeverity severities = 2;
+  repeated alerting.MontySeverity severities = 2;
   repeated string labels = 3;
   repeated AlertType alertTypes = 4;
   // default group is identified by ""

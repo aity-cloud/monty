@@ -2,13 +2,13 @@
 // versions:
 // - protoc-gen-go-grpc v1.3.0
 // - ragu               v1.0.0
-// source: github.com/rancher/opni/pkg/apis/alerting/v1/alerting.endpoint.proto
+// source: github.com/aity-cloud/monty/pkg/apis/alerting/v1/alerting.endpoint.proto
 
 package v1
 
 import (
 	context "context"
-	v1 "github.com/rancher/opni/pkg/apis/core/v1"
+	v1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -35,7 +35,7 @@ const (
 type AlertEndpointsClient interface {
 	CreateAlertEndpoint(ctx context.Context, in *AlertEndpoint, opts ...grpc.CallOption) (*v1.Reference, error)
 	GetAlertEndpoint(ctx context.Context, in *v1.Reference, opts ...grpc.CallOption) (*AlertEndpoint, error)
-	// update the endpoint to opt in/out of opni notifications
+	// update the endpoint to opt in/out of monty notifications
 	ToggleNotifications(ctx context.Context, in *ToggleRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	ListAlertEndpoints(ctx context.Context, in *ListAlertEndpointsRequest, opts ...grpc.CallOption) (*AlertEndpointList, error)
 	// when forceUpdate = false,
@@ -120,7 +120,7 @@ func (c *alertEndpointsClient) DeleteAlertEndpoint(ctx context.Context, in *Dele
 type AlertEndpointsServer interface {
 	CreateAlertEndpoint(context.Context, *AlertEndpoint) (*v1.Reference, error)
 	GetAlertEndpoint(context.Context, *v1.Reference) (*AlertEndpoint, error)
-	// update the endpoint to opt in/out of opni notifications
+	// update the endpoint to opt in/out of monty notifications
 	ToggleNotifications(context.Context, *ToggleRequest) (*emptypb.Empty, error)
 	ListAlertEndpoints(context.Context, *ListAlertEndpointsRequest) (*AlertEndpointList, error)
 	// when forceUpdate = false,
@@ -312,5 +312,5 @@ var AlertEndpoints_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "github.com/rancher/opni/pkg/apis/alerting/v1/alerting.endpoint.proto",
+	Metadata: "github.com/aity-cloud/monty/pkg/apis/alerting/v1/alerting.endpoint.proto",
 }

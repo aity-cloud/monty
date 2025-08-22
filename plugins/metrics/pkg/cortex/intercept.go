@@ -8,8 +8,8 @@ import (
 
 	"errors"
 
+	"github.com/aity-cloud/monty/plugins/metrics/pkg/types"
 	"github.com/cortexproject/cortex/pkg/cortexpb"
-	"github.com/rancher/opni/plugins/metrics/pkg/types"
 	"github.com/weaveworks/common/user"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"

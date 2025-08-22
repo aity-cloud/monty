@@ -3,13 +3,13 @@ package session_test
 import (
 	"testing"
 
+	"github.com/aity-cloud/monty/pkg/auth/session"
+	"github.com/aity-cloud/monty/pkg/ecdh"
+	"github.com/aity-cloud/monty/pkg/keyring"
+	"github.com/aity-cloud/monty/pkg/keyring/ephemeral"
+	_ "github.com/aity-cloud/monty/pkg/test/setup"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/rancher/opni/pkg/auth/session"
-	"github.com/rancher/opni/pkg/ecdh"
-	"github.com/rancher/opni/pkg/keyring"
-	"github.com/rancher/opni/pkg/keyring/ephemeral"
-	_ "github.com/rancher/opni/pkg/test/setup"
 	"go.uber.org/mock/gomock"
 )
 

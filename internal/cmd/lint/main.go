@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/rancher/opni/internal/linter"
+	"github.com/aity-cloud/monty/internal/linter"
 	"golang.org/x/tools/go/analysis/multichecker"
 )
 

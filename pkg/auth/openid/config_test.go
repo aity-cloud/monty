@@ -6,7 +6,7 @@ import (
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 
-	"github.com/rancher/opni/pkg/auth/openid"
+	"github.com/aity-cloud/monty/pkg/auth/openid"
 )
 
 var _ = Describe("Config", Ordered, Label("unit"), func() {

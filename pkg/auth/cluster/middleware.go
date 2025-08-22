@@ -3,8 +3,8 @@ package cluster
 import (
 	"context"
 
-	"github.com/rancher/opni/pkg/auth/challenges"
-	"github.com/rancher/opni/pkg/util/streams"
+	"github.com/aity-cloud/monty/pkg/auth/challenges"
+	"github.com/aity-cloud/monty/pkg/util/streams"
 	"google.golang.org/grpc"
 )
 

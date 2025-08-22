@@ -8,10 +8,10 @@ import (
 	"os"
 	"path"
 
+	"github.com/aity-cloud/monty/pkg/plugins/meta"
+	"github.com/aity-cloud/monty/pkg/tracing"
 	"github.com/gin-gonic/gin"
 	"github.com/hashicorp/go-plugin"
-	"github.com/rancher/opni/pkg/plugins/meta"
-	"github.com/rancher/opni/pkg/tracing"
 	"google.golang.org/grpc"
 	reflectionpb "google.golang.org/grpc/reflection/grpc_reflection_v1"
 )
@@ -25,8 +25,8 @@ var (
 
 var Handshake = plugin.HandshakeConfig{
 	ProtocolVersion:  plugin.CoreProtocolVersion,
-	MagicCookieKey:   "OPNI_MAGIC_COOKIE",
-	MagicCookieValue: "opni",
+	MagicCookieKey:   "MONTY_MAGIC_COOKIE",
+	MagicCookieValue: "monty",
 }
 
 func CheckAvailability(ctx context.Context, cc *grpc.ClientConn, id string) error {

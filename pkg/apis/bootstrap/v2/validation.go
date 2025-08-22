@@ -1,6 +1,6 @@
 package v2
 
-import "github.com/rancher/opni/pkg/validation"
+import "github.com/aity-cloud/monty/pkg/validation"
 
 func (h *BootstrapAuthRequest) Validate() error {
 	if h.ClientId == "" {

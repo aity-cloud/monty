@@ -6,9 +6,9 @@ import (
 	"net/http"
 	"net/url"
 
+	"github.com/aity-cloud/monty/pkg/auth/openid"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/rancher/opni/pkg/auth/openid"
 	"github.com/samber/lo"
 )
 

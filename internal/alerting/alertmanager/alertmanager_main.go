@@ -28,6 +28,8 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/aity-cloud/monty/pkg/alerting/extensions"
+	"github.com/aity-cloud/monty/pkg/alerting/templates"
 	kingpin "github.com/alecthomas/kingpin/v2"
 	"github.com/go-kit/log"
 	"github.com/go-kit/log/level"
@@ -41,8 +43,6 @@ import (
 	"github.com/prometheus/common/version"
 	"github.com/prometheus/exporter-toolkit/web"
 	webflag "github.com/prometheus/exporter-toolkit/web/kingpinflag"
-	"github.com/rancher/opni/pkg/alerting/extensions"
-	"github.com/rancher/opni/pkg/alerting/templates"
 	"github.com/samber/lo"
 
 	"github.com/prometheus/alertmanager/api"
@@ -72,7 +72,7 @@ import (
 	"github.com/prometheus/alertmanager/types"
 	"github.com/prometheus/alertmanager/ui"
 
-	// add profiles for opni
+	// add profiles for monty
 	_ "net/http/pprof"
 )
 
@@ -122,7 +122,7 @@ func init() {
 	prometheus.MustRegister(configuredIntegrations)
 	prometheus.MustRegister(version.NewCollector("alertmanager"))
 
-	// register custom opni template functions to AlertManager
+	// register custom monty template functions to AlertManager
 	templates.RegisterNewAlertManagerDefaults(template.DefaultFuncs, templates.DefaultTemplateFuncs)
 }
 
@@ -242,9 +242,9 @@ func run(args []string) int {
 		allowInsecureAdvertise = kingpin.Flag("cluster.allow-insecure-public-advertise-address-discovery", "[EXPERIMENTAL] Allow alertmanager to discover and listen on a public IP address.").Bool()
 		label                  = kingpin.Flag("cluster.label", "The cluster label is an optional string to include on each packet and stream. It uniquely identifies the cluster and prevents cross-communication issues when sending gossip messages.").Default("").String()
 
-		// opni
-		opniAddr    = kingpin.Flag("opni.listen-address", "Listen address for the opni embedded server").String()
-		opniSendK8s = kingpin.Flag("opni.send-k8s", "Send alerts to k8s").Bool()
+		// monty
+		montyAddr    = kingpin.Flag("monty.listen-address", "Listen address for the monty embedded server").String()
+		montySendK8s = kingpin.Flag("monty.send-k8s", "Send alerts to k8s").Bool()
 	)
 
 	promlogflag.AddFlags(kingpin.CommandLine, &promlogConfig)
@@ -255,8 +255,8 @@ func run(args []string) int {
 	kingpin.Parse()
 	ctxCa, cancelCa := context.WithCancel(context.Background())
 	defer cancelCa()
-	if opniAddr != nil && *opniAddr != "" {
-		extensions.StartOpniEmbeddedServer(ctxCa, *opniAddr, lo.FromPtrOr(opniSendK8s, false))
+	if montyAddr != nil && *montyAddr != "" {
+		extensions.StartMontyEmbeddedServer(ctxCa, *montyAddr, lo.FromPtrOr(montySendK8s, false))
 	}
 
 	logger := promlog.New(&promlogConfig)

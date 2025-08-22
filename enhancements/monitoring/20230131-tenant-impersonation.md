@@ -12,7 +12,7 @@ Tenant impersonation is a feature that will allow metrics written by privileged 
 * [Testing](#Testing)
 
 ## Motivation:
-In a multi-tenant environment, if a user only has access to a subset of clusters not including the central cluster, they will not be able to fetch the `opni_cluster_info` metric, as it is stored under the gateway's tenant id. Without `opni_cluster_info`, the user will not be able to see the names of the clusters they have access to inside Grafana.
+In a multi-tenant environment, if a user only has access to a subset of clusters not including the central cluster, they will not be able to fetch the `monty_cluster_info` metric, as it is stored under the gateway's tenant id. Without `monty_cluster_info`, the user will not be able to see the names of the clusters they have access to inside Grafana.
 
 ## Implementation Details
 
@@ -20,7 +20,7 @@ The initial design to solve this problem was to have a "global tenant" that woul
 
 This new design would allow a privileged agent to provide metric samples with specific labels identifying the tenant to impersonate for each sample. The gateway will be able to identify such samples using well-known metadata, patch labels as necessary, then switch the tenant id when pushing the samples to the Cortex distributor.
 
-In the case of `opni_cluster_info`, when Cortex runs its tenant federation logic to aggregate the results of queries across multiple tenants, it will group all of the `opni_cluster_info` metrics from each tenant along with their respective labels into a single logical metric when queried for. This also makes the process of vector-matching the cluster names with cluster labels much easier, as the tenant IDs will match already without needing to do complex label manipulation within promql.
+In the case of `monty_cluster_info`, when Cortex runs its tenant federation logic to aggregate the results of queries across multiple tenants, it will group all of the `monty_cluster_info` metrics from each tenant along with their respective labels into a single logical metric when queried for. This also makes the process of vector-matching the cluster names with cluster labels much easier, as the tenant IDs will match already without needing to do complex label manipulation within promql.
 
 A diagram of the flow of metric samples is shown below. Everything shown below is running in the central cluster.
 
@@ -48,10 +48,10 @@ This feature will have thorough unit testing to ensure proper security and perfo
 None identified so far.
 
 ## Acceptance Criteria
-1. The opni_cluster_info metrics are available to all tenants regardless of rbac rules
-2. The opni_cluster_info metrics can correctly be used in Grafana dashboards
-3. The opni_cluster_info metrics can only be sent by the privileged local agent
-4. The opni_cluster_info metrics do not contain information about tenants other than of those queried
+1. The monty_cluster_info metrics are available to all tenants regardless of rbac rules
+2. The monty_cluster_info metrics can correctly be used in Grafana dashboards
+3. The monty_cluster_info metrics can only be sent by the privileged local agent
+4. The monty_cluster_info metrics do not contain information about tenants other than of those queried
 
 ## Level of effort
 1 week total for development and testing.

@@ -1,7 +1,7 @@
 package v1
 
 import (
-	"github.com/rancher/opni/pkg/validation"
+	"github.com/aity-cloud/monty/pkg/validation"
 )
 
 func (a *PluginArchive) Validate() error {

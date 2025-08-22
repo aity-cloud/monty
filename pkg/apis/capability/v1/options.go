@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/rancher/opni/pkg/util"
+	"github.com/aity-cloud/monty/pkg/util"
 	"google.golang.org/protobuf/types/known/structpb"
 )
 

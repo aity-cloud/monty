@@ -5,13 +5,13 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/aity-cloud/monty/pkg/test/freeport"
+	"github.com/aity-cloud/monty/pkg/test/testlog"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/rancher/opni/pkg/test/freeport"
-	"github.com/rancher/opni/pkg/test/testlog"
 	"go.uber.org/atomic"
 
-	"github.com/rancher/opni/pkg/auth/openid"
+	"github.com/aity-cloud/monty/pkg/auth/openid"
 )
 
 var _ = Describe("User Info Cache", Ordered, Label("unit"), func() {

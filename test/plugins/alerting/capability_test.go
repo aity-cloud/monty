@@ -5,16 +5,16 @@ import (
 	"fmt"
 	"time"
 
+	alertingv1 "github.com/aity-cloud/monty/pkg/apis/alerting/v1"
+	capabilityv1 "github.com/aity-cloud/monty/pkg/apis/capability/v1"
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	"github.com/aity-cloud/monty/pkg/capabilities/wellknown"
+	"github.com/aity-cloud/monty/pkg/test"
+	"github.com/aity-cloud/monty/pkg/test/testruntime"
+	"github.com/aity-cloud/monty/pkg/util"
+	"github.com/aity-cloud/monty/plugins/alerting/apis/alertops"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	alertingv1 "github.com/rancher/opni/pkg/apis/alerting/v1"
-	capabilityv1 "github.com/rancher/opni/pkg/apis/capability/v1"
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	"github.com/rancher/opni/pkg/capabilities/wellknown"
-	"github.com/rancher/opni/pkg/test"
-	"github.com/rancher/opni/pkg/test/testruntime"
-	"github.com/rancher/opni/pkg/util"
-	"github.com/rancher/opni/plugins/alerting/apis/alertops"
 	"github.com/samber/lo"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
@@ -144,7 +144,7 @@ var _ = Describe("agent capability tests", Ordered, Label("integration"), func()
 					Expect(newCond.AlertCondition.GetMetadata()).NotTo(BeNil())
 					newCond.AlertCondition.Metadata["readOnly"] = "true"
 					newCond.AlertCondition.AlertType.GetPrometheusQuery().Query = "gibberish"
-					newCond.AlertCondition.Severity = alertingv1.OpniSeverity_Critical
+					newCond.AlertCondition.Severity = alertingv1.MontySeverity_Critical
 					_, err := alertConditionsClient.UpdateAlertCondition(env.Context(), &alertingv1.UpdateAlertConditionRequest{
 						Id:          newCond.Id,
 						UpdateAlert: newCond.GetAlertCondition(),
@@ -163,7 +163,7 @@ var _ = Describe("agent capability tests", Ordered, Label("integration"), func()
 					Expect(newCond.AlertCondition.Metadata).NotTo(BeNil())
 					Expect(newCond.AlertCondition.Metadata["readOnly"]).To(Equal("true"))
 					Expect(newCond.AlertCondition.AlertType.GetPrometheusQuery().Query).NotTo(Equal("gibberish"))
-					Expect(newCond.AlertCondition.Severity).To(Equal(alertingv1.OpniSeverity_Critical))
+					Expect(newCond.AlertCondition.Severity).To(Equal(alertingv1.MontySeverity_Critical))
 				}
 			}
 		})

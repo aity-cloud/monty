@@ -9,10 +9,10 @@ import (
 	"slices"
 	"strings"
 
+	"github.com/aity-cloud/monty/internal/codegen/cli"
 	"github.com/iancoleman/strcase"
 	"github.com/jhump/protoreflect/desc"
 	"github.com/jhump/protoreflect/desc/builder"
-	"github.com/rancher/opni/internal/codegen/cli"
 	"github.com/samber/lo"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/runtime/protoimpl"

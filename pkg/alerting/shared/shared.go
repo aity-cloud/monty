@@ -1,5 +1,5 @@
 /*
-Shared definitions (constants & errors) for opni alerting
+Shared definitions (constants & errors) for monty alerting
 */
 package shared
 
@@ -9,15 +9,15 @@ import (
 	"strings"
 	"text/template"
 
+	"github.com/aity-cloud/monty/pkg/validation"
 	"github.com/lithammer/shortuuid"
-	"github.com/rancher/opni/pkg/validation"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
 
 const SingleConfigId = "global"
 
-const OpniAlertingCortexNamespace = "opni-alerting"
+const MontyAlertingCortexNamespace = "monty-alerting"
 
 func NewAlertingRefId(prefixes ...string) string {
 	return strings.Join(append(prefixes, shortuuid.New()), "-")
@@ -37,21 +37,21 @@ const InternalOpsGenieId = "opsgenie"
 const InternalVictorOpsId = "victorops"
 const InternalWechatId = "wechat"
 
-type OpniReceiverId struct {
+type MontyReceiverId struct {
 	Namespace  string
 	ReceiverId string
 }
 
-func NewOpniReceiverName(id OpniReceiverId) string {
-	return strings.Join([]string{"opni", id.Namespace, id.ReceiverId}, "__")
+func NewMontyReceiverName(id MontyReceiverId) string {
+	return strings.Join([]string{"monty", id.Namespace, id.ReceiverId}, "__")
 }
 
-func ExtractReceiverId(receiverName string) (*OpniReceiverId, error) {
+func ExtractReceiverId(receiverName string) (*MontyReceiverId, error) {
 	parts := strings.Split(receiverName, "__")
 	if len(parts) != 3 {
 		return nil, fmt.Errorf("invalid receiver name format: %s", receiverName)
 	}
-	return &OpniReceiverId{
+	return &MontyReceiverId{
 		Namespace:  parts[1],
 		ReceiverId: parts[2],
 	}, nil
@@ -88,9 +88,9 @@ const AgentDisconnectStorageType = "agent-disconnect"
 // Datasources & Versioning
 
 // labels
-const OpniTitleLabel = "OpniTitleLabel"
-const OpniBodyLabel = "OpniBodyLabel"
-const BackendConditionNameLabel = "opniname"
+const MontyTitleLabel = "MontyTitleLabel"
+const MontyBodyLabel = "MontyBodyLabel"
+const BackendConditionNameLabel = "montyname"
 const BackendConditionClusterIdLabel = "clusterId"
 const BackendConditionSeverityLabel = "severity"
 
@@ -101,10 +101,10 @@ const (
 	DataMountPath            = "/var/lib"
 	AlertManagerConfigKey    = "alertmanager.yaml"
 	InternalRoutingConfigKey = "internal-routing.yaml"
-	AlertmanagerService      = "opni-alertmanager-alerting"
-	EmitterService           = "opni-emitter-alerting"
-	AlertingHookReceiverName = "opni.default.hook"
-	AlertingDefaultHookName  = "/opni/hook"
+	AlertmanagerService      = "monty-alertmanager-alerting"
+	EmitterService           = "monty-emitter-alerting"
+	AlertingHookReceiverName = "monty.default.hook"
+	AlertingDefaultHookName  = "/monty/hook"
 	AlertingDefaultHookPort  = 3000
 )
 
@@ -114,7 +114,7 @@ var (
 )
 
 func LabelWithAlert(label map[string]string) map[string]string {
-	label["app.kubernetes.io/name"] = "opni-alerting"
+	label["app.kubernetes.io/name"] = "monty-alerting"
 	return label
 }
 

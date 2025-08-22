@@ -3,14 +3,14 @@ package services
 import (
 	"context"
 
-	managementext "github.com/rancher/opni/pkg/plugins/apis/apiextensions/management"
-	"github.com/rancher/opni/pkg/plugins/apis/system"
-	"github.com/rancher/opni/pkg/plugins/driverutil"
-	"github.com/rancher/opni/pkg/storage/kvutil"
-	"github.com/rancher/opni/pkg/util"
-	"github.com/rancher/opni/pkg/util/flagutil"
-	"github.com/rancher/opni/plugins/metrics/apis/node"
-	"github.com/rancher/opni/plugins/metrics/pkg/types"
+	managementext "github.com/aity-cloud/monty/pkg/plugins/apis/apiextensions/management"
+	"github.com/aity-cloud/monty/pkg/plugins/apis/system"
+	"github.com/aity-cloud/monty/pkg/plugins/driverutil"
+	"github.com/aity-cloud/monty/pkg/storage/kvutil"
+	"github.com/aity-cloud/monty/pkg/util"
+	"github.com/aity-cloud/monty/pkg/util/flagutil"
+	"github.com/aity-cloud/monty/plugins/metrics/apis/node"
+	"github.com/aity-cloud/monty/plugins/metrics/pkg/types"
 )
 
 type NodeConfigService struct {

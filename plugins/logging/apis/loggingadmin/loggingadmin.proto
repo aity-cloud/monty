@@ -1,5 +1,5 @@
 syntax = "proto3";
-option go_package = "github.com/rancher/opni/plugins/logging/apis/loggingadmin";
+option go_package = "github.com/aity-cloud/monty/plugins/logging/apis/loggingadmin";
 
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";

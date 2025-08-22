@@ -10,8 +10,8 @@ import (
 
 	"log/slog"
 
+	monitoringv1beta1 "github.com/aity-cloud/monty/apis/monitoring/v1beta1"
 	promoperatorv1 "github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring/v1"
-	monitoringv1beta1 "github.com/rancher/opni/apis/monitoring/v1beta1"
 
 	promcommon "github.com/prometheus/common/config"
 	"github.com/prometheus/common/model"
@@ -31,8 +31,8 @@ const (
 
 var (
 	// somewhat counter-intuitively, decreasing this increases memory usage
-	opniDefaultScrapeInterval = model.Duration(60 * time.Second)
-	opniDefaultScrapeTimeout  = model.Duration(30 * time.Second)
+	montyDefaultScrapeInterval = model.Duration(60 * time.Second)
+	montyDefaultScrapeTimeout  = model.Duration(30 * time.Second)
 )
 
 type target struct {

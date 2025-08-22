@@ -15,23 +15,23 @@ import (
 
 	"log/slog"
 
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	"github.com/aity-cloud/monty/pkg/auth"
+	"github.com/aity-cloud/monty/pkg/auth/local"
+	"github.com/aity-cloud/monty/pkg/auth/middleware"
+	authutil "github.com/aity-cloud/monty/pkg/auth/util"
+	"github.com/aity-cloud/monty/pkg/config/reactive"
+	configv1 "github.com/aity-cloud/monty/pkg/config/v1"
+	"github.com/aity-cloud/monty/pkg/logger"
+	"github.com/aity-cloud/monty/pkg/plugins"
+	"github.com/aity-cloud/monty/pkg/plugins/hooks"
+	"github.com/aity-cloud/monty/pkg/plugins/types"
+	"github.com/aity-cloud/monty/pkg/proxy"
+	proxyrouter "github.com/aity-cloud/monty/pkg/proxy/router"
+	"github.com/aity-cloud/monty/pkg/util"
+	"github.com/aity-cloud/monty/web"
 	"github.com/coreos/go-oidc/v3/oidc"
 	"github.com/gin-gonic/gin"
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	"github.com/rancher/opni/pkg/auth"
-	"github.com/rancher/opni/pkg/auth/local"
-	"github.com/rancher/opni/pkg/auth/middleware"
-	authutil "github.com/rancher/opni/pkg/auth/util"
-	"github.com/rancher/opni/pkg/config/reactive"
-	configv1 "github.com/rancher/opni/pkg/config/v1"
-	"github.com/rancher/opni/pkg/logger"
-	"github.com/rancher/opni/pkg/plugins"
-	"github.com/rancher/opni/pkg/plugins/hooks"
-	"github.com/rancher/opni/pkg/plugins/types"
-	"github.com/rancher/opni/pkg/proxy"
-	proxyrouter "github.com/rancher/opni/pkg/proxy/router"
-	"github.com/rancher/opni/pkg/util"
-	"github.com/rancher/opni/web"
 	ginoauth2 "github.com/zalando/gin-oauth2"
 	"go.opentelemetry.io/contrib/instrumentation/github.com/gin-gonic/gin/otelgin"
 	"go.opentelemetry.io/otel"
@@ -193,7 +193,7 @@ func (ws *Server) ListenAndServe(ctx context.Context) error {
 		router.Use(
 			gin.Recovery(),
 			logger.GinLogger(ws.logger),
-			otelgin.Middleware("opni-ui"),
+			otelgin.Middleware("monty-ui"),
 		)
 		middleware := ws.configureAuth(ctx, router)
 		// Static assets
@@ -233,8 +233,8 @@ func (ws *Server) ListenAndServe(ctx context.Context) error {
 			).Error("failed to parse management API URL")
 			return
 		}
-		apiGroup := router.Group("/opni-api")
-		apiGroup.Any("/*any", gin.WrapH(http.StripPrefix("/opni-api", httputil.NewSingleHostReverseProxy(mgmtUrl))))
+		apiGroup := router.Group("/monty-api")
+		apiGroup.Any("/*any", gin.WrapH(http.StripPrefix("/monty-api", httputil.NewSingleHostReverseProxy(mgmtUrl))))
 
 		proxy := router.Group("/proxy")
 		proxy.Use(middleware.Handler())
@@ -338,7 +338,7 @@ func (ws *Server) checkAdminAccess(_ *ginoauth2.TokenContainer, ctx *gin.Context
 		return false
 	}
 
-	if userID == "opni.io_admin" {
+	if userID == "monty.io_admin" {
 		return true
 	}
 

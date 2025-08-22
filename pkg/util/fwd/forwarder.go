@@ -11,8 +11,8 @@ import (
 
 	"log/slog"
 
+	"github.com/aity-cloud/monty/pkg/logger"
 	"github.com/gin-gonic/gin"
-	"github.com/rancher/opni/pkg/logger"
 	slogsampling "github.com/samber/slog-sampling"
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 )

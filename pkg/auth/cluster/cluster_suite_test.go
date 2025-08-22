@@ -3,11 +3,11 @@ package cluster_test
 import (
 	"testing"
 
+	"github.com/aity-cloud/monty/pkg/ecdh"
+	"github.com/aity-cloud/monty/pkg/keyring"
+	_ "github.com/aity-cloud/monty/pkg/test/setup"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/rancher/opni/pkg/ecdh"
-	"github.com/rancher/opni/pkg/keyring"
-	_ "github.com/rancher/opni/pkg/test/setup"
 	"go.uber.org/mock/gomock"
 )
 

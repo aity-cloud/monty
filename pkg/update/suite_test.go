@@ -3,11 +3,11 @@ package update_test
 import (
 	"testing"
 
+	_ "github.com/aity-cloud/monty/pkg/test/setup"
+	"github.com/aity-cloud/monty/pkg/update"
+	"github.com/aity-cloud/monty/pkg/update/noop"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	_ "github.com/rancher/opni/pkg/test/setup"
-	"github.com/rancher/opni/pkg/update"
-	"github.com/rancher/opni/pkg/update/noop"
 	"google.golang.org/grpc"
 )
 

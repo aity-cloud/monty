@@ -7,16 +7,16 @@ import (
 
 	"log/slog"
 
+	montycorev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	"github.com/aity-cloud/monty/pkg/capabilities"
+	"github.com/aity-cloud/monty/pkg/capabilities/wellknown"
+	"github.com/aity-cloud/monty/pkg/machinery/uninstall"
+	"github.com/aity-cloud/monty/pkg/storage"
+	"github.com/aity-cloud/monty/pkg/task"
+	"github.com/aity-cloud/monty/pkg/util/future"
+	backenddriver "github.com/aity-cloud/monty/plugins/logging/pkg/gateway/drivers/backend"
+	"github.com/aity-cloud/monty/plugins/logging/pkg/opensearchdata"
 	"github.com/lestrrat-go/backoff/v2"
-	opnicorev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	"github.com/rancher/opni/pkg/capabilities"
-	"github.com/rancher/opni/pkg/capabilities/wellknown"
-	"github.com/rancher/opni/pkg/machinery/uninstall"
-	"github.com/rancher/opni/pkg/storage"
-	"github.com/rancher/opni/pkg/task"
-	"github.com/rancher/opni/pkg/util/future"
-	backenddriver "github.com/rancher/opni/plugins/logging/pkg/gateway/drivers/backend"
-	"github.com/rancher/opni/plugins/logging/pkg/opensearchdata"
 )
 
 type UninstallTaskRunner struct {
@@ -89,9 +89,9 @@ func (a *UninstallTaskRunner) OnTaskRunning(ctx context.Context, ti task.ActiveT
 	}
 
 	ti.AddLogEntry(slog.LevelInfo, "Removing capability from cluster metadata")
-	_, err = a.storageBackend.Get().UpdateCluster(ctx, &opnicorev1.Reference{
+	_, err = a.storageBackend.Get().UpdateCluster(ctx, &montycorev1.Reference{
 		Id: ti.TaskId(),
-	}, storage.NewRemoveCapabilityMutator[*opnicorev1.Cluster](capabilities.Cluster(wellknown.CapabilityLogs)))
+	}, storage.NewRemoveCapabilityMutator[*montycorev1.Cluster](capabilities.Cluster(wellknown.CapabilityLogs)))
 	if err != nil {
 		return err
 	}
@@ -110,9 +110,9 @@ func (a *UninstallTaskRunner) OnTaskCompleted(ctx context.Context, ti task.Activ
 	}
 
 	// Reset the deletion timestamp
-	_, err := a.storageBackend.Get().UpdateCluster(ctx, &opnicorev1.Reference{
+	_, err := a.storageBackend.Get().UpdateCluster(ctx, &montycorev1.Reference{
 		Id: ti.TaskId(),
-	}, func(c *opnicorev1.Cluster) {
+	}, func(c *montycorev1.Cluster) {
 		for _, cap := range c.GetCapabilities() {
 			if cap.Name == wellknown.CapabilityLogs {
 				cap.DeletionTimestamp = nil

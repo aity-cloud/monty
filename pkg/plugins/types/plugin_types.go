@@ -1,11 +1,11 @@
 package types
 
 import (
-	capabilityv1 "github.com/rancher/opni/pkg/apis/capability/v1"
-	proxyv1 "github.com/rancher/opni/pkg/apis/proxy/v1"
-	"github.com/rancher/opni/pkg/metrics/collector"
-	"github.com/rancher/opni/pkg/plugins/apis/apiextensions"
-	"github.com/rancher/opni/pkg/plugins/apis/system"
+	capabilityv1 "github.com/aity-cloud/monty/pkg/apis/capability/v1"
+	proxyv1 "github.com/aity-cloud/monty/pkg/apis/proxy/v1"
+	"github.com/aity-cloud/monty/pkg/metrics/collector"
+	"github.com/aity-cloud/monty/pkg/plugins/apis/apiextensions"
+	"github.com/aity-cloud/monty/pkg/plugins/apis/system"
 )
 
 type (

@@ -9,9 +9,9 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	streamv1 "github.com/aity-cloud/monty/pkg/apis/stream/v1"
 	"github.com/kralicky/totem"
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	streamv1 "github.com/rancher/opni/pkg/apis/stream/v1"
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/proto"
 )

@@ -8,13 +8,13 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"sigs.k8s.io/structured-merge-diff/v4/fieldpath"
 
-	"github.com/rancher/opni/pkg/util/k8sutil"
+	"github.com/aity-cloud/monty/pkg/util/k8sutil"
 )
 
 var _ = Describe("Server-Side Apply", func() {
 	It("should decode managedFields", func() {
 		entry := k8sutil.DecodeManagedFieldsEntry(metav1.ManagedFieldsEntry{
-			APIVersion: "core.opni.io/v1",
+			APIVersion: "core.monty.io/v1",
 			FieldsType: "FieldsV1",
 			Manager:    "test-manager",
 			Operation:  metav1.ManagedFieldsOperationApply,
@@ -33,7 +33,7 @@ var _ = Describe("Server-Side Apply", func() {
 			ObjectMeta: metav1.ObjectMeta{
 				ManagedFields: []metav1.ManagedFieldsEntry{
 					{
-						APIVersion: "core.opni.io/v1",
+						APIVersion: "core.monty.io/v1",
 						FieldsType: "FieldsV1",
 						Manager:    "test-manager-1",
 						Operation:  metav1.ManagedFieldsOperationApply,
@@ -43,7 +43,7 @@ var _ = Describe("Server-Side Apply", func() {
 						},
 					},
 					{
-						APIVersion: "core.opni.io/v1",
+						APIVersion: "core.monty.io/v1",
 						FieldsType: "FieldsV1",
 						Manager:    "test-manager-2",
 						Operation:  metav1.ManagedFieldsOperationApply,

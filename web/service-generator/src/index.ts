@@ -7,7 +7,7 @@ import {
   findCustomMessageOption,
 } from '@bufbuild/protoplugin/ecmascript';
 import { DescMethod, MethodKind, DescService } from '@bufbuild/protobuf';
-import { HttpRule } from '../../pkg/opni/generated/google/api/http_pb';
+import { HttpRule } from '../../pkg/monty/generated/google/api/http_pb';
 import { version } from '../package.json';
 
 export default createEcmaScriptPlugin({
@@ -33,8 +33,8 @@ function printMethod(f: GeneratedFile, method: DescMethod, service: DescService)
   const input = f.import(method.input);
   const output = f.import(method.output);
 
-  const _axios = f.import('axios', '@pkg/opni/utils/axios');
-  const _Socket = f.import('Socket', '@pkg/opni/utils/socket');
+  const _axios = f.import('axios', '@pkg/monty/utils/axios');
+  const _Socket = f.import('Socket', '@pkg/monty/utils/socket');
   const _EVENT_CONNECTED = f.import('EVENT_CONNECTED', '@shell/utils/socket');
   const _EVENT_CONNECTING = f.import('EVENT_CONNECTING', '@shell/utils/socket');
   const _EVENT_CONNECT_ERROR = f.import('EVENT_CONNECT_ERROR', '@shell/utils/socket');
@@ -49,9 +49,9 @@ function printMethod(f: GeneratedFile, method: DescMethod, service: DescService)
   // const transformResponse = outputIsEmpty ? '' : [`\n    transformResponse: resp => `, output, `.fromBinary(new Uint8Array(resp)),`];
   const data = inputIsEmpty ? '' : `,\n    data: input?.toBinary() as ArrayBuffer`;
   const urlPath = (m?.pattern.value as any || '').replaceAll('{', '${input.');
-  const potentialModelPath = output ? path.join('./web/pkg/opni/models', service.name, `${ output.name }.ts`) : '';
+  const potentialModelPath = output ? path.join('./web/pkg/monty/models', service.name, `${ output.name }.ts`) : '';
   const modelFound = potentialModelPath && fs.existsSync(potentialModelPath);
-  const modelImport = modelFound ? f.import(output.name, `@pkg/opni/models/${ service.name }/${ output.name }`) : null;
+  const modelImport = modelFound ? f.import(output.name, `@pkg/monty/models/${ service.name }/${ output.name }`) : null;
 
   const inputLogMessage = inputIsEmpty ? '' : `
     if (input) {
@@ -75,7 +75,7 @@ export async function ${ method.name }(`, ...(inputIsEmpty ? [] : ['input: ', in
         'Content-Type': 'application/octet-stream',
         'Accept': 'application/octet-stream',
       },
-      url: \`/opni-api/${ method.parent.name }${ urlPath }\`${ data }
+      url: \`/monty-api/${ method.parent.name }${ urlPath }\`${ data }
     })).data;
 
     const response = `, ...responseTranform, `
@@ -99,7 +99,7 @@ export async function ${ method.name }(`, ...(inputIsEmpty ? [] : ['input: ', in
   case MethodKind.ServerStreaming:
     f.print(`
 export function ${ method.name }(input: `, input, `, callback: (data: `, output, `) => void): () => Promise<any> {
-  const socket = new `, _Socket, `('/opni-api/${ method.parent.name }${ m?.pattern.value || '' }', true);
+  const socket = new `, _Socket, `('/monty-api/${ method.parent.name }${ m?.pattern.value || '' }', true);
   Object.assign(socket, { frameTimeout: null })
   socket.addEventListener(`, _EVENT_MESSAGE, `, (e: any) => {
     const event = e.detail;

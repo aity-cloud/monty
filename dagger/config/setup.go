@@ -47,7 +47,7 @@ func RunSetup() {
 	conf := answerWriter{
 		bc: BuilderConfig{
 			Images: ImagesConfig{
-				OpniMinimal: ImageTarget{
+				MontyMinimal: ImageTarget{
 					TagSuffix: "-minimal",
 				},
 				PythonBase: ImageTarget{
@@ -72,8 +72,8 @@ func RunSetup() {
 	conf.k.Load(structs.Provider(conf.bc, "koanf"), nil)
 
 	const (
-		opniImageName                    = "Opni Image"
-		opniMinimalImageName             = "Opni Minimal Image"
+		montyImageName                   = "Monty Image"
+		montyMinimalImageName            = "Monty Minimal Image"
 		opensearchImageName              = "Opensearch Image"
 		opensearchDashboardsImageName    = "Opensearch Dashboards Image"
 		opensearchUpdateServiceImageName = "Opensearch Update Service Image"
@@ -81,8 +81,8 @@ func RunSetup() {
 		pythonTorchImageName             = "Python Torch Image"
 	)
 	imageFields := map[string]*ImageTarget{
-		opniImageName:                    &conf.bc.Images.Opni,
-		opniMinimalImageName:             &conf.bc.Images.OpniMinimal,
+		montyImageName:                   &conf.bc.Images.Monty,
+		montyMinimalImageName:            &conf.bc.Images.MontyMinimal,
 		opensearchImageName:              &conf.bc.Images.Opensearch.Opensearch,
 		opensearchDashboardsImageName:    &conf.bc.Images.Opensearch.Dashboards,
 		opensearchUpdateServiceImageName: &conf.bc.Images.Opensearch.UpdateService,
@@ -90,13 +90,13 @@ func RunSetup() {
 		pythonTorchImageName:             &conf.bc.Images.PythonTorch,
 	}
 	imageNames := map[string]string{
-		opniImageName:                    "opni",
-		opniMinimalImageName:             "opni",
+		montyImageName:                   "monty",
+		montyMinimalImageName:            "monty",
 		opensearchImageName:              "opensearch",
 		opensearchDashboardsImageName:    "opensearch-dashboards",
 		opensearchUpdateServiceImageName: "opensearch-update-service",
-		pythonBaseImageName:              "opni-python-base",
-		pythonTorchImageName:             "opni-python-base",
+		pythonBaseImageName:              "monty-python-base",
+		pythonTorchImageName:             "monty-python-base",
 	}
 
 	questions := []*survey.Question{
@@ -184,8 +184,8 @@ func RunSetup() {
 			Prompt: &survey.MultiSelect{
 				Message: "Which images would you like to build?",
 				Options: []string{
-					opniImageName,
-					opniMinimalImageName,
+					montyImageName,
+					montyMinimalImageName,
 					opensearchImageName,
 					opensearchDashboardsImageName,
 					opensearchUpdateServiceImageName,

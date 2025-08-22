@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.3.0
 // - ragu               v1.0.0
-// source: github.com/rancher/opni/plugins/metrics/apis/remoteread/remoteread.proto
+// source: github.com/aity-cloud/monty/plugins/metrics/apis/remoteread/remoteread.proto
 
 package remoteread
 
@@ -363,7 +363,7 @@ var RemoteReadGateway_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "github.com/rancher/opni/plugins/metrics/apis/remoteread/remoteread.proto",
+	Metadata: "github.com/aity-cloud/monty/plugins/metrics/apis/remoteread/remoteread.proto",
 }
 
 const (
@@ -562,5 +562,5 @@ var RemoteReadAgent_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "github.com/rancher/opni/plugins/metrics/apis/remoteread/remoteread.proto",
+	Metadata: "github.com/aity-cloud/monty/plugins/metrics/apis/remoteread/remoteread.proto",
 }

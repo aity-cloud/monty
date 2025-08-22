@@ -1,11 +1,11 @@
 package main
 
 import (
-	"github.com/rancher/opni/pkg/plugins"
-	"github.com/rancher/opni/pkg/plugins/meta"
-	_ "github.com/rancher/opni/pkg/storage/etcd"
-	_ "github.com/rancher/opni/pkg/storage/jetstream"
-	"github.com/rancher/opni/plugins/example/pkg/example"
+	"github.com/aity-cloud/monty/pkg/plugins"
+	"github.com/aity-cloud/monty/pkg/plugins/meta"
+	_ "github.com/aity-cloud/monty/pkg/storage/etcd"
+	_ "github.com/aity-cloud/monty/pkg/storage/jetstream"
+	"github.com/aity-cloud/monty/plugins/example/pkg/example"
 )
 
 func main() {

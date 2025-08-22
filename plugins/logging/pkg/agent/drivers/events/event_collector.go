@@ -10,11 +10,11 @@ import (
 
 	"log/slog"
 
+	"github.com/aity-cloud/monty/pkg/logger"
+	"github.com/aity-cloud/monty/pkg/util"
+	"github.com/aity-cloud/monty/plugins/logging/apis/node"
+	"github.com/aity-cloud/monty/plugins/logging/pkg/agent/drivers"
 	"github.com/opensearch-project/opensearch-go/opensearchutil"
-	"github.com/rancher/opni/pkg/logger"
-	"github.com/rancher/opni/pkg/util"
-	"github.com/rancher/opni/plugins/logging/apis/node"
-	"github.com/rancher/opni/plugins/logging/pkg/agent/drivers"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
@@ -271,7 +271,7 @@ func (c *EventCollector) shipEvent(event *corev1.Event, timestamp time.Time) err
 		},
 	}
 
-	endpoint := fmt.Sprintf("http://opni-shipper.%s:2021/log/ingest", c.namespace)
+	endpoint := fmt.Sprintf("http://monty-shipper.%s:2021/log/ingest", c.namespace)
 
 	req, err := http.NewRequest(http.MethodPost, endpoint, opensearchutil.NewJSONReader(output))
 	if err != nil {

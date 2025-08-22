@@ -9,13 +9,13 @@ import (
 
 	"log/slog"
 
-	"github.com/rancher/opni/apis"
-	controlv1 "github.com/rancher/opni/pkg/apis/control/v1"
-	"github.com/rancher/opni/pkg/logger"
-	"github.com/rancher/opni/pkg/oci"
-	"github.com/rancher/opni/pkg/update"
-	"github.com/rancher/opni/pkg/update/kubernetes"
-	"github.com/rancher/opni/pkg/urn"
+	"github.com/aity-cloud/monty/apis"
+	controlv1 "github.com/aity-cloud/monty/pkg/apis/control/v1"
+	"github.com/aity-cloud/monty/pkg/logger"
+	"github.com/aity-cloud/monty/pkg/oci"
+	"github.com/aity-cloud/monty/pkg/update"
+	"github.com/aity-cloud/monty/pkg/update/kubernetes"
+	"github.com/aity-cloud/monty/pkg/urn"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	appsv1 "k8s.io/api/apps/v1"
@@ -193,7 +193,7 @@ func (k *kubernetesAgentUpgrader) getAgentDeployment(ctx context.Context) (*apps
 	if err := k.k8sClient.List(ctx, list,
 		client.InNamespace(k.namespace),
 		client.MatchingLabels{
-			"opni.io/app": "agent",
+			"monty.io/app": "agent",
 		},
 	); err != nil {
 		return nil, err
@@ -248,7 +248,7 @@ func getControllerContainer(containers []corev1.Container) *corev1.Container {
 }
 
 func makeEntry(container *corev1.Container, packageType kubernetes.ComponentType) *controlv1.UpdateManifestEntry {
-	entryURN := urn.NewOpniURN(urn.Agent, kubernetes.UpdateStrategy, string(packageType))
+	entryURN := urn.NewMontyURN(urn.Agent, kubernetes.UpdateStrategy, string(packageType))
 	image, err := oci.Parse(container.Image)
 	if err != nil {
 		return nil

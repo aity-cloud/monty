@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/rancher/opni/apis"
-	"github.com/rancher/opni/pkg/alerting/drivers/config"
-	"github.com/rancher/opni/pkg/alerting/shared"
+	"github.com/aity-cloud/monty/apis"
+	"github.com/aity-cloud/monty/pkg/alerting/drivers/config"
+	"github.com/aity-cloud/monty/pkg/alerting/shared"
 	"github.com/samber/lo"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
@@ -92,7 +92,7 @@ func NewK8sDestination(
 	eventsClient := clientSet.CoreV1().Events(ns)
 	broadcaster := record.NewBroadcaster()
 	k := &K8sDestination{
-		recorder:  broadcaster.NewRecorder(scheme, corev1.EventSource{Component: "opni-alerting"}),
+		recorder:  broadcaster.NewRecorder(scheme, corev1.EventSource{Component: "monty-alerting"}),
 		namespace: ns,
 	}
 	defer broadcaster.StartRecordingToSink(

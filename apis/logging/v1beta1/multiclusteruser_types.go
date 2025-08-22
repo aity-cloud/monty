@@ -1,7 +1,7 @@
 package v1beta1
 
 import (
-	opnimeta "github.com/rancher/opni/pkg/util/meta"
+	montymeta "github.com/aity-cloud/monty/pkg/util/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -27,8 +27,8 @@ type MulticlusterUser struct {
 }
 
 type MulticlusterUserSpec struct {
-	Password             string                         `json:"password,omitempty"`
-	OpensearchClusterRef *opnimeta.OpensearchClusterRef `json:"opensearchClusterRef"`
+	Password             string                          `json:"password,omitempty"`
+	OpensearchClusterRef *montymeta.OpensearchClusterRef `json:"opensearchClusterRef"`
 }
 
 type MulticlusterUserStatus struct {

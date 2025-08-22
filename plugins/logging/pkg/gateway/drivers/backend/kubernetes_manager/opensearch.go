@@ -5,14 +5,14 @@ import (
 	"encoding/json"
 
 	opsterv1 "github.com/Opster/opensearch-k8s-operator/opensearch-operator/api/v1"
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
 	"google.golang.org/protobuf/encoding/protojson"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 const (
-	opniLabelKey           = "opni.io/managed"
-	labelMatcherAnnotation = "opni.io/label_matcher"
+	montyLabelKey          = "monty.io/managed"
+	labelMatcherAnnotation = "monty.io/label_matcher"
 	namespaceField         = "namespace"
 	clusterField           = "cluster_id"
 )
@@ -113,7 +113,7 @@ func roleToOpensearch(namespace string, in *corev1.Role) *opsterv1.OpensearchRol
 				return nil
 			}(),
 			Labels: map[string]string{
-				opniLabelKey: "true",
+				montyLabelKey: "true",
 			},
 		},
 		Spec: opsterv1.OpensearchRoleSpec{

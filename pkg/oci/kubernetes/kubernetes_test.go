@@ -5,12 +5,12 @@ import (
 	"fmt"
 	"os"
 
+	apicorev1 "github.com/aity-cloud/monty/apis/core/v1"
+	"github.com/aity-cloud/monty/pkg/oci"
+	"github.com/aity-cloud/monty/pkg/oci/kubernetes"
+	"github.com/aity-cloud/monty/pkg/versions"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	apicorev1 "github.com/rancher/opni/apis/core/v1"
-	"github.com/rancher/opni/pkg/oci"
-	"github.com/rancher/opni/pkg/oci/kubernetes"
-	"github.com/rancher/opni/pkg/versions"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -27,7 +27,7 @@ var _ = Describe("Kubernetes OCI handler", Ordered, Label("unit", "slow"), func(
 	BeforeAll(func() {
 		gateway = &apicorev1.Gateway{
 			ObjectMeta: metav1.ObjectMeta{
-				Name:      "opni-gateway",
+				Name:      "monty-gateway",
 				Namespace: namespace,
 			},
 			Spec: apicorev1.GatewaySpec{},
@@ -50,12 +50,12 @@ var _ = Describe("Kubernetes OCI handler", Ordered, Label("unit", "slow"), func(
 	})
 
 	When("gateway status is not set", func() {
-		It("should not return opni image", func() {
-			_, err := k8sOCI.GetImage(context.Background(), oci.ImageTypeOpni)
+		It("should not return monty image", func() {
+			_, err := k8sOCI.GetImage(context.Background(), oci.ImageTypeMonty)
 			Expect(err).To(HaveOccurred())
 		})
 		It("should not return the minimal image", func() {
-			_, err := k8sOCI.GetImage(context.Background(), oci.ImageTypeOpni)
+			_, err := k8sOCI.GetImage(context.Background(), oci.ImageTypeMonty)
 			Expect(err).To(HaveOccurred())
 		})
 		When("version is set", func() {
@@ -63,7 +63,7 @@ var _ = Describe("Kubernetes OCI handler", Ordered, Label("unit", "slow"), func(
 				versions.Version = "v1.0.0"
 			})
 			It("should not return the minimal image", func() {
-				_, err := k8sOCI.GetImage(context.Background(), oci.ImageTypeOpni)
+				_, err := k8sOCI.GetImage(context.Background(), oci.ImageTypeMonty)
 				Expect(err).To(HaveOccurred())
 			})
 		})
@@ -72,16 +72,16 @@ var _ = Describe("Kubernetes OCI handler", Ordered, Label("unit", "slow"), func(
 	When("gateway status is set", Ordered, func() {
 		BeforeEach(func() {
 			gateway.Status = apicorev1.GatewayStatus{
-				Image: fmt.Sprintf("rancher/opni-test@%s", imageDigest),
+				Image: fmt.Sprintf("registry.aity.tech/monty/monty-test@%s", imageDigest),
 			}
 			Expect(k8sClient.Status().Update(context.Background(), gateway)).To(Succeed())
 		})
 		When("the minimal image is available from the environment", func() {
 			It("should return the minimal image", func() {
-				minimalRef := fmt.Sprintf("rancher/opni-test@%s", imageDigest2)
-				os.Setenv("OPNI_MINIMAL_IMAGE_REF", minimalRef)
+				minimalRef := fmt.Sprintf("registry.aity.tech/monty/monty-test@%s", imageDigest2)
+				os.Setenv("MONTY_MINIMAL_IMAGE_REF", minimalRef)
 				DeferCleanup(func() {
-					os.Unsetenv("OPNI_MINIMAL_IMAGE_REF")
+					os.Unsetenv("MONTY_MINIMAL_IMAGE_REF")
 				})
 				image, err := k8sOCI.GetImage(context.Background(), oci.ImageTypeMinimal)
 				Expect(err).NotTo(HaveOccurred())
@@ -92,15 +92,15 @@ var _ = Describe("Kubernetes OCI handler", Ordered, Label("unit", "slow"), func(
 			BeforeEach(func() {
 				versions.Version = "unversioned"
 			})
-			It("should return the opni image", func() {
-				image, err := k8sOCI.GetImage(context.Background(), oci.ImageTypeOpni)
+			It("should return the monty image", func() {
+				image, err := k8sOCI.GetImage(context.Background(), oci.ImageTypeMonty)
 				Expect(err).NotTo(HaveOccurred())
-				Expect(image.String()).To(Equal(fmt.Sprintf("rancher/opni-test@%s", imageDigest)))
+				Expect(image.String()).To(Equal(fmt.Sprintf("registry.aity.tech/monty/monty-test@%s", imageDigest)))
 			})
-			It("should return the opni image as the minimal image", func() {
+			It("should return the monty image as the minimal image", func() {
 				image, err := k8sOCI.GetImage(context.Background(), oci.ImageTypeMinimal)
 				Expect(err).NotTo(HaveOccurred())
-				Expect(image.String()).To(Equal(fmt.Sprintf("rancher/opni-test@%s", imageDigest)))
+				Expect(image.String()).To(Equal(fmt.Sprintf("registry.aity.tech/monty/monty-test@%s", imageDigest)))
 			})
 		})
 		When("version is set", func() {
@@ -110,7 +110,7 @@ var _ = Describe("Kubernetes OCI handler", Ordered, Label("unit", "slow"), func(
 			It("should return the minimal image", func() {
 				image, err := k8sOCI.GetImage(context.Background(), oci.ImageTypeMinimal)
 				Expect(err).NotTo(HaveOccurred())
-				Expect(image.String()).To(Equal("rancher/opni-test:v1.0.0-minimal"))
+				Expect(image.String()).To(Equal("registry.aity.tech/monty/monty-test:v1.0.0-minimal"))
 			})
 		})
 	})

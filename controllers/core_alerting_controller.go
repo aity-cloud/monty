@@ -3,11 +3,11 @@ package controllers
 import (
 	"context"
 
+	apicorev1 "github.com/aity-cloud/monty/apis/core/v1"
+	corev1beta1 "github.com/aity-cloud/monty/apis/core/v1beta1"
 	"github.com/go-logr/logr"
-	apicorev1 "github.com/rancher/opni/apis/core/v1"
-	corev1beta1 "github.com/rancher/opni/apis/core/v1beta1"
 
-	"github.com/rancher/opni/pkg/resources/alerting"
+	"github.com/aity-cloud/monty/pkg/resources/alerting"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -19,9 +19,9 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/predicate"
 )
 
-// +kubebuilder:rbac:groups=core.opni.io,resources=alertingclusters,verbs=get;list;watch;create;update;patch;delete
-// +kubebuilder:rbac:groups=core.opni.io,resources=alertingclusters/status,verbs=get;update;patch
-// +kubebuilder:rbac:groups=core.opni.io,resources=alertingclusters/finalizers,verbs=update
+// +kubebuilder:rbac:groups=core.monty.io,resources=alertingclusters,verbs=get;list;watch;create;update;patch;delete
+// +kubebuilder:rbac:groups=core.monty.io,resources=alertingclusters/status,verbs=get;update;patch
+// +kubebuilder:rbac:groups=core.monty.io,resources=alertingclusters/finalizers,verbs=update
 // +kubebuilder:rbac:groups=apps,resources=deployments,verbs=get;list;watch;create;update;patch;delete
 // +kubebuilder:rbac:groups=apps,resources=statefulsets,verbs=get;list;watch;create;update;patch;delete
 // +kubebuilder:rbac:groups=core,resources=configmaps,verbs=get;list;watch;create;update;patch;delete

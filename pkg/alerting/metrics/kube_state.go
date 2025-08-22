@@ -4,9 +4,9 @@ import (
 	"bytes"
 	"fmt"
 
+	"github.com/aity-cloud/monty/pkg/alerting/metrics/naming"
+	"github.com/aity-cloud/monty/pkg/alerting/shared"
 	"github.com/prometheus/common/model"
-	"github.com/rancher/opni/pkg/alerting/metrics/naming"
-	"github.com/rancher/opni/pkg/alerting/shared"
 )
 
 func NewKubeStateRule(

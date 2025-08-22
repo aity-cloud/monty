@@ -4,17 +4,17 @@ import (
 	"context"
 	"fmt"
 
-	opnimonitoringv1beta1 "github.com/rancher/opni/apis/monitoring/v1beta1"
-	"github.com/rancher/opni/pkg/otel"
+	montymonitoringv1beta1 "github.com/aity-cloud/monty/apis/monitoring/v1beta1"
+	"github.com/aity-cloud/monty/pkg/otel"
 	"github.com/samber/lo"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
+	montycorev1beta1 "github.com/aity-cloud/monty/apis/core/v1beta1"
+	montyloggingv1beta1 "github.com/aity-cloud/monty/apis/logging/v1beta1"
 	. "github.com/kralicky/kmatch"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	promoperatorv1 "github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring/v1"
-	opnicorev1beta1 "github.com/rancher/opni/apis/core/v1beta1"
-	opniloggingv1beta1 "github.com/rancher/opni/apis/logging/v1beta1"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -25,18 +25,18 @@ var _ = Describe("Core Collector Controller", Ordered, Label("controller", "slow
 	When("creating a collector resource for monitoring with host metrics", func() {
 		var (
 			ns                  string
-			monitoringConfig    *opnimonitoringv1beta1.CollectorConfig
-			metricsCollectorObj *opnicorev1beta1.Collector
+			monitoringConfig    *montymonitoringv1beta1.CollectorConfig
+			metricsCollectorObj *montycorev1beta1.Collector
 		)
 		It("should succeed in creating the objects", func() {
 			ns = makeTestNamespace()
-			monitoringConfig = &opnimonitoringv1beta1.CollectorConfig{
+			monitoringConfig = &montymonitoringv1beta1.CollectorConfig{
 				ObjectMeta: metav1.ObjectMeta{
 					Name: otel.MetricsCrdName,
 				},
-				Spec: opnimonitoringv1beta1.CollectorConfigSpec{
+				Spec: montymonitoringv1beta1.CollectorConfigSpec{
 					RemoteWriteEndpoint: "http://test-endpoint",
-					PrometheusDiscovery: opnimonitoringv1beta1.PrometheusDiscovery{
+					PrometheusDiscovery: montymonitoringv1beta1.PrometheusDiscovery{
 						NamespaceSelector: []string{ns},
 					},
 					OtelSpec: otel.OTELSpec{
@@ -44,11 +44,11 @@ var _ = Describe("Core Collector Controller", Ordered, Label("controller", "slow
 					},
 				},
 			}
-			metricsCollectorObj = &opnicorev1beta1.Collector{
+			metricsCollectorObj = &montycorev1beta1.Collector{
 				ObjectMeta: metav1.ObjectMeta{
 					Name: "test-monitoring",
 				},
-				Spec: opnicorev1beta1.CollectorSpec{
+				Spec: montycorev1beta1.CollectorSpec{
 					SystemNamespace: ns,
 					AgentEndpoint:   "http://test-endpoint",
 					MetricsConfig: &corev1.LocalObjectReference{
@@ -131,7 +131,7 @@ var _ = Describe("Core Collector Controller", Ordered, Label("controller", "slow
 			By("checking the metrics tls assets secrets exists")
 			Eventually(Object(&corev1.Secret{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      "opni-otel-tls-assets",
+					Name:      "monty-otel-tls-assets",
 					Namespace: ns,
 				},
 			})).Should(ExistAnd(
@@ -142,7 +142,7 @@ var _ = Describe("Core Collector Controller", Ordered, Label("controller", "slow
 		XIt("should mount required tls assets for service monitors based on prometheus crds", func() {
 			Eventually(Object(&corev1.Secret{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      "opni-otel-tls-assets",
+					Name:      "monty-otel-tls-assets",
 					Namespace: ns,
 				},
 			})).Should(ExistAnd(
@@ -159,18 +159,18 @@ var _ = Describe("Core Collector Controller", Ordered, Label("controller", "slow
 	When("creating a collector resource for monitoring without host metrics", func() {
 		var (
 			ns                  string
-			monitoringConfig    *opnimonitoringv1beta1.CollectorConfig
-			metricsCollectorObj *opnicorev1beta1.Collector
+			monitoringConfig    *montymonitoringv1beta1.CollectorConfig
+			metricsCollectorObj *montycorev1beta1.Collector
 		)
 		It("should succeed in creating the objects", func() {
 			ns = makeTestNamespace()
-			monitoringConfig = &opnimonitoringv1beta1.CollectorConfig{
+			monitoringConfig = &montymonitoringv1beta1.CollectorConfig{
 				ObjectMeta: metav1.ObjectMeta{
 					Name: "test-monitoring",
 				},
-				Spec: opnimonitoringv1beta1.CollectorConfigSpec{
+				Spec: montymonitoringv1beta1.CollectorConfigSpec{
 					RemoteWriteEndpoint: "http://test-endpoint",
-					PrometheusDiscovery: opnimonitoringv1beta1.PrometheusDiscovery{
+					PrometheusDiscovery: montymonitoringv1beta1.PrometheusDiscovery{
 						NamespaceSelector: []string{ns},
 					},
 					OtelSpec: otel.OTELSpec{
@@ -178,11 +178,11 @@ var _ = Describe("Core Collector Controller", Ordered, Label("controller", "slow
 					},
 				},
 			}
-			metricsCollectorObj = &opnicorev1beta1.Collector{
+			metricsCollectorObj = &montycorev1beta1.Collector{
 				ObjectMeta: metav1.ObjectMeta{
 					Name: "test-monitoring2",
 				},
-				Spec: opnicorev1beta1.CollectorSpec{
+				Spec: montycorev1beta1.CollectorSpec{
 					SystemNamespace: ns,
 					AgentEndpoint:   "http://test-endpoint",
 					MetricsConfig: &corev1.LocalObjectReference{
@@ -240,7 +240,7 @@ var _ = Describe("Core Collector Controller", Ordered, Label("controller", "slow
 			By("checking the metrics tls assets secrets exists")
 			Eventually(Object(&corev1.Secret{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      "opni-otel-tls-assets",
+					Name:      "monty-otel-tls-assets",
 					Namespace: ns,
 				},
 			})).Should(ExistAnd(
@@ -251,7 +251,7 @@ var _ = Describe("Core Collector Controller", Ordered, Label("controller", "slow
 		XIt("should mount required tls assets for service monitors based on prometheus crds", func() {
 			Eventually(Object(&corev1.Secret{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      "opni-otel-tls-assets",
+					Name:      "monty-otel-tls-assets",
 					Namespace: ns,
 				},
 			})).Should(ExistAnd(
@@ -268,24 +268,24 @@ var _ = Describe("Core Collector Controller", Ordered, Label("controller", "slow
 	When("creating a collector resource for logging", func() {
 		var (
 			ns                  string
-			loggingConfig       *opniloggingv1beta1.CollectorConfig
-			loggingCollectorObj *opnicorev1beta1.Collector
+			loggingConfig       *montyloggingv1beta1.CollectorConfig
+			loggingCollectorObj *montycorev1beta1.Collector
 		)
 		It("should succeed in creating the objects", func() {
 			ns = makeTestNamespace()
-			loggingConfig = &opniloggingv1beta1.CollectorConfig{
+			loggingConfig = &montyloggingv1beta1.CollectorConfig{
 				ObjectMeta: metav1.ObjectMeta{
 					Name: "test-logging-config",
 				},
-				Spec: opniloggingv1beta1.CollectorConfigSpec{
-					Provider: opniloggingv1beta1.LogProviderGeneric,
+				Spec: montyloggingv1beta1.CollectorConfigSpec{
+					Provider: montyloggingv1beta1.LogProviderGeneric,
 				},
 			}
-			loggingCollectorObj = &opnicorev1beta1.Collector{
+			loggingCollectorObj = &montycorev1beta1.Collector{
 				ObjectMeta: metav1.ObjectMeta{
 					Name: "test-logging",
 				},
-				Spec: opnicorev1beta1.CollectorSpec{
+				Spec: montycorev1beta1.CollectorSpec{
 					SystemNamespace: ns,
 					AgentEndpoint:   "http://test-endpoint",
 					LoggingConfig: &corev1.LocalObjectReference{
@@ -362,24 +362,24 @@ var _ = Describe("Core Collector Controller", Ordered, Label("controller", "slow
 	When("creating a collector resource for traces", func() {
 		var (
 			ns                string
-			traceConfig       *opniloggingv1beta1.CollectorConfig
-			traceCollectorObj *opnicorev1beta1.Collector
+			traceConfig       *montyloggingv1beta1.CollectorConfig
+			traceCollectorObj *montycorev1beta1.Collector
 		)
 		It("should succeed in creating the objects", func() {
 			ns = makeTestNamespace()
-			traceConfig = &opniloggingv1beta1.CollectorConfig{
+			traceConfig = &montyloggingv1beta1.CollectorConfig{
 				ObjectMeta: metav1.ObjectMeta{
 					Name: "test-trace-config",
 				},
-				Spec: opniloggingv1beta1.CollectorConfigSpec{
-					Provider: opniloggingv1beta1.LogProviderGeneric,
+				Spec: montyloggingv1beta1.CollectorConfigSpec{
+					Provider: montyloggingv1beta1.LogProviderGeneric,
 				},
 			}
-			traceCollectorObj = &opnicorev1beta1.Collector{
+			traceCollectorObj = &montycorev1beta1.Collector{
 				ObjectMeta: metav1.ObjectMeta{
 					Name: "test-trace",
 				},
-				Spec: opnicorev1beta1.CollectorSpec{
+				Spec: montycorev1beta1.CollectorSpec{
 					SystemNamespace: ns,
 					AgentEndpoint:   "http://test-endpoint",
 					TracesConfig: &corev1.LocalObjectReference{
@@ -458,7 +458,7 @@ func promDiscoveryObejcts(ns string) []client.Object {
 			Name:      "some-service",
 			Namespace: ns,
 			Labels: map[string]string{
-				"app.kubernetes.io/instance": "opni",
+				"app.kubernetes.io/instance": "monty",
 				"app.kubernetes.io/name":     "kube-state-metrics",
 			},
 		},
@@ -507,7 +507,7 @@ func promDiscoveryObejcts(ns string) []client.Object {
 
 	podMonitor := &promoperatorv1.PodMonitor{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "opni-kube-state-metrics",
+			Name:      "monty-kube-state-metrics",
 			Namespace: ns,
 		},
 		Spec: promoperatorv1.PodMonitorSpec{
@@ -542,7 +542,7 @@ func promDiscoveryObejcts(ns string) []client.Object {
 			Name:      "tls-service",
 			Namespace: ns,
 			Labels: map[string]string{
-				"app.kubernetes.io/instance": "opni",
+				"app.kubernetes.io/instance": "monty",
 				"app.kubernetes.io/name":     "kube-state-metrics",
 			},
 		},
@@ -652,7 +652,7 @@ func promDiscoveryObejcts(ns string) []client.Object {
 	}
 	serviceMonitor := &promoperatorv1.ServiceMonitor{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "opni-kube-state-metrics",
+			Name:      "monty-kube-state-metrics",
 			Namespace: ns,
 		},
 		Spec: promoperatorv1.ServiceMonitorSpec{
@@ -665,7 +665,7 @@ func promDiscoveryObejcts(ns string) []client.Object {
 			JobLabel: "app.kubernetes.io/name",
 			Selector: metav1.LabelSelector{
 				MatchLabels: map[string]string{
-					"app.kubernetes.io/instance": "opni",
+					"app.kubernetes.io/instance": "monty",
 					"app.kubernetes.io/name":     "kube-state-metrics",
 				},
 			},

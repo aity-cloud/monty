@@ -5,9 +5,9 @@ import (
 	"strings"
 	"time"
 
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	"github.com/rancher/opni/pkg/keyring"
-	"github.com/rancher/opni/pkg/storage/lock"
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	"github.com/aity-cloud/monty/pkg/keyring"
+	"github.com/aity-cloud/monty/pkg/storage/lock"
 )
 
 type Backend interface {

@@ -11,12 +11,12 @@ import (
 
 	"maps"
 
-	agentv1 "github.com/rancher/opni/pkg/agent"
-	controlv1 "github.com/rancher/opni/pkg/apis/control/v1"
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	"github.com/rancher/opni/pkg/auth/cluster"
-	"github.com/rancher/opni/pkg/auth/session"
-	"github.com/rancher/opni/pkg/util"
+	agentv1 "github.com/aity-cloud/monty/pkg/agent"
+	controlv1 "github.com/aity-cloud/monty/pkg/apis/control/v1"
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	"github.com/aity-cloud/monty/pkg/auth/cluster"
+	"github.com/aity-cloud/monty/pkg/auth/session"
+	"github.com/aity-cloud/monty/pkg/util"
 	"golang.org/x/sync/semaphore"
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/types/known/emptypb"

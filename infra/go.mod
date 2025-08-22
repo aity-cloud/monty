@@ -1,4 +1,4 @@
-module github.com/rancher/opni/infra
+module github.com/aity-cloud/monty/infra
 
 go 1.21
 

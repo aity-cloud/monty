@@ -4,7 +4,7 @@ Alert Routing Integration with Metrics
 
 ## Summary:
 
-Opni Alerting should allow for importing existing AlertManager configurations and make them work out of the box with both Cortex & Opni Alerting.
+Monty Alerting should allow for importing existing AlertManager configurations and make them work out of the box with both Cortex & Monty Alerting.
 
 ## Use case:
 
@@ -15,24 +15,24 @@ Opni Alerting should allow for importing existing AlertManager configurations an
 
 - Users retain existing production-grade functionality of user configurations
 - Less configuration for experiences users
-- Use Opni-Alerting features with existing configurations
-- Less overall user input to get started with Opni & Opni-Alerting
-- More notification targets for Opni Alerting to send alerts to
+- Use Monty-Alerting features with existing configurations
+- Less overall user input to get started with Monty & Monty-Alerting
+- More notification targets for Monty Alerting to send alerts to
 
 ## Impact:
 
-Won't impact existing Opni functionality, only allows for more targets.
+Won't impact existing Monty functionality, only allows for more targets.
 
 ## Implementation details:
 
 - Implement protocol buffer messages for each AlertManager receiver currently missing (see below)
 - Extensive validation for those protocol buffers
-- Building these protocol buffer messages into OpniRouter
+- Building these protocol buffer messages into MontyRouter
 - Sync User configurations API
 
 **Clarification**
 
-- Synced configurations are written to an object store through the storage client, then when the Alerting ops reconciler runs, they're built into the opni router, the opni router builds the configuration, then that configuration is pushed via the sync stream to each Alerting Cluster Unit
+- Synced configurations are written to an object store through the storage client, then when the Alerting ops reconciler runs, they're built into the monty router, the monty router builds the configuration, then that configuration is pushed via the sync stream to each Alerting Cluster Unit
 - File imports are written & discovered directly on the AlertManager `storage backend`
   - If cortex AlertManager, to the `cortex storage backend`
   - If vanilla AlertManager, to the Alerting cluster PVC
@@ -81,11 +81,11 @@ message ListImportedFiles{
 
 intended to be called from the CLI at least initially:
 
-- `opni alerting sync <filename> --cluster <cluster-name or id>`
+- `monty alerting sync <filename> --cluster <cluster-name or id>`
 
 many production settings require setting explicit files:
 
-- `opni alerting sync import <filename> --cluster <cluster-name> --destination-path`
+- `monty alerting sync import <filename> --cluster <cluster-name> --destination-path`
 
 <hr/>
 
@@ -102,7 +102,7 @@ Some additional notes:
 
 <hr/>
 
-- Conditions that have labels matching the endpoints will have these endpoints attached to them automatically, meaning Opni internal conditions will be able to use the synced endpoints
+- Conditions that have labels matching the endpoints will have these endpoints attached to them automatically, meaning Monty internal conditions will be able to use the synced endpoints
 
 ### UI
 
@@ -111,7 +111,7 @@ Some additional notes:
 
 ## Acceptance criteria:
 
-- [ ] Reach endpoint parity with AlertManager by implementing Opni receiver functionality on remaining AlertManager receiver(s)
+- [ ] Reach endpoint parity with AlertManager by implementing Monty receiver functionality on remaining AlertManager receiver(s)
   - [ ] `Webhook`
   - [ ] `Amazon SNS`
   - [ ] `OpsGenie`
@@ -120,24 +120,24 @@ Some additional notes:
   - [ ] `Wechat`
   - [ ] `Telegram`
   - [ ] `Webex`
-- [ ] Sync user configurations to Opni Router & Attach Cortex to them
+- [ ] Sync user configurations to Monty Router & Attach Cortex to them
 - [ ] Import filesystem files for user configurations to Alerting Cluster
-- [ ] Extend Opni Endpoint protocol buffer messages to include Prometheus `label matchers`
+- [ ] Extend Monty Endpoint protocol buffer messages to include Prometheus `label matchers`
   - [] `==`, `!=`
   - [] `~=`, `~!=`
-- [ ] Optimize `label matchers` when building Opni Router
+- [ ] Optimize `label matchers` when building Monty Router
 
 ## Supporting documents:
 
 ## Dependencies:
 
-- https://github.com/rancher/opni/pull/942
+- https://github.com/aity-cloud/monty/pull/942
 
 ## Risks and contingencies:
 
 | Risk | Contingency |
 | Some AlertManager endpoints may require premium licenses for functionality | Request license through SUSE |
-| May include breaking changes to the AlertEndpoint protocol buffer message | Use existing opni alerting migration logic to migrate from one format to another |
+| May include breaking changes to the AlertEndpoint protocol buffer message | Use existing monty alerting migration logic to migrate from one format to another |
 
 ## Level of Effort:
 
@@ -148,4 +148,4 @@ Some additional notes:
 
 ## Resources:
 
-1 Upstream Opni Cluster
+1 Upstream Monty Cluster

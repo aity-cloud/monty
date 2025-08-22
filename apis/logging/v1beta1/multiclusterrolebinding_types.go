@@ -1,7 +1,7 @@
 package v1beta1
 
 import (
-	opnimeta "github.com/rancher/opni/pkg/util/meta"
+	montymeta "github.com/aity-cloud/monty/pkg/util/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -33,9 +33,9 @@ type MulticlusterRoleBindingStatus struct {
 }
 
 type MulticlusterRoleBindingSpec struct {
-	OpensearchCluster     *opnimeta.OpensearchClusterRef `json:"opensearch,omitempty"`
-	OpensearchConfig      *ClusterConfigSpec             `json:"opensearchConfig,omitempty"`
-	OpensearchExternalURL string                         `json:"opensearchExternalURL,omitempty"`
+	OpensearchCluster     *montymeta.OpensearchClusterRef `json:"opensearch,omitempty"`
+	OpensearchConfig      *ClusterConfigSpec              `json:"opensearchConfig,omitempty"`
+	OpensearchExternalURL string                          `json:"opensearchExternalURL,omitempty"`
 }
 
 type ClusterConfigSpec struct {

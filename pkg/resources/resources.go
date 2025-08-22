@@ -3,17 +3,17 @@ package resources
 import (
 	"fmt"
 
+	"github.com/aity-cloud/monty/pkg/util/k8sutil"
 	"github.com/cisco-open/operator-tools/pkg/reconciler"
 	"github.com/go-logr/logr"
-	"github.com/rancher/opni/pkg/util/k8sutil"
 	"k8s.io/apimachinery/pkg/runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 )
 
 const (
-	InternalIndexingUser     = "opni-indexer"
-	ClusterMetadataIndexName = "opni-cluster-metadata"
+	InternalIndexingUser     = "monty-indexer"
+	ClusterMetadataIndexName = "monty-cluster-metadata"
 )
 
 // ComponentReconciler reconciler interface

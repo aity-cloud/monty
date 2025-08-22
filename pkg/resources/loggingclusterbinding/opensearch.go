@@ -4,12 +4,12 @@ import (
 	"errors"
 
 	opensearchv1 "github.com/Opster/opensearch-k8s-operator/opensearch-operator/api/v1"
-	corev1beta1 "github.com/rancher/opni/apis/core/v1beta1"
-	loggingv1beta1 "github.com/rancher/opni/apis/logging/v1beta1"
-	"github.com/rancher/opni/pkg/opensearch/certs"
-	opensearch "github.com/rancher/opni/pkg/opensearch/reconciler"
-	"github.com/rancher/opni/pkg/resources"
-	"github.com/rancher/opni/pkg/util/meta"
+	corev1beta1 "github.com/aity-cloud/monty/apis/core/v1beta1"
+	loggingv1beta1 "github.com/aity-cloud/monty/apis/logging/v1beta1"
+	"github.com/aity-cloud/monty/pkg/opensearch/certs"
+	opensearch "github.com/aity-cloud/monty/pkg/opensearch/reconciler"
+	"github.com/aity-cloud/monty/pkg/resources"
+	"github.com/aity-cloud/monty/pkg/util/meta"
 	"k8s.io/client-go/util/retry"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
@@ -29,7 +29,7 @@ func (r *Reconciler) reconcileOpensearchObjects(cluster *opensearchv1.OpenSearch
 			r.ctx,
 			list,
 			client.InNamespace(r.loggingClusterBinding.Namespace),
-			client.MatchingLabels{resources.OpniClusterID: r.loggingClusterBinding.Spec.LoggingCluster.ID},
+			client.MatchingLabels{resources.MontyClusterID: r.loggingClusterBinding.Spec.LoggingCluster.ID},
 		)
 		if err != nil {
 			return err

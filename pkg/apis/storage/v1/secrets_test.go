@@ -5,7 +5,7 @@ import (
 	. "github.com/onsi/gomega"
 	"github.com/samber/lo"
 
-	storagev1 "github.com/rancher/opni/pkg/apis/storage/v1"
+	storagev1 "github.com/aity-cloud/monty/pkg/apis/storage/v1"
 )
 
 var _ = Describe("Secrets Redaction", Label("unit"), func() {

@@ -4,18 +4,18 @@ import (
 	"context"
 	"net"
 
+	controlv1 "github.com/aity-cloud/monty/pkg/apis/control/v1"
+	"github.com/aity-cloud/monty/pkg/auth/cluster"
+	mock_update "github.com/aity-cloud/monty/pkg/test/mock/update"
+	"github.com/aity-cloud/monty/pkg/test/testgrpc"
+	"github.com/aity-cloud/monty/pkg/test/testlog"
+	"github.com/aity-cloud/monty/pkg/test/testutil"
+	"github.com/aity-cloud/monty/pkg/update"
+	"github.com/aity-cloud/monty/pkg/urn"
+	"github.com/aity-cloud/monty/pkg/util"
+	"github.com/aity-cloud/monty/pkg/util/streams"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	controlv1 "github.com/rancher/opni/pkg/apis/control/v1"
-	"github.com/rancher/opni/pkg/auth/cluster"
-	mock_update "github.com/rancher/opni/pkg/test/mock/update"
-	"github.com/rancher/opni/pkg/test/testgrpc"
-	"github.com/rancher/opni/pkg/test/testlog"
-	"github.com/rancher/opni/pkg/test/testutil"
-	"github.com/rancher/opni/pkg/update"
-	"github.com/rancher/opni/pkg/urn"
-	"github.com/rancher/opni/pkg/util"
-	"github.com/rancher/opni/pkg/util/streams"
 	"go.uber.org/mock/gomock"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
@@ -28,9 +28,9 @@ import (
 var _ = Describe("update server", Ordered, Label("unit"), func() {
 	var (
 		server                 = update.NewUpdateServer(testlog.Log)
-		agentUrn1              = urn.NewOpniURN(urn.Agent, "agent1", "foo")
-		pluginUrn1             = urn.NewOpniURN(urn.Plugin, "test1", "bar")
-		pluginUrn2             = urn.NewOpniURN(urn.Plugin, "test2", "bar")
+		agentUrn1              = urn.NewMontyURN(urn.Agent, "agent1", "foo")
+		pluginUrn1             = urn.NewMontyURN(urn.Plugin, "test1", "bar")
+		pluginUrn2             = urn.NewMontyURN(urn.Plugin, "test2", "bar")
 		expectedPluginManifest *controlv1.UpdateManifest
 		expectedAgentManifest  *controlv1.UpdateManifest
 		patchList              *controlv1.PatchList
@@ -88,14 +88,14 @@ var _ = Describe("update server", Ordered, Label("unit"), func() {
 	When("manifest has mixed strategies", func() {
 		It("should return an error", func() {
 			invalid := util.ProtoClone(expectedPluginManifest)
-			invalid.Items[1].Package = urn.NewOpniURN(urn.Agent, "test2", "bar").String()
+			invalid.Items[1].Package = urn.NewMontyURN(urn.Agent, "test2", "bar").String()
 			_, err := server.SyncManifest(context.Background(), invalid)
 			Expect(status.Code(err)).To(Equal(codes.InvalidArgument))
 		})
 	})
 	When("manifest has an unregistered strategy", func() {
 		It("should return an error", func() {
-			urn1 := urn.NewOpniURN(urn.Plugin, "test1", "bar")
+			urn1 := urn.NewMontyURN(urn.Plugin, "test1", "bar")
 			manifest := &controlv1.UpdateManifest{
 				Items: []*controlv1.UpdateManifestEntry{
 					{
@@ -111,7 +111,7 @@ var _ = Describe("update server", Ordered, Label("unit"), func() {
 	})
 	When("manifest is valid", func() {
 		It("should return a patch list and desired state", func() {
-			urn1 := urn.NewOpniURN(urn.Plugin, "mock", "bar")
+			urn1 := urn.NewMontyURN(urn.Plugin, "mock", "bar")
 			manifest := &controlv1.UpdateManifest{
 				Items: []*controlv1.UpdateManifestEntry{
 					{

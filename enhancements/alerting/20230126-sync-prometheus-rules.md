@@ -4,7 +4,7 @@ Sync discovered Prometheus alerting rules
 
 ## Summary:
 
-Opni-Monitoring has an existing framework for syncing downstream Prometheus rules to its Cortex Cluster. The proposal is to sync the discovered alerting rules to Opni-Alerting via an Alerting agent capability.
+Monty-Monitoring has an existing framework for syncing downstream Prometheus rules to its Cortex Cluster. The proposal is to sync the discovered alerting rules to Monty-Alerting via an Alerting agent capability.
 
 ## Use case:
 
@@ -17,19 +17,19 @@ In particular targeting a common & important use case for SRE's already using Al
 - Sync existing user configurations
 - No pain when using alerts specific to their infrastructure / build version
 - No pain when users update their workload alerts, especially those deployed via infrastructure CI
-- Towards a zero configuration Opni-Alerting production setup
+- Towards a zero configuration Monty-Alerting production setup
 
 ## Impact:
 
 - Segregating the alert rule sync server into an Alerting downstream capability
-- Relabelling incoming synced alerting rules as `OpniReadOnly="true"`, `OpniSynced="true"`
+- Relabelling incoming synced alerting rules as `MontyReadOnly="true"`, `MontySynced="true"`
 
 ## Implementation details:
 
-- `AlertCondition` protocol buffer messages must replace their tag system with the Prometheus matcher labels system, see https://github.com/rancher/opni/pull/972
+- `AlertCondition` protocol buffer messages must replace their tag system with the Prometheus matcher labels system, see https://github.com/aity-cloud/monty/pull/972
 - When Ops Server performs its syncs, updated the list of attached endpoints on `AlertCondition` with the endpoints that match its label(s) -- WUO more optimized way of doing this
 - Migrate tag list on `AlertCondition` to `label matchers` list in storage client data migration, return a validation error informing the user to update the rule in their downstream
-- Read only restriction should only apply to the contents of the Prometheus query, but any additional Opni-Alerting features will still be applicable
+- Read only restriction should only apply to the contents of the Prometheus query, but any additional Monty-Alerting features will still be applicable
 - Basic capabilityv1 alerting agent
 - Alerting downstream capability that implements a `rule syncer` server specific to alerting rules
 
@@ -49,8 +49,8 @@ In particular targeting a common & important use case for SRE's already using Al
 
 ## Dependencies:
 
-- Full endpoint integration with AlertManager : https://github.com/rancher/opni/pull/972
-- Condition Status optimization : https://github.com/rancher/opni/pull/971
+- Full endpoint integration with AlertManager : https://github.com/aity-cloud/monty/pull/972
+- Condition Status optimization : https://github.com/aity-cloud/monty/pull/971
 - Cortex AlertManager as a unit in Alerting Cluster (OEP pending):
   - Identifying upstream cluster with a `wellknown uuid`
 
@@ -70,4 +70,4 @@ In particular targeting a common & important use case for SRE's already using Al
 
 ## Resources:
 
-1 Upstream Opni Cluster & 1 Downstream Opni Cluster
+1 Upstream Monty Cluster & 1 Downstream Monty Cluster

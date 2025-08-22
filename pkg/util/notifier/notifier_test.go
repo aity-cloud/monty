@@ -6,14 +6,14 @@ import (
 	"sync/atomic"
 	"time"
 
+	mock_rules "github.com/aity-cloud/monty/pkg/test/mock/rules"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	"github.com/prometheus/prometheus/model/rulefmt"
-	mock_rules "github.com/rancher/opni/pkg/test/mock/rules"
 	"github.com/samber/lo"
 
-	"github.com/rancher/opni/pkg/rules"
-	"github.com/rancher/opni/pkg/util/notifier"
+	"github.com/aity-cloud/monty/pkg/rules"
+	"github.com/aity-cloud/monty/pkg/util/notifier"
 )
 
 var _ = Describe("Update Notifier", Label("unit"), func() {

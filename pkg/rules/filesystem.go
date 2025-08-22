@@ -10,10 +10,10 @@ import (
 	"log/slog"
 
 	"emperror.dev/errors"
+	"github.com/aity-cloud/monty/pkg/config/v1beta1"
+	"github.com/aity-cloud/monty/pkg/logger"
 	glob "github.com/bmatcuk/doublestar/v4"
 	"github.com/prometheus/prometheus/model/rulefmt"
-	"github.com/rancher/opni/pkg/config/v1beta1"
-	"github.com/rancher/opni/pkg/logger"
 )
 
 type FilesystemRuleFinder struct {

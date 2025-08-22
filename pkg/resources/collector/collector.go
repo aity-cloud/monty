@@ -8,13 +8,13 @@ import (
 	"log/slog"
 
 	"emperror.dev/errors"
+	corev1beta1 "github.com/aity-cloud/monty/apis/core/v1beta1"
+	"github.com/aity-cloud/monty/pkg/logger"
+	"github.com/aity-cloud/monty/pkg/otel"
+	"github.com/aity-cloud/monty/pkg/resources"
+	promdiscover "github.com/aity-cloud/monty/pkg/resources/collector/discovery"
+	"github.com/aity-cloud/monty/pkg/util/k8sutil"
 	"github.com/cisco-open/operator-tools/pkg/reconciler"
-	corev1beta1 "github.com/rancher/opni/apis/core/v1beta1"
-	"github.com/rancher/opni/pkg/logger"
-	"github.com/rancher/opni/pkg/otel"
-	"github.com/rancher/opni/pkg/resources"
-	promdiscover "github.com/rancher/opni/pkg/resources/collector/discovery"
-	"github.com/rancher/opni/pkg/util/k8sutil"
 	"github.com/samber/lo"
 	"k8s.io/client-go/util/retry"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -54,7 +54,7 @@ func (r *Reconciler) Reconcile() (retResult *reconcile.Result, retErr error) {
 	lg := log.FromContext(r.ctx)
 	conditions := []string{}
 	defer func() {
-		// When the reconciler is done, figure out what the state of the opnicluster
+		// When the reconciler is done, figure out what the state of the montycluster
 		// is and set it in the state field accordingly.
 		op := k8sutil.LoadResult(retResult, retErr)
 		err := retry.RetryOnConflict(retry.DefaultRetry, func() error {

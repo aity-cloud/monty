@@ -6,6 +6,8 @@ import (
 	"reflect"
 	"strings"
 
+	"github.com/aity-cloud/monty/internal/codegen/cli"
+	"github.com/aity-cloud/monty/internal/codegen/descriptors"
 	"github.com/cortexproject/cortex/pkg/compactor"
 	"github.com/cortexproject/cortex/pkg/cortex"
 	"github.com/cortexproject/cortex/pkg/querier"
@@ -17,8 +19,6 @@ import (
 	"github.com/kralicky/protols/pkg/format"
 	"github.com/kralicky/protols/pkg/lsp"
 	"github.com/kralicky/protols/pkg/sources"
-	"github.com/rancher/opni/internal/codegen/cli"
-	"github.com/rancher/opni/internal/codegen/descriptors"
 	"github.com/samber/lo"
 	"golang.org/x/tools/gopls/pkg/lsp/protocol"
 	"google.golang.org/protobuf/proto"
@@ -30,7 +30,7 @@ import (
 func GenCortexConfig() error {
 	newProtos := map[string]*desc.FileDescriptor{}
 	{
-		path := "github.com/rancher/opni/internal/cortex/config/storage/storage.proto"
+		path := "github.com/aity-cloud/monty/internal/cortex/config/storage/storage.proto"
 		contents, err := generate[bucket.Config](path)
 		if err != nil {
 			return err
@@ -38,7 +38,7 @@ func GenCortexConfig() error {
 		newProtos[path] = contents
 	}
 	{
-		path := "github.com/rancher/opni/internal/cortex/config/validation/limits.proto"
+		path := "github.com/aity-cloud/monty/internal/cortex/config/validation/limits.proto"
 		contents, err := generate[validation.Limits](path)
 		if err != nil {
 			return err
@@ -46,7 +46,7 @@ func GenCortexConfig() error {
 		newProtos[path] = contents
 	}
 	{
-		path := "github.com/rancher/opni/internal/cortex/config/runtimeconfig/runtimeconfig.proto"
+		path := "github.com/aity-cloud/monty/internal/cortex/config/runtimeconfig/runtimeconfig.proto"
 		contents, err := generate[cortex.RuntimeConfigValues](path)
 		if err != nil {
 			return err
@@ -54,7 +54,7 @@ func GenCortexConfig() error {
 		newProtos[path] = contents
 	}
 	{
-		path := "github.com/rancher/opni/internal/cortex/config/compactor/compactor.proto"
+		path := "github.com/aity-cloud/monty/internal/cortex/config/compactor/compactor.proto"
 		contents, err := generate[compactor.Config](path)
 		if err != nil {
 			return err
@@ -62,7 +62,7 @@ func GenCortexConfig() error {
 		newProtos[path] = contents
 	}
 	{
-		path := "github.com/rancher/opni/internal/cortex/config/querier/querier.proto"
+		path := "github.com/aity-cloud/monty/internal/cortex/config/querier/querier.proto"
 		contents, err := generate[querier.Config](path,
 			func(rf reflect.StructField) bool {
 				if rf.Name == "StoreGatewayAddresses" || rf.Name == "StoreGatewayClient" {
@@ -109,7 +109,7 @@ func GenCortexConfig() error {
 
 	for _, fd := range newProtoDescriptors {
 		name := fd.Path()
-		rootDir := strings.TrimPrefix(filepath.Dir(name), "github.com/rancher/opni/")
+		rootDir := strings.TrimPrefix(filepath.Dir(name), "github.com/aity-cloud/monty/")
 		fullPath := filepath.Join(rootDir, filepath.Base(name))
 		dir := filepath.Dir(fullPath)
 		if err := os.MkdirAll(dir, os.ModePerm); err != nil {
@@ -219,7 +219,7 @@ func generate[T any](destFilename string, skipFunc ...func(rf reflect.StructFiel
 		},
 		CustomFieldTypes: customFieldTypes,
 	})
-	cliImport, _ := desc.WrapFile(cli.File_github_com_rancher_opni_internal_codegen_cli_cli_proto)
+	cliImport, _ := desc.WrapFile(cli.File_github_com_aity_cloud_monty_internal_codegen_cli_cli_proto)
 	f := builder.NewFile(destFilename).
 		SetProto3(true).
 		SetPackageName(filepath.Base(filepath.Dir(destFilename))).
@@ -290,8 +290,8 @@ func mergeFileDescriptors(targetpb *descriptorpb.FileDescriptorProto, target, ex
 		existingImport := existingImports.Get(i)
 
 		if _, ok := targetImports[existingImport.Path()]; !ok {
-			// only add the import if it's not "github.com/rancher/opni/internal/..."
-			if !strings.HasPrefix(existingImport.Path(), "github.com/rancher/opni/internal/") {
+			// only add the import if it's not "github.com/aity-cloud/monty/internal/..."
+			if !strings.HasPrefix(existingImport.Path(), "github.com/aity-cloud/monty/internal/") {
 				targetpb.Dependency = append(targetpb.Dependency, existingImport.Path())
 			}
 		}

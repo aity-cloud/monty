@@ -1,9 +1,9 @@
 package urn_test
 
 import (
+	"github.com/aity-cloud/monty/pkg/urn"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/rancher/opni/pkg/urn"
 )
 
 var _ = Describe("URN", Label("unit"), func() {
@@ -21,7 +21,7 @@ var _ = Describe("URN", Label("unit"), func() {
 			Expect(err).To(MatchError(urn.ErrInvalidURN))
 		})
 	})
-	When("URN namespace is not opni", func() {
+	When("URN namespace is not monty", func() {
 		It("should return error", func() {
 			_, err := urn.ParseString("urn:foo:bar:baz:bat")
 			Expect(err).To(MatchError(urn.ErrInvalidURN))
@@ -30,9 +30,9 @@ var _ = Describe("URN", Label("unit"), func() {
 	})
 	When("URN is valid", func() {
 		It("should parse successfully", func() {
-			u, err := urn.ParseString("urn:opni:plugin:foo:bar")
+			u, err := urn.ParseString("urn:monty:plugin:foo:bar")
 			Expect(err).NotTo(HaveOccurred())
-			Expect(u.Namespace).To(Equal("opni"))
+			Expect(u.Namespace).To(Equal("monty"))
 			Expect(u.Type).To(Equal(urn.Plugin))
 			Expect(u.Strategy).To(Equal("foo"))
 			Expect(u.Component).To(Equal("bar"))
@@ -40,8 +40,8 @@ var _ = Describe("URN", Label("unit"), func() {
 	})
 	Context("String construction", func() {
 		Specify("should return a correct string", func() {
-			u := urn.NewOpniURN(urn.Agent, "foo", "bar")
-			Expect(u.String()).To(Equal("urn:opni:agent:foo:bar"))
+			u := urn.NewMontyURN(urn.Agent, "foo", "bar")
+			Expect(u.String()).To(Equal("urn:monty:agent:foo:bar"))
 		})
 	})
 })

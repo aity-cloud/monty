@@ -6,9 +6,9 @@ const app = express();
 
 app.use(express.static('./dist', { redirect: false }));
 
-app.use('/opni-api', createProxyMiddleware({
+app.use('/monty-api', createProxyMiddleware({
   target:       'http://localhost:8888',
-  pathRewrite:  { '^/opni-api': '' },
+  pathRewrite:  { '^/monty-api': '' },
   secure:       false,
   changeOrigin: true,
 }));

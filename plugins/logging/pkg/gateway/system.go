@@ -3,17 +3,17 @@ package gateway
 import (
 	"os"
 
-	opnicorev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	managementv1 "github.com/rancher/opni/pkg/apis/management/v1"
-	configv1 "github.com/rancher/opni/pkg/config/v1"
-	"github.com/rancher/opni/pkg/logger"
-	"github.com/rancher/opni/pkg/machinery"
-	"github.com/rancher/opni/pkg/plugins/apis/system"
-	"github.com/rancher/opni/pkg/plugins/driverutil"
-	"github.com/rancher/opni/pkg/task"
+	montycorev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	managementv1 "github.com/aity-cloud/monty/pkg/apis/management/v1"
+	configv1 "github.com/aity-cloud/monty/pkg/config/v1"
+	"github.com/aity-cloud/monty/pkg/logger"
+	"github.com/aity-cloud/monty/pkg/machinery"
+	"github.com/aity-cloud/monty/pkg/plugins/apis/system"
+	"github.com/aity-cloud/monty/pkg/plugins/driverutil"
+	"github.com/aity-cloud/monty/pkg/task"
 
-	_ "github.com/rancher/opni/pkg/storage/etcd"
-	_ "github.com/rancher/opni/pkg/storage/jetstream"
+	_ "github.com/aity-cloud/monty/pkg/storage/etcd"
+	_ "github.com/aity-cloud/monty/pkg/storage/jetstream"
 )
 
 func (p *Plugin) UseManagementAPI(client managementv1.ManagementClient) {
@@ -23,7 +23,7 @@ func (p *Plugin) UseManagementAPI(client managementv1.ManagementClient) {
 
 func (p *Plugin) UseKeyValueStore(client system.KeyValueStoreClient) {
 	p.kv.Set(client)
-	ctrl, err := task.NewController(p.ctx, "uninstall", system.NewKVStoreClient[*opnicorev1.TaskStatus](client), &UninstallTaskRunner{
+	ctrl, err := task.NewController(p.ctx, "uninstall", system.NewKVStoreClient[*montycorev1.TaskStatus](client), &UninstallTaskRunner{
 		storageNamespace:  p.storageNamespace,
 		opensearchManager: p.opensearchManager,
 		backendDriver:     p.clusterDriver,

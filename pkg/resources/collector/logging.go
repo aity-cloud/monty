@@ -4,18 +4,18 @@ import (
 	"bytes"
 	"path/filepath"
 
-	opniloggingv1beta1 "github.com/rancher/opni/apis/logging/v1beta1"
+	montyloggingv1beta1 "github.com/aity-cloud/monty/apis/logging/v1beta1"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/types"
 )
 
-func (r *Reconciler) generateDistributionReceiver(config *opniloggingv1beta1.CollectorConfig) (receiver []string, retBytes []byte, retErr error) {
+func (r *Reconciler) generateDistributionReceiver(config *montyloggingv1beta1.CollectorConfig) (receiver []string, retBytes []byte, retErr error) {
 	var providerReceiver bytes.Buffer
 
 	switch config.Spec.Provider {
-	case opniloggingv1beta1.LogProviderRKE:
+	case montyloggingv1beta1.LogProviderRKE:
 		return []string{logReceiverRKE}, []byte(templateLogAgentRKE), nil
-	case opniloggingv1beta1.LogProviderK3S:
+	case montyloggingv1beta1.LogProviderK3S:
 		journaldDir := "/var/log/journal"
 		if config.Spec.K3S != nil && config.Spec.K3S.LogPath != "" {
 			journaldDir = config.Spec.K3S.LogPath
@@ -25,7 +25,7 @@ func (r *Reconciler) generateDistributionReceiver(config *opniloggingv1beta1.Col
 			return
 		}
 		return []string{logReceiverK3s}, providerReceiver.Bytes(), nil
-	case opniloggingv1beta1.LogProviderRKE2:
+	case montyloggingv1beta1.LogProviderRKE2:
 		journaldDir := "/var/log/journal"
 		if config.Spec.RKE2 != nil && config.Spec.RKE2.LogPath != "" {
 			journaldDir = config.Spec.RKE2.LogPath
@@ -43,7 +43,7 @@ func (r *Reconciler) generateDistributionReceiver(config *opniloggingv1beta1.Col
 	}
 }
 
-func (r *Reconciler) generateKubeAuditLogsReceiver(config *opniloggingv1beta1.CollectorConfig) (string, []byte, error) {
+func (r *Reconciler) generateKubeAuditLogsReceiver(config *montyloggingv1beta1.CollectorConfig) (string, []byte, error) {
 	var receiver bytes.Buffer
 
 	if config.Spec.KubeAuditLogs != nil && config.Spec.KubeAuditLogs.Enabled {
@@ -73,7 +73,7 @@ func (r *Reconciler) hostLoggingVolumes() (
 	retVolumes []corev1.Volume,
 	retErr error,
 ) {
-	config := &opniloggingv1beta1.CollectorConfig{}
+	config := &montyloggingv1beta1.CollectorConfig{}
 	retErr = r.client.Get(r.ctx, types.NamespacedName{
 		Name:      r.collector.Spec.LoggingConfig.Name,
 		Namespace: r.collector.Spec.SystemNamespace,
@@ -130,7 +130,7 @@ func (r *Reconciler) hostLoggingVolumes() (
 	})
 
 	switch config.Spec.Provider {
-	case opniloggingv1beta1.LogProviderRKE:
+	case montyloggingv1beta1.LogProviderRKE:
 		retVolumeMounts = append(retVolumeMounts, corev1.VolumeMount{
 			Name:      "rancher",
 			MountPath: "/var/lib/rancher/rke/log",
@@ -144,7 +144,7 @@ func (r *Reconciler) hostLoggingVolumes() (
 				},
 			},
 		})
-	case opniloggingv1beta1.LogProviderK3S:
+	case montyloggingv1beta1.LogProviderK3S:
 		journaldDir := "/var/log/journal"
 		if config.Spec.K3S != nil && config.Spec.K3S.LogPath != "" {
 			journaldDir = config.Spec.K3S.LogPath
@@ -176,7 +176,7 @@ func (r *Reconciler) hostLoggingVolumes() (
 			},
 		})
 
-	case opniloggingv1beta1.LogProviderRKE2:
+	case montyloggingv1beta1.LogProviderRKE2:
 		journaldDir := "/var/log/journal"
 		if config.Spec.RKE2 != nil && config.Spec.RKE2.LogPath != "" {
 			journaldDir = config.Spec.RKE2.LogPath

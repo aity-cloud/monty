@@ -3,7 +3,7 @@ package alerting_manager_test
 import (
 	"testing"
 
-	_ "github.com/rancher/opni/pkg/test/setup"
+	_ "github.com/aity-cloud/monty/pkg/test/setup"
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"

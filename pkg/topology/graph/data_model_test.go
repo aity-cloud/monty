@@ -4,10 +4,10 @@ import (
 	"bytes"
 	"encoding/json"
 
+	"github.com/aity-cloud/monty/pkg/test/testdata"
+	"github.com/aity-cloud/monty/pkg/topology/graph"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/rancher/opni/pkg/test/testdata"
-	"github.com/rancher/opni/pkg/topology/graph"
 	kgraph "github.com/steveteuber/kubectl-graph/pkg/graph"
 )
 

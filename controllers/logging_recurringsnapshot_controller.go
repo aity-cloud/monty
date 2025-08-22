@@ -3,11 +3,11 @@ package controllers
 import (
 	"context"
 
-	loggingv1beta1 "github.com/rancher/opni/apis/logging/v1beta1"
-	"github.com/rancher/opni/pkg/resources"
-	"github.com/rancher/opni/pkg/resources/recurringsnapshot"
-	"github.com/rancher/opni/pkg/util/k8sutil"
-	"github.com/rancher/opni/pkg/util/meta"
+	loggingv1beta1 "github.com/aity-cloud/monty/apis/logging/v1beta1"
+	"github.com/aity-cloud/monty/pkg/resources"
+	"github.com/aity-cloud/monty/pkg/resources/recurringsnapshot"
+	"github.com/aity-cloud/monty/pkg/util/k8sutil"
+	"github.com/aity-cloud/monty/pkg/util/meta"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
 	ctrl "sigs.k8s.io/controller-runtime"
@@ -22,11 +22,11 @@ type LoggingRecurringSnapshotReconciler struct {
 	scheme *runtime.Scheme
 }
 
-// +kubebuilder:rbac:groups=logging.opni.io,resources=recurringsnapshots,verbs=get;list;watch;create;update;patch;delete
-// +kubebuilder:rbac:groups=logging.opni.io,resources=recurringsnapshots/status,verbs=get;update;patch
-// +kubebuilder:rbac:groups=logging.opni.io,resources=recurringsnapshots/finalizers,verbs=update
-// +kubebuilder:rbac:groups=logging.opni.io,resources=opensearchrepositories,verbs=get;list;watch
-// +kubebuilder:rbac:groups=logging.opni.io,resources=opensearchrepositories/status,verbs=get
+// +kubebuilder:rbac:groups=logging.monty.io,resources=recurringsnapshots,verbs=get;list;watch;create;update;patch;delete
+// +kubebuilder:rbac:groups=logging.monty.io,resources=recurringsnapshots/status,verbs=get;update;patch
+// +kubebuilder:rbac:groups=logging.monty.io,resources=recurringsnapshots/finalizers,verbs=update
+// +kubebuilder:rbac:groups=logging.monty.io,resources=opensearchrepositories,verbs=get;list;watch
+// +kubebuilder:rbac:groups=logging.monty.io,resources=opensearchrepositories/status,verbs=get
 // +kubebuilder:rbac:groups=opensearch.opster.io,resources=opensearchclusters,verbs=get;list;watch;create;update;patch;delete
 // +kubebuilder:rbac:groups=opensearch.opster.io,resources=opensearchclusters/status,verbs=get;update;patch
 // +kubebuilder:rbac:groups=opensearch.opster.io,resources=opensearchclusters/finalizers,verbs=update

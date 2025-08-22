@@ -1,6 +1,6 @@
-# Contributing to Opni
+# Contributing to Monty
 
-Welcome to the Opni contributing guide. The following instructions should help you get started with Opni development.
+Welcome to the Monty contributing guide. The following instructions should help you get started with Monty development.
 
 ## 1. Prerequisites
 
@@ -20,13 +20,13 @@ For CI, we use a tool called Dagger, which is a programmable CI system that lets
 
 ### Install protols (vscode)
 
-It is highly recommended, though not required, to install [protols](https://github.com/kralicky/protols) and the associated vscode extension. Protols is a language server and toolchain for protobuf files. It is used in Opni to build and generate code, and makes working with protobuf APIs significantly easier.
+It is highly recommended, though not required, to install [protols](https://github.com/kralicky/protols) and the associated vscode extension. Protols is a language server and toolchain for protobuf files. It is used in Monty to build and generate code, and makes working with protobuf APIs significantly easier.
 
-To install it, follow the instructions in the protols README. You should then be able to open any protobuf file in the Opni codebase and interact with the code as you would with any other lsp-enabled language.
+To install it, follow the instructions in the protols README. You should then be able to open any protobuf file in the Monty codebase and interact with the code as you would with any other lsp-enabled language.
 
-See also: https://github.com/rancher/opni/wiki/Protols-Tips
+See also: https://github.com/aity-cloud/monty/wiki/Protols-Tips
 
-## 2. Building Opni Locally
+## 2. Building Monty Locally
 
 ### Using Mage
 
@@ -38,8 +38,8 @@ Once Dagger is installed, run `mage dagger:help` (or `go run ./dagger --help`) f
 
 ## 3. Test Environment
 
-All of the main Opni components can be run locally for development and testing. The test fixture we use in our integration tests is available as a standalone binary which runs the Opni components (gateway, agents, cortex, prometheus, otel collector, etc.) locally and/or in-process. The test environment can be started by running `mage test:env`. Once it starts, it will display a list of available commands that can be triggered using keyboard shortcuts.
+All of the main Monty components can be run locally for development and testing. The test fixture we use in our integration tests is available as a standalone binary which runs the Monty components (gateway, agents, cortex, prometheus, otel collector, etc.) locally and/or in-process. The test environment can be started by running `mage test:env`. Once it starts, it will display a list of available commands that can be triggered using keyboard shortcuts.
 
 ## Getting Help
 
-If you encounter any problems or have any questions about contributing to Opni, don't hesitate to create a new issue or reach out to us on the [Rancher Users Slack](https://slack.rancher.io).
+If you encounter any problems or have any questions about contributing to Monty, don't hesitate to create a new issue or reach out to us on the [Rancher Users Slack](https://slack.rancher.io).

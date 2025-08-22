@@ -9,25 +9,25 @@ import (
 	"strings"
 	"time"
 
+	"github.com/aity-cloud/monty/pkg/alerting/drivers/config"
+	"github.com/aity-cloud/monty/pkg/alerting/interfaces"
+	"github.com/aity-cloud/monty/pkg/alerting/templates"
+	alertingv1 "github.com/aity-cloud/monty/pkg/apis/alerting/v1"
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	"github.com/aity-cloud/monty/pkg/util"
 	"github.com/google/uuid"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/rancher/opni/pkg/alerting/drivers/config"
-	"github.com/rancher/opni/pkg/alerting/interfaces"
-	"github.com/rancher/opni/pkg/alerting/templates"
-	alertingv1 "github.com/rancher/opni/pkg/apis/alerting/v1"
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	"github.com/rancher/opni/pkg/util"
 
 	"google.golang.org/protobuf/types/known/durationpb"
 
 	"text/template"
 
+	"github.com/aity-cloud/monty/pkg/alerting/message"
 	amtemplate "github.com/prometheus/alertmanager/template"
 	"github.com/prometheus/prometheus/model/labels"
 	"github.com/prometheus/prometheus/promql"
 	promtemplate "github.com/prometheus/prometheus/template"
-	"github.com/rancher/opni/pkg/alerting/message"
 )
 
 func init() {
@@ -47,7 +47,7 @@ var _ = Describe("Prometheus fingerprint templating", Label("unit"), func() {
 				Name:        "test header 1",
 				Description: "test header 2",
 				Id:          uuid.New().String(),
-				Severity:    alertingv1.OpniSeverity_Error,
+				Severity:    alertingv1.MontySeverity_Error,
 				AlertType: &alertingv1.AlertTypeDetails{
 					Type: &alertingv1.AlertTypeDetails_PrometheusQuery{
 						PrometheusQuery: &alertingv1.AlertConditionPrometheusQuery{
@@ -61,7 +61,7 @@ var _ = Describe("Prometheus fingerprint templating", Label("unit"), func() {
 			fingerprintTs := float64(time.Now().UnixMilli()) / 1000
 			scenarios := []scenario{
 				{
-					text:   "{{ \"ALERTS_FOR_STATE{opni_uuid=\\\"%s\\\"} OR on() vector(0))\" | query | first | value | printf \"%.0f\" }}",
+					text:   "{{ \"ALERTS_FOR_STATE{monty_uuid=\\\"%s\\\"} OR on() vector(0))\" | query | first | value | printf \"%.0f\" }}",
 					output: "0",
 					queryResult: promql.Vector{
 						{
@@ -192,7 +192,7 @@ var _ = DescribeTable("Message templating",
 		&alertingv1.AlertCondition{
 			Name:        "condition 1",
 			Description: "condition 1 description",
-			Severity:    alertingv1.OpniSeverity_Info,
+			Severity:    alertingv1.MontySeverity_Info,
 			AlertType: &alertingv1.AlertTypeDetails{
 				Type: &alertingv1.AlertTypeDetails_System{
 					System: &alertingv1.AlertConditionSystem{
@@ -215,7 +215,7 @@ var _ = DescribeTable("Message templating",
 			},
 		},
 		"firing",
-		[]string{alertingv1.OpniSeverity_Info.String(), "Alarm", "condition 1"},
+		[]string{alertingv1.MontySeverity_Info.String(), "Alarm", "condition 1"},
 		[]string{"hello", "world"},
 	),
 	Entry(
@@ -223,7 +223,7 @@ var _ = DescribeTable("Message templating",
 		&alertingv1.AlertCondition{
 			Name:        "condition 1",
 			Description: "condition 1 description",
-			Severity:    alertingv1.OpniSeverity_Warning,
+			Severity:    alertingv1.MontySeverity_Warning,
 			AlertType: &alertingv1.AlertTypeDetails{
 				Type: &alertingv1.AlertTypeDetails_System{
 					System: &alertingv1.AlertConditionSystem{
@@ -234,15 +234,15 @@ var _ = DescribeTable("Message templating",
 			},
 		},
 		"firing",
-		[]string{"condition 1", "Warning", alertingv1.OpniSeverity_Warning.String(), "firing"},
+		[]string{"condition 1", "Warning", alertingv1.MontySeverity_Warning.String(), "firing"},
 		[]string{"condition 1", "condition 1 description"},
 	),
 	Entry(
-		"opni alarm is resolved",
+		"monty alarm is resolved",
 		&alertingv1.AlertCondition{
 			Name:        "test header 2",
 			Description: "body 2",
-			Severity:    alertingv1.OpniSeverity_Error,
+			Severity:    alertingv1.MontySeverity_Error,
 			AlertType: &alertingv1.AlertTypeDetails{
 				Type: &alertingv1.AlertTypeDetails_System{
 					System: &alertingv1.AlertConditionSystem{
@@ -253,7 +253,7 @@ var _ = DescribeTable("Message templating",
 			},
 		},
 		"resolved",
-		[]string{"test header 2", alertingv1.OpniSeverity_Error.String(), "Alarm", "resolved"},
+		[]string{"test header 2", alertingv1.MontySeverity_Error.String(), "Alarm", "resolved"},
 		[]string{"test header 2", "body 2"},
 	),
 	Entry(

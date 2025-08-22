@@ -7,20 +7,20 @@ import (
 
 	"log/slog"
 
+	"github.com/aity-cloud/monty/pkg/config/v1beta1"
+	"github.com/aity-cloud/monty/pkg/logger"
+	"github.com/aity-cloud/monty/pkg/plugins/driverutil"
+	"github.com/aity-cloud/monty/pkg/rules"
+	"github.com/aity-cloud/monty/pkg/rules/prometheusrule"
+	"github.com/aity-cloud/monty/pkg/util/k8sutil"
+	"github.com/aity-cloud/monty/pkg/util/notifier"
+	"github.com/aity-cloud/monty/plugins/metrics/apis/node"
+	"github.com/aity-cloud/monty/plugins/metrics/apis/remoteread"
+	"github.com/aity-cloud/monty/plugins/metrics/pkg/agent/drivers"
+	reconcilerutil "github.com/aity-cloud/monty/plugins/metrics/pkg/agent/drivers/util"
 	"github.com/lestrrat-go/backoff/v2"
 	monitoringcoreosv1 "github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring/v1"
 	monitoringcoreosv1alpha1 "github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring/v1alpha1"
-	"github.com/rancher/opni/pkg/config/v1beta1"
-	"github.com/rancher/opni/pkg/logger"
-	"github.com/rancher/opni/pkg/plugins/driverutil"
-	"github.com/rancher/opni/pkg/rules"
-	"github.com/rancher/opni/pkg/rules/prometheusrule"
-	"github.com/rancher/opni/pkg/util/k8sutil"
-	"github.com/rancher/opni/pkg/util/notifier"
-	"github.com/rancher/opni/plugins/metrics/apis/node"
-	"github.com/rancher/opni/plugins/metrics/apis/remoteread"
-	"github.com/rancher/opni/plugins/metrics/pkg/agent/drivers"
-	reconcilerutil "github.com/rancher/opni/plugins/metrics/pkg/agent/drivers/util"
 	"github.com/samber/lo"
 	corev1 "k8s.io/api/core/v1"
 	rbacv1 "k8s.io/api/rbac/v1"
@@ -133,7 +133,7 @@ BACKOFF:
 func (d *ExternalPromOperatorDriver) buildPrometheus() *monitoringcoreosv1.Prometheus {
 	return &monitoringcoreosv1.Prometheus{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "opni-prometheus-agent",
+			Name:      "monty-prometheus-agent",
 			Namespace: d.Namespace,
 		},
 	}
@@ -149,7 +149,7 @@ func (d *ExternalPromOperatorDriver) buildPrometheusAgent(conf *node.PrometheusS
 
 	return &monitoringcoreosv1alpha1.PrometheusAgent{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "opni-prometheus-agent",
+			Name:      "monty-prometheus-agent",
 			Namespace: d.Namespace,
 		},
 		Spec: monitoringcoreosv1alpha1.PrometheusAgentSpec{
@@ -191,10 +191,10 @@ func (d *ExternalPromOperatorDriver) buildPrometheusAgent(conf *node.PrometheusS
 				ProbeSelector:                   selector,
 				ServiceMonitorNamespaceSelector: selector,
 				ServiceMonitorSelector:          selector,
-				ServiceAccountName:              "opni-prometheus-agent",
+				ServiceAccountName:              "monty-prometheus-agent",
 				AdditionalScrapeConfigs: &corev1.SecretKeySelector{
 					LocalObjectReference: corev1.LocalObjectReference{
-						Name: "opni-additional-scrape-configs",
+						Name: "monty-additional-scrape-configs",
 					},
 					Key: "prometheus.yaml",
 				},
@@ -206,7 +206,7 @@ func (d *ExternalPromOperatorDriver) buildPrometheusAgent(conf *node.PrometheusS
 func (d *ExternalPromOperatorDriver) buildAdditionalScrapeConfigsSecret() *corev1.Secret {
 	return &corev1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "opni-additional-scrape-configs",
+			Name:      "monty-additional-scrape-configs",
 			Namespace: d.Namespace,
 		},
 		Data: map[string][]byte{
@@ -224,16 +224,16 @@ func (d *ExternalPromOperatorDriver) serviceName() string {
 	err := d.K8sClient.List(context.TODO(), list,
 		client.InNamespace(d.Namespace),
 		client.MatchingLabels{
-			"opni.io/app": "agent",
+			"monty.io/app": "agent",
 		},
 	)
 	if err != nil {
-		d.Logger.Error("unable to list services, defaulting to opni-agent")
-		return "opni-agent"
+		d.Logger.Error("unable to list services, defaulting to monty-agent")
+		return "monty-agent"
 	}
 	if len(list.Items) != 1 {
-		d.Logger.Error("unable to fetch service name, defaulting to opni-agent")
-		return "opni-agent"
+		d.Logger.Error("unable to fetch service name, defaulting to monty-agent")
+		return "monty-agent"
 	}
 	return list.Items[0].Name
 }
@@ -241,13 +241,13 @@ func (d *ExternalPromOperatorDriver) serviceName() string {
 func (d *ExternalPromOperatorDriver) buildRbac() (*corev1.ServiceAccount, *rbacv1.ClusterRole, *rbacv1.ClusterRoleBinding) {
 	svcAcct := &corev1.ServiceAccount{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "opni-prometheus-agent",
+			Name:      "monty-prometheus-agent",
 			Namespace: d.Namespace,
 		},
 	}
 	clusterRole := &rbacv1.ClusterRole{
 		ObjectMeta: metav1.ObjectMeta{
-			Name: "opni-prometheus-agent-role",
+			Name: "monty-prometheus-agent-role",
 		},
 		Rules: []rbacv1.PolicyRule{
 			{
@@ -279,17 +279,17 @@ func (d *ExternalPromOperatorDriver) buildRbac() (*corev1.ServiceAccount, *rbacv
 	}
 	clusterRoleBinding := &rbacv1.ClusterRoleBinding{
 		ObjectMeta: metav1.ObjectMeta{
-			Name: "opni-prometheus-agent-rb",
+			Name: "monty-prometheus-agent-rb",
 		},
 		RoleRef: rbacv1.RoleRef{
 			APIGroup: "rbac.authorization.k8s.io",
 			Kind:     "ClusterRole",
-			Name:     "opni-prometheus-agent-role",
+			Name:     "monty-prometheus-agent-role",
 		},
 		Subjects: []rbacv1.Subject{
 			{
 				Kind:      "ServiceAccount",
-				Name:      "opni-prometheus-agent",
+				Name:      "monty-prometheus-agent",
 				Namespace: d.Namespace,
 			},
 		},

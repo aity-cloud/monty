@@ -6,9 +6,9 @@ import (
 	"path"
 	"strings"
 
+	"github.com/aity-cloud/monty/pkg/alerting/shared"
+	"github.com/aity-cloud/monty/pkg/resources"
 	monitoringv1 "github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring/v1"
-	"github.com/rancher/opni/pkg/alerting/shared"
-	"github.com/rancher/opni/pkg/resources"
 	"github.com/samber/lo"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
@@ -26,11 +26,11 @@ func (r *Reconciler) alerting() ([]resources.Resource, error) {
 	}
 
 	labelWithAlerting := func(label map[string]string) map[string]string {
-		label["app.kubernetes.io/name"] = "opni-alerting"
+		label["app.kubernetes.io/name"] = "monty-alerting"
 		return label
 	}
 	publicNodeLabels := labelWithAlerting(map[string]string{
-		resources.PartOfLabel: "opni",
+		resources.PartOfLabel: "monty",
 	})
 	publicNodeSvcLabels := publicNodeLabels
 	requiredPersistentClaims, requiredVolumes := r.storage()
@@ -75,7 +75,7 @@ func (r *Reconciler) alerting() ([]resources.Resource, error) {
 						r.nodeAlertingPorts(),
 					),
 					Volumes:                      requiredVolumes,
-					ServiceAccountName:           "opni",
+					ServiceAccountName:           "monty",
 					AutomountServiceAccountToken: lo.ToPtr(true),
 				},
 			},
@@ -115,7 +115,7 @@ func (r *Reconciler) alerting() ([]resources.Resource, error) {
 							},
 							Key: "tls.key",
 						},
-						ServerName: "opni-alertmanager-alerting",
+						ServerName: "monty-alertmanager-alerting",
 					},
 				},
 			},
@@ -124,13 +124,13 @@ func (r *Reconciler) alerting() ([]resources.Resource, error) {
 
 	oldSvc := &corev1.Service{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "opni-alerting",
+			Name:      "monty-alerting",
 			Namespace: r.gw.Namespace,
 		},
 	}
 	oldSS := &appsv1.StatefulSet{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "opni-alerting",
+			Name:      "monty-alerting",
 			Namespace: r.gw.Namespace,
 		},
 	}
@@ -156,10 +156,10 @@ func (r *Reconciler) alertmanagerWorkerArgs() []string {
 		fmt.Sprintf("--storage.path=%s", dataMountPath),
 		fmt.Sprintf("--log.level=%s", "info"),
 		"--log.format=json",
-		fmt.Sprintf("--opni.listen-address=:%d", 3000),
+		fmt.Sprintf("--monty.listen-address=:%d", 3000),
 		fmt.Sprintf("--web.config.file=%s", path.Join(webMountPath, "web.yml")),
 		// TODO : make this configurable
-		"--opni.send-k8s",
+		"--monty.send-k8s",
 	}
 	replicas := lo.FromPtrOr(r.ac.Spec.Alertmanager.ApplicationSpec.Replicas, 1)
 	for i := 0; i < int(replicas); i++ {
@@ -180,7 +180,7 @@ func (r *Reconciler) syncerArgs() []string {
 		fmt.Sprintf("--syncer.alertmanager.config.file=%s", r.configPath()),
 		fmt.Sprintf("--syncer.listen.address=:%d", 4000),
 		fmt.Sprintf("--syncer.alertmanager.address=%s", fmt.Sprintf("localhost:%d", 9093)),
-		fmt.Sprintf("--syncer.gateway.join.address=opni-internal:%s", gatewayPort),
+		fmt.Sprintf("--syncer.gateway.join.address=monty-internal:%s", gatewayPort),
 	}
 }
 
@@ -211,7 +211,7 @@ func (r *Reconciler) newAlertingAlertManager(
 				Value: r.gw.Namespace,
 			},
 		},
-		Name:            "opni-alertmanager",
+		Name:            "monty-alertmanager",
 		Image:           r.gw.Status.Image,
 		ImagePullPolicy: "Always",
 		Args: append([]string{
@@ -270,7 +270,7 @@ func (r *Reconciler) newAlertingSyncer(args []string) corev1.Container {
 			},
 		},
 
-		Name:            "opni-syncer",
+		Name:            "monty-syncer",
 		Image:           r.gw.Status.Image,
 		ImagePullPolicy: "Always",
 		Args: append([]string{
@@ -334,7 +334,7 @@ func (r *Reconciler) syncerPorts() []corev1.ContainerPort {
 func (r *Reconciler) nodeAlertingPorts() []corev1.ContainerPort {
 	return []corev1.ContainerPort{
 		{
-			Name:          "opni-port",
+			Name:          "monty-port",
 			ContainerPort: shared.AlertingDefaultHookPort,
 			Protocol:      corev1.ProtocolTCP,
 		},

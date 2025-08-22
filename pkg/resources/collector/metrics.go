@@ -4,11 +4,11 @@ import (
 	"bytes"
 	"fmt"
 
-	monitoringv1beta1 "github.com/rancher/opni/apis/monitoring/v1beta1"
-	"github.com/rancher/opni/pkg/logger"
-	"github.com/rancher/opni/pkg/otel"
-	"github.com/rancher/opni/pkg/resources"
-	promdiscover "github.com/rancher/opni/pkg/resources/collector/discovery"
+	monitoringv1beta1 "github.com/aity-cloud/monty/apis/monitoring/v1beta1"
+	"github.com/aity-cloud/monty/pkg/logger"
+	"github.com/aity-cloud/monty/pkg/otel"
+	"github.com/aity-cloud/monty/pkg/resources"
+	promdiscover "github.com/aity-cloud/monty/pkg/resources/collector/discovery"
 	"github.com/samber/lo"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
@@ -22,7 +22,7 @@ const (
 {{ template "metrics-node-receivers" .}}
 `
 	walDir        = "/etc/otel/prometheus/wal"
-	tlsSecretName = "opni-otel-tls-assets"
+	tlsSecretName = "monty-otel-tls-assets"
 )
 
 func (r *Reconciler) metricsNodeReceiverConfig(
@@ -114,7 +114,7 @@ func (r *Reconciler) metricsTlsAssets(sec []promdiscover.SecretResolutionConfig)
 			Name:      tlsSecretName,
 			Namespace: r.collector.Spec.SystemNamespace,
 			Labels: map[string]string{
-				resources.PartOfLabel: "opni",
+				resources.PartOfLabel: "monty",
 			},
 		},
 		Data: map[string][]byte{},

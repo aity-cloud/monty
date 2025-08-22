@@ -1,4 +1,4 @@
-// This package defines the configuration for the Opni Monitoring gateway
+// This package defines the configuration for the Monty Monitoring gateway
 // and agent. This spec is different from the Kubernetes Custom Resources
 // used to deploy the gateway with an operator. Those definitions can be found
 // in apis/monitoring/v1beta1.

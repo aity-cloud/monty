@@ -5,13 +5,13 @@ import (
 	"regexp"
 	"time"
 
+	"github.com/aity-cloud/monty/pkg/alerting/storage/jetstream"
+	"github.com/aity-cloud/monty/pkg/alerting/storage/mem"
+	storage_opts "github.com/aity-cloud/monty/pkg/alerting/storage/opts"
+	"github.com/aity-cloud/monty/pkg/alerting/storage/spec"
+	alertingv1 "github.com/aity-cloud/monty/pkg/apis/alerting/v1"
+	"github.com/aity-cloud/monty/pkg/logger"
 	"github.com/nats-io/nats.go"
-	"github.com/rancher/opni/pkg/alerting/storage/jetstream"
-	"github.com/rancher/opni/pkg/alerting/storage/mem"
-	storage_opts "github.com/rancher/opni/pkg/alerting/storage/opts"
-	"github.com/rancher/opni/pkg/alerting/storage/spec"
-	alertingv1 "github.com/rancher/opni/pkg/apis/alerting/v1"
-	"github.com/rancher/opni/pkg/logger"
 )
 
 var (

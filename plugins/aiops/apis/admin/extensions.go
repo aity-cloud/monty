@@ -1,7 +1,7 @@
 package admin
 
 import (
-	"github.com/rancher/opni/pkg/validation"
+	"github.com/aity-cloud/monty/pkg/validation"
 )
 
 func (a *AISettings) Validate() error {

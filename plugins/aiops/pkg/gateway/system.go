@@ -44,7 +44,7 @@ func newNatsConnection() (*nats.Conn, error) {
 }
 
 func (s *AIOpsPlugin) setOpensearchConnection() {
-	esEndpoint := fmt.Sprintf("https://opni-opensearch-svc.%s.svc:9200", s.storageNamespace)
+	esEndpoint := fmt.Sprintf("https://monty-opensearch-svc.%s.svc:9200", s.storageNamespace)
 	retrier := backoffv2.Exponential(
 		backoffv2.WithMaxRetries(0),
 		backoffv2.WithMinInterval(5*time.Second),
@@ -60,7 +60,7 @@ FETCH:
 			s.Logger.Warn("plugin context cancelled before Opensearch object created")
 		case <-b.Next():
 			err := s.k8sClient.Get(s.ctx, types.NamespacedName{
-				Name:      "opni",
+				Name:      "monty",
 				Namespace: s.storageNamespace,
 			}, cluster)
 			if err != nil {

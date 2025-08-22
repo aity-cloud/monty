@@ -3,19 +3,19 @@ package server_test
 import (
 	"context"
 
+	controlv1 "github.com/aity-cloud/monty/pkg/apis/control/v1"
+	"github.com/aity-cloud/monty/pkg/config/reactive"
+	"github.com/aity-cloud/monty/pkg/config/reactive/reactivetest"
+	"github.com/aity-cloud/monty/pkg/config/reactive/subtle"
+	configv1 "github.com/aity-cloud/monty/pkg/config/v1"
+	_ "github.com/aity-cloud/monty/pkg/oci/noop"
+	"github.com/aity-cloud/monty/pkg/test/testlog"
+	"github.com/aity-cloud/monty/pkg/update"
+	"github.com/aity-cloud/monty/pkg/update/kubernetes"
+	"github.com/aity-cloud/monty/pkg/update/kubernetes/server"
+	"github.com/aity-cloud/monty/pkg/urn"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	controlv1 "github.com/rancher/opni/pkg/apis/control/v1"
-	"github.com/rancher/opni/pkg/config/reactive"
-	"github.com/rancher/opni/pkg/config/reactive/reactivetest"
-	"github.com/rancher/opni/pkg/config/reactive/subtle"
-	configv1 "github.com/rancher/opni/pkg/config/v1"
-	_ "github.com/rancher/opni/pkg/oci/noop"
-	"github.com/rancher/opni/pkg/test/testlog"
-	"github.com/rancher/opni/pkg/update"
-	"github.com/rancher/opni/pkg/update/kubernetes"
-	"github.com/rancher/opni/pkg/update/kubernetes/server"
-	"github.com/rancher/opni/pkg/urn"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
@@ -58,12 +58,12 @@ var _ = Describe("Kubernetes sync server", Label("unit"), func() {
 	})
 
 	When("unknown package type is provided", func() {
-		packageURN := urn.NewOpniURN(urn.Agent, kubernetes.UpdateStrategy, "unknown")
+		packageURN := urn.NewMontyURN(urn.Agent, kubernetes.UpdateStrategy, "unknown")
 		manifest := &controlv1.UpdateManifest{
 			Items: []*controlv1.UpdateManifestEntry{
 				{
 					Package: packageURN.String(),
-					Path:    "rancher/opni",
+					Path:    "registry.aity.tech/monty/monty",
 					Digest:  "latest",
 				},
 			},
@@ -78,7 +78,7 @@ var _ = Describe("Kubernetes sync server", Label("unit"), func() {
 			Items: []*controlv1.UpdateManifestEntry{
 				{
 					Package: "urn:malformed",
-					Path:    "rancher/opni",
+					Path:    "registry.aity.tech/monty/monty",
 					Digest:  "latest",
 				},
 			},
@@ -89,11 +89,11 @@ var _ = Describe("Kubernetes sync server", Label("unit"), func() {
 		})
 	})
 	When("URNs are valid", func() {
-		var packageURN1, packageURN2 urn.OpniURN
+		var packageURN1, packageURN2 urn.MontyURN
 		var manifest *controlv1.UpdateManifest
 		BeforeEach(func() {
-			packageURN1 = urn.NewOpniURN(urn.Agent, kubernetes.UpdateStrategy, "agent")
-			packageURN2 = urn.NewOpniURN(urn.Agent, kubernetes.UpdateStrategy, "controller")
+			packageURN1 = urn.NewMontyURN(urn.Agent, kubernetes.UpdateStrategy, "agent")
+			packageURN2 = urn.NewMontyURN(urn.Agent, kubernetes.UpdateStrategy, "controller")
 		})
 		When("manifest matches the current version", func() {
 			JustBeforeEach(func() {
@@ -101,12 +101,12 @@ var _ = Describe("Kubernetes sync server", Label("unit"), func() {
 					Items: []*controlv1.UpdateManifestEntry{
 						{
 							Package: packageURN1.String(),
-							Path:    "example.io/opni-noop",
+							Path:    "example.io/monty-noop",
 							Digest:  imageDigest,
 						},
 						{
 							Package: packageURN2.String(),
-							Path:    "example.io/opni-noop",
+							Path:    "example.io/monty-noop",
 							Digest:  imageDigest,
 						},
 					},
@@ -128,12 +128,12 @@ var _ = Describe("Kubernetes sync server", Label("unit"), func() {
 					Items: []*controlv1.UpdateManifestEntry{
 						{
 							Package: packageURN1.String(),
-							Path:    "quay.io/opni-noop",
+							Path:    "quay.io/monty-noop",
 							Digest:  imageDigest,
 						},
 						{
 							Package: packageURN2.String(),
-							Path:    "opni-noop",
+							Path:    "monty-noop",
 							Digest:  imageDigest,
 						},
 					},
@@ -155,12 +155,12 @@ var _ = Describe("Kubernetes sync server", Label("unit"), func() {
 					Items: []*controlv1.UpdateManifestEntry{
 						{
 							Package: packageURN1.String(),
-							Path:    "example.io/opni-noop",
+							Path:    "example.io/monty-noop",
 							Digest:  imageDigest,
 						},
 						{
 							Package: packageURN2.String(),
-							Path:    "example.io/opni-noop",
+							Path:    "example.io/monty-noop",
 							Digest:  "latest",
 						},
 					},
@@ -172,7 +172,7 @@ var _ = Describe("Kubernetes sync server", Label("unit"), func() {
 				for _, patch := range patchList.GetItems() {
 					if patch.GetPackage() == packageURN2.String() {
 						Expect(patch.GetOp()).To(Equal(controlv1.PatchOp_Update))
-						Expect(patch.GetPath()).To(Equal("example.io/opni-noop"))
+						Expect(patch.GetPath()).To(Equal("example.io/monty-noop"))
 						Expect(patch.GetNewDigest()).To(Equal(imageDigest))
 						Expect(patch.GetOldDigest()).To(Equal("latest"))
 					}
@@ -197,12 +197,12 @@ var _ = Describe("Kubernetes sync server", Label("unit"), func() {
 					Items: []*controlv1.UpdateManifestEntry{
 						{
 							Package: packageURN1.String(),
-							Path:    "example.io/opni-noop",
+							Path:    "example.io/monty-noop",
 							Digest:  imageDigest,
 						},
 						{
 							Package: packageURN2.String(),
-							Path:    "opni.io/opni-noop",
+							Path:    "monty.io/monty-noop",
 							Digest:  "latest",
 						},
 					},
@@ -214,7 +214,7 @@ var _ = Describe("Kubernetes sync server", Label("unit"), func() {
 				for _, patch := range patchList.GetItems() {
 					if patch.GetPackage() == packageURN2.String() {
 						Expect(patch.GetOp()).To(Equal(controlv1.PatchOp_Update))
-						Expect(patch.GetPath()).To(Equal("example.io/opni-noop"))
+						Expect(patch.GetPath()).To(Equal("example.io/monty-noop"))
 						Expect(patch.GetNewDigest()).To(Equal(imageDigest))
 						Expect(patch.GetOldDigest()).To(Equal("latest"))
 					}
@@ -227,7 +227,7 @@ var _ = Describe("Kubernetes sync server", Label("unit"), func() {
 					Items: []*controlv1.UpdateManifestEntry{
 						{
 							Package: packageURN1.String(),
-							Path:    "example.io/opni-noop",
+							Path:    "example.io/monty-noop",
 							Digest:  imageDigest,
 						},
 						{
@@ -244,7 +244,7 @@ var _ = Describe("Kubernetes sync server", Label("unit"), func() {
 				for _, patch := range patchList.GetItems() {
 					if patch.GetPackage() == packageURN2.String() {
 						Expect(patch.GetOp()).To(Equal(controlv1.PatchOp_Update))
-						Expect(patch.GetPath()).To(Equal("example.io/opni-noop"))
+						Expect(patch.GetPath()).To(Equal("example.io/monty-noop"))
 						Expect(patch.GetNewDigest()).To(Equal(imageDigest))
 						Expect(patch.GetOldDigest()).To(Equal(imageDigest))
 					}
@@ -257,7 +257,7 @@ var _ = Describe("Kubernetes sync server", Label("unit"), func() {
 					Items: []*controlv1.UpdateManifestEntry{
 						{
 							Package: packageURN1.String(),
-							Path:    "example.io/opni-noop",
+							Path:    "example.io/monty-noop",
 							Digest:  "latest",
 						},
 						{

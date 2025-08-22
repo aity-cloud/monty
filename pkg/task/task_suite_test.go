@@ -6,11 +6,11 @@ import (
 	"log/slog"
 	"testing"
 
+	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	"github.com/aity-cloud/monty/pkg/task"
+	_ "github.com/aity-cloud/monty/pkg/test/setup"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	corev1 "github.com/rancher/opni/pkg/apis/core/v1"
-	"github.com/rancher/opni/pkg/task"
-	_ "github.com/rancher/opni/pkg/test/setup"
 )
 
 func TestTask(t *testing.T) {

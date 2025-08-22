@@ -7,13 +7,13 @@ import (
 	"fmt"
 	"time"
 
-	opnicorev1beta1 "github.com/rancher/opni/apis/core/v1beta1"
-	opniloggingv1beta1 "github.com/rancher/opni/apis/logging/v1beta1"
-	monitoringv1beta1 "github.com/rancher/opni/apis/monitoring/v1beta1"
-	"github.com/rancher/opni/pkg/logger"
-	"github.com/rancher/opni/pkg/otel"
-	"github.com/rancher/opni/pkg/resources"
-	opnimeta "github.com/rancher/opni/pkg/util/meta"
+	montycorev1beta1 "github.com/aity-cloud/monty/apis/core/v1beta1"
+	montyloggingv1beta1 "github.com/aity-cloud/monty/apis/logging/v1beta1"
+	monitoringv1beta1 "github.com/aity-cloud/monty/apis/monitoring/v1beta1"
+	"github.com/aity-cloud/monty/pkg/logger"
+	"github.com/aity-cloud/monty/pkg/otel"
+	"github.com/aity-cloud/monty/pkg/resources"
+	montymeta "github.com/aity-cloud/monty/pkg/util/meta"
 	"github.com/samber/lo"
 	"go.opentelemetry.io/collector/exporter/exporterhelper"
 	"go.opentelemetry.io/collector/exporter/otlpexporter"
@@ -35,7 +35,7 @@ const (
 	aggregatorKey = "aggregator.yaml"
 
 	collectorImageRepo = "ghcr.io"
-	collectorImage     = "rancher-sandbox/opni-otel-collector"
+	collectorImage     = "rancher-sandbox/monty-otel-collector"
 	collectorVersion   = "v0.1.4-rc1-0.85.0"
 	reloaderImage      = "rancher-sandbox/config-reloader"
 	reloaderVersion    = "v0.1.2"
@@ -80,7 +80,7 @@ func (r *Reconciler) getDaemonOTELConfig() otel.NodeOTELConfig {
 	nodeOTELCfg := r.collector.Spec.NodeOTELConfigSpec
 	if nodeOTELCfg == nil {
 		r.lg.Warn("found no config for the daemon's OTEL Collector, falling back to default")
-		nodeOTELCfg = opnicorev1beta1.NewDefaultNodeOTELConfigSpec()
+		nodeOTELCfg = montycorev1beta1.NewDefaultNodeOTELConfigSpec()
 	}
 
 	return otel.NodeOTELConfig{
@@ -123,7 +123,7 @@ func (r *Reconciler) getAggregatorOTELConfig() otel.AggregatorOTELConfig {
 	aggregatorOTELCfg := r.collector.Spec.AggregatorOTELConfigSpec
 	if aggregatorOTELCfg == nil {
 		r.lg.Warn("found no config for the aggregator's OTEL Collector, falling back to default")
-		aggregatorOTELCfg = opnicorev1beta1.NewDefaultAggregatorOTELConfigSpec()
+		aggregatorOTELCfg = montycorev1beta1.NewDefaultAggregatorOTELConfigSpec()
 	}
 	return otel.AggregatorOTELConfig{
 		Processors: &otel.AggregatorOTELProcessors{
@@ -215,7 +215,7 @@ func (r *Reconciler) agentConfigMap() (resources.Resource, string) {
 			Name:      r.agentConfigMapName(),
 			Namespace: r.collector.Spec.SystemNamespace,
 			Labels: map[string]string{
-				resources.PartOfLabel: "opni",
+				resources.PartOfLabel: "monty",
 			},
 		},
 		Data: map[string]string{},
@@ -254,7 +254,7 @@ func (r *Reconciler) aggregatorConfigMap(curCfg otel.AggregatorConfig) (resource
 			Name:      r.aggregatorConfigMapName(),
 			Namespace: r.collector.Spec.SystemNamespace,
 			Labels: map[string]string{
-				resources.PartOfLabel: "opni",
+				resources.PartOfLabel: "monty",
 			},
 		},
 		Data: map[string]string{},
@@ -328,7 +328,7 @@ func (r *Reconciler) daemonSet() resources.Resource {
 				Namespace: r.collector.Spec.SystemNamespace,
 				Labels: map[string]string{
 					resources.AppNameLabel:  "collector-agent",
-					resources.PartOfLabel:   "opni",
+					resources.PartOfLabel:   "monty",
 					resources.InstanceLabel: r.collector.Name,
 				},
 			},
@@ -358,7 +358,7 @@ func (r *Reconciler) daemonSet() resources.Resource {
 			Namespace: r.collector.Spec.SystemNamespace,
 			Labels: map[string]string{
 				resources.AppNameLabel:  "collector-agent",
-				resources.PartOfLabel:   "opni",
+				resources.PartOfLabel:   "monty",
 				resources.InstanceLabel: r.collector.Name,
 			},
 		},
@@ -366,7 +366,7 @@ func (r *Reconciler) daemonSet() resources.Resource {
 			Selector: &metav1.LabelSelector{
 				MatchLabels: map[string]string{
 					resources.AppNameLabel:  "collector-agent",
-					resources.PartOfLabel:   "opni",
+					resources.PartOfLabel:   "monty",
 					resources.InstanceLabel: r.collector.Name,
 				},
 			},
@@ -374,7 +374,7 @@ func (r *Reconciler) daemonSet() resources.Resource {
 				ObjectMeta: metav1.ObjectMeta{
 					Labels: map[string]string{
 						resources.AppNameLabel:  "collector-agent",
-						resources.PartOfLabel:   "opni",
+						resources.PartOfLabel:   "monty",
 						resources.InstanceLabel: r.collector.Name,
 					},
 				},
@@ -438,7 +438,7 @@ func (r *Reconciler) daemonSet() resources.Resource {
 							Operator: corev1.TolerationOpExists,
 						},
 					},
-					ServiceAccountName: "opni-agent",
+					ServiceAccountName: "monty-agent",
 				},
 			},
 		},
@@ -506,7 +506,7 @@ func (r *Reconciler) deployment() resources.Resource {
 			Namespace: r.collector.Spec.SystemNamespace,
 			Labels: map[string]string{
 				resources.AppNameLabel:  "collector-aggregator",
-				resources.PartOfLabel:   "opni",
+				resources.PartOfLabel:   "monty",
 				resources.InstanceLabel: r.collector.Name,
 			},
 		},
@@ -514,7 +514,7 @@ func (r *Reconciler) deployment() resources.Resource {
 			Selector: &metav1.LabelSelector{
 				MatchLabels: map[string]string{
 					resources.AppNameLabel:  "collector-aggregator",
-					resources.PartOfLabel:   "opni",
+					resources.PartOfLabel:   "monty",
 					resources.InstanceLabel: r.collector.Name,
 				},
 			},
@@ -522,7 +522,7 @@ func (r *Reconciler) deployment() resources.Resource {
 				ObjectMeta: metav1.ObjectMeta{
 					Labels: map[string]string{
 						resources.AppNameLabel:  "collector-aggregator",
-						resources.PartOfLabel:   "opni",
+						resources.PartOfLabel:   "monty",
 						resources.InstanceLabel: r.collector.Name,
 					},
 				},
@@ -571,7 +571,7 @@ func (r *Reconciler) deployment() resources.Resource {
 					},
 					ImagePullSecrets:   imageSpec.ImagePullSecrets,
 					Volumes:            volumes,
-					ServiceAccountName: "opni-agent",
+					ServiceAccountName: "monty-agent",
 				},
 			},
 		},
@@ -592,7 +592,7 @@ func (r *Reconciler) service() resources.Resource {
 			Namespace: r.collector.Spec.SystemNamespace,
 			Labels: map[string]string{
 				resources.AppNameLabel:  "collector-aggregator",
-				resources.PartOfLabel:   "opni",
+				resources.PartOfLabel:   "monty",
 				resources.InstanceLabel: r.collector.Name,
 			},
 		},
@@ -607,7 +607,7 @@ func (r *Reconciler) service() resources.Resource {
 			},
 			Selector: map[string]string{
 				resources.AppNameLabel:  "collector-aggregator",
-				resources.PartOfLabel:   "opni",
+				resources.PartOfLabel:   "monty",
 				resources.InstanceLabel: r.collector.Name,
 			},
 		},
@@ -647,8 +647,8 @@ func (r *Reconciler) configReloaderContainer(mounts []corev1.VolumeMount, runAsR
 	}
 }
 
-func (r *Reconciler) imageSpec() opnimeta.ImageSpec {
-	return opnimeta.ImageResolver{
+func (r *Reconciler) imageSpec() montymeta.ImageSpec {
+	return montymeta.ImageResolver{
 		Version:       collectorVersion,
 		ImageName:     collectorImage,
 		DefaultRepo:   collectorImageRepo,
@@ -656,12 +656,12 @@ func (r *Reconciler) imageSpec() opnimeta.ImageSpec {
 	}.Resolve()
 }
 
-func (r *Reconciler) configReloaderImageSpec() opnimeta.ImageSpec {
-	return opnimeta.ImageResolver{
+func (r *Reconciler) configReloaderImageSpec() montymeta.ImageSpec {
+	return montymeta.ImageResolver{
 		Version:     reloaderVersion,
 		ImageName:   reloaderImage,
 		DefaultRepo: collectorImageRepo,
-		ImageOverride: func() *opnimeta.ImageSpec {
+		ImageOverride: func() *montymeta.ImageSpec {
 			if r.collector.Spec.ConfigReloader != nil {
 				return &r.collector.Spec.ConfigReloader.ImageSpec
 			}
@@ -670,8 +670,8 @@ func (r *Reconciler) configReloaderImageSpec() opnimeta.ImageSpec {
 	}.Resolve()
 }
 
-func (r *Reconciler) fetchLoggingCollectorConfig() (*opniloggingv1beta1.CollectorConfig, error) {
-	config := &opniloggingv1beta1.CollectorConfig{}
+func (r *Reconciler) fetchLoggingCollectorConfig() (*montyloggingv1beta1.CollectorConfig, error) {
+	config := &montyloggingv1beta1.CollectorConfig{}
 	err := r.client.Get(r.ctx, types.NamespacedName{
 		Name:      r.collector.Spec.LoggingConfig.Name,
 		Namespace: r.collector.Spec.SystemNamespace,

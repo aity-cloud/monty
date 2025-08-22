@@ -29,7 +29,7 @@ deploy/examples/gpu/vgpu.yaml
 # deploy/manifests
 deploy/custom/cortex.yaml
 deploy/custom/grafana.yaml
-deploy/custom/opni-monitoring.yaml
+deploy/custom/monty-monitoring.yaml
 pkg/resources/monitoring/dashboards/vendor
 
 /report.json
@@ -57,3 +57,5 @@ mage_output_file.go
 # crd generation
 
 #crds.yaml
+
+tilt_config.json

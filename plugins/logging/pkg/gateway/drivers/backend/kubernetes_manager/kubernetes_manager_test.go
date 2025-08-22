@@ -6,12 +6,12 @@ import (
 	"time"
 
 	opsterv1 "github.com/Opster/opensearch-k8s-operator/opensearch-operator/api/v1"
+	v1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
+	"github.com/aity-cloud/monty/pkg/test/testlog"
+	montymeta "github.com/aity-cloud/monty/pkg/util/meta"
+	"github.com/aity-cloud/monty/plugins/logging/pkg/gateway/drivers/backend/kubernetes_manager"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	v1 "github.com/rancher/opni/pkg/apis/core/v1"
-	"github.com/rancher/opni/pkg/test/testlog"
-	opnimeta "github.com/rancher/opni/pkg/util/meta"
-	"github.com/rancher/opni/plugins/logging/pkg/gateway/drivers/backend/kubernetes_manager"
 	corev1 "k8s.io/api/core/v1"
 	k8serrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -47,7 +47,7 @@ var _ = Describe("Opensearch Backend", Ordered, Label("integration"), func() {
 		}()).To(Succeed())
 		opensearch := &opsterv1.OpenSearchCluster{
 			ObjectMeta: metav1.ObjectMeta{
-				Name:      "opni",
+				Name:      "monty",
 				Namespace: namespace,
 			},
 			Spec: opsterv1.ClusterSpec{
@@ -76,15 +76,15 @@ var _ = Describe("Opensearch Backend", Ordered, Label("integration"), func() {
 	})
 
 	JustBeforeEach(func() {
-		opniCluster := &opnimeta.OpensearchClusterRef{
-			Name:      "opni",
+		montyCluster := &montymeta.OpensearchClusterRef{
+			Name:      "monty",
 			Namespace: namespace,
 		}
 		var err error
 		manager, err = kubernetes_manager.NewKubernetesManagerDriver(
 			kubernetes_manager.KubernetesManagerDriverOptions{
 				K8sClient:         k8sClient,
-				OpensearchCluster: opniCluster,
+				OpensearchCluster: montyCluster,
 				Namespace:         namespace,
 				Logger:            testlog.Log,
 			},
@@ -139,9 +139,9 @@ var _ = Describe("Opensearch Backend", Ordered, Label("integration"), func() {
 			}, role), timeout, interval).Should(Succeed())
 
 			By("checking the appropriate metadata is set")
-			_, ok := role.Annotations["opni.io/label_matcher"]
+			_, ok := role.Annotations["monty.io/label_matcher"]
 			Expect(ok).To(BeTrue())
-			_, ok = role.Labels["opni.io/managed"]
+			_, ok = role.Labels["monty.io/managed"]
 			Expect(ok).To(BeTrue())
 
 			By("checking the role content")
@@ -232,7 +232,7 @@ var _ = Describe("Opensearch Backend", Ordered, Label("integration"), func() {
 					if err != nil {
 						return true
 					}
-					_, ok := role.Annotations["opni.io/label_matcher"]
+					_, ok := role.Annotations["monty.io/label_matcher"]
 					return ok
 				}(), interval, timeout).Should(BeFalse())
 
@@ -310,7 +310,7 @@ var _ = Describe("Opensearch Backend", Ordered, Label("integration"), func() {
 				},
 				Spec: opsterv1.OpensearchRoleSpec{
 					OpensearchRef: corev1.LocalObjectReference{
-						Name: "opni",
+						Name: "monty",
 					},
 				},
 			}

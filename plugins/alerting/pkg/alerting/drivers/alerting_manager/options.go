@@ -4,8 +4,8 @@ import (
 	"crypto/tls"
 	"log/slog"
 
-	alertingClient "github.com/rancher/opni/pkg/alerting/client"
-	"github.com/rancher/opni/pkg/alerting/shared"
+	alertingClient "github.com/aity-cloud/monty/pkg/alerting/client"
+	"github.com/aity-cloud/monty/pkg/alerting/shared"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )

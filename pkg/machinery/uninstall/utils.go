@@ -7,8 +7,8 @@ import (
 
 	"log/slog"
 
-	capabilityv1 "github.com/rancher/opni/pkg/apis/capability/v1"
-	"github.com/rancher/opni/pkg/task"
+	capabilityv1 "github.com/aity-cloud/monty/pkg/apis/capability/v1"
+	"github.com/aity-cloud/monty/pkg/task"
 )
 
 type TimestampedMetadata struct {

@@ -7,11 +7,11 @@ import (
 
 	"log/slog"
 
+	"github.com/aity-cloud/monty/pkg/config/v1beta1"
+	"github.com/aity-cloud/monty/pkg/logger"
 	"github.com/cenkalti/backoff"
 	backoffv2 "github.com/lestrrat-go/backoff/v2"
 	"github.com/nats-io/nats.go"
-	"github.com/rancher/opni/pkg/config/v1beta1"
-	"github.com/rancher/opni/pkg/logger"
 )
 
 type natsAcquireOptions struct {

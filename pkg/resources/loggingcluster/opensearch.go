@@ -5,11 +5,11 @@ import (
 	"fmt"
 
 	opensearchv1 "github.com/Opster/opensearch-k8s-operator/opensearch-operator/api/v1"
-	"github.com/rancher/opni/pkg/opensearch/certs"
-	opensearchtypes "github.com/rancher/opni/pkg/opensearch/opensearch/types"
-	opensearch "github.com/rancher/opni/pkg/opensearch/reconciler"
-	"github.com/rancher/opni/pkg/resources"
-	"github.com/rancher/opni/pkg/util/meta"
+	"github.com/aity-cloud/monty/pkg/opensearch/certs"
+	opensearchtypes "github.com/aity-cloud/monty/pkg/opensearch/opensearch/types"
+	opensearch "github.com/aity-cloud/monty/pkg/opensearch/reconciler"
+	"github.com/aity-cloud/monty/pkg/resources"
+	"github.com/aity-cloud/monty/pkg/util/meta"
 	"k8s.io/client-go/util/retry"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
@@ -28,7 +28,7 @@ var (
 			{
 				IndexPatterns: []string{
 					"logs*",
-					"ss4o_traces-kubernetes-opni*",
+					"ss4o_traces-kubernetes-monty*",
 				},
 				AllowedActions: []string{
 					"read",
@@ -76,7 +76,7 @@ func (r *Reconciler) reconcileOpensearchUsers(reconciler *opensearch.Reconciler)
 	clusterReadRole.RoleName = r.loggingCluster.Name
 	clusterReadRole.IndexPermissions[0].DocumentLevelSecurity = fmt.Sprintf(
 		`{"term":{"cluster_id": "%s"}}`,
-		r.loggingCluster.Labels[resources.OpniClusterID],
+		r.loggingCluster.Labels[resources.MontyClusterID],
 	)
 
 	retErr = reconciler.MaybeCreateRole(clusterReadRole)
@@ -86,7 +86,7 @@ func (r *Reconciler) reconcileOpensearchUsers(reconciler *opensearch.Reconciler)
 
 func (r *Reconciler) reconcileFriendlyName(reconciler *opensearch.Reconciler) (retResult *reconcile.Result, retErr error) {
 	retErr = reconciler.UpsertClusterMetadata(
-		r.loggingCluster.Labels[resources.OpniClusterID],
+		r.loggingCluster.Labels[resources.MontyClusterID],
 		r.loggingCluster.Spec.FriendlyName,
 		resources.ClusterMetadataIndexName,
 	)
@@ -120,7 +120,7 @@ func (r *Reconciler) deleteOpensearchObjects(cluster *opensearchv1.OpenSearchClu
 		}
 
 		err = osReconciler.DeleteClusterMetadata(
-			r.loggingCluster.Labels[resources.OpniClusterID],
+			r.loggingCluster.Labels[resources.MontyClusterID],
 			resources.ClusterMetadataIndexName,
 		)
 		if err != nil {

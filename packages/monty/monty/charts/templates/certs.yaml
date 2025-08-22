@@ -1,0 +1,21 @@
+{{- $namespace := printf "%s" (include "monty.namespace" .) }}
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: monty-selfsigned-issuer
+spec:
+  selfSigned: {}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: monty-serving-cert
+  namespace: {{ $namespace }}
+spec:
+  dnsNames:
+    - "monty-webhook.{{ $namespace }}.svc"
+    - "monty-webhook.{{ $namespace }}.svc.cluster.local"
+  issuerRef:
+    kind: Issuer
+    name: monty-selfsigned-issuer
+  secretName: webhook-server-cert

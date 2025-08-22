@@ -6,9 +6,9 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/rancher/opni/pkg/storage"
-	"github.com/rancher/opni/pkg/storage/lock"
-	"github.com/rancher/opni/pkg/util"
+	"github.com/aity-cloud/monty/pkg/storage"
+	"github.com/aity-cloud/monty/pkg/storage/lock"
+	"github.com/aity-cloud/monty/pkg/util"
 	"github.com/samber/lo"
 	"google.golang.org/protobuf/proto"
 )

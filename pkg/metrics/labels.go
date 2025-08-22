@@ -6,13 +6,13 @@ import (
 )
 
 const (
-	LabelImpersonateAs = "zz_opni_impersonate_as"
+	LabelImpersonateAs = "zz_monty_impersonate_as"
 )
 
 var matchNonEmptyRegex = relabel.MustNewRegexp(".+")
 
-// Drops metrics containing any opni internal labels.
-func OpniInternalLabelFilter() *relabel.Config {
+// Drops metrics containing any monty internal labels.
+func MontyInternalLabelFilter() *relabel.Config {
 	return &relabel.Config{
 		SourceLabels: model.LabelNames{
 			LabelImpersonateAs,

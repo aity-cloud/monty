@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"strings"
 
+	loggingv1beta1 "github.com/aity-cloud/monty/apis/logging/v1beta1"
+	"github.com/aity-cloud/monty/pkg/resources"
 	. "github.com/kralicky/kmatch"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	loggingv1beta1 "github.com/rancher/opni/apis/logging/v1beta1"
-	"github.com/rancher/opni/pkg/resources"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -62,9 +62,9 @@ var _ = Describe("Logging DataPrepper Controller", Ordered, Label("controller"),
 		Expect(err).NotTo(HaveOccurred())
 
 		labels = map[string]string{
-			resources.AppNameLabel:  "dataprepper",
-			resources.PartOfLabel:   "opni",
-			resources.OpniClusterID: "dummyid",
+			resources.AppNameLabel:   "dataprepper",
+			resources.PartOfLabel:    "monty",
+			resources.MontyClusterID: "dummyid",
 		}
 	})
 	When("a log adapter is created", func() {

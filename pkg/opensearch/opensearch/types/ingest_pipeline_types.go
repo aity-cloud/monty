@@ -6,9 +6,9 @@ type IngestPipeline struct {
 }
 
 type Processor struct {
-	OpniLoggingProcessor *OpniProcessorConfig `json:"opni-logging-processor,omitempty"`
-	OpniPreProcessor     *OpniProcessorConfig `json:"opnipre,omitempty"`
+	MontyLoggingProcessor *MontyProcessorConfig `json:"monty-logging-processor,omitempty"`
+	MontyPreProcessor     *MontyProcessorConfig `json:"montypre,omitempty"`
 }
 
-type OpniProcessorConfig struct {
+type MontyProcessorConfig struct {
 }
