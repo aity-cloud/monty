@@ -1,6 +1,6 @@
 module github.com/aity-cloud/monty/dagger
 
-go 1.21
+go 1.24
 
 require (
 	dagger.io/dagger v0.8.7
