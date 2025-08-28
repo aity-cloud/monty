@@ -169,7 +169,7 @@ func NewQueryClient(url, tenantName, username, password string) (v1.API, error) 
 		Address: url,
 		RoundTripper: &TenantIDRoundTripper{
 			TenantName: tenantName,
-			Next:       config_util.NewBasicAuthRoundTripper(username, config_util.Secret(password), "", api.DefaultRoundTripper),
+			Next:       config_util.NewBasicAuthRoundTripper(username, config_util.Secret(password), api.DefaultRoundTripper),
 		},
 	})
 
