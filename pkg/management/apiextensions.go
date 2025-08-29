@@ -23,7 +23,6 @@ import (
 	"github.com/aity-cloud/monty/pkg/plugins/meta"
 	"github.com/aity-cloud/monty/pkg/plugins/types"
 	"github.com/aity-cloud/monty/pkg/util"
-	dpb "github.com/golang/protobuf/protoc-gen-go/descriptor"
 	"github.com/gorilla/websocket"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/jhump/protoreflect/desc"
@@ -40,6 +39,7 @@ import (
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/descriptorpb"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
@@ -399,7 +399,7 @@ func newHandler(
 						status.Errorf(codes.InvalidArgument, "unknown field %q", bodyFieldPath))
 					return
 				}
-				if fd.GetType() == dpb.FieldDescriptorProto_TYPE_MESSAGE {
+				if fd.GetType() == descriptorpb.FieldDescriptorProto_TYPE_MESSAGE {
 					bodyField := reqMsg.GetField(fd)
 					var dynamicBodyField *dynamic.Message
 					if reflect.ValueOf(bodyField).IsNil() {
@@ -836,7 +836,7 @@ func decodeAndSetField(reqMsg *dynamic.Message, k, v string) error {
 			return fmt.Errorf("field path %q is invalid: message %q does not have field %q", k, containingMsg.GetMessageDescriptor().GetName(), fp)
 		}
 		// each field path must be a message, except for the last one
-		if fd.GetType() != dpb.FieldDescriptorProto_TYPE_MESSAGE {
+		if fd.GetType() != descriptorpb.FieldDescriptorProto_TYPE_MESSAGE {
 			if i == len(fieldPaths)-1 {
 				fd = containingMsg.FindFieldDescriptorByJSONName(fp)
 				break
@@ -864,31 +864,31 @@ func decodeAndSetField(reqMsg *dynamic.Message, k, v string) error {
 	var decoded any
 	var err error
 	switch fd.GetType() {
-	case dpb.FieldDescriptorProto_TYPE_DOUBLE:
+	case descriptorpb.FieldDescriptorProto_TYPE_DOUBLE:
 		decoded, err = runtime.Float64(v)
-	case dpb.FieldDescriptorProto_TYPE_FLOAT:
+	case descriptorpb.FieldDescriptorProto_TYPE_FLOAT:
 		decoded, err = runtime.Float32(v)
-	case dpb.FieldDescriptorProto_TYPE_INT64:
+	case descriptorpb.FieldDescriptorProto_TYPE_INT64:
 		decoded, err = runtime.Int64(v)
-	case dpb.FieldDescriptorProto_TYPE_UINT64:
+	case descriptorpb.FieldDescriptorProto_TYPE_UINT64:
 		decoded, err = runtime.Uint64(v)
-	case dpb.FieldDescriptorProto_TYPE_INT32:
+	case descriptorpb.FieldDescriptorProto_TYPE_INT32:
 		decoded, err = runtime.Int32(v)
-	case dpb.FieldDescriptorProto_TYPE_FIXED64:
+	case descriptorpb.FieldDescriptorProto_TYPE_FIXED64:
 		decoded, err = runtime.Uint64(v)
-	case dpb.FieldDescriptorProto_TYPE_FIXED32:
+	case descriptorpb.FieldDescriptorProto_TYPE_FIXED32:
 		decoded, err = runtime.Uint32(v)
-	case dpb.FieldDescriptorProto_TYPE_BOOL:
+	case descriptorpb.FieldDescriptorProto_TYPE_BOOL:
 		decoded, err = runtime.Bool(v)
-	case dpb.FieldDescriptorProto_TYPE_STRING:
+	case descriptorpb.FieldDescriptorProto_TYPE_STRING:
 		decoded, err = runtime.String(v)
-	case dpb.FieldDescriptorProto_TYPE_GROUP, dpb.FieldDescriptorProto_TYPE_MESSAGE:
+	case descriptorpb.FieldDescriptorProto_TYPE_GROUP, descriptorpb.FieldDescriptorProto_TYPE_MESSAGE:
 		return status.Errorf(codes.Unimplemented, "field %s of type %s is not supported", k, fd.GetType().String())
-	case dpb.FieldDescriptorProto_TYPE_BYTES:
+	case descriptorpb.FieldDescriptorProto_TYPE_BYTES:
 		decoded, err = runtime.Bytes(v)
-	case dpb.FieldDescriptorProto_TYPE_UINT32:
+	case descriptorpb.FieldDescriptorProto_TYPE_UINT32:
 		decoded, err = runtime.Uint32(v)
-	case dpb.FieldDescriptorProto_TYPE_ENUM:
+	case descriptorpb.FieldDescriptorProto_TYPE_ENUM:
 		enumType := fd.GetEnumType()
 		if enumType == nil {
 			err = fmt.Errorf("unknown enum type for field %s", k)
@@ -900,13 +900,13 @@ func decodeAndSetField(reqMsg *dynamic.Message, k, v string) error {
 			break
 		}
 		decoded = vd.GetNumber()
-	case dpb.FieldDescriptorProto_TYPE_SFIXED32:
+	case descriptorpb.FieldDescriptorProto_TYPE_SFIXED32:
 		decoded, err = runtime.Int32(v)
-	case dpb.FieldDescriptorProto_TYPE_SFIXED64:
+	case descriptorpb.FieldDescriptorProto_TYPE_SFIXED64:
 		decoded, err = runtime.Int64(v)
-	case dpb.FieldDescriptorProto_TYPE_SINT32:
+	case descriptorpb.FieldDescriptorProto_TYPE_SINT32:
 		decoded, err = runtime.Int32(v)
-	case dpb.FieldDescriptorProto_TYPE_SINT64:
+	case descriptorpb.FieldDescriptorProto_TYPE_SINT64:
 		decoded, err = runtime.Int64(v)
 	}
 	if err != nil {

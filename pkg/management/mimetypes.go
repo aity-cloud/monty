@@ -1,11 +1,9 @@
 package management
 
 import (
-	"bytes"
 	"fmt"
 	"io"
 
-	"github.com/golang/protobuf/jsonpb"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/jhump/protoreflect/dynamic"
 	"google.golang.org/protobuf/encoding/protojson"
@@ -85,15 +83,17 @@ func (*LegacyJsonMarshaler) ContentType(_ any) string {
 
 // Marshal implements runtime.Marshaler.
 func (*LegacyJsonMarshaler) Marshal(v any) ([]byte, error) {
-	m := jsonpb.Marshaler{
-		EnumsAsInts:  true,
-		EmitDefaults: true,
+	o := protojson.MarshalOptions{
+		UseEnumNumbers:  true,
+		EmitUnpopulated: true,
 	}
-	var buf bytes.Buffer
-	if err := m.Marshal(&buf, v.(protoiface.MessageV1)); err != nil {
+
+	//var buf bytes.Buffer
+	b, err := o.Marshal(v.(proto.Message))
+	if err != nil {
 		return nil, err
 	}
-	return buf.Bytes(), nil
+	return b, nil
 }
 
 // NewDecoder implements runtime.Marshaler.
@@ -110,11 +110,15 @@ func (m *LegacyJsonMarshaler) NewDecoder(r io.Reader) runtime.Decoder {
 // NewEncoder implements runtime.Marshaler.
 func (*LegacyJsonMarshaler) NewEncoder(w io.Writer) runtime.Encoder {
 	return runtime.EncoderFunc(func(v any) error {
-		m := jsonpb.Marshaler{
-			EnumsAsInts:  true,
-			EmitDefaults: true,
+		o := protojson.MarshalOptions{
+			UseEnumNumbers:  true,
+			EmitUnpopulated: true,
 		}
-		return m.Marshal(w, v.(protoiface.MessageV1))
+		bytes, err := o.Marshal(v.(proto.Message))
+		if err != nil {
+			w.Write(bytes)
+		}
+		return err
 	})
 }
 
