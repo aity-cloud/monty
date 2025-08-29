@@ -9,8 +9,8 @@ import "github.com/aity-cloud/monty/internal/cortex/config/validation/limits.pro
 
 option go_package      = "github.com/aity-cloud/monty/internal/cortex/config/runtimeconfig";
 option (cli.generator) = {
-  generate:          true
-  generate_deepcopy: true
+  generate:          true,
+  generate_deepcopy: true,
 };
 
 message RuntimeConfigValues {
@@ -21,10 +21,11 @@ message RuntimeConfigValues {
 }
 
 message IngesterInstanceLimits {
-  optional double max_ingestion_rate         = 1;
-  optional int64  max_tenants                = 2;
-  optional int64  max_series                 = 3;
-  optional int64  max_inflight_push_requests = 4;
+  optional double max_ingestion_rate          = 1;
+  optional int64  max_tenants                 = 2;
+  optional int64  max_series                  = 3;
+  optional int64  max_inflight_push_requests  = 4;
+  optional int64  max_inflight_query_requests = 5;
 }
 
 message KvMultiRuntimeConfig {
