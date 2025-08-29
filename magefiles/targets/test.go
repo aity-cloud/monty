@@ -113,7 +113,7 @@ func (Test) Env() {
 	syscall.Exec("bin/testenv", append([]string{"bin/testenv"}, args...), os.Environ())
 }
 
-const k8sVersion = "1.26.3"
+const k8sVersion = "1.33.1"
 
 var testbinConfig = fmt.Sprintf(`
 {
@@ -126,13 +126,13 @@ var testbinConfig = fmt.Sprintf(`
 		{
 			"name": "prometheus",
 			"sourceImage": "prom/prometheus",
-			"version": "v2.44.0",
+			"version": "v2.55.1",
 			"path": "/bin/prometheus"
 		},
 		{
 			"name": "promtool",
 			"sourceImage": "prom/prometheus",
-			"version": "v2.44.0",
+			"version": "v2.55.1",
 			"path": "/bin/promtool"
 		},
 		{
@@ -143,13 +143,13 @@ var testbinConfig = fmt.Sprintf(`
 		{
 			"name": "alertmanager",
 			"sourceImage": "prom/alertmanager",
-			"version": "v0.25.0",
+			"version": "v0.27.0",
 			"path": "/bin/alertmanager"
 		},
 		{
 			"name": "amtool",
 			"sourceImage": "prom/alertmanager",
-			"version": "v0.25.0",
+			"version": "v0.27.0",
 			"path": "/bin/amtool"
 		},
 		{
