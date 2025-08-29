@@ -4,15 +4,12 @@ import (
 	"bufio"
 	"context"
 	"fmt"
-	"runtime"
 	"strings"
-	"sync"
 
 	"log/slog"
 
 	"github.com/aity-cloud/monty/pkg/logger"
 	"github.com/aity-cloud/monty/pkg/supportagent/dateparser"
-	"github.com/go-logr/logr/slogr"
 	"github.com/open-telemetry/opentelemetry-collector-contrib/pkg/stanza/adapter"
 	"github.com/open-telemetry/opentelemetry-collector-contrib/pkg/stanza/entry"
 	"go.opentelemetry.io/collector/pdata/plog"
@@ -26,24 +23,16 @@ type otlpShipper struct {
 	otlpShipperOptions
 	client                 collogspb.LogsServiceClient
 	dateParser             dateparser.DateParser
-	converter              *adapter.Converter
 	collectedErrorMessages []string
 	failureCount           int
 
-	wg sync.WaitGroup
 	lg *slog.Logger
-
-	rMutex      sync.RWMutex
-	readingDone bool
-
-	wgCounter sync.WaitGroup
 }
 
 type otlpShipperOptions struct {
 	component string
 	logType   string
 	batchSize int
-	workers   int
 }
 
 type OTLPShipperOption func(*otlpShipperOptions)
@@ -72,12 +61,6 @@ func WithBatchSize(batchSize int) OTLPShipperOption {
 	}
 }
 
-func WithWorkers(workers int) OTLPShipperOption {
-	return func(o *otlpShipperOptions) {
-		o.workers = workers
-	}
-}
-
 func NewOTLPShipper(
 	cc grpc.ClientConnInterface,
 	parser dateparser.DateParser,
@@ -86,26 +69,17 @@ func NewOTLPShipper(
 ) Shipper {
 	options := otlpShipperOptions{
 		batchSize: 50,
-		workers:   runtime.GOMAXPROCS(0),
 	}
 	options.apply(opts...)
 	return &otlpShipper{
 		otlpShipperOptions: options,
 		client:             collogspb.NewLogsServiceClient(cc),
 		dateParser:         parser,
-		converter:          adapter.NewConverter(slogr.NewLogr(lg.Handler())),
 		lg:                 lg,
 	}
 }
 
 func (s *otlpShipper) Publish(ctx context.Context, tokens *bufio.Scanner) error {
-	s.converter.Start()
-	defer s.converter.Stop()
-	for i := 0; i < s.workers; i++ {
-		s.wg.Add(1)
-		go s.shipLogs(ctx)
-	}
-
 	continueScan := tokens.Scan()
 	var previousEnt *entry.Entry
 	entries := make([]*entry.Entry, 0, s.batchSize)
@@ -121,15 +95,8 @@ func (s *otlpShipper) Publish(ctx context.Context, tokens *bufio.Scanner) error 
 
 			if len(entries) >= s.batchSize {
 				s.lg.Info(fmt.Sprintf("batching %d logs", len(entries)))
-
-				s.wgCounter.Add(1)
-				err := s.converter.Batch(entries)
-				if err != nil {
-					s.wgCounter.Done()
-					s.lg.Error("failed to batch logs", logger.Err(err))
-					s.failureCount += len(entries)
-					s.collectedErrorMessages = append(s.collectedErrorMessages, err.Error())
-				}
+				// Convert and export directly
+				s.processBatch(ctx, entries)
 				entries = make([]*entry.Entry, 0, s.batchSize)
 			}
 
@@ -155,29 +122,15 @@ func (s *otlpShipper) Publish(ctx context.Context, tokens *bufio.Scanner) error 
 	}
 
 	if len(entries) > 0 {
-		s.wgCounter.Add(1)
-		err := s.converter.Batch(entries)
-		if err != nil {
-			s.wgCounter.Done()
-			s.lg.Error("failed to batch logs", logger.Err(err))
-			s.failureCount += len(entries)
-			s.collectedErrorMessages = append(s.collectedErrorMessages, err.Error())
-		}
+		s.lg.Info(fmt.Sprintf("batching final %d logs", len(entries)))
+		// Convert and export final batch
+		s.processBatch(ctx, entries)
 	}
 
 	if err := tokens.Err(); err != nil {
 		s.lg.Error("failed to scan logs", logger.Err(err))
 	}
 
-	// wait for batching to finish
-	s.wgCounter.Wait()
-
-	// wait for shipping to finish
-	s.rMutex.Lock()
-	s.readingDone = true
-	s.rMutex.Unlock()
-	s.lg.Info("waiting for shipping to finish")
-	s.wg.Wait()
 	if s.failureCount > 0 {
 		s.lg.Error(fmt.Sprintf("failed to ship %d logs for log type %s", s.failureCount, s.logType))
 		if s.component != "" {
@@ -188,27 +141,12 @@ func (s *otlpShipper) Publish(ctx context.Context, tokens *bufio.Scanner) error 
 	return nil
 }
 
-func (s *otlpShipper) shipLogs(ctx context.Context) {
-	defer s.wg.Done()
-	for {
-		s.rMutex.RLock()
-		select {
-		case <-ctx.Done():
-			s.lg.Info("context cancelled, stopping shipping")
-			s.rMutex.RUnlock()
-			return
-		case logs := <-s.converter.OutChannel():
-			s.exportLogs(ctx, logs)
-			s.wgCounter.Done()
-			s.rMutex.RUnlock()
-		default:
-			if s.readingDone {
-				s.rMutex.RUnlock()
-				return
-			}
-			s.rMutex.RUnlock()
-		}
-	}
+func (s *otlpShipper) processBatch(ctx context.Context, entries []*entry.Entry) {
+	// Convert entries to OTLP logs using the latest adapter
+	logs := adapter.ConvertEntries(entries)
+
+	// Export the logs
+	s.exportLogs(ctx, logs)
 }
 
 // TODO: should use a backoff queue for this.
