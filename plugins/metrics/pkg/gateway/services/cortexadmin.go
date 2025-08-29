@@ -14,6 +14,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/aity-cloud/monty/internal/memoize"
 	"github.com/aity-cloud/monty/pkg/logger"
 	managementext "github.com/aity-cloud/monty/pkg/plugins/apis/apiextensions/management"
 	"github.com/aity-cloud/monty/pkg/plugins/driverutil"
@@ -26,7 +27,6 @@ import (
 	"github.com/samber/lo"
 	"github.com/tidwall/gjson"
 	"golang.org/x/sync/errgroup"
-	"golang.org/x/tools/pkg/memoize"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"

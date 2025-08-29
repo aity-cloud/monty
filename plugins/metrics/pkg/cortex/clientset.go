@@ -11,9 +11,9 @@ import (
 	"net/http"
 	"syscall"
 
+	"github.com/aity-cloud/monty/internal/memoize"
 	"github.com/aity-cloud/monty/plugins/metrics/apis/cortexadmin"
 	"github.com/aity-cloud/monty/plugins/metrics/pkg/gateway/drivers"
-	"golang.org/x/tools/pkg/memoize"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 

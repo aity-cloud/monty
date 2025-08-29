@@ -5,6 +5,7 @@ import (
 	"log/slog"
 	"sync"
 
+	"github.com/aity-cloud/monty/internal/memoize"
 	managementv1 "github.com/aity-cloud/monty/pkg/apis/management/v1"
 	configv1 "github.com/aity-cloud/monty/pkg/config/v1"
 	managementext "github.com/aity-cloud/monty/pkg/plugins/apis/apiextensions/management"
@@ -13,7 +14,6 @@ import (
 	"github.com/aity-cloud/monty/pkg/storage"
 	"github.com/aity-cloud/monty/plugins/metrics/pkg/gateway/drivers"
 	"github.com/aity-cloud/monty/plugins/metrics/pkg/types"
-	"golang.org/x/tools/pkg/memoize"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/health/grpc_health_v1"
 )

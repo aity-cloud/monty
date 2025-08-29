@@ -3,7 +3,7 @@ module github.com/aity-cloud/monty
 go 1.24.6
 
 require (
-	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.31.0-20231030212536-12f9cba37c9d.2
+	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.34.1-20240508200655-46a4cf4ba109.1
 	emperror.dev/errors v0.8.1
 	github.com/99designs/keyring v1.2.2
 	github.com/AlecAivazis/survey/v2 v2.3.7
@@ -17,7 +17,7 @@ require (
 	github.com/aws/aws-sdk-go v1.55.5
 	github.com/bmatcuk/doublestar v1.3.4
 	github.com/bmatcuk/doublestar/v4 v4.9.1
-	github.com/bufbuild/protovalidate-go v0.4.0
+	github.com/bufbuild/protovalidate-go v0.6.2
 	github.com/cenkalti/backoff v2.2.1+incompatible
 	github.com/cert-manager/cert-manager v1.10.2
 	github.com/charmbracelet/bubbles v0.16.1
@@ -52,15 +52,16 @@ require (
 	github.com/iancoleman/strcase v0.3.0
 	github.com/jarcoal/httpmock v1.3.0
 	github.com/jedib0t/go-pretty/v6 v6.4.6
-	github.com/jhump/protoreflect v1.15.1
+	github.com/jhump/protoreflect v1.16.0
 	github.com/jwalton/go-supportscolor v1.1.0
 	github.com/karlseguin/ccache/v3 v3.0.3
 	github.com/kazegusuri/channelzcli v0.0.0-20230307031351-17bac34c51ca
 	github.com/klauspost/compress v1.18.0
-	github.com/kralicky/gpkg v0.0.0-20231114180450-2f4bff8c5588
+	github.com/kralicky/gpkg v0.0.0-20240119195700-64f32830b14f
 	github.com/kralicky/kmatch v0.0.0-20230301203314-20f658a0e56c
-	github.com/kralicky/protols v0.0.0-20231127004555-d87290c46672
-	github.com/kralicky/ragu v1.0.11-0.20231206204722-a12a1b1ac338
+	github.com/kralicky/protols v0.5.0-rc1.0.20240606154151-63027a722bd5
+	github.com/kralicky/ragu v1.0.10
+	github.com/kralicky/tools-lite v0.0.0-20240313161632-60bfa88304ff
 	github.com/kralicky/totem v1.2.2-0.20231014025935-6e4657314606
 	github.com/kralicky/yaml/v3 v3.0.0-20220520012407-b0e7050bd81d
 	github.com/lestrrat-go/backoff/v2 v2.0.8
@@ -75,7 +76,7 @@ require (
 	github.com/nats-io/nats.go v1.28.0
 	github.com/nats-io/nkeys v0.4.4
 	github.com/nsf/jsondiff v0.0.0-20230430225905-43f6cf3098c1
-	github.com/olebedev/when v0.0.0-20221205223600-4d190b02b8d8
+	github.com/olebedev/when v1.0.0
 	github.com/onsi/biloba v0.1.5
 	github.com/onsi/ginkgo/v2 v2.21.0
 	github.com/onsi/gomega v1.35.1
@@ -192,6 +193,8 @@ require (
 	github.com/golang/protobuf v1.5.4 // indirect
 	github.com/google/go-tpm v0.9.5 // indirect
 	github.com/hashicorp/go-metrics v0.5.4 // indirect
+	github.com/kralicky/codegen v0.0.0-20240522012557-5193d3fdbeca // indirect
+	github.com/kralicky/protocompile v0.0.0-20240515213713-67f2e10cff9b // indirect
 	github.com/leodido/go-syslog/v4 v4.2.0 // indirect
 	github.com/mdlayher/socket v0.4.1 // indirect
 	github.com/mdlayher/vsock v1.2.1 // indirect
@@ -295,7 +298,7 @@ require (
 	github.com/bodgit/windows v1.0.0 // indirect
 	github.com/bradfitz/gomemcache v0.0.0-20230905024940-24af94b03874 // indirect
 	github.com/briandowns/spinner v1.23.1 // indirect
-	github.com/bufbuild/protocompile v0.6.0 // indirect
+	github.com/bufbuild/protocompile v0.14.1 // indirect
 	github.com/bytedance/sonic v1.9.1 // indirect
 	github.com/cenkalti/backoff/v4 v4.3.0 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
@@ -601,10 +604,7 @@ require (
 	golang.org/x/arch v0.3.0 // indirect
 	golang.org/x/oauth2 v0.30.0
 	golang.org/x/sys v0.35.0
-	golang.org/x/telemetry v0.0.0-20231114163143-69313e640400 // indirect
 	golang.org/x/text v0.28.0 // indirect
-	golang.org/x/tools/gopls v0.14.1
-	golang.org/x/vuln v1.0.1 // indirect
 	gomodules.xyz/jsonpatch/v2 v2.4.0 // indirect
 	google.golang.org/api v0.195.0 // indirect
 	google.golang.org/genproto v0.0.0-20240823204242-4ba0660f739c // indirect
@@ -685,6 +685,7 @@ replace (
 
 // Temporary replacements
 replace (
+	github.com/kralicky/totem => github.com/bagutzu/totem v0.0.0-20250829073647-ebb08d25783e
 	github.com/samber/lo => github.com/samber/lo v1.36.1-0.20230320154156-56ef8fe8a306
 //github.com/sercand/kuberesolver => github.com/sercand/kuberesolver/v5 v5.1.1
 //google.golang.org/protobuf => github.com/kralicky/protobuf-go v0.0.0-20231206232713-f1de255d7c35
@@ -692,9 +693,11 @@ replace (
 
 // Keep in sync with ragu go.mod
 replace (
-	github.com/bufbuild/protocompile => github.com/kralicky/protocompile v0.0.0-20231127004431-65d698ee9458
-	golang.org/x/tools => github.com/kralicky/tools v0.0.0-20231125202352-51ba2ad9b13a
-	golang.org/x/tools/gopls => github.com/kralicky/tools/gopls v0.0.0-20231125202352-51ba2ad9b13a
+	github.com/bufbuild/protocompile => github.com/bufbuild/protocompile v0.4.0
+	github.com/jhump/protoreflect => github.com/jhump/protoreflect v1.15.1
+// These are not used in the latest ragu release
+//golang.org/x/tools => github.com/aity-cloud/tools v0.0.0-20250829113355-70c7729c59ca
+//golang.org/x/tools/gopls => github.com/aity-cloud/tools/gopls v0.0.0-20250829113355-70c7729c59ca
 )
 
 // Version pins
