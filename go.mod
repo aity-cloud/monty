@@ -685,6 +685,7 @@ replace (
 
 // Temporary replacements
 replace (
+	github.com/kralicky/ragu => github.com/aity-cloud/ragu v0.0.0-20250829173325-19de0c34d9b9
 	github.com/kralicky/totem => github.com/bagutzu/totem v0.0.0-20250829073647-ebb08d25783e
 	github.com/samber/lo => github.com/samber/lo v1.36.1-0.20230320154156-56ef8fe8a306
 //github.com/sercand/kuberesolver => github.com/sercand/kuberesolver/v5 v5.1.1

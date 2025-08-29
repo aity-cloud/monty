@@ -899,6 +899,8 @@ github.com/agext/levenshtein v1.2.1/go.mod h1:JEDfjyjHDjOF/1e4FlBE/PkbqA9OfWu2ki
 github.com/agnivade/levenshtein v1.0.1/go.mod h1:CURSv5d9Uaml+FovSIICkLbAUZ9S4RqaHDIsdSBg7lM=
 github.com/aity-cloud/cortex v0.0.0-20250828162722-a92ada6dfb42 h1:p/+7ZeVVEf4nmvda+8PgXMIrnRCUq17j3ioJKMIdVaE=
 github.com/aity-cloud/cortex v0.0.0-20250828162722-a92ada6dfb42/go.mod h1:fTtq5potlpFVHI8dEcYe37njJfuJlvahPDXw9kbMHrI=
+github.com/aity-cloud/ragu v0.0.0-20250829173325-19de0c34d9b9 h1:MJX3oM6VRBDnz8CYUqkeuR6USRnl08gRiBuh50bm+SU=
+github.com/aity-cloud/ragu v0.0.0-20250829173325-19de0c34d9b9/go.mod h1:eZ9MVoNLYTpYegFumXQRUQnh2yTpRYBrzHFHlRrwvZc=
 github.com/ajstarks/deck v0.0.0-20200831202436-30c9fc6549a9/go.mod h1:JynElWSGnm/4RlzPXRlREEwqTHAN3T56Bv2ITsFT3gY=
 github.com/ajstarks/deck/generate v0.0.0-20210309230005-c3f852c02e19/go.mod h1:T13YZdzov6OU0A1+RfKZiZN9ca6VeKdBdyDV+BY97Tk=
 github.com/ajstarks/svgo v0.0.0-20180226025133-644b8db467af/go.mod h1:K08gAheRH3/J6wwsYMMT4xOr94bZjxIelGM0+d/wbFw=
@@ -2050,8 +2052,6 @@ github.com/kralicky/protovalidate-go v0.0.0-20231106202554-5e160b661210 h1:tvzLh
 github.com/kralicky/protovalidate-go v0.0.0-20231106202554-5e160b661210/go.mod h1:UD6GNs8v3xse02niIDDjZHlHoRUsjbNN8yXjNGu7uOQ=
 github.com/kralicky/protovalidate/tools/internal/gen v0.0.0-20231106202428-cb08e3797203 h1:4plZrtTSjfjY/1sxJ0mlEZj193GV1cwzNte9WbjTgzc=
 github.com/kralicky/protovalidate/tools/internal/gen v0.0.0-20231106202428-cb08e3797203/go.mod h1:xafc+XIsTxTy76GJQ1TKgvJWsSugFBqMaN27WhUblew=
-github.com/kralicky/ragu v1.0.10 h1:R+8nEeiROXImVbZ6kcj6wABsd3ei66iRkSsfxgog/yw=
-github.com/kralicky/ragu v1.0.10/go.mod h1:g321+W5rckVXTEqK3yRcI6IRV4WjkXlm5fPnb6pkrK0=
 github.com/kralicky/tools-lite v0.0.0-20240313161632-60bfa88304ff h1:akxm/czMYHdr1xIGm6wmddABmc4M9KDcqksdwpIJx8A=
 github.com/kralicky/tools-lite v0.0.0-20240313161632-60bfa88304ff/go.mod h1:V8GGYRLr40bvX/W3nZFxG+6S3iDFWn6o5J3NGDClr8U=
 github.com/kralicky/yaml/v3 v3.0.0-20220520012407-b0e7050bd81d h1:kLfaaFdmCHKZCvL4DzQ7T9YsAVSBqZez34zaegldkls=

@@ -11,8 +11,8 @@ import (
 	"github.com/aity-cloud/monty/internal/codegen/cli"
 	"github.com/aity-cloud/monty/internal/codegen/pathbuilder"
 	"github.com/aity-cloud/monty/internal/codegen/templating"
-	"github.com/kralicky/protols/sdk/codegen/generators/external"
 	"github.com/kralicky/ragu"
+	"github.com/kralicky/ragu/pkg/plugins/external"
 	"github.com/kralicky/ragu/pkg/plugins/golang"
 	"github.com/kralicky/ragu/pkg/plugins/golang/grpc"
 	"github.com/kralicky/ragu/pkg/plugins/python"
@@ -43,10 +43,12 @@ func (Generate) ProtobufGo(ctx context.Context) error {
 
 	out, err := ragu.GenerateCode(
 		generators,
-		"internal/codegen/cli",
-		"internal/cortex",
-		"pkg",
-		"plugins",
+		[]string{
+			"internal/codegen/cli",
+			"internal/cortex",
+			"pkg",
+			"plugins",
+		},
 	)
 	if err != nil {
 		return err
@@ -63,7 +65,7 @@ func (Generate) ProtobufGo(ctx context.Context) error {
 // Can be used to "bootstrap" the cli generator when modifying cli.proto
 func (Generate) ProtobufCLI() error {
 	out, err := ragu.GenerateCode([]ragu.Generator{golang.Generator, grpc.Generator, cli.NewGenerator()},
-		"internal/codegen/cli",
+		[]string{"internal/codegen/cli"},
 	)
 	if err != nil {
 		return err
@@ -82,7 +84,7 @@ func (Generate) ProtobufPython(ctx context.Context) error {
 	defer tr.End()
 
 	generators := []ragu.Generator{python.Generator}
-	out, err := ragu.GenerateCode(generators, "aiops")
+	out, err := ragu.GenerateCode(generators, []string{"aiops"})
 	if err != nil {
 		return err
 	}
@@ -98,14 +100,8 @@ func (Generate) ProtobufTypescript() error {
 	mg.Deps(Build.TypescriptServiceGenerator)
 	destDir := "web/pkg/monty/generated"
 
-	out, err := ragu.GenerateCode([]ragu.Generator{
-		external.NewGenerator("./web/service-generator/node_modules/.bin/protoc-gen-es", external.GeneratorOptions{
-			Opt: "target=ts,import_extension=none,ts_nocheck=false",
-		}),
-		external.NewGenerator([]string{"./web/service-generator/generate"}, external.GeneratorOptions{
-			Opt: "target=ts,import_extension=none,ts_nocheck=false",
-		}),
-	}, "pkg/config/v1",
+	searchDirs := []string{
+		"pkg/config/v1",
 		"pkg/config/v1beta1",
 		"pkg/apis/capability/v1",
 		"pkg/apis/management/v1",
@@ -115,7 +111,16 @@ func (Generate) ProtobufTypescript() error {
 		"plugins/metrics/apis/node",
 		"plugins/logging/apis/loggingadmin",
 		"internal/cortex",
-	)
+	}
+
+	out, err := ragu.GenerateCode([]ragu.Generator{
+		external.NewGenerator("./web/service-generator/node_modules/.bin/protoc-gen-es", external.GeneratorOptions{
+			Opt: "target=ts,import_extension=none,ts_nocheck=false",
+		}),
+		external.NewGenerator([]string{"./web/service-generator/generate"}, external.GeneratorOptions{
+			Opt: "target=ts,import_extension=none,ts_nocheck=false",
+		}),
+	}, searchDirs, ragu.WithGenerateStrategy(ragu.AllDescriptorsExceptGoogleProtobuf))
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "error generating typescript code: %v\n", err)
 		return err
