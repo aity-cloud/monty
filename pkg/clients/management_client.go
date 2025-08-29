@@ -43,7 +43,7 @@ func NewManagementClient(ctx context.Context, opts ...ManagementClientOption) (m
 		dialOptions: []grpc.DialOption{
 			grpc.WithTransportCredentials(insecure.NewCredentials()),
 			grpc.WithChainStreamInterceptor(otelgrpc.StreamClientInterceptor()),
-			grpc.WithChainUnaryInterceptor(otelgrpc.UnaryClientInterceptor()),
+			//grpc.WithChainUnaryInterceptor(otelgrpc.UnaryClientInterceptor()),
 		},
 	}
 	options.Apply(opts...)

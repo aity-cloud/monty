@@ -176,9 +176,10 @@ func NewHTTPServer(
 		metric.WithReader(exporter),
 	)
 
-	pl.Hook(hooks.OnLoad(func(p types.MetricsPlugin) {
-		exporter.RegisterProducer(p)
-	}))
+	// TODO - how does this change to the new otelgrpc?
+	//pl.Hook(hooks.OnLoad(func(p types.MetricsPlugin) {
+	//	exporter.RegisterProducer(p)
+	//}))
 
 	pl.Hook(hooks.OnLoadM(func(p types.HTTPAPIExtensionPlugin, md meta.PluginMeta) {
 		go certs.WatchFunc(ctx, func(v protoreflect.Value) {

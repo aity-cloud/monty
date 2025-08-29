@@ -198,7 +198,7 @@ func (r *Reconciler) handlePVC(diskSize string) (pvc corev1.PersistentVolumeClai
 					}
 					return node.PersistenceConfig.PersistenceSource.PVC.AccessModes
 				}(),
-				Resources: corev1.ResourceRequirements{
+				Resources: corev1.VolumeResourceRequirements{
 					Requests: corev1.ResourceList{
 						corev1.ResourceStorage: resource.MustParse(diskSize),
 					},

@@ -36,7 +36,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/jhump/protoreflect/desc"
-	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
 	"golang.org/x/sync/errgroup"
 	"google.golang.org/grpc"
 	channelzservice "google.golang.org/grpc/channelz/service"
@@ -248,10 +247,12 @@ func (m *Server) listenAndServeGrpc(ctx context.Context) error {
 		server = grpc.NewServer(
 			grpc.Creds(insecure.NewCredentials()),
 			grpc.UnknownServiceHandler(unknownServiceHandler(m.director)),
-			grpc.ChainStreamInterceptor(otelgrpc.StreamServerInterceptor()),
+			//grpc.ChainStreamInterceptor(otelgrpc.StreamServerInterceptor()),
+			grpc.ChainStreamInterceptor(),
 			grpc.ChainUnaryInterceptor(
 				caching.NewClientGrpcTtlCacher().UnaryServerInterceptor(),
-				otelgrpc.UnaryServerInterceptor()),
+				//otelgrpc.UnaryServerInterceptor(),
+			),
 		)
 		managementv1.RegisterManagementServer(server, m)
 		configv1.RegisterGatewayConfigServer(server, m.mgr.AsServer())

@@ -23,7 +23,7 @@ import (
 	"github.com/aity-cloud/monty/plugins/metrics/pkg/cortex"
 	"github.com/aity-cloud/monty/plugins/metrics/pkg/types"
 	"github.com/cortexproject/cortex/pkg/cortexpb"
-	"github.com/cortexproject/cortex/pkg/distributor"
+	"github.com/cortexproject/cortex/pkg/ingester"
 	"github.com/samber/lo"
 	"github.com/tidwall/gjson"
 	"golang.org/x/sync/errgroup"
@@ -73,7 +73,7 @@ func (s *CortexAdminService) AllUserStats(ctx context.Context, _ *emptypb.Empty)
 	if resp.StatusCode != http.StatusOK {
 		return nil, fmt.Errorf("failed to get cluster stats: %v", resp.StatusCode)
 	}
-	var stats []distributor.UserIDStats
+	var stats []ingester.UserIDStats
 	if err = json.NewDecoder(resp.Body).Decode(&stats); err != nil {
 		return nil, fmt.Errorf("failed to decode user stats: %w", err)
 	}

@@ -840,7 +840,7 @@ func (r *Reconciler) dataStorage() (*corev1.Volume, *corev1.PersistentVolumeClai
 			},
 			Spec: corev1.PersistentVolumeClaimSpec{
 				AccessModes: pvc.AccessModes,
-				Resources: corev1.ResourceRequirements{
+				Resources: corev1.VolumeResourceRequirements{
 					Requests: corev1.ResourceList{
 						corev1.ResourceStorage: r.natsCluster.Spec.JetStream.FileStorage.Size,
 					},

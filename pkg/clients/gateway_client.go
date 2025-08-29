@@ -149,7 +149,7 @@ func dial(ctx context.Context, address, id string, kr keyring.Keyring, tlsConfig
 			otelgrpc.StreamClientInterceptor(),
 			cluster.StreamClientInterceptor(challengeHandler),
 		),
-		grpc.WithChainUnaryInterceptor(otelgrpc.UnaryClientInterceptor()),
+		//grpc.WithChainUnaryInterceptor(otelgrpc.UnaryClientInterceptor()),
 		grpc.WithDefaultCallOptions(
 			grpc.WaitForReady(true),
 			grpc.MaxCallSendMsgSize(math.MaxInt32),

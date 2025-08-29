@@ -628,7 +628,7 @@ func newClientSet(ctx context.Context, cortexSpec drivers.CortexServiceConfig, t
 	distributorCC, err := grpc.DialContext(ctx, cortexSpec.Distributor.GRPCAddress,
 		grpc.WithTransportCredentials(credentials.NewTLS(tlsConfig)),
 		grpc.WithChainStreamInterceptor(otelgrpc.StreamClientInterceptor()),
-		grpc.WithChainUnaryInterceptor(otelgrpc.UnaryClientInterceptor()),
+		//grpc.WithChainUnaryInterceptor(otelgrpc.UnaryClientInterceptor()),
 	)
 	if err != nil {
 		return nil, err
@@ -637,7 +637,7 @@ func newClientSet(ctx context.Context, cortexSpec drivers.CortexServiceConfig, t
 	rulerCC, err := grpc.DialContext(ctx, cortexSpec.Ruler.GRPCAddress,
 		grpc.WithTransportCredentials(credentials.NewTLS(tlsConfig)),
 		grpc.WithChainStreamInterceptor(otelgrpc.StreamClientInterceptor()),
-		grpc.WithChainUnaryInterceptor(otelgrpc.UnaryClientInterceptor()),
+		//grpc.WithChainUnaryInterceptor(otelgrpc.UnaryClientInterceptor()),
 	)
 	if err != nil {
 		return nil, err

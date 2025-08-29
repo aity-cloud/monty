@@ -101,7 +101,7 @@ func (s *Server) connectToManagementAPI(ctx context.Context) error {
 	cc, err := grpc.DialContext(ctx, s.ManagementAPIEndpoint,
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 		grpc.WithChainStreamInterceptor(otelgrpc.StreamClientInterceptor()),
-		grpc.WithChainUnaryInterceptor(otelgrpc.UnaryClientInterceptor()),
+		//grpc.WithChainUnaryInterceptor(otelgrpc.UnaryClientInterceptor()),
 		grpc.WithBlock(),
 	)
 	if err != nil {

@@ -449,7 +449,8 @@ func (d *KubernetesManagerDriver) GetBackendURL(ctx context.Context) (string, er
 	if err != nil {
 		return "", k8sutilerrors.GRPCFromK8s(err)
 	}
-	host := builders.DashboardsServiceName(cluster)
+	//host := builders.DashboardsServiceName(cluster)
+	host := builders.DiscoveryServiceName(cluster)
 	return fmt.Sprintf("http://%s.%s:5601", host, d.Namespace), nil
 }
 

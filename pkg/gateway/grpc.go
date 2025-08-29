@@ -11,7 +11,6 @@ import (
 	"log/slog"
 
 	"github.com/samber/lo"
-	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/health"
@@ -148,8 +147,8 @@ func (s *GatewayGRPCServer) serve(ctx context.Context, listener net.Listener, tl
 			Time:    15 * time.Second,
 			Timeout: 5 * time.Second,
 		}),
-		grpc.ChainStreamInterceptor(otelgrpc.StreamServerInterceptor()),
-		grpc.ChainUnaryInterceptor(otelgrpc.UnaryServerInterceptor()),
+		//grpc.ChainStreamInterceptor(otelgrpc.StreamServerInterceptor()),
+		//grpc.ChainUnaryInterceptor(otelgrpc.UnaryServerInterceptor()),
 		grpc.ReadBufferSize(0),
 		grpc.WriteBufferSize(0),
 		grpc.NumStreamWorkers(uint32(runtime.NumCPU())),

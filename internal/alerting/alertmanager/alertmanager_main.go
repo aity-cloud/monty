@@ -120,7 +120,7 @@ func init() {
 	prometheus.MustRegister(clusterEnabled)
 	prometheus.MustRegister(configuredReceivers)
 	prometheus.MustRegister(configuredIntegrations)
-	prometheus.MustRegister(version.NewCollector("alertmanager"))
+	//prometheus.MustRegister(version.NewCollector("alertmanager"))
 
 	// register custom monty template functions to AlertManager
 	templates.RegisterNewAlertManagerDefaults(template.DefaultFuncs, templates.DefaultTemplateFuncs)
@@ -151,7 +151,7 @@ func buildReceiverIntegrations(nc config.Receiver, tmpl *template.Template, logg
 				errs.Add(err)
 				return
 			}
-			integrations = append(integrations, notify.NewIntegration(n, rs, name, i))
+			integrations = append(integrations, notify.NewIntegration(n, rs, name, i, "receiverName"))
 		}
 	)
 
@@ -441,7 +441,8 @@ func run(args []string) int {
 	)
 
 	dispMetrics := dispatch.NewDispatcherMetrics(false, prometheus.DefaultRegisterer)
-	pipelineBuilder := notify.NewPipelineBuilder(prometheus.DefaultRegisterer)
+	// TODO - is this right?
+	pipelineBuilder := notify.NewPipelineBuilder(prometheus.DefaultRegisterer, nil)
 	configLogger := log.With(logger, "component", "configuration")
 	configCoordinator := config.NewCoordinator(
 		*configFile,
@@ -490,6 +491,8 @@ func run(args []string) int {
 			timeIntervals[ti.Name] = ti.TimeIntervals
 		}
 
+		intervener := timeinterval.NewIntervener(timeIntervals)
+
 		inhibitor.Stop()
 		disp.Stop()
 
@@ -509,7 +512,7 @@ func run(args []string) int {
 			waitFunc,
 			inhibitor,
 			silencer,
-			timeIntervals,
+			intervener,
 			notificationLog,
 			pipelinePeer,
 		)
