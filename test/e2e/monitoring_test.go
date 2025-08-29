@@ -10,7 +10,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/aity-cloud/monty/internal/bench"
 	capabilityv1 "github.com/aity-cloud/monty/pkg/apis/capability/v1"
 	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
 	managementv1 "github.com/aity-cloud/monty/pkg/apis/management/v1"
@@ -20,7 +19,6 @@ import (
 	"github.com/aity-cloud/monty/pkg/metrics/compat"
 	"github.com/aity-cloud/monty/pkg/plugins/driverutil"
 	"github.com/aity-cloud/monty/pkg/task"
-	"github.com/aity-cloud/monty/pkg/test/testbench"
 	"github.com/aity-cloud/monty/pkg/util"
 	"github.com/aity-cloud/monty/plugins/metrics/apis/cortexadmin"
 	"github.com/aity-cloud/monty/plugins/metrics/apis/cortexops"
