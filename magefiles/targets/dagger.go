@@ -42,12 +42,12 @@ func (Dagger) run(pkg daggerPackage, args ...string) error {
 	return sh.RunV(cmds[0], append(append(cmds[1:], string(pkg)), args...)...)
 }
 
-func (Dagger) do(outputDir string, args ...string) error {
+func (Dagger) call(outputDir string, args ...string) error {
 	daggerBinary, err := exec.LookPath("dagger")
 	if err != nil {
 		return fmt.Errorf("could not find dagger: %w", err)
 	}
-	return sh.Run(daggerBinary, append([]string{"do", "--progress=plain", "--output", outputDir, "--project", string(daggerx), "--workdir", string(dagger)}, args...)...)
+	return sh.Run(daggerBinary, append([]string{"call", "-m", string(daggerx), "--progress=plain", "--output", outputDir, "--workdir", string(dagger)}, args...)...)
 }
 
 // Invokes 'go run ./dagger --help'
