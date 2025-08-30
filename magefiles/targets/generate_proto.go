@@ -7,14 +7,13 @@ import (
 	"os/exec"
 	"path/filepath"
 
+	"github.com/kralicky/codegen/cli"
 	"github.com/kralicky/protols/sdk/codegen"
 	"github.com/kralicky/protols/sdk/codegen/generators/external"
 	"github.com/kralicky/protols/sdk/codegen/generators/golang"
 	"github.com/kralicky/protols/sdk/codegen/generators/golang/grpc"
 	"github.com/kralicky/protols/sdk/codegen/generators/x/python"
 	"github.com/magefile/mage/mg"
-	internalcodegen "github.com/rancher/opni/internal/codegen"
-	"github.com/rancher/opni/internal/codegen/cli"
 	"github.com/rancher/opni/internal/codegen/pathbuilder"
 	"github.com/rancher/opni/internal/codegen/templating"
 	_ "go.opentelemetry.io/proto/otlp/metrics/v1"
@@ -23,11 +22,10 @@ import (
 
 // Generates Go protobuf code
 func (Generate) ProtobufGo(ctx context.Context) error {
-	mg.Deps(internalcodegen.GenCortexConfig)
+	// mg.Deps(internalcodegen.GenCortexConfig)
 	_, tr := Tracer.Start(ctx, "target.generate.protobuf.go")
 	defer tr.End()
 
-	grpc.SetRequireUnimplemented(false)
 	generators := []codegen.Generator{
 		templating.CommentRenderer{},
 		golang.Generator,
@@ -44,11 +42,11 @@ func (Generate) ProtobufGo(ctx context.Context) error {
 	out, err := codegen.GenerateCode(
 		generators,
 		[]string{
-			"internal/codegen/cli",
 			"internal/cortex",
 			"pkg",
 			"plugins",
 		},
+		codegen.WithFixInvalidGoPackages(true),
 	)
 	if err != nil {
 		return err
@@ -59,22 +57,6 @@ func (Generate) ProtobufGo(ctx context.Context) error {
 		}
 	}
 
-	return nil
-}
-
-// Can be used to "bootstrap" the cli generator when modifying cli.proto
-func (Generate) ProtobufCLI() error {
-	out, err := codegen.GenerateCode([]codegen.Generator{golang.Generator, grpc.Generator, cli.NewGenerator()},
-		[]string{"internal/codegen/cli"},
-	)
-	if err != nil {
-		return err
-	}
-	for _, file := range out {
-		if err := file.WriteToDisk(); err != nil {
-			return err
-		}
-	}
 	return nil
 }
 
