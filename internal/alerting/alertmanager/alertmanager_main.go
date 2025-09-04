@@ -49,6 +49,7 @@ import (
 	"github.com/prometheus/alertmanager/cluster"
 	"github.com/prometheus/alertmanager/config"
 	"github.com/prometheus/alertmanager/dispatch"
+	"github.com/prometheus/alertmanager/featurecontrol"
 	"github.com/prometheus/alertmanager/inhibit"
 	"github.com/prometheus/alertmanager/nflog"
 	"github.com/prometheus/alertmanager/notify"
@@ -120,7 +121,6 @@ func init() {
 	prometheus.MustRegister(clusterEnabled)
 	prometheus.MustRegister(configuredReceivers)
 	prometheus.MustRegister(configuredIntegrations)
-	//prometheus.MustRegister(version.NewCollector("alertmanager"))
 
 	// register custom monty template functions to AlertManager
 	templates.RegisterNewAlertManagerDefaults(template.DefaultFuncs, templates.DefaultTemplateFuncs)
@@ -151,7 +151,7 @@ func buildReceiverIntegrations(nc config.Receiver, tmpl *template.Template, logg
 				errs.Add(err)
 				return
 			}
-			integrations = append(integrations, notify.NewIntegration(n, rs, name, i, "receiverName"))
+			integrations = append(integrations, notify.NewIntegration(n, rs, name, i, ""))
 		}
 	)
 
@@ -441,8 +441,7 @@ func run(args []string) int {
 	)
 
 	dispMetrics := dispatch.NewDispatcherMetrics(false, prometheus.DefaultRegisterer)
-	// TODO - is this right?
-	pipelineBuilder := notify.NewPipelineBuilder(prometheus.DefaultRegisterer, nil)
+	pipelineBuilder := notify.NewPipelineBuilder(prometheus.DefaultRegisterer, featurecontrol.NoopFlags{})
 	configLogger := log.With(logger, "component", "configuration")
 	configCoordinator := config.NewCoordinator(
 		*configFile,
@@ -491,8 +490,6 @@ func run(args []string) int {
 			timeIntervals[ti.Name] = ti.TimeIntervals
 		}
 
-		intervener := timeinterval.NewIntervener(timeIntervals)
-
 		inhibitor.Stop()
 		disp.Stop()
 
@@ -512,7 +509,7 @@ func run(args []string) int {
 			waitFunc,
 			inhibitor,
 			silencer,
-			intervener,
+			timeinterval.NewIntervener(timeIntervals),
 			notificationLog,
 			pipelinePeer,
 		)
@@ -549,7 +546,6 @@ func run(args []string) int {
 					"route",
 					r.Key(),
 				)
-
 			}
 		})
 

@@ -10,7 +10,6 @@ import (
 	"sync"
 	"time"
 
-	"github.com/aity-cloud/monty/internal/memoize"
 	capabilityv1 "github.com/aity-cloud/monty/pkg/apis/capability/v1"
 	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
 	"github.com/aity-cloud/monty/pkg/auth/cluster"
@@ -30,6 +29,7 @@ import (
 	"github.com/aity-cloud/monty/plugins/metrics/pkg/gateway/drivers"
 	"github.com/aity-cloud/monty/plugins/metrics/pkg/types"
 	"github.com/cortexproject/cortex/pkg/purger"
+	"github.com/kralicky/tools-lite/pkg/memoize"
 	"github.com/lestrrat-go/backoff/v2"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"

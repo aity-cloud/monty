@@ -4,12 +4,12 @@ import (
 	context "context"
 	"os"
 
-	cli "github.com/aity-cloud/monty/internal/codegen/cli"
 	driverutil "github.com/aity-cloud/monty/pkg/plugins/driverutil"
 	"github.com/aity-cloud/monty/pkg/plugins/driverutil/rollback"
 	"github.com/aity-cloud/monty/pkg/storage"
 	"github.com/aity-cloud/monty/pkg/tui"
 	flagutil "github.com/aity-cloud/monty/pkg/util/flagutil"
+	cli "github.com/kralicky/codegen/cli"
 	"golang.org/x/term"
 )
 

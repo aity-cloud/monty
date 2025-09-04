@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
+	"buf.build/go/protovalidate"
 	managementext "github.com/aity-cloud/monty/pkg/plugins/apis/apiextensions/management"
 	"github.com/aity-cloud/monty/pkg/plugins/apis/system"
 	"github.com/aity-cloud/monty/pkg/plugins/driverutil"
@@ -14,7 +15,6 @@ import (
 	"github.com/aity-cloud/monty/plugins/metrics/pkg/cortex/configutil"
 	"github.com/aity-cloud/monty/plugins/metrics/pkg/gateway/drivers"
 	"github.com/aity-cloud/monty/plugins/metrics/pkg/types"
-	"github.com/bufbuild/protovalidate-go"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
@@ -62,9 +62,11 @@ func (s *CortexOpsService) DryRun(ctx context.Context, req *cortexops.DryRunRequ
 			res.ValidationErrors = &protovalidate.ValidationError{}
 		}
 		for _, err := range upstreamErrs {
-			res.ValidationErrors.Violations = append(res.ValidationErrors.Violations, &validate.Violation{
-				ConstraintId: "cortex",
-				Message:      err.Error(),
+			res.ValidationErrors.Violations = append(res.ValidationErrors.Violations, &protovalidate.Violation{
+				Proto: &validate.Violation{
+					RuleId:  lo.ToPtr("cortex"),
+					Message: lo.ToPtr(err.Error()),
+				},
 			})
 		}
 	}

@@ -6,14 +6,10 @@ import (
 	"crypto/rsa"
 	"embed"
 	"fmt"
+	"log/slog"
 	"net"
 	"net/http"
 
-	"log/slog"
-
-	managementv1 "github.com/aity-cloud/monty/pkg/apis/management/v1"
-	"github.com/aity-cloud/monty/pkg/auth/openid"
-	"github.com/aity-cloud/monty/pkg/util"
 	"github.com/lestrrat-go/jwx/jwk"
 	"github.com/ory/fosite"
 	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
@@ -100,8 +96,7 @@ func (s *Server) connectToManagementAPI(ctx context.Context) error {
 	).Info("connecting to management api")
 	cc, err := grpc.DialContext(ctx, s.ManagementAPIEndpoint,
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
-		grpc.WithChainStreamInterceptor(otelgrpc.StreamClientInterceptor()),
-		//grpc.WithChainUnaryInterceptor(otelgrpc.UnaryClientInterceptor()),
+		grpc.WithStatsHandler(otelgrpc.NewClientHandler()),
 		grpc.WithBlock(),
 	)
 	if err != nil {

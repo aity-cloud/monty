@@ -3,14 +3,13 @@ package cortexops
 import (
 	"os"
 
-	"github.com/aity-cloud/monty/internal/codegen/cli"
 	cliutil "github.com/aity-cloud/monty/pkg/monty/cliutil"
 	driverutil "github.com/aity-cloud/monty/pkg/plugins/driverutil"
 	"github.com/aity-cloud/monty/pkg/plugins/driverutil/complete"
 	"github.com/aity-cloud/monty/pkg/plugins/driverutil/dryrun"
 	"github.com/aity-cloud/monty/pkg/plugins/driverutil/rollback"
 	"github.com/aity-cloud/monty/pkg/tui"
-	"github.com/bufbuild/protovalidate-go"
+	"github.com/kralicky/codegen/cli"
 	cobra "github.com/spf13/cobra"
 	"golang.org/x/term"
 	emptypb "google.golang.org/protobuf/types/known/emptypb"
@@ -73,7 +72,7 @@ func init() {
 							}
 							modified := drr.GetModified()
 							comments := []string{}
-							if errs := (*protovalidate.ValidationError)(drr.GetValidationErrors()); errs != nil {
+							if errs := validation.ErrorsFromProto(drr.GetValidationErrors()); errs != nil {
 								comments = append(comments, errs.Error())
 							}
 							if modified, err = cliutil.EditInteractive(modified, comments...); err != nil {

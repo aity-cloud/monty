@@ -4,13 +4,13 @@
 syntax = "proto3";
 package compactor;
 
-import "github.com/aity-cloud/monty/internal/codegen/cli/cli.proto";
-import "github.com/aity-cloud/monty/pkg/validation/validate.proto";
+import "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate/validate.proto";
+import "github.com/kralicky/codegen/cli/cli.proto";
 import "google/protobuf/duration.proto";
 
 option go_package      = "github.com/aity-cloud/monty/internal/cortex/config/compactor";
 option (cli.generator) = {
-  generate:          true,
+  enabled:           true,
   generate_deepcopy: true,
 };
 

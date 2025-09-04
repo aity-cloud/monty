@@ -5,6 +5,7 @@ import (
 	"crypto/tls"
 	"errors"
 	"fmt"
+	"log/slog"
 	"net"
 	"net/http"
 	"runtime"
@@ -12,8 +13,6 @@ import (
 	"sync"
 	"sync/atomic"
 	"time"
-
-	"log/slog"
 
 	"github.com/gin-contrib/pprof"
 	"github.com/ttacon/chalk"
@@ -158,28 +157,26 @@ func NewHTTPServer(
 
 	srv.metricsRegisterer.MustRegister(apiCollectors...)
 
-	exporter, err := otelprom.New(
-		otelprom.WithRegisterer(prometheus.WrapRegistererWithPrefix("monty_gateway_", srv.metricsRegisterer)),
-		otelprom.WithoutScopeInfo(),
-		otelprom.WithoutTargetInfo(),
-	)
-	if err != nil {
-		lg.With(
-			logger.Err(err),
-		).Error("failed to create prometheus exporter")
-		panic("failed to create prometheus exporter")
-	}
+	pl.Hook(hooks.OnLoad(func(p types.MetricsPlugin) {
+		exporter, err := otelprom.New(
+			otelprom.WithRegisterer(prometheus.WrapRegistererWithPrefix("opni_gateway_", srv.metricsRegisterer)),
+			otelprom.WithoutScopeInfo(),
+			otelprom.WithoutTargetInfo(),
+			otelprom.WithProducer(p),
+		)
+		if err != nil {
+			lg.With(
+				logger.Err(err),
+			).Error("failed to create prometheus exporter")
+			panic("failed to create prometheus exporter")
+		}
 
-	// We are using remote producers, but we need to register the exporter locally
-	// to prevent errors
-	metric.NewMeterProvider(
-		metric.WithReader(exporter),
-	)
-
-	// TODO - how does this change to the new otelgrpc?
-	//pl.Hook(hooks.OnLoad(func(p types.MetricsPlugin) {
-	//	exporter.RegisterProducer(p)
-	//}))
+		// We are using remote producers, but we need to register the exporter locally
+		// to prevent errors
+		metric.NewMeterProvider(
+			metric.WithReader(exporter),
+		)
+	}))
 
 	pl.Hook(hooks.OnLoadM(func(p types.HTTPAPIExtensionPlugin, md meta.PluginMeta) {
 		go certs.WatchFunc(ctx, func(v protoreflect.Value) {

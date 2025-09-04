@@ -5,9 +5,9 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/aity-cloud/monty/internal/memoize"
 	"github.com/gin-contrib/pprof"
 	"github.com/gin-gonic/gin"
+	"github.com/kralicky/tools-lite/pkg/memoize"
 
 	"github.com/aity-cloud/monty/pkg/capabilities/wellknown"
 	"github.com/aity-cloud/monty/pkg/logger"

@@ -150,7 +150,6 @@ func (r *Reconciler) getAggregatorOTELConfig() otel.AggregatorOTELConfig {
 			},
 		},
 	}
-
 }
 
 func (r *Reconciler) receiverConfig() (retData []byte, retReceivers []string, retErr error) {

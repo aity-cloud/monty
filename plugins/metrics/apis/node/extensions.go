@@ -3,12 +3,12 @@ package node
 import (
 	"os"
 
-	cli "github.com/aity-cloud/monty/internal/codegen/cli"
 	"github.com/aity-cloud/monty/pkg/otel"
 	driverutil "github.com/aity-cloud/monty/pkg/plugins/driverutil"
 	"github.com/aity-cloud/monty/pkg/plugins/driverutil/dryrun"
 	"github.com/aity-cloud/monty/pkg/plugins/driverutil/rollback"
 	"github.com/aity-cloud/monty/pkg/tui"
+	cli "github.com/kralicky/codegen/cli"
 	"golang.org/x/term"
 	"google.golang.org/protobuf/reflect/protoreflect"
 )

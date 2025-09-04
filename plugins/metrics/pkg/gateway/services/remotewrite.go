@@ -7,7 +7,6 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/aity-cloud/monty/internal/memoize"
 	"github.com/aity-cloud/monty/pkg/auth/cluster"
 	"github.com/aity-cloud/monty/pkg/auth/session"
 	"github.com/aity-cloud/monty/pkg/metrics"
@@ -17,6 +16,7 @@ import (
 	"github.com/aity-cloud/monty/plugins/metrics/pkg/cortex"
 	"github.com/aity-cloud/monty/plugins/metrics/pkg/types"
 	"github.com/cortexproject/cortex/pkg/cortexpb"
+	"github.com/kralicky/tools-lite/pkg/memoize"
 	"github.com/weaveworks/common/user"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"

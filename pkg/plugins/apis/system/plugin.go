@@ -283,9 +283,9 @@ func (s *systemPluginHandler) serveSystemApi(regCallback func(*grpc.Server), use
 	srvLock := make(chan struct{})
 	once := sync.Once{}
 	go s.broker.AcceptAndServe(id, func(so []grpc.ServerOption) *grpc.Server {
-		so = append(so)//grpc.ChainStreamInterceptor(otelgrpc.StreamServerInterceptor()),
-		//grpc.ChainUnaryInterceptor(otelgrpc.UnaryServerInterceptor()),
-
+		so = append(so,
+			grpc.StatsHandler(otelgrpc.NewServerHandler()),
+		)
 		srv = grpc.NewServer(so...)
 		close(srvLock)
 		go func() {

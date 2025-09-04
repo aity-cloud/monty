@@ -27,7 +27,6 @@ import (
 	"github.com/aity-cloud/monty/pkg/util/flagutil"
 	"github.com/aity-cloud/monty/pkg/util/k8sutil"
 	"github.com/aity-cloud/monty/pkg/validation"
-	"github.com/bufbuild/protovalidate-go"
 	"github.com/nsf/jsondiff"
 	"github.com/spf13/cobra"
 	"golang.org/x/sync/errgroup"
@@ -262,7 +261,7 @@ persist their default configurations in the KV store.
 					}
 					if resp.GetValidationErrors() != nil {
 						lg.Error("refusing to apply default flags due to validation errors (re-run with --ignore-validation-errors to skip this check)")
-						return (*protovalidate.ValidationError)(resp.ValidationErrors)
+						return validation.ErrorsFromProto(resp.ValidationErrors)
 					}
 					if anyChanges {
 						_, err := mgr.ResetConfiguration(ctx, &configv1.ResetRequest{

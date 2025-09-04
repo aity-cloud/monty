@@ -2,11 +2,10 @@ package cortex
 
 import (
 	"context"
+	"errors"
 	"sync"
 	"time"
 	"unsafe"
-
-	"errors"
 
 	"github.com/aity-cloud/monty/plugins/metrics/pkg/types"
 	"github.com/cortexproject/cortex/pkg/cortexpb"

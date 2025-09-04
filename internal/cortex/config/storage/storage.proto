@@ -4,13 +4,13 @@
 syntax = "proto3";
 package storage;
 
-import "github.com/aity-cloud/monty/internal/codegen/cli/cli.proto";
-import "github.com/aity-cloud/monty/pkg/validation/validate.proto";
+import "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate/validate.proto";
+import "github.com/kralicky/codegen/cli/cli.proto";
 import "google/protobuf/duration.proto";
 
 option go_package      = "github.com/aity-cloud/monty/internal/cortex/config/storage";
 option (cli.generator) = {
-  generate:          true,
+  enabled:           true,
   generate_deepcopy: true,
 };
 
@@ -30,46 +30,11 @@ message Config {
       default: "s3",
     }
   ];
-  S3Config s3 = 2 [
-    (buf.validate.field) = {
-      ignore_if: {
-        id:         "s3",
-        expression: "this.backend != 's3'",
-      },
-    }
-  ];
-  GcsConfig gcs = 3 [
-    (buf.validate.field) = {
-      ignore_if: {
-        id:         "gcs",
-        expression: "this.backend != 'gcs'",
-      },
-    }
-  ];
-  AzureConfig azure = 4 [
-    (buf.validate.field) = {
-      ignore_if: {
-        id:         "azure",
-        expression: "this.backend != 'azure'",
-      },
-    }
-  ];
-  SwiftConfig swift = 5 [
-    (buf.validate.field) = {
-      ignore_if: {
-        id:         "swift",
-        expression: "this.backend != 'swift'",
-      },
-    }
-  ];
-  FilesystemConfig filesystem = 6 [
-    (buf.validate.field) = {
-      ignore_if: {
-        id:         "filesystem",
-        expression: "this.backend != 'filesystem'",
-      },
-    }
-  ];
+  S3Config         s3         = 2;
+  GcsConfig        gcs        = 3;
+  AzureConfig      azure      = 4;
+  SwiftConfig      swift      = 5;
+  FilesystemConfig filesystem = 6;
 }
 
 message AzureConfig {

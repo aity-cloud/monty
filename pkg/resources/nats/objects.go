@@ -38,8 +38,7 @@ const (
 	natsDefaultHTTPPort            = 8222
 )
 
-var (
-	natsConfigTemplate = template.Must(template.New("natsconfig").Parse(`
+var natsConfigTemplate = template.Must(template.New("natsconfig").Parse(`
 listen: 0.0.0.0:{{ .ClientPort }}
 http: 0.0.0.0:{{ .HTTPPort }}
 server_name: $POD_NAME
@@ -92,7 +91,6 @@ jetstream {
 }
 {{- end }}
 	`))
-)
 
 type jetstreamFileConfigData struct {
 	Enabled bool

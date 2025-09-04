@@ -189,7 +189,7 @@ func (r *Reconciler) deployment(extraAnnotations map[string]string) ([]resources
 									LocalObjectReference: corev1.LocalObjectReference{
 										Name: "amtool-config",
 									},
-									DefaultMode: lo.ToPtr[int32](0400),
+									DefaultMode: lo.ToPtr[int32](0o400),
 								},
 							},
 						},
@@ -204,7 +204,7 @@ func (r *Reconciler) deployment(extraAnnotations map[string]string) ([]resources
 											Path: "tls.key",
 										},
 									},
-									DefaultMode: lo.ToPtr[int32](0400),
+									DefaultMode: lo.ToPtr[int32](0o400),
 								},
 							},
 						},
@@ -213,7 +213,7 @@ func (r *Reconciler) deployment(extraAnnotations map[string]string) ([]resources
 							VolumeSource: corev1.VolumeSource{
 								Secret: &corev1.SecretVolumeSource{
 									SecretName:  "cortex-client-cert-keys",
-									DefaultMode: lo.ToPtr[int32](0400),
+									DefaultMode: lo.ToPtr[int32](0o400),
 									Items: []corev1.KeyToPath{
 										{
 											Key:  "tls.crt",
@@ -236,7 +236,7 @@ func (r *Reconciler) deployment(extraAnnotations map[string]string) ([]resources
 							VolumeSource: corev1.VolumeSource{
 								Secret: &corev1.SecretVolumeSource{
 									SecretName:  "cortex-serving-cert-keys",
-									DefaultMode: lo.ToPtr[int32](0400),
+									DefaultMode: lo.ToPtr[int32](0o400),
 									Items: []corev1.KeyToPath{
 										{
 											Key:  "ca.crt",
@@ -251,7 +251,7 @@ func (r *Reconciler) deployment(extraAnnotations map[string]string) ([]resources
 							VolumeSource: corev1.VolumeSource{
 								Secret: &corev1.SecretVolumeSource{
 									SecretName:  "alerting-client-cert-keys",
-									DefaultMode: lo.ToPtr[int32](0400),
+									DefaultMode: lo.ToPtr[int32](0o400),
 									Items: []corev1.KeyToPath{
 										{
 											Key:  "tls.crt",
@@ -274,7 +274,7 @@ func (r *Reconciler) deployment(extraAnnotations map[string]string) ([]resources
 							VolumeSource: corev1.VolumeSource{
 								Secret: &corev1.SecretVolumeSource{
 									SecretName:  "alerting-serving-cert-keys",
-									DefaultMode: lo.ToPtr[int32](0400),
+									DefaultMode: lo.ToPtr[int32](0o400),
 									Items: []corev1.KeyToPath{
 										{
 											Key:  "ca.crt",
@@ -289,7 +289,7 @@ func (r *Reconciler) deployment(extraAnnotations map[string]string) ([]resources
 							VolumeSource: corev1.VolumeSource{
 								Secret: &corev1.SecretVolumeSource{
 									SecretName:  "etcd-client-cert-keys",
-									DefaultMode: lo.ToPtr[int32](0400),
+									DefaultMode: lo.ToPtr[int32](0o400),
 									Items: []corev1.KeyToPath{
 										{
 											Key:  "tls.crt",
@@ -312,7 +312,7 @@ func (r *Reconciler) deployment(extraAnnotations map[string]string) ([]resources
 							VolumeSource: corev1.VolumeSource{
 								Secret: &corev1.SecretVolumeSource{
 									SecretName:  "etcd-serving-cert-keys",
-									DefaultMode: lo.ToPtr[int32](0400),
+									DefaultMode: lo.ToPtr[int32](0o400),
 									Items: []corev1.KeyToPath{
 										{
 											Key:  "ca.crt",
@@ -385,10 +385,8 @@ func (r *Reconciler) deployment(extraAnnotations map[string]string) ([]resources
 			Name:      extraVol.Name,
 			MountPath: extraVol.MountPath,
 		}
-		gatewayStatefulSet.Spec.Template.Spec.Volumes =
-			append(gatewayStatefulSet.Spec.Template.Spec.Volumes, vol)
-		gatewayStatefulSet.Spec.Template.Spec.Containers[0].VolumeMounts =
-			append(gatewayStatefulSet.Spec.Template.Spec.Containers[0].VolumeMounts, volMount)
+		gatewayStatefulSet.Spec.Template.Spec.Volumes = append(gatewayStatefulSet.Spec.Template.Spec.Volumes, vol)
+		gatewayStatefulSet.Spec.Template.Spec.Containers[0].VolumeMounts = append(gatewayStatefulSet.Spec.Template.Spec.Containers[0].VolumeMounts, volMount)
 	}
 
 	// TODO(config)

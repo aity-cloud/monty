@@ -6,33 +6,12 @@ import (
 	"crypto/x509"
 	"errors"
 	"fmt"
+	"log/slog"
 	"net"
 	"net/http"
 	"sync"
 	"time"
 
-	"log/slog"
-
-	capabilityv1 "github.com/aity-cloud/monty/pkg/apis/capability/v1"
-	corev1 "github.com/aity-cloud/monty/pkg/apis/core/v1"
-	managementv1 "github.com/aity-cloud/monty/pkg/apis/management/v1"
-	"github.com/aity-cloud/monty/pkg/auth/local"
-	authutil "github.com/aity-cloud/monty/pkg/auth/util"
-	"github.com/aity-cloud/monty/pkg/caching"
-	"github.com/aity-cloud/monty/pkg/capabilities"
-	"github.com/aity-cloud/monty/pkg/config"
-	"github.com/aity-cloud/monty/pkg/config/reactive"
-	configv1 "github.com/aity-cloud/monty/pkg/config/v1"
-	"github.com/aity-cloud/monty/pkg/health"
-	"github.com/aity-cloud/monty/pkg/logger"
-	"github.com/aity-cloud/monty/pkg/pkp"
-	"github.com/aity-cloud/monty/pkg/plugins"
-	"github.com/aity-cloud/monty/pkg/plugins/apis/apiextensions"
-	"github.com/aity-cloud/monty/pkg/plugins/hooks"
-	"github.com/aity-cloud/monty/pkg/plugins/meta"
-	"github.com/aity-cloud/monty/pkg/plugins/types"
-	"github.com/aity-cloud/monty/pkg/storage"
-	"github.com/aity-cloud/monty/pkg/util"
 	"github.com/gin-gonic/gin"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/jhump/protoreflect/desc"
@@ -247,12 +226,8 @@ func (m *Server) listenAndServeGrpc(ctx context.Context) error {
 		server = grpc.NewServer(
 			grpc.Creds(insecure.NewCredentials()),
 			grpc.UnknownServiceHandler(unknownServiceHandler(m.director)),
-			//grpc.ChainStreamInterceptor(otelgrpc.StreamServerInterceptor()),
-			grpc.ChainStreamInterceptor(),
-			grpc.ChainUnaryInterceptor(
-				caching.NewClientGrpcTtlCacher().UnaryServerInterceptor(),
-				//otelgrpc.UnaryServerInterceptor(),
-			),
+			grpc.StatsHandler(otelgrpc.NewServerHandler()),
+			grpc.ChainUnaryInterceptor(caching.NewClientGrpcTtlCacher().UnaryServerInterceptor()),
 		)
 		managementv1.RegisterManagementServer(server, m)
 		configv1.RegisterGatewayConfigServer(server, m.mgr.AsServer())
