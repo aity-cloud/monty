@@ -7,6 +7,7 @@ import (
 	"log/slog"
 	"runtime"
 	"strings"
+	"sync"
 
 	"github.com/aity-cloud/monty/pkg/logger"
 	"github.com/aity-cloud/monty/pkg/supportagent/dateparser"
@@ -29,13 +30,20 @@ type otlpShipper struct {
 	collectedErrorMessages []string
 	failureCount           int
 
+	wg sync.WaitGroup
 	lg *slog.Logger
+
+	rMutex      sync.RWMutex
+	readingDone bool
+
+	wgCounter sync.WaitGroup
 }
 
 type otlpShipperOptions struct {
 	component string
 	logType   string
 	batchSize int
+	workers   int
 }
 
 type OTLPShipperOption func(*otlpShipperOptions)
@@ -64,6 +72,12 @@ func WithBatchSize(batchSize int) OTLPShipperOption {
 	}
 }
 
+func WithWorkers(workers int) OTLPShipperOption {
+	return func(o *otlpShipperOptions) {
+		o.workers = workers
+	}
+}
+
 func NewOTLPShipper(
 	cc grpc.ClientConnInterface,
 	parser dateparser.DateParser,
@@ -72,6 +86,7 @@ func NewOTLPShipper(
 ) Shipper {
 	options := otlpShipperOptions{
 		batchSize: 50,
+		workers:   runtime.GOMAXPROCS(0),
 	}
 	options.apply(opts...)
 	return &otlpShipper{
@@ -84,6 +99,13 @@ func NewOTLPShipper(
 }
 
 func (s *otlpShipper) Publish(ctx context.Context, tokens *bufio.Scanner) error {
+	s.converter.Start()
+	defer s.converter.Stop()
+	for i := 0; i < s.workers; i++ {
+		s.wg.Add(1)
+		go s.shipLogs(ctx)
+	}
+
 	continueScan := tokens.Scan()
 	var previousEnt *entry.Entry
 	entries := make([]*entry.Entry, 0, s.batchSize)
@@ -147,6 +169,15 @@ func (s *otlpShipper) Publish(ctx context.Context, tokens *bufio.Scanner) error 
 		s.lg.Error("failed to scan logs", logger.Err(err))
 	}
 
+	// wait for batching to finish
+	s.wgCounter.Wait()
+
+	// wait for shipping to finish
+	s.rMutex.Lock()
+	s.readingDone = true
+	s.rMutex.Unlock()
+	s.lg.Info("waiting for shipping to finish")
+	s.wg.Wait()
 	if s.failureCount > 0 {
 		s.lg.Error(fmt.Sprintf("failed to ship %d logs for log type %s", s.failureCount, s.logType))
 		if s.component != "" {

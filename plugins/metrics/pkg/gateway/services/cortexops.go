@@ -15,6 +15,7 @@ import (
 	"github.com/aity-cloud/monty/plugins/metrics/pkg/cortex/configutil"
 	"github.com/aity-cloud/monty/plugins/metrics/pkg/gateway/drivers"
 	"github.com/aity-cloud/monty/plugins/metrics/pkg/types"
+	"github.com/samber/lo"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 

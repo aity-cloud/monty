@@ -16,6 +16,7 @@ import (
 	"github.com/aity-cloud/monty/pkg/util"
 	"github.com/hashicorp/go-plugin"
 	"github.com/samber/lo"
+	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/backoff"
 	"google.golang.org/grpc/credentials/insecure"
@@ -50,7 +51,7 @@ type SystemPluginServer interface {
 }
 
 const (
-	SystemPluginID  = "monty.System"
+	SystemPluginID  = "opni.System"
 	KVServiceID     = "system.KeyValueStore"
 	SystemServiceID = "system.System"
 )

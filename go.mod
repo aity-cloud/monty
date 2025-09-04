@@ -85,6 +85,7 @@ require (
 	github.com/opencontainers/go-digest v1.0.0
 	github.com/opensearch-project/opensearch-go v1.1.0
 	github.com/opensearch-project/opensearch-go/v2 v2.0.0-00010101000000-000000000000
+	github.com/opentracing-contrib/go-stdlib v1.1.0
 	github.com/ory/fosite v0.44.1-0.20230614124936-69300915a423
 	github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c
 	github.com/pkg/errors v0.9.1
@@ -214,7 +215,6 @@ require (
 	github.com/mdlayher/vsock v1.2.1 // indirect
 	github.com/metalmatze/signal v0.0.0-20210307161603-1c9aa721a97a // indirect
 	github.com/mxk/go-flowrate v0.0.0-20140419014527-cca7078d478f // indirect
-	github.com/opentracing-contrib/go-stdlib v1.1.0 // indirect
 	github.com/planetscale/vtprotobuf v0.6.1-0.20240319094008-0393e58bdf10 // indirect
 	github.com/prometheus-community/prom-label-proxy v0.8.1-0.20240127162815-c1195f9aabc0 // indirect
 	github.com/seiflotfy/cuckoofilter v0.0.0-20240715131351-a2f2c23f1771 // indirect
