@@ -28,6 +28,7 @@ import (
 	"github.com/aity-cloud/monty/plugins/metrics/pkg/cortex/configutil"
 	"github.com/aity-cloud/monty/plugins/metrics/pkg/gateway/drivers"
 	metrics_drivers "github.com/aity-cloud/monty/plugins/metrics/pkg/gateway/drivers"
+	"github.com/cortexproject/cortex/pkg/cortex"
 	"github.com/cortexproject/cortex/pkg/ring"
 	"github.com/cortexproject/cortex/pkg/ruler"
 	"github.com/cortexproject/cortex/pkg/storage/bucket/filesystem"
@@ -258,9 +259,12 @@ func (d *TestEnvMetricsClusterDriver) onActiveConfigChanged(old, new *cortexops.
 					t.SyncInterval = 10 * time.Second
 					return true
 				}),
+				configutil.NewOverrider(func(t *cortex.Config) bool {
+					t.Alertmanager.FallbackConfigFile = ""
+					return true
+				}),
 			},
 		)
-
 		errs := configutil.CollectValidationErrorLogs(new.CortexConfig, overriders...)
 		if len(errs) > 0 {
 			currentStatus.Use(func(s *driverutil.InstallStatus) {
