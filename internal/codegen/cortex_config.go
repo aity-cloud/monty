@@ -262,7 +262,6 @@ func mergeFileDescriptors(targetpb *descriptorpb.FileDescriptorProto, target, ex
 
 	// important: we only build messages in this generator right now. if other
 	// top-level elements are added, this will need to be updated
-
 	msgs := target.Messages()
 	for i, l := 0, msgs.Len(); i < l; i++ {
 		targetMsg := msgs.Get(i)

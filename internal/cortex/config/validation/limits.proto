@@ -43,7 +43,7 @@ message Limits {
   // Reject old samples.
   optional bool reject_old_samples = 14 [(cli.flag) = {default: "false"}];
   // Maximum accepted sample age before rejecting.
-  google.protobuf.Duration reject_old_samples_max_age = 15 [(cli.flag) = {default: "336h"}];
+  google.protobuf.Duration reject_old_samples_max_age = 15 [(cli.flag) = {default: "2w"}];
   // Duration which table will be created/deleted before/after it's needed; we won't accept sample from before this time.
   google.protobuf.Duration creation_grace_period = 16 [(cli.flag) = {default: "10m"}];
   // Enforce every metadata has a metric name.

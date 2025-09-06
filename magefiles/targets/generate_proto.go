@@ -7,6 +7,7 @@ import (
 	"os/exec"
 	"path/filepath"
 
+	internalcodegen "github.com/aity-cloud/monty/internal/codegen"
 	"github.com/aity-cloud/monty/internal/codegen/pathbuilder"
 	"github.com/aity-cloud/monty/internal/codegen/templating"
 	"github.com/kralicky/codegen/cli"
@@ -22,7 +23,7 @@ import (
 
 // Generates Go protobuf code
 func (Generate) ProtobufGo(ctx context.Context) error {
-	// mg.Deps(internalcodegen.GenCortexConfig)
+	mg.Deps(internalcodegen.GenCortexConfig)
 	_, tr := Tracer.Start(ctx, "target.generate.protobuf.go")
 	defer tr.End()
 

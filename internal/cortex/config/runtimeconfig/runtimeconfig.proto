@@ -4,8 +4,8 @@
 syntax = "proto3";
 package runtimeconfig;
 
-import "github.com/kralicky/codegen/cli/cli.proto";
 import "github.com/aity-cloud/monty/internal/cortex/config/validation/limits.proto";
+import "github.com/kralicky/codegen/cli/cli.proto";
 
 option go_package      = "github.com/aity-cloud/monty/internal/cortex/config/runtimeconfig";
 option (cli.generator) = {

@@ -24,6 +24,8 @@ message Config {
   optional bool ingester_metadata_streaming = 6 [(cli.flag) = {default: "true"}];
   // Maximum number of samples a single query can load into memory.
   optional int32 max_samples = 7 [(cli.flag) = {default: "50000000"}];
+  // Use compression for metrics query API or instant and range query APIs. Supports 'gzip' and '' (disable compression)
+  optional string response_compression = 8 [(cli.flag) = {default: "gzip"}];
   // The time after which a metric should be queried from storage and not just ingesters. 0 means all queries are sent to store. When running the blocks storage, if this option is enabled, the time range of the query sent to the store will be manipulated to ensure the query end is not more recent than 'now - query-store-after'.
   google.protobuf.Duration query_store_after = 11 [(cli.flag) = {default: "0s"}];
   // When distributor's sharding strategy is shuffle-sharding and this setting is > 0, queriers fetch in-memory series from the minimum set of required ingesters, selecting only ingesters which may have received series since 'now - lookback period'. The lookback period should be greater or equal than the configured 'query store after' and 'query ingesters within'. If this setting is 0, queriers always query all ingesters (ingesters shuffle sharding on read path is disabled).
@@ -36,12 +38,10 @@ message Config {
   google.protobuf.Duration query_ingesters_within = 20 [(cli.flag) = {default: "0s"}];
   // Enable returning samples stats per steps in query response.
   optional bool per_step_stats_enabled = 21 [(cli.flag) = {default: "false"}];
-  // Use compression for metrics query API or instant and range query APIs. Supports 'gzip' and '' (disable compression)
-  optional string response_compression = 22 [(cli.flag) = {default: "gzip"}];
+  // The default evaluation interval or step size for subqueries.
+  google.protobuf.Duration default_evaluation_interval = 22 [(cli.flag) = {default: "1m0s"}];
   // Maximum duration into the future you can query. 0 to disable.
   google.protobuf.Duration max_query_into_future = 23 [(cli.flag) = {default: "10m0s"}];
-  // The default evaluation interval or step size for subqueries.
-  google.protobuf.Duration default_evaluation_interval = 24 [(cli.flag) = {default: "1m0s"}];
   // Max number of steps allowed for every subquery expression in query. Number of steps is calculated using subquery range / step. A value > 0 enables it.
   optional int64 max_subquery_steps = 25 [(cli.flag) = {default: "0"}];
   // Time since the last sample after which a time series is considered stale and ignored by expression evaluations.
