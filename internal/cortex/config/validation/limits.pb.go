@@ -1511,7 +1511,7 @@ var File_github_com_aity_cloud_monty_internal_cortex_config_validation_limits_pr
 const file_github_com_aity_cloud_monty_internal_cortex_config_validation_limits_proto_rawDesc = "" +
 	"\n" +
 	"Jgithub.com/aity-cloud/monty/internal/cortex/config/validation/limits.proto\x12\n" +
-	"validation\x1a)github.com/kralicky/codegen/cli/cli.proto\x1a\x1egoogle/protobuf/duration.proto\"\x9d;\n" +
+	"validation\x1a)github.com/kralicky/codegen/cli/cli.proto\x1a\x1egoogle/protobuf/duration.proto\"\x9b;\n" +
 	"\x06Limits\x127\n" +
 	"\x0eingestion_rate\x18\x01 \x01(\x01B\v\x8a\xc0\f\a\n" +
 	"\x0525000H\x00R\ringestionRate\x88\x01\x01\x12H\n" +
@@ -1546,10 +1546,9 @@ const file_github_com_aity_cloud_monty_internal_cortex_config_validation_limits_
 	"\x8a\xc0\f\x06\n" +
 	"\x041024H\vR\x11maxMetadataLength\x88\x01\x01\x12>\n" +
 	"\x12reject_old_samples\x18\x0e \x01(\bB\v\x8a\xc0\f\a\n" +
-	"\x05falseH\fR\x10rejectOldSamples\x88\x01\x01\x12a\n" +
-	"\x1areject_old_samples_max_age\x18\x0f \x01(\v2\x19.google.protobuf.DurationB\n" +
-	"\x8a\xc0\f\x06\n" +
-	"\x04336hR\x16rejectOldSamplesMaxAge\x12X\n" +
+	"\x05falseH\fR\x10rejectOldSamples\x88\x01\x01\x12_\n" +
+	"\x1areject_old_samples_max_age\x18\x0f \x01(\v2\x19.google.protobuf.DurationB\b\x8a\xc0\f\x04\n" +
+	"\x022wR\x16rejectOldSamplesMaxAge\x12X\n" +
 	"\x15creation_grace_period\x18\x10 \x01(\v2\x19.google.protobuf.DurationB\t\x8a\xc0\f\x05\n" +
 	"\x0310mR\x13creationGracePeriod\x12P\n" +
 	"\x1cenforce_metadata_metric_name\x18\x11 \x01(\bB\n" +

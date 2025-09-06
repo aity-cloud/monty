@@ -227,7 +227,7 @@ var File_github_com_aity_cloud_monty_internal_cortex_config_runtimeconfig_runtim
 
 const file_github_com_aity_cloud_monty_internal_cortex_config_runtimeconfig_runtimeconfig_proto_rawDesc = "" +
 	"\n" +
-	"Tgithub.com/aity-cloud/monty/internal/cortex/config/runtimeconfig/runtimeconfig.proto\x12\rruntimeconfig\x1a)github.com/kralicky/codegen/cli/cli.proto\x1aJgithub.com/aity-cloud/monty/internal/cortex/config/validation/limits.proto\"\xe6\x03\n" +
+	"Tgithub.com/aity-cloud/monty/internal/cortex/config/runtimeconfig/runtimeconfig.proto\x12\rruntimeconfig\x1aJgithub.com/aity-cloud/monty/internal/cortex/config/validation/limits.proto\x1a)github.com/kralicky/codegen/cli/cli.proto\"\xe6\x03\n" +
 	"\x13RuntimeConfigValues\x12W\n" +
 	"\toverrides\x18\x01 \x03(\v21.runtimeconfig.RuntimeConfigValues.OverridesEntryB\x06\x8a\xc0\f\x02(\x01R\toverrides\x12K\n" +
 	"\x0fmulti_kv_config\x18\x02 \x01(\v2#.runtimeconfig.KvMultiRuntimeConfigR\rmultiKvConfig\x12Z\n" +

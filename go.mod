@@ -695,3 +695,6 @@ replace (
 
 // Exclude old koanf version
 exclude github.com/knadh/koanf v1.5.0
+
+// External libs
+replace github.com/kralicky/codegen => github.com/aity-cloud/codegen v0.0.0-20250906160515-d35aedd0722b

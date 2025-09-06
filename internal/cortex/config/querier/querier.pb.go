@@ -39,6 +39,8 @@ type Config struct {
 	IngesterMetadataStreaming *bool `protobuf:"varint,6,opt,name=ingester_metadata_streaming,json=ingesterMetadataStreaming,proto3,oneof" json:"ingester_metadata_streaming,omitempty"`
 	// Maximum number of samples a single query can load into memory.
 	MaxSamples *int32 `protobuf:"varint,7,opt,name=max_samples,json=maxSamples,proto3,oneof" json:"max_samples,omitempty"`
+	// Use compression for metrics query API or instant and range query APIs. Supports 'gzip' and ” (disable compression)
+	ResponseCompression *string `protobuf:"bytes,8,opt,name=response_compression,json=responseCompression,proto3,oneof" json:"response_compression,omitempty"`
 	// The time after which a metric should be queried from storage and not just ingesters. 0 means all queries are sent to store. When running the blocks storage, if this option is enabled, the time range of the query sent to the store will be manipulated to ensure the query end is not more recent than 'now - query-store-after'.
 	QueryStoreAfter *durationpb.Duration `protobuf:"bytes,11,opt,name=query_store_after,json=queryStoreAfter,proto3" json:"query_store_after,omitempty"`
 	// When distributor's sharding strategy is shuffle-sharding and this setting is > 0, queriers fetch in-memory series from the minimum set of required ingesters, selecting only ingesters which may have received series since 'now - lookback period'. The lookback period should be greater or equal than the configured 'query store after' and 'query ingesters within'. If this setting is 0, queriers always query all ingesters (ingesters shuffle sharding on read path is disabled).
@@ -51,12 +53,10 @@ type Config struct {
 	QueryIngestersWithin *durationpb.Duration `protobuf:"bytes,20,opt,name=query_ingesters_within,json=queryIngestersWithin,proto3" json:"query_ingesters_within,omitempty"`
 	// Enable returning samples stats per steps in query response.
 	PerStepStatsEnabled *bool `protobuf:"varint,21,opt,name=per_step_stats_enabled,json=perStepStatsEnabled,proto3,oneof" json:"per_step_stats_enabled,omitempty"`
-	// Use compression for metrics query API or instant and range query APIs. Supports 'gzip' and ” (disable compression)
-	ResponseCompression *string `protobuf:"bytes,22,opt,name=response_compression,json=responseCompression,proto3,oneof" json:"response_compression,omitempty"`
+	// The default evaluation interval or step size for subqueries.
+	DefaultEvaluationInterval *durationpb.Duration `protobuf:"bytes,22,opt,name=default_evaluation_interval,json=defaultEvaluationInterval,proto3" json:"default_evaluation_interval,omitempty"`
 	// Maximum duration into the future you can query. 0 to disable.
 	MaxQueryIntoFuture *durationpb.Duration `protobuf:"bytes,23,opt,name=max_query_into_future,json=maxQueryIntoFuture,proto3" json:"max_query_into_future,omitempty"`
-	// The default evaluation interval or step size for subqueries.
-	DefaultEvaluationInterval *durationpb.Duration `protobuf:"bytes,24,opt,name=default_evaluation_interval,json=defaultEvaluationInterval,proto3" json:"default_evaluation_interval,omitempty"`
 	// Max number of steps allowed for every subquery expression in query. Number of steps is calculated using subquery range / step. A value > 0 enables it.
 	MaxSubquerySteps *int64 `protobuf:"varint,25,opt,name=max_subquery_steps,json=maxSubquerySteps,proto3,oneof" json:"max_subquery_steps,omitempty"`
 	// Time since the last sample after which a time series is considered stale and ignored by expression evaluations.
@@ -136,6 +136,13 @@ func (x *Config) GetMaxSamples() int32 {
 	return 0
 }
 
+func (x *Config) GetResponseCompression() string {
+	if x != nil && x.ResponseCompression != nil {
+		return *x.ResponseCompression
+	}
+	return ""
+}
+
 func (x *Config) GetQueryStoreAfter() *durationpb.Duration {
 	if x != nil {
 		return x.QueryStoreAfter
@@ -178,23 +185,16 @@ func (x *Config) GetPerStepStatsEnabled() bool {
 	return false
 }
 
-func (x *Config) GetResponseCompression() string {
-	if x != nil && x.ResponseCompression != nil {
-		return *x.ResponseCompression
+func (x *Config) GetDefaultEvaluationInterval() *durationpb.Duration {
+	if x != nil {
+		return x.DefaultEvaluationInterval
 	}
-	return ""
+	return nil
 }
 
 func (x *Config) GetMaxQueryIntoFuture() *durationpb.Duration {
 	if x != nil {
 		return x.MaxQueryIntoFuture
-	}
-	return nil
-}
-
-func (x *Config) GetDefaultEvaluationInterval() *durationpb.Duration {
-	if x != nil {
-		return x.DefaultEvaluationInterval
 	}
 	return nil
 }
@@ -253,27 +253,27 @@ const file_github_com_aity_cloud_monty_internal_cortex_config_querier_querier_pr
 	"\vmax_samples\x18\a \x01(\x05B\x0e\x8a\xc0\f\n" +
 	"\n" +
 	"\b50000000H\x03R\n" +
-	"maxSamples\x88\x01\x01\x12O\n" +
+	"maxSamples\x88\x01\x01\x12B\n" +
+	"\x14response_compression\x18\b \x01(\tB\n" +
+	"\x8a\xc0\f\x06\n" +
+	"\x04gzipH\x04R\x13responseCompression\x88\x01\x01\x12O\n" +
 	"\x11query_store_after\x18\v \x01(\v2\x19.google.protobuf.DurationB\b\x8a\xc0\f\x04\n" +
 	"\x020sR\x0fqueryStoreAfter\x12\x7f\n" +
 	"*shuffle_sharding_ingesters_lookback_period\x18\x0f \x01(\v2\x19.google.protobuf.DurationB\b\x8a\xc0\f\x04\n" +
 	"\x020sR&shuffleShardingIngestersLookbackPeriod\x125\n" +
 	"\rthanos_engine\x18\x10 \x01(\bB\v\x8a\xc0\f\a\n" +
-	"\x05falseH\x04R\fthanosEngine\x88\x01\x01\x12a\n" +
+	"\x05falseH\x05R\fthanosEngine\x88\x01\x01\x12a\n" +
 	"$enable_promql_experimental_functions\x18\x13 \x01(\bB\v\x8a\xc0\f\a\n" +
-	"\x05falseH\x05R!enablePromqlExperimentalFunctions\x88\x01\x01\x12Y\n" +
+	"\x05falseH\x06R!enablePromqlExperimentalFunctions\x88\x01\x01\x12Y\n" +
 	"\x16query_ingesters_within\x18\x14 \x01(\v2\x19.google.protobuf.DurationB\b\x8a\xc0\f\x04\n" +
 	"\x020sR\x14queryIngestersWithin\x12E\n" +
 	"\x16per_step_stats_enabled\x18\x15 \x01(\bB\v\x8a\xc0\f\a\n" +
-	"\x05falseH\x06R\x13perStepStatsEnabled\x88\x01\x01\x12B\n" +
-	"\x14response_compression\x18\x16 \x01(\tB\n" +
+	"\x05falseH\aR\x13perStepStatsEnabled\x88\x01\x01\x12e\n" +
+	"\x1bdefault_evaluation_interval\x18\x16 \x01(\v2\x19.google.protobuf.DurationB\n" +
 	"\x8a\xc0\f\x06\n" +
-	"\x04gzipH\aR\x13responseCompression\x88\x01\x01\x12Y\n" +
+	"\x041m0sR\x19defaultEvaluationInterval\x12Y\n" +
 	"\x15max_query_into_future\x18\x17 \x01(\v2\x19.google.protobuf.DurationB\v\x8a\xc0\f\a\n" +
-	"\x0510m0sR\x12maxQueryIntoFuture\x12e\n" +
-	"\x1bdefault_evaluation_interval\x18\x18 \x01(\v2\x19.google.protobuf.DurationB\n" +
-	"\x8a\xc0\f\x06\n" +
-	"\x041m0sR\x19defaultEvaluationInterval\x12:\n" +
+	"\x0510m0sR\x12maxQueryIntoFuture\x12:\n" +
 	"\x12max_subquery_steps\x18\x19 \x01(\x03B\a\x8a\xc0\f\x03\n" +
 	"\x010H\bR\x10maxSubquerySteps\x88\x01\x01\x12L\n" +
 	"\x0elookback_delta\x18\x1a \x01(\v2\x19.google.protobuf.DurationB\n" +
@@ -290,11 +290,11 @@ const file_github_com_aity_cloud_monty_internal_cortex_config_querier_querier_pr
 	"\x0f_max_concurrentB%\n" +
 	"#_ingester_label_names_with_matchersB\x1e\n" +
 	"\x1c_ingester_metadata_streamingB\x0e\n" +
-	"\f_max_samplesB\x10\n" +
+	"\f_max_samplesB\x17\n" +
+	"\x15_response_compressionB\x10\n" +
 	"\x0e_thanos_engineB'\n" +
 	"%_enable_promql_experimental_functionsB\x19\n" +
-	"\x17_per_step_stats_enabledB\x17\n" +
-	"\x15_response_compressionB\x15\n" +
+	"\x17_per_step_stats_enabledB\x15\n" +
 	"\x13_max_subquery_stepsB\x1c\n" +
 	"\x1a_store_gateway_query_statsB/\n" +
 	"-_store_gateway_consistency_check_max_attemptsB\x1a\n" +
@@ -322,8 +322,8 @@ var file_github_com_aity_cloud_monty_internal_cortex_config_querier_querier_prot
 	1, // 1: querier.Config.query_store_after:type_name -> google.protobuf.Duration
 	1, // 2: querier.Config.shuffle_sharding_ingesters_lookback_period:type_name -> google.protobuf.Duration
 	1, // 3: querier.Config.query_ingesters_within:type_name -> google.protobuf.Duration
-	1, // 4: querier.Config.max_query_into_future:type_name -> google.protobuf.Duration
-	1, // 5: querier.Config.default_evaluation_interval:type_name -> google.protobuf.Duration
+	1, // 4: querier.Config.default_evaluation_interval:type_name -> google.protobuf.Duration
+	1, // 5: querier.Config.max_query_into_future:type_name -> google.protobuf.Duration
 	1, // 6: querier.Config.lookback_delta:type_name -> google.protobuf.Duration
 	7, // [7:7] is the sub-list for method output_type
 	7, // [7:7] is the sub-list for method input_type
