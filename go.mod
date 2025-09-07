@@ -59,7 +59,7 @@ require (
 	github.com/karlseguin/ccache/v3 v3.0.3
 	github.com/kazegusuri/channelzcli v0.0.0-20230307031351-17bac34c51ca
 	github.com/klauspost/compress v1.18.0
-	github.com/kralicky/codegen v0.0.0-20250830182818-d9092c47df0e
+	github.com/kralicky/codegen v0.0.0-20250906195244-d3efe42ebe25
 	github.com/kralicky/gpkg v0.0.0-20240119195700-64f32830b14f
 	github.com/kralicky/kmatch v0.0.0-20230301203314-20f658a0e56c
 	github.com/kralicky/protols v0.7.4-0.20250830224806-51443e122c54
@@ -696,5 +696,4 @@ replace (
 // Exclude old koanf version
 exclude github.com/knadh/koanf v1.5.0
 
-// External libs
-replace github.com/kralicky/codegen => github.com/aity-cloud/codegen v0.0.0-20250906160515-d35aedd0722b
+replace github.com/kralicky/codegen => github.com/aity-cloud/codegen v0.0.0-20250907110124-41e7765ad3ff

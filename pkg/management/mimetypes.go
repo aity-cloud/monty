@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io"
 
+	proto2 "github.com/golang/protobuf/proto"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/jhump/protoreflect/dynamic"
 	"google.golang.org/protobuf/encoding/protojson"
@@ -88,8 +89,15 @@ func (*LegacyJsonMarshaler) Marshal(v any) ([]byte, error) {
 		EmitUnpopulated: true,
 	}
 
-	//var buf bytes.Buffer
-	b, err := o.Marshal(v.(proto.Message))
+	var m proto.Message
+	switch v.(type) {
+	case *dynamic.Message:
+		m = proto2.MessageV2(v)
+	case proto.Message:
+		m = v.(proto.Message)
+	}
+
+	b, err := o.Marshal(m)
 	if err != nil {
 		return nil, err
 	}
