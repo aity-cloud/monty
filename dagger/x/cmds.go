@@ -1,10 +1,9 @@
-package cmds
+package main
 
 import (
+	"dagger/x/internal/dagger"
 	"encoding/json"
 	"fmt"
-
-	"dagger.io/dagger"
 )
 
 type Binary struct {
@@ -21,8 +20,8 @@ type TestBinOptions struct {
 	MountOnly bool `json:"-"`
 }
 
-func TestBin(client *dagger.Client, ctr *dagger.Container, opts TestBinOptions) *dagger.Container {
-	ctr = ctr.Pipeline("Download Test Binaries")
+func RunTestBin(client *dagger.Client, ctr *dagger.Container, opts TestBinOptions) *dagger.Container {
+	//ctr = ctr.Pipeline("Download Test Binaries")
 	targets := map[string][]Binary{}
 	for _, b := range opts.Binaries {
 		if b.Version == "" {
@@ -46,7 +45,7 @@ func TestBin(client *dagger.Client, ctr *dagger.Container, opts TestBinOptions) 
 	}
 
 	optionsData, _ := json.Marshal(opts)
-	return ctr.WithNewFile("/src/testbin/lock.json", dagger.ContainerWithNewFileOpts{
-		Contents: string(optionsData),
+	return ctr.WithNewFile("/src/testbin/lock.json", string(optionsData), dagger.ContainerWithNewFileOpts{
+		//Contents: string(optionsData),
 	})
 }

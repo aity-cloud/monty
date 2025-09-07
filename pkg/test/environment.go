@@ -954,6 +954,8 @@ func (e *Environment) StartCortex(ctx context.Context, configBuilder func(Cortex
 		"cortex", fmt.Sprintf("-config.file=%s", path.Join(storageDir, "config.yaml")),
 	}
 	cmd := exec.CommandContext(ctx, cortexBin, defaultArgs...)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
 	plugins.ConfigureSysProcAttr(cmd)
 	lg.Info("Waiting for cortex to start...")
 	client := http.Client{

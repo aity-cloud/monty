@@ -13,7 +13,7 @@ import (
 	"github.com/aity-cloud/monty/pkg/util"
 	"github.com/aity-cloud/monty/pkg/util/fieldmask"
 	"github.com/aity-cloud/monty/pkg/util/flagutil"
-	"github.com/bufbuild/protovalidate-go"
+	"github.com/aity-cloud/monty/pkg/validation"
 	"github.com/nsf/jsondiff"
 	"github.com/spf13/cobra"
 	"github.com/ttacon/chalk"
@@ -51,8 +51,8 @@ func BuildCmd[
 		diffFull   bool
 		diffFormat string
 	)
-	var getRequest = util.NewMessage[G]()
-	var historyRequest = util.NewMessage[H]()
+	getRequest := util.NewMessage[G]()
+	historyRequest := util.NewMessage[H]()
 
 	cmd := &cobra.Command{
 		Use:   use,
@@ -228,7 +228,7 @@ the secret values will not change from the current configuration.
 				yes := "Yes"
 
 				comments := []string{}
-				if errs := (*protovalidate.ValidationError)(dryRunResp.GetValidationErrors()); errs != nil {
+				if errs := validation.ErrorsFromProto(dryRunResp.GetValidationErrors()); errs != nil {
 					yes += " (bypass validation checks)"
 					errStr := errs.Error()
 					comments = append(comments, errStr)

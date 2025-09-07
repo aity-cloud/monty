@@ -13,7 +13,7 @@ import (
 	"github.com/aity-cloud/monty/pkg/storage"
 	"github.com/aity-cloud/monty/plugins/metrics/pkg/gateway/drivers"
 	"github.com/aity-cloud/monty/plugins/metrics/pkg/types"
-	"golang.org/x/tools/pkg/memoize"
+	"github.com/kralicky/tools-lite/pkg/memoize"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/health/grpc_health_v1"
 )

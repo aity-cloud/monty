@@ -3,8 +3,8 @@ package remotewrite
 import (
 	"context"
 
+	"github.com/aity-cloud/monty/internal/compat"
 	"github.com/cortexproject/cortex/pkg/cortexpb"
-	"github.com/kralicky/ragu/compat"
 	"github.com/prometheus/prometheus/prompb"
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/types/known/emptypb"

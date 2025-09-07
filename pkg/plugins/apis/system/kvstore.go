@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"reflect"
 
+	"buf.build/go/protovalidate"
 	"github.com/aity-cloud/monty/pkg/storage"
 	"github.com/aity-cloud/monty/pkg/validation"
-	"github.com/bufbuild/protovalidate-go"
 	"github.com/samber/lo"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -20,7 +20,7 @@ type kvStoreServer struct {
 	kv storage.KeyValueStore
 	lm storage.LockManager
 
-	validator *protovalidate.Validator
+	validator protovalidate.Validator
 }
 
 func NewKVStoreServer(store storage.KeyValueStore, lockMgr storage.LockManager) KeyValueStoreServer {
@@ -204,7 +204,7 @@ func (s *kvStoreServer) Lock(in *LockRequest, stream KeyValueStore_LockServer) e
 	}
 
 	locker := s.lm.NewLock(in.Key)
-	var expiredC chan struct{}
+	var expiredC <-chan struct{}
 	if in.TryLock {
 		acquired, expired, err := locker.TryLock(stream.Context())
 		if err != nil {

@@ -32,7 +32,6 @@ func Push(ctx context.Context, client *dagger.Client, opts PushOpts) error {
 		path = opts.Target.Auth.Username
 	}
 	ctr := images.AlpineBase(client, images.WithPackages("helm")).
-		Pipeline("Push OCI Charts").
 		WithMountedDirectory("/src", opts.Dir).
 		WithWorkdir("/src").
 		WithSecretVariable("DOCKER_PASSWORD", opts.Target.Auth.Secret).
@@ -67,7 +66,6 @@ func PublishToChartsRepo(ctx context.Context, client *dagger.Client, opts Publis
 	magefilesMountPath := filepath.Join(workdir, "magefiles")
 
 	ctr := opts.BuildContainer.
-		Pipeline("Publish Charts").
 		WithWorkdir(workdir).
 		WithSecretVariable("GH_TOKEN", opts.Target.Auth.Secret).
 		WithDirectory(workdir, client.Git(opts.Target.Repo, dagger.GitOpts{KeepGitDir: true}).Branch(opts.Target.Branch).Tree()).

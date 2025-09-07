@@ -51,7 +51,7 @@ type SystemPluginServer interface {
 }
 
 const (
-	SystemPluginID  = "monty.System"
+	SystemPluginID  = "opni.System"
 	KVServiceID     = "system.KeyValueStore"
 	SystemServiceID = "system.System"
 )
@@ -285,8 +285,7 @@ func (s *systemPluginHandler) serveSystemApi(regCallback func(*grpc.Server), use
 	once := sync.Once{}
 	go s.broker.AcceptAndServe(id, func(so []grpc.ServerOption) *grpc.Server {
 		so = append(so,
-			grpc.ChainStreamInterceptor(otelgrpc.StreamServerInterceptor()),
-			grpc.ChainUnaryInterceptor(otelgrpc.UnaryServerInterceptor()),
+			grpc.StatsHandler(otelgrpc.NewServerHandler()),
 		)
 		srv = grpc.NewServer(so...)
 		close(srvLock)

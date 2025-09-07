@@ -10,7 +10,7 @@ import (
 	cliutil "github.com/aity-cloud/monty/pkg/monty/cliutil"
 	"github.com/aity-cloud/monty/pkg/plugins/driverutil"
 	"github.com/aity-cloud/monty/pkg/util"
-	"github.com/bufbuild/protovalidate-go"
+	"github.com/aity-cloud/monty/pkg/validation"
 	"github.com/nsf/jsondiff"
 	"github.com/samber/lo"
 	cobra "github.com/spf13/cobra"
@@ -103,7 +103,7 @@ func BuildCmd[
 			dryRunClient := NewDryRunClient(client).FromClientConn(cci.UnderlyingConn(client))
 
 			response := dryRunClient.Response()
-			if errs := (*protovalidate.ValidationError)(response.GetValidationErrors()); errs != nil {
+			if errs := validation.ErrorsFromProto(response.GetValidationErrors()); errs != nil {
 				cmd.Println(chalk.Yellow.Color(errs.Error()))
 			}
 

@@ -6,7 +6,6 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/aity-cloud/monty/internal/codegen/cli"
 	"github.com/aity-cloud/monty/internal/codegen/descriptors"
 	"github.com/cortexproject/cortex/pkg/compactor"
 	"github.com/cortexproject/cortex/pkg/cortex"
@@ -16,11 +15,12 @@ import (
 	"github.com/cortexproject/cortex/pkg/util/validation"
 	"github.com/jhump/protoreflect/desc"
 	"github.com/jhump/protoreflect/desc/builder"
+	"github.com/kralicky/codegen/cli"
 	"github.com/kralicky/protols/pkg/format"
 	"github.com/kralicky/protols/pkg/lsp"
 	"github.com/kralicky/protols/pkg/sources"
+	"github.com/kralicky/tools-lite/gopls/pkg/protocol"
 	"github.com/samber/lo"
-	"golang.org/x/tools/gopls/pkg/lsp/protocol"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protodesc"
 	"google.golang.org/protobuf/reflect/protoreflect"
@@ -219,7 +219,7 @@ func generate[T any](destFilename string, skipFunc ...func(rf reflect.StructFiel
 		},
 		CustomFieldTypes: customFieldTypes,
 	})
-	cliImport, _ := desc.WrapFile(cli.File_github_com_aity_cloud_monty_internal_codegen_cli_cli_proto)
+	cliImport, _ := desc.WrapFile(cli.File_github_com_kralicky_codegen_cli_cli_proto)
 	f := builder.NewFile(destFilename).
 		SetProto3(true).
 		SetPackageName(filepath.Base(filepath.Dir(destFilename))).
@@ -235,7 +235,7 @@ All other modifications will be lost.
 		}).
 		AddImportedDependency(cliImport)
 	proto.SetExtension(f.Options, cli.E_Generator, &cli.GeneratorOptions{
-		Generate:         true,
+		Enabled:          true,
 		GenerateDeepcopy: true,
 	})
 	for _, m := range messages {
@@ -262,13 +262,16 @@ func mergeFileDescriptors(targetpb *descriptorpb.FileDescriptorProto, target, ex
 
 	// important: we only build messages in this generator right now. if other
 	// top-level elements are added, this will need to be updated
-
 	msgs := target.Messages()
 	for i, l := 0, msgs.Len(); i < l; i++ {
 		targetMsg := msgs.Get(i)
 		// check if there is an existing message with the same name
 		if existingMsg := existing.Messages().ByName(targetMsg.Name()); existingMsg != nil {
-			mergeMessageDescriptors(targetpb.MessageType[existingMsg.Index()], targetMsg, existingMsg)
+			for _, existingMsgType := range targetpb.MessageType {
+				if existingMsgType.GetName() == string(existingMsg.Name()) {
+					mergeMessageDescriptors(existingMsgType, targetMsg, existingMsg)
+				}
+			}
 		}
 	}
 

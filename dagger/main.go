@@ -13,7 +13,7 @@ import (
 	"dagger.io/dagger"
 	"github.com/aity-cloud/monty/dagger/config"
 	"github.com/aity-cloud/monty/dagger/helm"
-	"github.com/aity-cloud/monty/dagger/x/cmds"
+	main2 "github.com/aity-cloud/monty/dagger/x"
 	"github.com/knadh/koanf/providers/env"
 	"github.com/knadh/koanf/providers/posflag"
 	"github.com/knadh/koanf/providers/structs"
@@ -280,7 +280,6 @@ func (b *Builder) runInTreeBuilds(ctx context.Context) error {
 	alpineBase := b.alpineBase()
 
 	goBuild := base.
-		Pipeline("Go Build").
 		With(installTools).
 		WithEnvVariable("CGO_ENABLED", "0").
 		WithEnvVariable("GOBIN", "/usr/bin"). // important for cached mage binary
@@ -289,17 +288,14 @@ func (b *Builder) runInTreeBuilds(ctx context.Context) error {
 		WithDirectory(b.workdir, b.sources)
 
 	generated := goBuild.
-		Pipeline("Generate").
 		WithExec([]string{"go", "mod", "tidy"}).
 		WithExec(mage([]string{"generate:all"}))
 
 	charts := goBuild.
-		Pipeline("Charts").
 		WithFile(b.ciTarget("charts")).
 		WithExec(mage([]string{"charts"}))
 
 	nodeBuild := generated.
-		Pipeline("Node Build").
 		WithWorkdir(filepath.Join(b.workdir, "web")).
 		WithExec([]string{"ln", "-s", "/cache/node_modules", filepath.Join(b.workdir, "web", "node_modules")}).
 		WithExec(yarn([]string{"install", "--frozen-lockfile"})).
@@ -308,22 +304,18 @@ func (b *Builder) runInTreeBuilds(ctx context.Context) error {
 	archives := b.montyArchives(generated, "linux", "amd64")
 
 	plugins := archives.
-		Pipeline("Build Plugins").
 		WithExec(mage([]string{"build:plugins"}))
 
 	webDist := filepath.Join(b.workdir, "web", "dist")
 	monty := archives.
-		Pipeline("Build Monty").
 		WithMountedDirectory(webDist, nodeBuild.Directory(webDist)).
 		WithExec(mage([]string{"build:monty"})).
 		WithExec([]string{"bin/monty", "completion", "bash"}, dagger.ContainerWithExecOpts{RedirectStdout: "/etc/bash_completion.d/monty"})
 
 	minimal := archives.
-		Pipeline("Build Monty Minimal").
 		WithExec(mage([]string{"build:montyminimal"}))
 
 	lint := archives.
-		Pipeline("Run Linter").
 		With(b.caches.GolangciLint).
 		WithExec(mage([]string{"lint"}))
 
@@ -346,7 +338,7 @@ func (b *Builder) runInTreeBuilds(ctx context.Context) error {
 				From("chromedp/headless-shell:114.0.5735.199")
 
 			eg.Go(func() error {
-				var opts cmds.TestBinOptions
+				var opts main2.TestBinOptions
 				confJson, err := test.Stdout(ctx)
 				if err != nil {
 					return err
@@ -354,18 +346,18 @@ func (b *Builder) runInTreeBuilds(ctx context.Context) error {
 				if err := json.Unmarshal([]byte(confJson), &opts); err != nil {
 					return err
 				}
-				test = cmds.TestBin(b.client, test, opts).
+				test = main2.RunTestBin(b.client, test, opts).
 					WithMountedDirectory("/headless-shell", chromedp.Directory("/headless-shell")).
 					WithEnvVariable("PATH", "$PATH:/headless-shell", dagger.ContainerWithEnvVariableOpts{Expand: true})
 
 				if b.Coverage.Export {
-					_, err := test.Pipeline("Run Tests").
+					_, err := test.
 						WithExec(mage([]string{"test:cover"})).
 						File(filepath.Join(b.workdir, "cover.out")).
 						Export(ctx, "cover.out")
 					return err
 				}
-				_, err = test.Pipeline("Run Tests").
+				_, err = test.
 					WithExec(mage([]string{"test"})).
 					Sync(ctx)
 				return err
@@ -378,14 +370,12 @@ func (b *Builder) runInTreeBuilds(ctx context.Context) error {
 	}
 
 	fullImage := alpineBase.
-		Pipeline("Full Image").
 		WithFile("/usr/bin/monty", monty.File(b.bin("monty"))).
 		WithDirectory("/var/lib/monty/plugins", plugins.Directory(b.bin("plugins"))).
 		WithDirectory("/etc/bash_completion.d", monty.Directory("/etc/bash_completion.d")).
 		WithEntrypoint([]string{"monty"})
 
 	minimalImage := alpineBase.
-		Pipeline("Minimal Image").
 		WithFile("/usr/bin/monty", minimal.File(b.bin("monty-minimal"))).
 		WithEntrypoint([]string{"monty"})
 
@@ -467,14 +457,12 @@ func (b *Builder) runInTreeBuilds(ctx context.Context) error {
 
 func (b *Builder) runOutOfTreeBuilds(ctx context.Context) error {
 	opensearchDashboards := b.client.Container().
-		Pipeline("Opensearch Dashboards Image").
 		From(fmt.Sprintf("opensearchproject/opensearch-dashboards:%s", b.Images.Opensearch.Build.DashboardsVersion)).
 		WithExec([]string{"opensearch-dashboards-plugin", "install",
 			fmt.Sprintf("https://github.com/aity-cloud/monty-ui/releases/download/plugin-%[1]s/monty-dashboards-plugin-%[1]s.zip", b.Images.Opensearch.Build.PluginVersion),
 		})
 
 	opensearch := b.client.Container().
-		Pipeline("Opensearch Image").
 		From(fmt.Sprintf("opensearchproject/opensearch:%s", b.Images.Opensearch.Build.OpensearchVersion)).
 		WithExec([]string{"opensearch-plugin", "-s", "install", "-b",
 			fmt.Sprintf("https://github.com/aity-cloud/monty-ingest-plugin/releases/download/v%s/montypreprocessing.zip", b.Images.Opensearch.Build.PluginVersion),
@@ -482,7 +470,6 @@ func (b *Builder) runOutOfTreeBuilds(ctx context.Context) error {
 		WithDirectory("/usr/share/opensearch/extensions", b.client.Directory(), dagger.ContainerWithDirectoryOpts{Owner: "1000:1000"})
 
 	pythonBase := b.client.Container().
-		Pipeline("Monty Python Base Image").
 		From("registry.suse.com/suse/sle15:15.3").
 		WithExec([]string{"zypper", "--non-interactive", "in", "python39", "python39-pip", "python39-devel"})
 
@@ -508,7 +495,6 @@ func (b *Builder) runOutOfTreeBuilds(ctx context.Context) error {
 		WithEnvVariable("NVIDIA_DRIVER_CAPABILITIES", "compute,utility")
 
 	opensearchUpdateService := montyPythonBase.
-		Pipeline("Opensearch Update Service Image").
 		WithDirectory(".", b.sources.Directory("aiops/")).
 		WithExec([]string{"pip", "install", "-r", "requirements.txt"}).
 		WithEntrypoint([]string{"python", "monty-opensearch-update-service/opensearch-update-service/app/main.py"})
@@ -543,7 +529,6 @@ func (b *Builder) runOutOfTreeBuilds(ctx context.Context) error {
 
 func (b *Builder) montyArchives(build *dagger.Container, os, arch string) *dagger.Container {
 	archives := build.
-		Pipeline("Build Archives").
 		WithEnvVariable("GOOS", os).
 		WithEnvVariable("GOARCH", arch).
 		WithExec(mage([]string{"build:archives"}))
@@ -562,14 +547,12 @@ func (b *Builder) releaser(ctx context.Context, build *dagger.Container) error {
 
 			archives := b.montyArchives(build, os, arch)
 			monty := archives.
-				Pipeline("Build Monty").
 				WithExec(mage([]string{"build:montyreleasecli", platformFileSuffix}))
 
 			zippedFile := fmt.Sprintf("monty_%s.tar.gz", platformFileSuffix)
 			filePath := b.bin(zippedFile)
 
 			releaser := gh.
-				Pipeline("Upload release file").
 				WithSecretVariable("GH_TOKEN", b.Releaser.Auth.Secret).
 				WithFile(filePath, monty.File(filePath)).
 				WithExec([]string{"gh", "release", "upload",

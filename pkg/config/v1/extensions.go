@@ -8,11 +8,11 @@ import (
 	"fmt"
 	"os"
 
-	cli "github.com/aity-cloud/monty/internal/codegen/cli"
 	driverutil "github.com/aity-cloud/monty/pkg/plugins/driverutil"
 	"github.com/aity-cloud/monty/pkg/plugins/driverutil/dryrun"
 	"github.com/aity-cloud/monty/pkg/plugins/driverutil/rollback"
 	"github.com/aity-cloud/monty/pkg/tui"
+	cli "github.com/kralicky/codegen/cli"
 	"golang.org/x/term"
 )
 

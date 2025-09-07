@@ -10,7 +10,6 @@ import (
 func Base(client *dagger.Client) *dagger.Container {
 	return client.
 		Container().
-		Pipeline("Go Base Image").
 		From("cimg/go:"+strings.TrimPrefix(runtime.Version(), "go")+"-node").
 		WithUser("root").
 		WithEnvVariable("GOPATH", "/go").
@@ -48,7 +47,6 @@ func AlpineBase(client *dagger.Client, opts ...AlpineOption) *dagger.Container {
 
 	return client.
 		Container().
-		Pipeline("Alpine Base Image").
 		From("alpine:3.18").
 		WithExec(append([]string{"apk", "add", "--no-cache"}, options.packages...))
 }
