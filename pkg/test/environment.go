@@ -399,7 +399,12 @@ func (e *Environment) Start(opts ...EnvironmentOption) error {
 		return err
 	}
 
-	e.tempDir, err = os.MkdirTemp("", "monty-test-*")
+	dir, err := os.Getwd()
+	if err != nil {
+		return err
+	}
+	tempPath := filepath.Join(dir, "testbin")
+	e.tempDir, err = os.MkdirTemp(tempPath, "monty-test-*")
 	if err != nil {
 		return err
 	}
