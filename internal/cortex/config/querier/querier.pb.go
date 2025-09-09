@@ -33,42 +33,51 @@ type Config struct {
 	MaxConcurrent *int32 `protobuf:"varint,1,opt,name=max_concurrent,json=maxConcurrent,proto3,oneof" json:"max_concurrent,omitempty"`
 	// The timeout for a query.
 	Timeout *durationpb.Duration `protobuf:"bytes,2,opt,name=timeout,proto3" json:"timeout,omitempty"`
+	// Deprecated (This feature will be always on after v1.18): Use streaming RPCs for metadata APIs from ingester.
+	IngesterMetadataStreaming *bool `protobuf:"varint,3,opt,name=ingester_metadata_streaming,json=ingesterMetadataStreaming,proto3,oneof" json:"ingester_metadata_streaming,omitempty"`
 	// Use LabelNames ingester RPCs with match params.
 	IngesterLabelNamesWithMatchers *bool `protobuf:"varint,4,opt,name=ingester_label_names_with_matchers,json=ingesterLabelNamesWithMatchers,proto3,oneof" json:"ingester_label_names_with_matchers,omitempty"`
-	// Deprecated (This feature will be always on after v1.18): Use streaming RPCs for metadata APIs from ingester.
-	IngesterMetadataStreaming *bool `protobuf:"varint,6,opt,name=ingester_metadata_streaming,json=ingesterMetadataStreaming,proto3,oneof" json:"ingester_metadata_streaming,omitempty"`
 	// Maximum number of samples a single query can load into memory.
-	MaxSamples *int32 `protobuf:"varint,7,opt,name=max_samples,json=maxSamples,proto3,oneof" json:"max_samples,omitempty"`
-	// Use compression for metrics query API or instant and range query APIs. Supports 'gzip' and ” (disable compression)
+	MaxSamples *int32 `protobuf:"varint,5,opt,name=max_samples,json=maxSamples,proto3,oneof" json:"max_samples,omitempty"`
+	// Maximum lookback beyond which queries are not sent to ingester. 0 means all queries are sent to ingester.
+	QueryIngestersWithin *durationpb.Duration `protobuf:"bytes,6,opt,name=query_ingesters_within,json=queryIngestersWithin,proto3" json:"query_ingesters_within,omitempty"`
+	// Enable returning samples stats per steps in query response.
+	PerStepStatsEnabled *bool `protobuf:"varint,7,opt,name=per_step_stats_enabled,json=perStepStatsEnabled,proto3,oneof" json:"per_step_stats_enabled,omitempty"`
+	// Use compression for metrics query API or instant and range query APIs. Supported compression 'gzip', 'snappy', 'zstd' and ” (disable compression)
 	ResponseCompression *string `protobuf:"bytes,8,opt,name=response_compression,json=responseCompression,proto3,oneof" json:"response_compression,omitempty"`
 	// The time after which a metric should be queried from storage and not just ingesters. 0 means all queries are sent to store. When running the blocks storage, if this option is enabled, the time range of the query sent to the store will be manipulated to ensure the query end is not more recent than 'now - query-store-after'.
-	QueryStoreAfter *durationpb.Duration `protobuf:"bytes,11,opt,name=query_store_after,json=queryStoreAfter,proto3" json:"query_store_after,omitempty"`
-	// When distributor's sharding strategy is shuffle-sharding and this setting is > 0, queriers fetch in-memory series from the minimum set of required ingesters, selecting only ingesters which may have received series since 'now - lookback period'. The lookback period should be greater or equal than the configured 'query store after' and 'query ingesters within'. If this setting is 0, queriers always query all ingesters (ingesters shuffle sharding on read path is disabled).
-	ShuffleShardingIngestersLookbackPeriod *durationpb.Duration `protobuf:"bytes,15,opt,name=shuffle_sharding_ingesters_lookback_period,json=shuffleShardingIngestersLookbackPeriod,proto3" json:"shuffle_sharding_ingesters_lookback_period,omitempty"`
-	// Experimental. Use Thanos promql engine https://github.com/thanos-io/promql-engine rather than the Prometheus promql engine.
-	ThanosEngine *bool `protobuf:"varint,16,opt,name=thanos_engine,json=thanosEngine,proto3,oneof" json:"thanos_engine,omitempty"`
-	// [Experimental] If true, experimental promQL functions are enabled.
-	EnablePromqlExperimentalFunctions *bool `protobuf:"varint,19,opt,name=enable_promql_experimental_functions,json=enablePromqlExperimentalFunctions,proto3,oneof" json:"enable_promql_experimental_functions,omitempty"`
-	// Maximum lookback beyond which queries are not sent to ingester. 0 means all queries are sent to ingester.
-	QueryIngestersWithin *durationpb.Duration `protobuf:"bytes,20,opt,name=query_ingesters_within,json=queryIngestersWithin,proto3" json:"query_ingesters_within,omitempty"`
-	// Enable returning samples stats per steps in query response.
-	PerStepStatsEnabled *bool `protobuf:"varint,21,opt,name=per_step_stats_enabled,json=perStepStatsEnabled,proto3,oneof" json:"per_step_stats_enabled,omitempty"`
-	// The default evaluation interval or step size for subqueries.
-	DefaultEvaluationInterval *durationpb.Duration `protobuf:"bytes,22,opt,name=default_evaluation_interval,json=defaultEvaluationInterval,proto3" json:"default_evaluation_interval,omitempty"`
+	QueryStoreAfter *durationpb.Duration `protobuf:"bytes,9,opt,name=query_store_after,json=queryStoreAfter,proto3" json:"query_store_after,omitempty"`
 	// Maximum duration into the future you can query. 0 to disable.
-	MaxQueryIntoFuture *durationpb.Duration `protobuf:"bytes,23,opt,name=max_query_into_future,json=maxQueryIntoFuture,proto3" json:"max_query_into_future,omitempty"`
+	MaxQueryIntoFuture *durationpb.Duration `protobuf:"bytes,10,opt,name=max_query_into_future,json=maxQueryIntoFuture,proto3" json:"max_query_into_future,omitempty"`
+	// The default evaluation interval or step size for subqueries.
+	DefaultEvaluationInterval *durationpb.Duration `protobuf:"bytes,11,opt,name=default_evaluation_interval,json=defaultEvaluationInterval,proto3" json:"default_evaluation_interval,omitempty"`
 	// Max number of steps allowed for every subquery expression in query. Number of steps is calculated using subquery range / step. A value > 0 enables it.
-	MaxSubquerySteps *int64 `protobuf:"varint,25,opt,name=max_subquery_steps,json=maxSubquerySteps,proto3,oneof" json:"max_subquery_steps,omitempty"`
+	MaxSubquerySteps *int64 `protobuf:"varint,12,opt,name=max_subquery_steps,json=maxSubquerySteps,proto3,oneof" json:"max_subquery_steps,omitempty"`
 	// Time since the last sample after which a time series is considered stale and ignored by expression evaluations.
-	LookbackDelta *durationpb.Duration `protobuf:"bytes,26,opt,name=lookback_delta,json=lookbackDelta,proto3" json:"lookback_delta,omitempty"`
+	LookbackDelta *durationpb.Duration `protobuf:"bytes,13,opt,name=lookback_delta,json=lookbackDelta,proto3" json:"lookback_delta,omitempty"`
 	// If enabled, store gateway query stats will be logged using `info` log level.
-	StoreGatewayQueryStats *bool `protobuf:"varint,27,opt,name=store_gateway_query_stats,json=storeGatewayQueryStats,proto3,oneof" json:"store_gateway_query_stats,omitempty"`
+	StoreGatewayQueryStats *bool `protobuf:"varint,14,opt,name=store_gateway_query_stats,json=storeGatewayQueryStats,proto3,oneof" json:"store_gateway_query_stats,omitempty"`
 	// The maximum number of times we attempt fetching missing blocks from different store-gateways. If no more store-gateways are left (ie. due to lower replication factor) than we'll end the retries earlier
-	StoreGatewayConsistencyCheckMaxAttempts *int32 `protobuf:"varint,28,opt,name=store_gateway_consistency_check_max_attempts,json=storeGatewayConsistencyCheckMaxAttempts,proto3,oneof" json:"store_gateway_consistency_check_max_attempts,omitempty"`
+	StoreGatewayConsistencyCheckMaxAttempts *int32 `protobuf:"varint,15,opt,name=store_gateway_consistency_check_max_attempts,json=storeGatewayConsistencyCheckMaxAttempts,proto3,oneof" json:"store_gateway_consistency_check_max_attempts,omitempty"`
+	// The maximum number of times we attempt fetching data from ingesters for retryable errors (ex. partial data returned).
+	IngesterQueryMaxAttempts *int32 `protobuf:"varint,16,opt,name=ingester_query_max_attempts,json=ingesterQueryMaxAttempts,proto3,oneof" json:"ingester_query_max_attempts,omitempty"`
+	// When distributor's sharding strategy is shuffle-sharding and this setting is > 0, queriers fetch in-memory series from the minimum set of required ingesters, selecting only ingesters which may have received series since 'now - lookback period'. The lookback period should be greater or equal than the configured 'query store after' and 'query ingesters within'. If this setting is 0, queriers always query all ingesters (ingesters shuffle sharding on read path is disabled).
+	ShuffleShardingIngestersLookbackPeriod *durationpb.Duration      `protobuf:"bytes,17,opt,name=shuffle_sharding_ingesters_lookback_period,json=shuffleShardingIngestersLookbackPeriod,proto3" json:"shuffle_sharding_ingesters_lookback_period,omitempty"`
+	ThanosEngine                           *EngineThanosEngineConfig `protobuf:"bytes,18,opt,name=thanos_engine,json=thanosEngine,proto3" json:"thanos_engine,omitempty"`
 	// If enabled, ignore max query length check at Querier select method. Users can choose to ignore it since the validation can be done before Querier evaluation like at Query Frontend or Ruler.
-	IgnoreMaxQueryLength *bool `protobuf:"varint,29,opt,name=ignore_max_query_length,json=ignoreMaxQueryLength,proto3,oneof" json:"ignore_max_query_length,omitempty"`
-	unknownFields        protoimpl.UnknownFields
-	sizeCache            protoimpl.SizeCache
+	IgnoreMaxQueryLength *bool `protobuf:"varint,19,opt,name=ignore_max_query_length,json=ignoreMaxQueryLength,proto3,oneof" json:"ignore_max_query_length,omitempty"`
+	// [Experimental] If true, experimental promQL functions are enabled.
+	EnablePromqlExperimentalFunctions *bool `protobuf:"varint,20,opt,name=enable_promql_experimental_functions,json=enablePromqlExperimentalFunctions,proto3,oneof" json:"enable_promql_experimental_functions,omitempty"`
+	// [Experimental] If true, querier will try to query the parquet files if available.
+	EnableParquetQueryable *bool `protobuf:"varint,21,opt,name=enable_parquet_queryable,json=enableParquetQueryable,proto3,oneof" json:"enable_parquet_queryable,omitempty"`
+	// [Experimental] Maximum size of the Parquet queryable shard cache. 0 to disable.
+	ParquetQueryableShardCacheSize *int32 `protobuf:"varint,22,opt,name=parquet_queryable_shard_cache_size,json=parquetQueryableShardCacheSize,proto3,oneof" json:"parquet_queryable_shard_cache_size,omitempty"`
+	// [Experimental] Parquet queryable's default block store to query. Valid options are tsdb and parquet. If it is set to tsdb, parquet queryable always fallback to store gateway.
+	ParquetQueryableDefaultBlockStore *string `protobuf:"bytes,23,opt,name=parquet_queryable_default_block_store,json=parquetQueryableDefaultBlockStore,proto3,oneof" json:"parquet_queryable_default_block_store,omitempty"`
+	// [Experimental] Disable Parquet queryable to fallback queries to Store Gateway if the block is not available as Parquet files but available in TSDB. Setting this to true will disable the fallback and users can remove Store Gateway. But need to make sure Parquet files are created before it is queryable.
+	ParquetQueryableFallbackDisabled *bool `protobuf:"varint,24,opt,name=parquet_queryable_fallback_disabled,json=parquetQueryableFallbackDisabled,proto3,oneof" json:"parquet_queryable_fallback_disabled,omitempty"`
+	unknownFields                    protoimpl.UnknownFields
+	sizeCache                        protoimpl.SizeCache
 }
 
 func (x *Config) Reset() {
@@ -115,16 +124,16 @@ func (x *Config) GetTimeout() *durationpb.Duration {
 	return nil
 }
 
-func (x *Config) GetIngesterLabelNamesWithMatchers() bool {
-	if x != nil && x.IngesterLabelNamesWithMatchers != nil {
-		return *x.IngesterLabelNamesWithMatchers
+func (x *Config) GetIngesterMetadataStreaming() bool {
+	if x != nil && x.IngesterMetadataStreaming != nil {
+		return *x.IngesterMetadataStreaming
 	}
 	return false
 }
 
-func (x *Config) GetIngesterMetadataStreaming() bool {
-	if x != nil && x.IngesterMetadataStreaming != nil {
-		return *x.IngesterMetadataStreaming
+func (x *Config) GetIngesterLabelNamesWithMatchers() bool {
+	if x != nil && x.IngesterLabelNamesWithMatchers != nil {
+		return *x.IngesterLabelNamesWithMatchers
 	}
 	return false
 }
@@ -134,41 +143,6 @@ func (x *Config) GetMaxSamples() int32 {
 		return *x.MaxSamples
 	}
 	return 0
-}
-
-func (x *Config) GetResponseCompression() string {
-	if x != nil && x.ResponseCompression != nil {
-		return *x.ResponseCompression
-	}
-	return ""
-}
-
-func (x *Config) GetQueryStoreAfter() *durationpb.Duration {
-	if x != nil {
-		return x.QueryStoreAfter
-	}
-	return nil
-}
-
-func (x *Config) GetShuffleShardingIngestersLookbackPeriod() *durationpb.Duration {
-	if x != nil {
-		return x.ShuffleShardingIngestersLookbackPeriod
-	}
-	return nil
-}
-
-func (x *Config) GetThanosEngine() bool {
-	if x != nil && x.ThanosEngine != nil {
-		return *x.ThanosEngine
-	}
-	return false
-}
-
-func (x *Config) GetEnablePromqlExperimentalFunctions() bool {
-	if x != nil && x.EnablePromqlExperimentalFunctions != nil {
-		return *x.EnablePromqlExperimentalFunctions
-	}
-	return false
 }
 
 func (x *Config) GetQueryIngestersWithin() *durationpb.Duration {
@@ -185,9 +159,16 @@ func (x *Config) GetPerStepStatsEnabled() bool {
 	return false
 }
 
-func (x *Config) GetDefaultEvaluationInterval() *durationpb.Duration {
+func (x *Config) GetResponseCompression() string {
+	if x != nil && x.ResponseCompression != nil {
+		return *x.ResponseCompression
+	}
+	return ""
+}
+
+func (x *Config) GetQueryStoreAfter() *durationpb.Duration {
 	if x != nil {
-		return x.DefaultEvaluationInterval
+		return x.QueryStoreAfter
 	}
 	return nil
 }
@@ -195,6 +176,13 @@ func (x *Config) GetDefaultEvaluationInterval() *durationpb.Duration {
 func (x *Config) GetMaxQueryIntoFuture() *durationpb.Duration {
 	if x != nil {
 		return x.MaxQueryIntoFuture
+	}
+	return nil
+}
+
+func (x *Config) GetDefaultEvaluationInterval() *durationpb.Duration {
+	if x != nil {
+		return x.DefaultEvaluationInterval
 	}
 	return nil
 }
@@ -227,6 +215,27 @@ func (x *Config) GetStoreGatewayConsistencyCheckMaxAttempts() int32 {
 	return 0
 }
 
+func (x *Config) GetIngesterQueryMaxAttempts() int32 {
+	if x != nil && x.IngesterQueryMaxAttempts != nil {
+		return *x.IngesterQueryMaxAttempts
+	}
+	return 0
+}
+
+func (x *Config) GetShuffleShardingIngestersLookbackPeriod() *durationpb.Duration {
+	if x != nil {
+		return x.ShuffleShardingIngestersLookbackPeriod
+	}
+	return nil
+}
+
+func (x *Config) GetThanosEngine() *EngineThanosEngineConfig {
+	if x != nil {
+		return x.ThanosEngine
+	}
+	return nil
+}
+
 func (x *Config) GetIgnoreMaxQueryLength() bool {
 	if x != nil && x.IgnoreMaxQueryLength != nil {
 		return *x.IgnoreMaxQueryLength
@@ -234,71 +243,190 @@ func (x *Config) GetIgnoreMaxQueryLength() bool {
 	return false
 }
 
+func (x *Config) GetEnablePromqlExperimentalFunctions() bool {
+	if x != nil && x.EnablePromqlExperimentalFunctions != nil {
+		return *x.EnablePromqlExperimentalFunctions
+	}
+	return false
+}
+
+func (x *Config) GetEnableParquetQueryable() bool {
+	if x != nil && x.EnableParquetQueryable != nil {
+		return *x.EnableParquetQueryable
+	}
+	return false
+}
+
+func (x *Config) GetParquetQueryableShardCacheSize() int32 {
+	if x != nil && x.ParquetQueryableShardCacheSize != nil {
+		return *x.ParquetQueryableShardCacheSize
+	}
+	return 0
+}
+
+func (x *Config) GetParquetQueryableDefaultBlockStore() string {
+	if x != nil && x.ParquetQueryableDefaultBlockStore != nil {
+		return *x.ParquetQueryableDefaultBlockStore
+	}
+	return ""
+}
+
+func (x *Config) GetParquetQueryableFallbackDisabled() bool {
+	if x != nil && x.ParquetQueryableFallbackDisabled != nil {
+		return *x.ParquetQueryableFallbackDisabled
+	}
+	return false
+}
+
+type EngineThanosEngineConfig struct {
+	state            protoimpl.MessageState `protogen:"open.v1"`
+	Enabled          *bool                  `protobuf:"varint,1,opt,name=enabled,proto3,oneof" json:"enabled,omitempty"`
+	EnableXFunctions *bool                  `protobuf:"varint,2,opt,name=enable_x_functions,json=enableXFunctions,proto3,oneof" json:"enable_x_functions,omitempty"`
+	Optimizers       *string                `protobuf:"bytes,3,opt,name=optimizers,proto3,oneof" json:"optimizers,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
+}
+
+func (x *EngineThanosEngineConfig) Reset() {
+	*x = EngineThanosEngineConfig{}
+	mi := &file_github_com_aity_cloud_monty_internal_cortex_config_querier_querier_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *EngineThanosEngineConfig) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*EngineThanosEngineConfig) ProtoMessage() {}
+
+func (x *EngineThanosEngineConfig) ProtoReflect() protoreflect.Message {
+	mi := &file_github_com_aity_cloud_monty_internal_cortex_config_querier_querier_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use EngineThanosEngineConfig.ProtoReflect.Descriptor instead.
+func (*EngineThanosEngineConfig) Descriptor() ([]byte, []int) {
+	return file_github_com_aity_cloud_monty_internal_cortex_config_querier_querier_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *EngineThanosEngineConfig) GetEnabled() bool {
+	if x != nil && x.Enabled != nil {
+		return *x.Enabled
+	}
+	return false
+}
+
+func (x *EngineThanosEngineConfig) GetEnableXFunctions() bool {
+	if x != nil && x.EnableXFunctions != nil {
+		return *x.EnableXFunctions
+	}
+	return false
+}
+
+func (x *EngineThanosEngineConfig) GetOptimizers() string {
+	if x != nil && x.Optimizers != nil {
+		return *x.Optimizers
+	}
+	return ""
+}
+
 var File_github_com_aity_cloud_monty_internal_cortex_config_querier_querier_proto protoreflect.FileDescriptor
 
 const file_github_com_aity_cloud_monty_internal_cortex_config_querier_querier_proto_rawDesc = "" +
 	"\n" +
-	"Hgithub.com/aity-cloud/monty/internal/cortex/config/querier/querier.proto\x12\aquerier\x1a)github.com/kralicky/codegen/cli/cli.proto\x1a\x1egoogle/protobuf/duration.proto\"\xdf\x0e\n" +
+	"Hgithub.com/aity-cloud/monty/internal/cortex/config/querier/querier.proto\x12\aquerier\x1a)github.com/kralicky/codegen/cli/cli.proto\x1a\x1egoogle/protobuf/duration.proto\"\xd0\x13\n" +
 	"\x06Config\x124\n" +
 	"\x0emax_concurrent\x18\x01 \x01(\x05B\b\x8a\xc0\f\x04\n" +
 	"\x0220H\x00R\rmaxConcurrent\x88\x01\x01\x12?\n" +
 	"\atimeout\x18\x02 \x01(\v2\x19.google.protobuf.DurationB\n" +
 	"\x8a\xc0\f\x06\n" +
-	"\x042m0sR\atimeout\x12\\\n" +
-	"\"ingester_label_names_with_matchers\x18\x04 \x01(\bB\v\x8a\xc0\f\a\n" +
-	"\x05falseH\x01R\x1eingesterLabelNamesWithMatchers\x88\x01\x01\x12O\n" +
-	"\x1bingester_metadata_streaming\x18\x06 \x01(\bB\n" +
+	"\x042m0sR\atimeout\x12O\n" +
+	"\x1bingester_metadata_streaming\x18\x03 \x01(\bB\n" +
 	"\x8a\xc0\f\x06\n" +
-	"\x04trueH\x02R\x19ingesterMetadataStreaming\x88\x01\x01\x124\n" +
-	"\vmax_samples\x18\a \x01(\x05B\x0e\x8a\xc0\f\n" +
+	"\x04trueH\x01R\x19ingesterMetadataStreaming\x88\x01\x01\x12\\\n" +
+	"\"ingester_label_names_with_matchers\x18\x04 \x01(\bB\v\x8a\xc0\f\a\n" +
+	"\x05falseH\x02R\x1eingesterLabelNamesWithMatchers\x88\x01\x01\x124\n" +
+	"\vmax_samples\x18\x05 \x01(\x05B\x0e\x8a\xc0\f\n" +
 	"\n" +
 	"\b50000000H\x03R\n" +
-	"maxSamples\x88\x01\x01\x12B\n" +
+	"maxSamples\x88\x01\x01\x12Y\n" +
+	"\x16query_ingesters_within\x18\x06 \x01(\v2\x19.google.protobuf.DurationB\b\x8a\xc0\f\x04\n" +
+	"\x020sR\x14queryIngestersWithin\x12E\n" +
+	"\x16per_step_stats_enabled\x18\a \x01(\bB\v\x8a\xc0\f\a\n" +
+	"\x05falseH\x04R\x13perStepStatsEnabled\x88\x01\x01\x12B\n" +
 	"\x14response_compression\x18\b \x01(\tB\n" +
 	"\x8a\xc0\f\x06\n" +
-	"\x04gzipH\x04R\x13responseCompression\x88\x01\x01\x12O\n" +
-	"\x11query_store_after\x18\v \x01(\v2\x19.google.protobuf.DurationB\b\x8a\xc0\f\x04\n" +
-	"\x020sR\x0fqueryStoreAfter\x12\x7f\n" +
-	"*shuffle_sharding_ingesters_lookback_period\x18\x0f \x01(\v2\x19.google.protobuf.DurationB\b\x8a\xc0\f\x04\n" +
-	"\x020sR&shuffleShardingIngestersLookbackPeriod\x125\n" +
-	"\rthanos_engine\x18\x10 \x01(\bB\v\x8a\xc0\f\a\n" +
-	"\x05falseH\x05R\fthanosEngine\x88\x01\x01\x12a\n" +
-	"$enable_promql_experimental_functions\x18\x13 \x01(\bB\v\x8a\xc0\f\a\n" +
-	"\x05falseH\x06R!enablePromqlExperimentalFunctions\x88\x01\x01\x12Y\n" +
-	"\x16query_ingesters_within\x18\x14 \x01(\v2\x19.google.protobuf.DurationB\b\x8a\xc0\f\x04\n" +
-	"\x020sR\x14queryIngestersWithin\x12E\n" +
-	"\x16per_step_stats_enabled\x18\x15 \x01(\bB\v\x8a\xc0\f\a\n" +
-	"\x05falseH\aR\x13perStepStatsEnabled\x88\x01\x01\x12e\n" +
-	"\x1bdefault_evaluation_interval\x18\x16 \x01(\v2\x19.google.protobuf.DurationB\n" +
+	"\x04gzipH\x05R\x13responseCompression\x88\x01\x01\x12O\n" +
+	"\x11query_store_after\x18\t \x01(\v2\x19.google.protobuf.DurationB\b\x8a\xc0\f\x04\n" +
+	"\x020sR\x0fqueryStoreAfter\x12Y\n" +
+	"\x15max_query_into_future\x18\n" +
+	" \x01(\v2\x19.google.protobuf.DurationB\v\x8a\xc0\f\a\n" +
+	"\x0510m0sR\x12maxQueryIntoFuture\x12e\n" +
+	"\x1bdefault_evaluation_interval\x18\v \x01(\v2\x19.google.protobuf.DurationB\n" +
 	"\x8a\xc0\f\x06\n" +
-	"\x041m0sR\x19defaultEvaluationInterval\x12Y\n" +
-	"\x15max_query_into_future\x18\x17 \x01(\v2\x19.google.protobuf.DurationB\v\x8a\xc0\f\a\n" +
-	"\x0510m0sR\x12maxQueryIntoFuture\x12:\n" +
-	"\x12max_subquery_steps\x18\x19 \x01(\x03B\a\x8a\xc0\f\x03\n" +
-	"\x010H\bR\x10maxSubquerySteps\x88\x01\x01\x12L\n" +
-	"\x0elookback_delta\x18\x1a \x01(\v2\x19.google.protobuf.DurationB\n" +
+	"\x041m0sR\x19defaultEvaluationInterval\x12:\n" +
+	"\x12max_subquery_steps\x18\f \x01(\x03B\a\x8a\xc0\f\x03\n" +
+	"\x010H\x06R\x10maxSubquerySteps\x88\x01\x01\x12L\n" +
+	"\x0elookback_delta\x18\r \x01(\v2\x19.google.protobuf.DurationB\n" +
 	"\x8a\xc0\f\x06\n" +
 	"\x045m0sR\rlookbackDelta\x12J\n" +
-	"\x19store_gateway_query_stats\x18\x1b \x01(\bB\n" +
+	"\x19store_gateway_query_stats\x18\x0e \x01(\bB\n" +
 	"\x8a\xc0\f\x06\n" +
-	"\x04trueH\tR\x16storeGatewayQueryStats\x88\x01\x01\x12k\n" +
-	",store_gateway_consistency_check_max_attempts\x18\x1c \x01(\x05B\a\x8a\xc0\f\x03\n" +
-	"\x013H\n" +
-	"R'storeGatewayConsistencyCheckMaxAttempts\x88\x01\x01\x12G\n" +
-	"\x17ignore_max_query_length\x18\x1d \x01(\bB\v\x8a\xc0\f\a\n" +
-	"\x05falseH\vR\x14ignoreMaxQueryLength\x88\x01\x01B\x11\n" +
-	"\x0f_max_concurrentB%\n" +
-	"#_ingester_label_names_with_matchersB\x1e\n" +
-	"\x1c_ingester_metadata_streamingB\x0e\n" +
-	"\f_max_samplesB\x17\n" +
-	"\x15_response_compressionB\x10\n" +
-	"\x0e_thanos_engineB'\n" +
-	"%_enable_promql_experimental_functionsB\x19\n" +
-	"\x17_per_step_stats_enabledB\x15\n" +
+	"\x04trueH\aR\x16storeGatewayQueryStats\x88\x01\x01\x12k\n" +
+	",store_gateway_consistency_check_max_attempts\x18\x0f \x01(\x05B\a\x8a\xc0\f\x03\n" +
+	"\x013H\bR'storeGatewayConsistencyCheckMaxAttempts\x88\x01\x01\x12K\n" +
+	"\x1bingester_query_max_attempts\x18\x10 \x01(\x05B\a\x8a\xc0\f\x03\n" +
+	"\x011H\tR\x18ingesterQueryMaxAttempts\x88\x01\x01\x12\x7f\n" +
+	"*shuffle_sharding_ingesters_lookback_period\x18\x11 \x01(\v2\x19.google.protobuf.DurationB\b\x8a\xc0\f\x04\n" +
+	"\x020sR&shuffleShardingIngestersLookbackPeriod\x12F\n" +
+	"\rthanos_engine\x18\x12 \x01(\v2!.querier.EngineThanosEngineConfigR\fthanosEngine\x12G\n" +
+	"\x17ignore_max_query_length\x18\x13 \x01(\bB\v\x8a\xc0\f\a\n" +
+	"\x05falseH\n" +
+	"R\x14ignoreMaxQueryLength\x88\x01\x01\x12a\n" +
+	"$enable_promql_experimental_functions\x18\x14 \x01(\bB\v\x8a\xc0\f\a\n" +
+	"\x05falseH\vR!enablePromqlExperimentalFunctions\x88\x01\x01\x12J\n" +
+	"\x18enable_parquet_queryable\x18\x15 \x01(\bB\v\x8a\xc0\f\a\n" +
+	"\x05falseH\fR\x16enableParquetQueryable\x88\x01\x01\x12Z\n" +
+	"\"parquet_queryable_shard_cache_size\x18\x16 \x01(\x05B\t\x8a\xc0\f\x05\n" +
+	"\x03512H\rR\x1eparquetQueryableShardCacheSize\x88\x01\x01\x12d\n" +
+	"%parquet_queryable_default_block_store\x18\x17 \x01(\tB\r\x8a\xc0\f\t\n" +
+	"\aparquetH\x0eR!parquetQueryableDefaultBlockStore\x88\x01\x01\x12_\n" +
+	"#parquet_queryable_fallback_disabled\x18\x18 \x01(\bB\v\x8a\xc0\f\a\n" +
+	"\x05falseH\x0fR parquetQueryableFallbackDisabled\x88\x01\x01B\x11\n" +
+	"\x0f_max_concurrentB\x1e\n" +
+	"\x1c_ingester_metadata_streamingB%\n" +
+	"#_ingester_label_names_with_matchersB\x0e\n" +
+	"\f_max_samplesB\x19\n" +
+	"\x17_per_step_stats_enabledB\x17\n" +
+	"\x15_response_compressionB\x15\n" +
 	"\x13_max_subquery_stepsB\x1c\n" +
 	"\x1a_store_gateway_query_statsB/\n" +
-	"-_store_gateway_consistency_check_max_attemptsB\x1a\n" +
-	"\x18_ignore_max_query_lengthBD\x82\xc0\f\x04\b\x01\x10\x01Z:github.com/aity-cloud/monty/internal/cortex/config/querierb\x06proto3"
+	"-_store_gateway_consistency_check_max_attemptsB\x1e\n" +
+	"\x1c_ingester_query_max_attemptsB\x1a\n" +
+	"\x18_ignore_max_query_lengthB'\n" +
+	"%_enable_promql_experimental_functionsB\x1b\n" +
+	"\x19_enable_parquet_queryableB%\n" +
+	"#_parquet_queryable_shard_cache_sizeB(\n" +
+	"&_parquet_queryable_default_block_storeB&\n" +
+	"$_parquet_queryable_fallback_disabled\"\xc3\x01\n" +
+	"\x18EngineThanosEngineConfig\x12\x1d\n" +
+	"\aenabled\x18\x01 \x01(\bH\x00R\aenabled\x88\x01\x01\x121\n" +
+	"\x12enable_x_functions\x18\x02 \x01(\bH\x01R\x10enableXFunctions\x88\x01\x01\x12#\n" +
+	"\n" +
+	"optimizers\x18\x03 \x01(\tH\x02R\n" +
+	"optimizers\x88\x01\x01B\n" +
+	"\n" +
+	"\b_enabledB\x15\n" +
+	"\x13_enable_x_functionsB\r\n" +
+	"\v_optimizersBD\x82\xc0\f\x04\b\x01\x10\x01Z:github.com/aity-cloud/monty/internal/cortex/config/querierb\x06proto3"
 
 var (
 	file_github_com_aity_cloud_monty_internal_cortex_config_querier_querier_proto_rawDescOnce sync.Once
@@ -312,24 +440,26 @@ func file_github_com_aity_cloud_monty_internal_cortex_config_querier_querier_pro
 	return file_github_com_aity_cloud_monty_internal_cortex_config_querier_querier_proto_rawDescData
 }
 
-var file_github_com_aity_cloud_monty_internal_cortex_config_querier_querier_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+var file_github_com_aity_cloud_monty_internal_cortex_config_querier_querier_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_github_com_aity_cloud_monty_internal_cortex_config_querier_querier_proto_goTypes = []any{
-	(*Config)(nil),              // 0: querier.Config
-	(*durationpb.Duration)(nil), // 1: google.protobuf.Duration
+	(*Config)(nil),                   // 0: querier.Config
+	(*EngineThanosEngineConfig)(nil), // 1: querier.EngineThanosEngineConfig
+	(*durationpb.Duration)(nil),      // 2: google.protobuf.Duration
 }
 var file_github_com_aity_cloud_monty_internal_cortex_config_querier_querier_proto_depIdxs = []int32{
-	1, // 0: querier.Config.timeout:type_name -> google.protobuf.Duration
-	1, // 1: querier.Config.query_store_after:type_name -> google.protobuf.Duration
-	1, // 2: querier.Config.shuffle_sharding_ingesters_lookback_period:type_name -> google.protobuf.Duration
-	1, // 3: querier.Config.query_ingesters_within:type_name -> google.protobuf.Duration
-	1, // 4: querier.Config.default_evaluation_interval:type_name -> google.protobuf.Duration
-	1, // 5: querier.Config.max_query_into_future:type_name -> google.protobuf.Duration
-	1, // 6: querier.Config.lookback_delta:type_name -> google.protobuf.Duration
-	7, // [7:7] is the sub-list for method output_type
-	7, // [7:7] is the sub-list for method input_type
-	7, // [7:7] is the sub-list for extension type_name
-	7, // [7:7] is the sub-list for extension extendee
-	0, // [0:7] is the sub-list for field type_name
+	2, // 0: querier.Config.timeout:type_name -> google.protobuf.Duration
+	2, // 1: querier.Config.query_ingesters_within:type_name -> google.protobuf.Duration
+	2, // 2: querier.Config.query_store_after:type_name -> google.protobuf.Duration
+	2, // 3: querier.Config.max_query_into_future:type_name -> google.protobuf.Duration
+	2, // 4: querier.Config.default_evaluation_interval:type_name -> google.protobuf.Duration
+	2, // 5: querier.Config.lookback_delta:type_name -> google.protobuf.Duration
+	2, // 6: querier.Config.shuffle_sharding_ingesters_lookback_period:type_name -> google.protobuf.Duration
+	1, // 7: querier.Config.thanos_engine:type_name -> querier.EngineThanosEngineConfig
+	8, // [8:8] is the sub-list for method output_type
+	8, // [8:8] is the sub-list for method input_type
+	8, // [8:8] is the sub-list for extension type_name
+	8, // [8:8] is the sub-list for extension extendee
+	0, // [0:8] is the sub-list for field type_name
 }
 
 func init() { file_github_com_aity_cloud_monty_internal_cortex_config_querier_querier_proto_init() }
@@ -338,13 +468,14 @@ func file_github_com_aity_cloud_monty_internal_cortex_config_querier_querier_pro
 		return
 	}
 	file_github_com_aity_cloud_monty_internal_cortex_config_querier_querier_proto_msgTypes[0].OneofWrappers = []any{}
+	file_github_com_aity_cloud_monty_internal_cortex_config_querier_querier_proto_msgTypes[1].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_github_com_aity_cloud_monty_internal_cortex_config_querier_querier_proto_rawDesc), len(file_github_com_aity_cloud_monty_internal_cortex_config_querier_querier_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   1,
+			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

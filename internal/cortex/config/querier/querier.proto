@@ -18,38 +18,53 @@ message Config {
   optional int32 max_concurrent = 1 [(cli.flag) = {default: "20"}];
   // The timeout for a query.
   google.protobuf.Duration timeout = 2 [(cli.flag) = {default: "2m0s"}];
+  // Deprecated (This feature will be always on after v1.18): Use streaming RPCs for metadata APIs from ingester.
+  optional bool ingester_metadata_streaming = 3 [(cli.flag) = {default: "true"}];
   // Use LabelNames ingester RPCs with match params.
   optional bool ingester_label_names_with_matchers = 4 [(cli.flag) = {default: "false"}];
-  // Deprecated (This feature will be always on after v1.18): Use streaming RPCs for metadata APIs from ingester.
-  optional bool ingester_metadata_streaming = 6 [(cli.flag) = {default: "true"}];
   // Maximum number of samples a single query can load into memory.
-  optional int32 max_samples = 7 [(cli.flag) = {default: "50000000"}];
-  // Use compression for metrics query API or instant and range query APIs. Supports 'gzip' and '' (disable compression)
+  optional int32 max_samples = 5 [(cli.flag) = {default: "50000000"}];
+  // Maximum lookback beyond which queries are not sent to ingester. 0 means all queries are sent to ingester.
+  google.protobuf.Duration query_ingesters_within = 6 [(cli.flag) = {default: "0s"}];
+  // Enable returning samples stats per steps in query response.
+  optional bool per_step_stats_enabled = 7 [(cli.flag) = {default: "false"}];
+  // Use compression for metrics query API or instant and range query APIs. Supported compression 'gzip', 'snappy', 'zstd' and '' (disable compression)
   optional string response_compression = 8 [(cli.flag) = {default: "gzip"}];
   // The time after which a metric should be queried from storage and not just ingesters. 0 means all queries are sent to store. When running the blocks storage, if this option is enabled, the time range of the query sent to the store will be manipulated to ensure the query end is not more recent than 'now - query-store-after'.
-  google.protobuf.Duration query_store_after = 11 [(cli.flag) = {default: "0s"}];
-  // When distributor's sharding strategy is shuffle-sharding and this setting is > 0, queriers fetch in-memory series from the minimum set of required ingesters, selecting only ingesters which may have received series since 'now - lookback period'. The lookback period should be greater or equal than the configured 'query store after' and 'query ingesters within'. If this setting is 0, queriers always query all ingesters (ingesters shuffle sharding on read path is disabled).
-  google.protobuf.Duration shuffle_sharding_ingesters_lookback_period = 15 [(cli.flag) = {default: "0s"}];
-  // Experimental. Use Thanos promql engine https://github.com/thanos-io/promql-engine rather than the Prometheus promql engine.
-  optional bool thanos_engine = 16 [(cli.flag) = {default: "false"}];
-  // [Experimental] If true, experimental promQL functions are enabled.
-  optional bool enable_promql_experimental_functions = 19 [(cli.flag) = {default: "false"}];
-  // Maximum lookback beyond which queries are not sent to ingester. 0 means all queries are sent to ingester.
-  google.protobuf.Duration query_ingesters_within = 20 [(cli.flag) = {default: "0s"}];
-  // Enable returning samples stats per steps in query response.
-  optional bool per_step_stats_enabled = 21 [(cli.flag) = {default: "false"}];
-  // The default evaluation interval or step size for subqueries.
-  google.protobuf.Duration default_evaluation_interval = 22 [(cli.flag) = {default: "1m0s"}];
+  google.protobuf.Duration query_store_after = 9 [(cli.flag) = {default: "0s"}];
   // Maximum duration into the future you can query. 0 to disable.
-  google.protobuf.Duration max_query_into_future = 23 [(cli.flag) = {default: "10m0s"}];
+  google.protobuf.Duration max_query_into_future = 10 [(cli.flag) = {default: "10m0s"}];
+  // The default evaluation interval or step size for subqueries.
+  google.protobuf.Duration default_evaluation_interval = 11 [(cli.flag) = {default: "1m0s"}];
   // Max number of steps allowed for every subquery expression in query. Number of steps is calculated using subquery range / step. A value > 0 enables it.
-  optional int64 max_subquery_steps = 25 [(cli.flag) = {default: "0"}];
+  optional int64 max_subquery_steps = 12 [(cli.flag) = {default: "0"}];
   // Time since the last sample after which a time series is considered stale and ignored by expression evaluations.
-  google.protobuf.Duration lookback_delta = 26 [(cli.flag) = {default: "5m0s"}];
+  google.protobuf.Duration lookback_delta = 13 [(cli.flag) = {default: "5m0s"}];
   // If enabled, store gateway query stats will be logged using `info` log level.
-  optional bool store_gateway_query_stats = 27 [(cli.flag) = {default: "true"}];
+  optional bool store_gateway_query_stats = 14 [(cli.flag) = {default: "true"}];
   // The maximum number of times we attempt fetching missing blocks from different store-gateways. If no more store-gateways are left (ie. due to lower replication factor) than we'll end the retries earlier
-  optional int32 store_gateway_consistency_check_max_attempts = 28 [(cli.flag) = {default: "3"}];
+  optional int32 store_gateway_consistency_check_max_attempts = 15 [(cli.flag) = {default: "3"}];
+  // The maximum number of times we attempt fetching data from ingesters for retryable errors (ex. partial data returned).
+  optional int32 ingester_query_max_attempts = 16 [(cli.flag) = {default: "1"}];
+  // When distributor's sharding strategy is shuffle-sharding and this setting is > 0, queriers fetch in-memory series from the minimum set of required ingesters, selecting only ingesters which may have received series since 'now - lookback period'. The lookback period should be greater or equal than the configured 'query store after' and 'query ingesters within'. If this setting is 0, queriers always query all ingesters (ingesters shuffle sharding on read path is disabled).
+  google.protobuf.Duration shuffle_sharding_ingesters_lookback_period = 17 [(cli.flag) = {default: "0s"}];
+  EngineThanosEngineConfig thanos_engine                              = 18;
   // If enabled, ignore max query length check at Querier select method. Users can choose to ignore it since the validation can be done before Querier evaluation like at Query Frontend or Ruler.
-  optional bool ignore_max_query_length = 29 [(cli.flag) = {default: "false"}];
+  optional bool ignore_max_query_length = 19 [(cli.flag) = {default: "false"}];
+  // [Experimental] If true, experimental promQL functions are enabled.
+  optional bool enable_promql_experimental_functions = 20 [(cli.flag) = {default: "false"}];
+  // [Experimental] If true, querier will try to query the parquet files if available.
+  optional bool enable_parquet_queryable = 21 [(cli.flag) = {default: "false"}];
+  // [Experimental] Maximum size of the Parquet queryable shard cache. 0 to disable.
+  optional int32 parquet_queryable_shard_cache_size = 22 [(cli.flag) = {default: "512"}];
+  // [Experimental] Parquet queryable's default block store to query. Valid options are tsdb and parquet. If it is set to tsdb, parquet queryable always fallback to store gateway.
+  optional string parquet_queryable_default_block_store = 23 [(cli.flag) = {default: "parquet"}];
+  // [Experimental] Disable Parquet queryable to fallback queries to Store Gateway if the block is not available as Parquet files but available in TSDB. Setting this to true will disable the fallback and users can remove Store Gateway. But need to make sure Parquet files are created before it is queryable.
+  optional bool parquet_queryable_fallback_disabled = 24 [(cli.flag) = {default: "false"}];
+}
+
+message EngineThanosEngineConfig {
+  optional bool   enabled            = 1;
+  optional bool   enable_x_functions = 2;
+  optional string optimizers         = 3;
 }

@@ -20,27 +20,53 @@ func (in *Config) DeepCopy() *Config {
 	return proto.Clone(in).(*Config)
 }
 
+func (in *EngineThanosEngineConfig) DeepCopyInto(out *EngineThanosEngineConfig) {
+	out.Reset()
+	proto.Merge(out, in)
+}
+
+func (in *EngineThanosEngineConfig) DeepCopy() *EngineThanosEngineConfig {
+	return proto.Clone(in).(*EngineThanosEngineConfig)
+}
+
 func (in *Config) FlagSet(prefix ...string) *pflag.FlagSet {
 	fs := pflag.NewFlagSet("Config", pflag.ExitOnError)
 	fs.SortFlags = true
 	fs.Var(flagutil.IntPtrValue(flagutil.Ptr[int32](20), &in.MaxConcurrent), strings.Join(append(prefix, "max-concurrent"), "."), "The maximum number of concurrent queries.")
 	fs.Var(flagutil.DurationpbValue(flagutil.Ptr[time.Duration](2*time.Minute), &in.Timeout), strings.Join(append(prefix, "timeout"), "."), "The timeout for a query.")
-	fs.Var(flagutil.BoolPtrValue(flagutil.Ptr(false), &in.IngesterLabelNamesWithMatchers), strings.Join(append(prefix, "ingester-label-names-with-matchers"), "."), "Use LabelNames ingester RPCs with match params.")
 	fs.Var(flagutil.BoolPtrValue(flagutil.Ptr(true), &in.IngesterMetadataStreaming), strings.Join(append(prefix, "ingester-metadata-streaming"), "."), "Deprecated (This feature will be always on after v1.18): Use streaming RPCs for metadata APIs from ingester.")
+	fs.Var(flagutil.BoolPtrValue(flagutil.Ptr(false), &in.IngesterLabelNamesWithMatchers), strings.Join(append(prefix, "ingester-label-names-with-matchers"), "."), "Use LabelNames ingester RPCs with match params.")
 	fs.Var(flagutil.IntPtrValue(flagutil.Ptr[int32](50000000), &in.MaxSamples), strings.Join(append(prefix, "max-samples"), "."), "Maximum number of samples a single query can load into memory.")
-	fs.Var(flagutil.StringPtrValue(flagutil.Ptr("gzip"), &in.ResponseCompression), strings.Join(append(prefix, "response-compression"), "."), "Use compression for metrics query API or instant and range query APIs. Supports 'gzip' and '' (disable compression)")
-	fs.Var(flagutil.DurationpbValue(flagutil.Ptr[time.Duration](0), &in.QueryStoreAfter), strings.Join(append(prefix, "query-store-after"), "."), "The time after which a metric should be queried from storage and not just ingesters. 0 means all queries are sent to store. When running the blocks storage, if this option is enabled, the time range of the query sent to the store will be manipulated to ensure the query end is not more recent than 'now - query-store-after'.")
-	fs.Var(flagutil.DurationpbValue(flagutil.Ptr[time.Duration](0), &in.ShuffleShardingIngestersLookbackPeriod), strings.Join(append(prefix, "shuffle-sharding-ingesters-lookback-period"), "."), "When distributor's sharding strategy is shuffle-sharding and this setting is > 0, queriers fetch in-memory series from the minimum set of required ingesters, selecting only ingesters which may have received series since 'now - lookback period'. The lookback period should be greater or equal than the configured 'query store after' and 'query ingesters within'. If this setting is 0, queriers always query all ingesters (ingesters shuffle sharding on read path is disabled).")
-	fs.Var(flagutil.BoolPtrValue(flagutil.Ptr(false), &in.ThanosEngine), strings.Join(append(prefix, "thanos-engine"), "."), "Experimental. Use Thanos promql engine https://github.com/thanos-io/promql-engine rather than the Prometheus promql engine.")
-	fs.Var(flagutil.BoolPtrValue(flagutil.Ptr(false), &in.EnablePromqlExperimentalFunctions), strings.Join(append(prefix, "enable-promql-experimental-functions"), "."), "[Experimental] If true, experimental promQL functions are enabled.")
 	fs.Var(flagutil.DurationpbValue(flagutil.Ptr[time.Duration](0), &in.QueryIngestersWithin), strings.Join(append(prefix, "query-ingesters-within"), "."), "Maximum lookback beyond which queries are not sent to ingester. 0 means all queries are sent to ingester.")
 	fs.Var(flagutil.BoolPtrValue(flagutil.Ptr(false), &in.PerStepStatsEnabled), strings.Join(append(prefix, "per-step-stats-enabled"), "."), "Enable returning samples stats per steps in query response.")
-	fs.Var(flagutil.DurationpbValue(flagutil.Ptr[time.Duration](1*time.Minute), &in.DefaultEvaluationInterval), strings.Join(append(prefix, "default-evaluation-interval"), "."), "The default evaluation interval or step size for subqueries.")
+	fs.Var(flagutil.StringPtrValue(flagutil.Ptr("gzip"), &in.ResponseCompression), strings.Join(append(prefix, "response-compression"), "."), "Use compression for metrics query API or instant and range query APIs. Supported compression 'gzip', 'snappy', 'zstd' and '' (disable compression)")
+	fs.Var(flagutil.DurationpbValue(flagutil.Ptr[time.Duration](0), &in.QueryStoreAfter), strings.Join(append(prefix, "query-store-after"), "."), "The time after which a metric should be queried from storage and not just ingesters. 0 means all queries are sent to store. When running the blocks storage, if this option is enabled, the time range of the query sent to the store will be manipulated to ensure the query end is not more recent than 'now - query-store-after'.")
 	fs.Var(flagutil.DurationpbValue(flagutil.Ptr[time.Duration](10*time.Minute), &in.MaxQueryIntoFuture), strings.Join(append(prefix, "max-query-into-future"), "."), "Maximum duration into the future you can query. 0 to disable.")
+	fs.Var(flagutil.DurationpbValue(flagutil.Ptr[time.Duration](1*time.Minute), &in.DefaultEvaluationInterval), strings.Join(append(prefix, "default-evaluation-interval"), "."), "The default evaluation interval or step size for subqueries.")
 	fs.Var(flagutil.IntPtrValue(flagutil.Ptr[int64](0), &in.MaxSubquerySteps), strings.Join(append(prefix, "max-subquery-steps"), "."), "Max number of steps allowed for every subquery expression in query. Number of steps is calculated using subquery range / step. A value > 0 enables it.")
 	fs.Var(flagutil.DurationpbValue(flagutil.Ptr[time.Duration](5*time.Minute), &in.LookbackDelta), strings.Join(append(prefix, "lookback-delta"), "."), "Time since the last sample after which a time series is considered stale and ignored by expression evaluations.")
 	fs.Var(flagutil.BoolPtrValue(flagutil.Ptr(true), &in.StoreGatewayQueryStats), strings.Join(append(prefix, "store-gateway-query-stats"), "."), "If enabled, store gateway query stats will be logged using `info` log level.")
 	fs.Var(flagutil.IntPtrValue(flagutil.Ptr[int32](3), &in.StoreGatewayConsistencyCheckMaxAttempts), strings.Join(append(prefix, "store-gateway-consistency-check-max-attempts"), "."), "The maximum number of times we attempt fetching missing blocks from different store-gateways. If no more store-gateways are left (ie. due to lower replication factor) than we'll end the retries earlier")
+	fs.Var(flagutil.IntPtrValue(flagutil.Ptr[int32](1), &in.IngesterQueryMaxAttempts), strings.Join(append(prefix, "ingester-query-max-attempts"), "."), "The maximum number of times we attempt fetching data from ingesters for retryable errors (ex. partial data returned).")
+	fs.Var(flagutil.DurationpbValue(flagutil.Ptr[time.Duration](0), &in.ShuffleShardingIngestersLookbackPeriod), strings.Join(append(prefix, "shuffle-sharding-ingesters-lookback-period"), "."), "When distributor's sharding strategy is shuffle-sharding and this setting is > 0, queriers fetch in-memory series from the minimum set of required ingesters, selecting only ingesters which may have received series since 'now - lookback period'. The lookback period should be greater or equal than the configured 'query store after' and 'query ingesters within'. If this setting is 0, queriers always query all ingesters (ingesters shuffle sharding on read path is disabled).")
+	if in.ThanosEngine == nil {
+		in.ThanosEngine = &EngineThanosEngineConfig{}
+	}
+	fs.AddFlagSet(in.ThanosEngine.FlagSet(append(prefix, "thanos-engine")...))
 	fs.Var(flagutil.BoolPtrValue(flagutil.Ptr(false), &in.IgnoreMaxQueryLength), strings.Join(append(prefix, "ignore-max-query-length"), "."), "If enabled, ignore max query length check at Querier select method. Users can choose to ignore it since the validation can be done before Querier evaluation like at Query Frontend or Ruler.")
+	fs.Var(flagutil.BoolPtrValue(flagutil.Ptr(false), &in.EnablePromqlExperimentalFunctions), strings.Join(append(prefix, "enable-promql-experimental-functions"), "."), "[Experimental] If true, experimental promQL functions are enabled.")
+	fs.Var(flagutil.BoolPtrValue(flagutil.Ptr(false), &in.EnableParquetQueryable), strings.Join(append(prefix, "enable-parquet-queryable"), "."), "[Experimental] If true, querier will try to query the parquet files if available.")
+	fs.Var(flagutil.IntPtrValue(flagutil.Ptr[int32](512), &in.ParquetQueryableShardCacheSize), strings.Join(append(prefix, "parquet-queryable-shard-cache-size"), "."), "[Experimental] Maximum size of the Parquet queryable shard cache. 0 to disable.")
+	fs.Var(flagutil.StringPtrValue(flagutil.Ptr("parquet"), &in.ParquetQueryableDefaultBlockStore), strings.Join(append(prefix, "parquet-queryable-default-block-store"), "."), "[Experimental] Parquet queryable's default block store to query. Valid options are tsdb and parquet. If it is set to tsdb, parquet queryable always fallback to store gateway.")
+	fs.Var(flagutil.BoolPtrValue(flagutil.Ptr(false), &in.ParquetQueryableFallbackDisabled), strings.Join(append(prefix, "parquet-queryable-fallback-disabled"), "."), "[Experimental] Disable Parquet queryable to fallback queries to Store Gateway if the block is not available as Parquet files but available in TSDB. Setting this to true will disable the fallback and users can remove Store Gateway. But need to make sure Parquet files are created before it is queryable.")
+	return fs
+}
+
+func (in *EngineThanosEngineConfig) FlagSet(prefix ...string) *pflag.FlagSet {
+	fs := pflag.NewFlagSet("EngineThanosEngineConfig", pflag.ExitOnError)
+	fs.SortFlags = true
+	fs.Var(flagutil.BoolPtrValue(nil, &in.Enabled), strings.Join(append(prefix, "enabled"), "."), "")
+	fs.Var(flagutil.BoolPtrValue(nil, &in.EnableXFunctions), strings.Join(append(prefix, "enable-x-functions"), "."), "")
+	fs.Var(flagutil.StringPtrValue(nil, &in.Optimizers), strings.Join(append(prefix, "optimizers"), "."), "")
 	return fs
 }

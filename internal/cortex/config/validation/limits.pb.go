@@ -31,150 +31,174 @@ type Limits struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Per-user ingestion rate limit in samples per second.
 	IngestionRate *float64 `protobuf:"fixed64,1,opt,name=ingestion_rate,json=ingestionRate,proto3,oneof" json:"ingestion_rate,omitempty"`
+	// Per-user native histogram ingestion rate limit in samples per second. Disabled by default
+	NativeHistogramIngestionRate *float64 `protobuf:"fixed64,2,opt,name=native_histogram_ingestion_rate,json=nativeHistogramIngestionRate,proto3,oneof" json:"native_histogram_ingestion_rate,omitempty"`
 	// Whether the ingestion rate limit should be applied individually to each distributor instance (local), or evenly shared across the cluster (global).
-	IngestionRateStrategy *string `protobuf:"bytes,2,opt,name=ingestion_rate_strategy,json=ingestionRateStrategy,proto3,oneof" json:"ingestion_rate_strategy,omitempty"`
+	IngestionRateStrategy *string `protobuf:"bytes,3,opt,name=ingestion_rate_strategy,json=ingestionRateStrategy,proto3,oneof" json:"ingestion_rate_strategy,omitempty"`
 	// Per-user allowed ingestion burst size (in number of samples).
-	IngestionBurstSize *int32 `protobuf:"varint,3,opt,name=ingestion_burst_size,json=ingestionBurstSize,proto3,oneof" json:"ingestion_burst_size,omitempty"`
+	IngestionBurstSize *int32 `protobuf:"varint,4,opt,name=ingestion_burst_size,json=ingestionBurstSize,proto3,oneof" json:"ingestion_burst_size,omitempty"`
+	// Per-user allowed native histogram ingestion burst size (in number of samples)
+	NativeHistogramIngestionBurstSize *int32 `protobuf:"varint,5,opt,name=native_histogram_ingestion_burst_size,json=nativeHistogramIngestionBurstSize,proto3,oneof" json:"native_histogram_ingestion_burst_size,omitempty"`
 	// Flag to enable, for all users, handling of samples with external labels identifying replicas in an HA Prometheus setup.
-	AcceptHaSamples *bool `protobuf:"varint,4,opt,name=accept_ha_samples,json=acceptHaSamples,proto3,oneof" json:"accept_ha_samples,omitempty"`
-	// Prometheus label to look for in samples to identify a Prometheus HA cluster.
-	HaClusterLabel *string `protobuf:"bytes,5,opt,name=ha_cluster_label,json=haClusterLabel,proto3,oneof" json:"ha_cluster_label,omitempty"`
-	// Prometheus label to look for in samples to identify a Prometheus HA replica.
-	HaReplicaLabel *string `protobuf:"bytes,6,opt,name=ha_replica_label,json=haReplicaLabel,proto3,oneof" json:"ha_replica_label,omitempty"`
-	// Maximum number of clusters that HA tracker will keep track of for single user. 0 to disable the limit.
-	HaMaxClusters *int32 `protobuf:"varint,7,opt,name=ha_max_clusters,json=haMaxClusters,proto3,oneof" json:"ha_max_clusters,omitempty"`
-	// This flag can be used to specify label names that to drop during sample ingestion within the distributor and can be repeated in order to drop multiple labels.
-	DropLabels []string `protobuf:"bytes,8,rep,name=drop_labels,json=dropLabels,proto3" json:"drop_labels,omitempty"`
-	// Maximum length accepted for label names
-	MaxLabelNameLength *int32 `protobuf:"varint,9,opt,name=max_label_name_length,json=maxLabelNameLength,proto3,oneof" json:"max_label_name_length,omitempty"`
-	// Maximum length accepted for label value. This setting also applies to the metric name
-	MaxLabelValueLength *int32 `protobuf:"varint,10,opt,name=max_label_value_length,json=maxLabelValueLength,proto3,oneof" json:"max_label_value_length,omitempty"`
-	// Maximum number of label names per series.
-	MaxLabelNamesPerSeries *int32 `protobuf:"varint,11,opt,name=max_label_names_per_series,json=maxLabelNamesPerSeries,proto3,oneof" json:"max_label_names_per_series,omitempty"`
-	// Maximum combined size in bytes of all labels and label values accepted for a series. 0 to disable the limit.
-	MaxLabelsSizeBytes *int32 `protobuf:"varint,12,opt,name=max_labels_size_bytes,json=maxLabelsSizeBytes,proto3,oneof" json:"max_labels_size_bytes,omitempty"`
-	// Maximum length accepted for metric metadata. Metadata refers to Metric Name, HELP and UNIT.
-	MaxMetadataLength *int32 `protobuf:"varint,13,opt,name=max_metadata_length,json=maxMetadataLength,proto3,oneof" json:"max_metadata_length,omitempty"`
-	// Reject old samples.
-	RejectOldSamples *bool `protobuf:"varint,14,opt,name=reject_old_samples,json=rejectOldSamples,proto3,oneof" json:"reject_old_samples,omitempty"`
-	// Maximum accepted sample age before rejecting.
-	RejectOldSamplesMaxAge *durationpb.Duration `protobuf:"bytes,15,opt,name=reject_old_samples_max_age,json=rejectOldSamplesMaxAge,proto3" json:"reject_old_samples_max_age,omitempty"`
-	// Duration which table will be created/deleted before/after it's needed; we won't accept sample from before this time.
-	CreationGracePeriod *durationpb.Duration `protobuf:"bytes,16,opt,name=creation_grace_period,json=creationGracePeriod,proto3" json:"creation_grace_period,omitempty"`
-	// Enforce every metadata has a metric name.
-	EnforceMetadataMetricName *bool `protobuf:"varint,17,opt,name=enforce_metadata_metric_name,json=enforceMetadataMetricName,proto3,oneof" json:"enforce_metadata_metric_name,omitempty"`
-	// Enforce every sample has a metric name.
-	EnforceMetricName *bool `protobuf:"varint,18,opt,name=enforce_metric_name,json=enforceMetricName,proto3,oneof" json:"enforce_metric_name,omitempty"`
-	// The default tenant's shard size when the shuffle-sharding strategy is used. Must be set both on ingesters and distributors. When this setting is specified in the per-tenant overrides, a value of 0 disables shuffle sharding for the tenant.
-	IngestionTenantShardSize *int32 `protobuf:"varint,19,opt,name=ingestion_tenant_shard_size,json=ingestionTenantShardSize,proto3,oneof" json:"ingestion_tenant_shard_size,omitempty"`
-	// List of metric relabel configurations. Note that in most situations, it is more effective to use metrics relabeling directly in the Prometheus server, e.g. remote_write.write_relabel_configs.
-	MetricRelabelConfigs []*RelabelConfig `protobuf:"bytes,20,rep,name=metric_relabel_configs,json=metricRelabelConfigs,proto3" json:"metric_relabel_configs,omitempty"`
-	// Enables support for exemplars in TSDB and sets the maximum number that will be stored. less than zero means disabled. If the value is set to zero, cortex will fallback to blocks-storage.tsdb.max-exemplars value.
-	MaxExemplars *int32 `protobuf:"varint,21,opt,name=max_exemplars,json=maxExemplars,proto3,oneof" json:"max_exemplars,omitempty"`
-	// Limit on total number of positive and negative buckets allowed in a single native histogram. The resolution of a histogram with more buckets will be reduced until the number of buckets is within the limit. If the limit cannot be reached, the sample will be discarded. 0 means no limit. Enforced at Distributor.
-	MaxNativeHistogramBuckets *int32 `protobuf:"varint,22,opt,name=max_native_histogram_buckets,json=maxNativeHistogramBuckets,proto3,oneof" json:"max_native_histogram_buckets,omitempty"`
-	// The maximum number of active series per user, per ingester. 0 to disable.
-	MaxSeriesPerUser *int32 `protobuf:"varint,23,opt,name=max_series_per_user,json=maxSeriesPerUser,proto3,oneof" json:"max_series_per_user,omitempty"`
-	// The maximum number of active series per metric name, per ingester. 0 to disable.
-	MaxSeriesPerMetric *int32 `protobuf:"varint,24,opt,name=max_series_per_metric,json=maxSeriesPerMetric,proto3,oneof" json:"max_series_per_metric,omitempty"`
-	// The maximum number of active series per user, across the cluster before replication. 0 to disable. Supported only if -distributor.shard-by-all-labels is true.
-	MaxGlobalSeriesPerUser *int32 `protobuf:"varint,25,opt,name=max_global_series_per_user,json=maxGlobalSeriesPerUser,proto3,oneof" json:"max_global_series_per_user,omitempty"`
-	// The maximum number of active series per metric name, across the cluster before replication. 0 to disable.
-	MaxGlobalSeriesPerMetric *int32 `protobuf:"varint,26,opt,name=max_global_series_per_metric,json=maxGlobalSeriesPerMetric,proto3,oneof" json:"max_global_series_per_metric,omitempty"`
-	// The maximum number of active metrics with metadata per user, per ingester. 0 to disable.
-	MaxMetadataPerUser *int32 `protobuf:"varint,27,opt,name=max_metadata_per_user,json=maxMetadataPerUser,proto3,oneof" json:"max_metadata_per_user,omitempty"`
-	// The maximum number of metadata per metric, per ingester. 0 to disable.
-	MaxMetadataPerMetric *int32 `protobuf:"varint,28,opt,name=max_metadata_per_metric,json=maxMetadataPerMetric,proto3,oneof" json:"max_metadata_per_metric,omitempty"`
-	// The maximum number of active metrics with metadata per user, across the cluster. 0 to disable. Supported only if -distributor.shard-by-all-labels is true.
-	MaxGlobalMetadataPerUser *int32 `protobuf:"varint,29,opt,name=max_global_metadata_per_user,json=maxGlobalMetadataPerUser,proto3,oneof" json:"max_global_metadata_per_user,omitempty"`
-	// The maximum number of metadata per metric, across the cluster. 0 to disable.
-	MaxGlobalMetadataPerMetric *int32 `protobuf:"varint,30,opt,name=max_global_metadata_per_metric,json=maxGlobalMetadataPerMetric,proto3,oneof" json:"max_global_metadata_per_metric,omitempty"`
-	// [Experimental] Configures the allowed time window for ingestion of out-of-order samples. Disabled (0s) by default.
-	OutOfOrderTimeWindow *durationpb.Duration `protobuf:"bytes,31,opt,name=out_of_order_time_window,json=outOfOrderTimeWindow,proto3" json:"out_of_order_time_window,omitempty"`
-	// Maximum number of chunks that can be fetched in a single query from ingesters and long-term storage. This limit is enforced in the querier, ruler and store-gateway. 0 to disable.
-	MaxFetchedChunksPerQuery *int32 `protobuf:"varint,32,opt,name=max_fetched_chunks_per_query,json=maxFetchedChunksPerQuery,proto3,oneof" json:"max_fetched_chunks_per_query,omitempty"`
-	// The maximum number of unique series for which a query can fetch samples from each ingesters and blocks storage. This limit is enforced in the querier, ruler and store-gateway. 0 to disable
-	MaxFetchedSeriesPerQuery *int32 `protobuf:"varint,33,opt,name=max_fetched_series_per_query,json=maxFetchedSeriesPerQuery,proto3,oneof" json:"max_fetched_series_per_query,omitempty"`
-	// Deprecated (use max-fetched-data-bytes-per-query instead): The maximum size of all chunks in bytes that a query can fetch from each ingester and storage. This limit is enforced in the querier, ruler and store-gateway. 0 to disable.
-	MaxFetchedChunkBytesPerQuery *int32 `protobuf:"varint,34,opt,name=max_fetched_chunk_bytes_per_query,json=maxFetchedChunkBytesPerQuery,proto3,oneof" json:"max_fetched_chunk_bytes_per_query,omitempty"`
-	// The maximum combined size of all data that a query can fetch from each ingester and storage. This limit is enforced in the querier and ruler for `query`, `query_range` and `series` APIs. 0 to disable.
-	MaxFetchedDataBytesPerQuery *int32 `protobuf:"varint,35,opt,name=max_fetched_data_bytes_per_query,json=maxFetchedDataBytesPerQuery,proto3,oneof" json:"max_fetched_data_bytes_per_query,omitempty"`
-	// Limit how long back data (series and metadata) can be queried, up until <lookback> duration ago. This limit is enforced in the query-frontend, querier and ruler. If the requested time range is outside the allowed range, the request will not fail but will be manipulated to only query data within the allowed time range. 0 to disable.
-	MaxQueryLookback *durationpb.Duration `protobuf:"bytes,36,opt,name=max_query_lookback,json=maxQueryLookback,proto3" json:"max_query_lookback,omitempty"`
-	// Limit the query time range (end - start time of range query parameter and max - min of data fetched time range). This limit is enforced in the query-frontend and ruler (on the received query). 0 to disable.
-	MaxQueryLength *durationpb.Duration `protobuf:"bytes,37,opt,name=max_query_length,json=maxQueryLength,proto3" json:"max_query_length,omitempty"`
-	// Maximum number of split queries will be scheduled in parallel by the frontend.
-	MaxQueryParallelism *int32 `protobuf:"varint,38,opt,name=max_query_parallelism,json=maxQueryParallelism,proto3,oneof" json:"max_query_parallelism,omitempty"`
-	// Most recent allowed cacheable result per-tenant, to prevent caching very recent results that might still be in flux.
-	MaxCacheFreshness *durationpb.Duration `protobuf:"bytes,39,opt,name=max_cache_freshness,json=maxCacheFreshness,proto3" json:"max_cache_freshness,omitempty"`
-	// Maximum number of queriers that can handle requests for a single tenant. If set to 0 or value higher than number of available queriers, *all* queriers will handle requests for the tenant. If the value is < 1, it will be treated as a percentage and the gets a percentage of the total queriers. Each frontend (or query-scheduler, if used) will select the same set of queriers for the same tenant (given that all queriers are connected to all frontends / query-schedulers). This option only works with queriers connecting to the query-frontend / query-scheduler, not when using downstream URL.
-	MaxQueriersPerTenant *float64 `protobuf:"fixed64,40,opt,name=max_queriers_per_tenant,json=maxQueriersPerTenant,proto3,oneof" json:"max_queriers_per_tenant,omitempty"`
-	// Maximum number of outstanding requests per tenant per request queue (either query frontend or query scheduler); requests beyond this error with HTTP 429.
-	MaxOutstandingRequestsPerTenant *int32 `protobuf:"varint,41,opt,name=max_outstanding_requests_per_tenant,json=maxOutstandingRequestsPerTenant,proto3,oneof" json:"max_outstanding_requests_per_tenant,omitempty"`
-	// Deprecated(use ruler.query-offset instead) and will be removed in v1.19.0: Duration to delay the evaluation of rules to ensure the underlying metrics have been pushed to Cortex.
-	RulerEvaluationDelayDuration *durationpb.Duration `protobuf:"bytes,42,opt,name=ruler_evaluation_delay_duration,json=rulerEvaluationDelayDuration,proto3" json:"ruler_evaluation_delay_duration,omitempty"`
-	// The default tenant's shard size when the shuffle-sharding strategy is used by ruler. When this setting is specified in the per-tenant overrides, a value of 0 disables shuffle sharding for the tenant.
-	RulerTenantShardSize *int32 `protobuf:"varint,43,opt,name=ruler_tenant_shard_size,json=rulerTenantShardSize,proto3,oneof" json:"ruler_tenant_shard_size,omitempty"`
-	// Maximum number of rules per rule group per-tenant. 0 to disable.
-	RulerMaxRulesPerRuleGroup *int32 `protobuf:"varint,44,opt,name=ruler_max_rules_per_rule_group,json=rulerMaxRulesPerRuleGroup,proto3,oneof" json:"ruler_max_rules_per_rule_group,omitempty"`
-	// Maximum number of rule groups per-tenant. 0 to disable.
-	RulerMaxRuleGroupsPerTenant *int32 `protobuf:"varint,45,opt,name=ruler_max_rule_groups_per_tenant,json=rulerMaxRuleGroupsPerTenant,proto3,oneof" json:"ruler_max_rule_groups_per_tenant,omitempty"`
-	// The default tenant's shard size when the shuffle-sharding strategy is used. Must be set when the store-gateway sharding is enabled with the shuffle-sharding strategy. When this setting is specified in the per-tenant overrides, a value of 0 disables shuffle sharding for the tenant. If the value is < 1 the shard size will be a percentage of the total store-gateways.
-	StoreGatewayTenantShardSize *float64 `protobuf:"fixed64,46,opt,name=store_gateway_tenant_shard_size,json=storeGatewayTenantShardSize,proto3,oneof" json:"store_gateway_tenant_shard_size,omitempty"`
-	// The maximum number of data bytes to download per gRPC request in Store Gateway, including Series/LabelNames/LabelValues requests. 0 to disable.
-	MaxDownloadedBytesPerRequest *int32 `protobuf:"varint,47,opt,name=max_downloaded_bytes_per_request,json=maxDownloadedBytesPerRequest,proto3,oneof" json:"max_downloaded_bytes_per_request,omitempty"`
-	// Delete blocks containing samples older than the specified retention period. 0 to disable.
-	CompactorBlocksRetentionPeriod *durationpb.Duration `protobuf:"bytes,48,opt,name=compactor_blocks_retention_period,json=compactorBlocksRetentionPeriod,proto3" json:"compactor_blocks_retention_period,omitempty"`
-	// The default tenant's shard size when the shuffle-sharding strategy is used by the compactor. When this setting is specified in the per-tenant overrides, a value of 0 disables shuffle sharding for the tenant.
-	CompactorTenantShardSize *int32 `protobuf:"varint,49,opt,name=compactor_tenant_shard_size,json=compactorTenantShardSize,proto3,oneof" json:"compactor_tenant_shard_size,omitempty"`
-	// S3 server-side encryption type. Required to enable server-side encryption overrides for a specific tenant. If not set, the default S3 client settings are used.
-	S3SseType *string `protobuf:"bytes,50,opt,name=s3_sse_type,json=s3SseType,proto3,oneof" json:"s3_sse_type,omitempty"`
-	// S3 server-side encryption KMS Key ID. Ignored if the SSE type override is not set.
-	S3SseKmsKeyId *string `protobuf:"bytes,51,opt,name=s3_sse_kms_key_id,json=s3SseKmsKeyId,proto3,oneof" json:"s3_sse_kms_key_id,omitempty"`
-	// S3 server-side encryption KMS encryption context. If unset and the key ID override is set, the encryption context will not be provided to S3. Ignored if the SSE type override is not set.
-	S3SseKmsEncryptionContext *string `protobuf:"bytes,52,opt,name=s3_sse_kms_encryption_context,json=s3SseKmsEncryptionContext,proto3,oneof" json:"s3_sse_kms_encryption_context,omitempty"`
-	// Comma-separated list of network CIDRs to block in Alertmanager receiver integrations.
-	AlertmanagerReceiversFirewallBlockCidrNetworks []string `protobuf:"bytes,53,rep,name=alertmanager_receivers_firewall_block_cidr_networks,json=alertmanagerReceiversFirewallBlockCidrNetworks,proto3" json:"alertmanager_receivers_firewall_block_cidr_networks,omitempty"`
-	// True to block private and local addresses in Alertmanager receiver integrations. It blocks private addresses defined by  RFC 1918 (IPv4 addresses) and RFC 4193 (IPv6 addresses), as well as loopback, local unicast and local multicast addresses.
-	AlertmanagerReceiversFirewallBlockPrivateAddresses *bool `protobuf:"varint,54,opt,name=alertmanager_receivers_firewall_block_private_addresses,json=alertmanagerReceiversFirewallBlockPrivateAddresses,proto3,oneof" json:"alertmanager_receivers_firewall_block_private_addresses,omitempty"`
-	// Per-user rate limit for sending notifications from Alertmanager in notifications/sec. 0 = rate limit disabled. Negative value = no notifications are allowed.
-	AlertmanagerNotificationRateLimit *float64 `protobuf:"fixed64,55,opt,name=alertmanager_notification_rate_limit,json=alertmanagerNotificationRateLimit,proto3,oneof" json:"alertmanager_notification_rate_limit,omitempty"`
-	// Per-integration notification rate limits. Value is a map, where each key is integration name and value is a rate-limit (float). On command line, this map is given in JSON format. Rate limit has the same meaning as -alertmanager.notification-rate-limit, but only applies for specific integration. Allowed integration names: webhook, email, pagerduty, opsgenie, wechat, slack, victorops, pushover, sns, telegram, discord, webex, msteams.
-	AlertmanagerNotificationRateLimitPerIntegration map[string]float64 `protobuf:"bytes,56,rep,name=alertmanager_notification_rate_limit_per_integration,json=alertmanagerNotificationRateLimitPerIntegration,proto3" json:"alertmanager_notification_rate_limit_per_integration,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"fixed64,2,opt,name=value"`
-	// Maximum size of configuration file for Alertmanager that tenant can upload via Alertmanager API. 0 = no limit.
-	AlertmanagerMaxConfigSizeBytes *int32 `protobuf:"varint,57,opt,name=alertmanager_max_config_size_bytes,json=alertmanagerMaxConfigSizeBytes,proto3,oneof" json:"alertmanager_max_config_size_bytes,omitempty"`
-	// Maximum number of templates in tenant's Alertmanager configuration uploaded via Alertmanager API. 0 = no limit.
-	AlertmanagerMaxTemplatesCount *int32 `protobuf:"varint,58,opt,name=alertmanager_max_templates_count,json=alertmanagerMaxTemplatesCount,proto3,oneof" json:"alertmanager_max_templates_count,omitempty"`
-	// Maximum size of single template in tenant's Alertmanager configuration uploaded via Alertmanager API. 0 = no limit.
-	AlertmanagerMaxTemplateSizeBytes *int32 `protobuf:"varint,59,opt,name=alertmanager_max_template_size_bytes,json=alertmanagerMaxTemplateSizeBytes,proto3,oneof" json:"alertmanager_max_template_size_bytes,omitempty"`
-	// Maximum number of aggregation groups in Alertmanager's dispatcher that a tenant can have. Each active aggregation group uses single goroutine. When the limit is reached, dispatcher will not dispatch alerts that belong to additional aggregation groups, but existing groups will keep working properly. 0 = no limit.
-	AlertmanagerMaxDispatcherAggregationGroups *int32 `protobuf:"varint,60,opt,name=alertmanager_max_dispatcher_aggregation_groups,json=alertmanagerMaxDispatcherAggregationGroups,proto3,oneof" json:"alertmanager_max_dispatcher_aggregation_groups,omitempty"`
-	// Maximum number of alerts that a single user can have. Inserting more alerts will fail with a log message and metric increment. 0 = no limit.
-	AlertmanagerMaxAlertsCount *int32 `protobuf:"varint,61,opt,name=alertmanager_max_alerts_count,json=alertmanagerMaxAlertsCount,proto3,oneof" json:"alertmanager_max_alerts_count,omitempty"`
-	// Maximum total size of alerts that a single user can have, alert size is the sum of the bytes of its labels, annotations and generatorURL. Inserting more alerts will fail with a log message and metric increment. 0 = no limit.
-	AlertmanagerMaxAlertsSizeBytes *int32 `protobuf:"varint,62,opt,name=alertmanager_max_alerts_size_bytes,json=alertmanagerMaxAlertsSizeBytes,proto3,oneof" json:"alertmanager_max_alerts_size_bytes,omitempty"`
-	// list of rule groups to disable
-	DisabledRuleGroups []*DisabledRuleGroup `protobuf:"bytes,63,rep,name=disabled_rule_groups,json=disabledRuleGroups,proto3" json:"disabled_rule_groups,omitempty"`
+	AcceptHaSamples *bool `protobuf:"varint,6,opt,name=accept_ha_samples,json=acceptHaSamples,proto3,oneof" json:"accept_ha_samples,omitempty"`
 	// [Experimental] Flag to enable handling of samples with mixed external labels identifying replicas in an HA Prometheus setup. Supported only if -distributor.ha-tracker.enable-for-all-users is true.
-	AcceptMixedHaSamples *bool `protobuf:"varint,73,opt,name=accept_mixed_ha_samples,json=acceptMixedHaSamples,proto3,oneof" json:"accept_mixed_ha_samples,omitempty"`
+	AcceptMixedHaSamples *bool `protobuf:"varint,7,opt,name=accept_mixed_ha_samples,json=acceptMixedHaSamples,proto3,oneof" json:"accept_mixed_ha_samples,omitempty"`
+	// Prometheus label to look for in samples to identify a Prometheus HA cluster.
+	HaClusterLabel *string `protobuf:"bytes,8,opt,name=ha_cluster_label,json=haClusterLabel,proto3,oneof" json:"ha_cluster_label,omitempty"`
+	// Prometheus label to look for in samples to identify a Prometheus HA replica.
+	HaReplicaLabel *string `protobuf:"bytes,9,opt,name=ha_replica_label,json=haReplicaLabel,proto3,oneof" json:"ha_replica_label,omitempty"`
+	// Maximum number of clusters that HA tracker will keep track of for single user. 0 to disable the limit.
+	HaMaxClusters *int32 `protobuf:"varint,10,opt,name=ha_max_clusters,json=haMaxClusters,proto3,oneof" json:"ha_max_clusters,omitempty"`
+	// This flag can be used to specify label names that to drop during sample ingestion within the distributor and can be repeated in order to drop multiple labels.
+	DropLabels []string `protobuf:"bytes,11,rep,name=drop_labels,json=dropLabels,proto3" json:"drop_labels,omitempty"`
+	// Maximum length accepted for label names
+	MaxLabelNameLength *int32 `protobuf:"varint,12,opt,name=max_label_name_length,json=maxLabelNameLength,proto3,oneof" json:"max_label_name_length,omitempty"`
+	// Maximum length accepted for label value. This setting also applies to the metric name
+	MaxLabelValueLength *int32 `protobuf:"varint,13,opt,name=max_label_value_length,json=maxLabelValueLength,proto3,oneof" json:"max_label_value_length,omitempty"`
+	// Maximum number of label names per series.
+	MaxLabelNamesPerSeries *int32 `protobuf:"varint,14,opt,name=max_label_names_per_series,json=maxLabelNamesPerSeries,proto3,oneof" json:"max_label_names_per_series,omitempty"`
+	// Maximum combined size in bytes of all labels and label values accepted for a series. 0 to disable the limit.
+	MaxLabelsSizeBytes *int32 `protobuf:"varint,15,opt,name=max_labels_size_bytes,json=maxLabelsSizeBytes,proto3,oneof" json:"max_labels_size_bytes,omitempty"`
+	// Maximum size in bytes of a native histogram sample. 0 to disable the limit.
+	MaxNativeHistogramSampleSizeBytes *int32 `protobuf:"varint,16,opt,name=max_native_histogram_sample_size_bytes,json=maxNativeHistogramSampleSizeBytes,proto3,oneof" json:"max_native_histogram_sample_size_bytes,omitempty"`
+	// Maximum length accepted for metric metadata. Metadata refers to Metric Name, HELP and UNIT.
+	MaxMetadataLength *int32 `protobuf:"varint,17,opt,name=max_metadata_length,json=maxMetadataLength,proto3,oneof" json:"max_metadata_length,omitempty"`
+	// Reject old samples.
+	RejectOldSamples *bool `protobuf:"varint,18,opt,name=reject_old_samples,json=rejectOldSamples,proto3,oneof" json:"reject_old_samples,omitempty"`
+	// Maximum accepted sample age before rejecting.
+	RejectOldSamplesMaxAge *durationpb.Duration `protobuf:"bytes,19,opt,name=reject_old_samples_max_age,json=rejectOldSamplesMaxAge,proto3" json:"reject_old_samples_max_age,omitempty"`
+	// Duration which table will be created/deleted before/after it's needed; we won't accept sample from before this time.
+	CreationGracePeriod *durationpb.Duration `protobuf:"bytes,20,opt,name=creation_grace_period,json=creationGracePeriod,proto3" json:"creation_grace_period,omitempty"`
+	// Enforce every metadata has a metric name.
+	EnforceMetadataMetricName *bool `protobuf:"varint,21,opt,name=enforce_metadata_metric_name,json=enforceMetadataMetricName,proto3,oneof" json:"enforce_metadata_metric_name,omitempty"`
+	// Enforce every sample has a metric name.
+	EnforceMetricName *bool `protobuf:"varint,22,opt,name=enforce_metric_name,json=enforceMetricName,proto3,oneof" json:"enforce_metric_name,omitempty"`
+	// The default tenant's shard size when the shuffle-sharding strategy is used. Must be set both on ingesters and distributors. When this setting is specified in the per-tenant overrides, a value of 0 disables shuffle sharding for the tenant.
+	IngestionTenantShardSize *int32 `protobuf:"varint,23,opt,name=ingestion_tenant_shard_size,json=ingestionTenantShardSize,proto3,oneof" json:"ingestion_tenant_shard_size,omitempty"`
+	// List of metric relabel configurations. Note that in most situations, it is more effective to use metrics relabeling directly in the Prometheus server, e.g. remote_write.write_relabel_configs.
+	MetricRelabelConfigs []*RelabelConfig `protobuf:"bytes,24,rep,name=metric_relabel_configs,json=metricRelabelConfigs,proto3" json:"metric_relabel_configs,omitempty"`
+	// Limit on total number of positive and negative buckets allowed in a single native histogram. The resolution of a histogram with more buckets will be reduced until the number of buckets is within the limit. If the limit cannot be reached, the sample will be discarded. 0 means no limit. Enforced at Distributor.
+	MaxNativeHistogramBuckets *int32 `protobuf:"varint,25,opt,name=max_native_histogram_buckets,json=maxNativeHistogramBuckets,proto3,oneof" json:"max_native_histogram_buckets,omitempty"`
 	// Comma separated list of resource attributes that should be converted to labels.
-	PromoteResourceAttributes []string `protobuf:"bytes,74,rep,name=promote_resource_attributes,json=promoteResourceAttributes,proto3" json:"promote_resource_attributes,omitempty"`
+	PromoteResourceAttributes []string `protobuf:"bytes,26,rep,name=promote_resource_attributes,json=promoteResourceAttributes,proto3" json:"promote_resource_attributes,omitempty"`
+	// The maximum number of active series per user, per ingester. 0 to disable.
+	MaxSeriesPerUser *int32 `protobuf:"varint,27,opt,name=max_series_per_user,json=maxSeriesPerUser,proto3,oneof" json:"max_series_per_user,omitempty"`
+	// The maximum number of active series per metric name, per ingester. 0 to disable.
+	MaxSeriesPerMetric *int32 `protobuf:"varint,28,opt,name=max_series_per_metric,json=maxSeriesPerMetric,proto3,oneof" json:"max_series_per_metric,omitempty"`
+	// The maximum number of active native histogram series per user, per ingester. 0 to disable. Supported only if ingester.active-series-metrics-enabled is true.
+	MaxNativeHistogramSeriesPerUser *int32 `protobuf:"varint,29,opt,name=max_native_histogram_series_per_user,json=maxNativeHistogramSeriesPerUser,proto3,oneof" json:"max_native_histogram_series_per_user,omitempty"`
+	// The maximum number of active series per user, across the cluster before replication. 0 to disable. Supported only if -distributor.shard-by-all-labels is true.
+	MaxGlobalSeriesPerUser *int32 `protobuf:"varint,30,opt,name=max_global_series_per_user,json=maxGlobalSeriesPerUser,proto3,oneof" json:"max_global_series_per_user,omitempty"`
+	// The maximum number of active series per metric name, across the cluster before replication. 0 to disable.
+	MaxGlobalSeriesPerMetric *int32 `protobuf:"varint,31,opt,name=max_global_series_per_metric,json=maxGlobalSeriesPerMetric,proto3,oneof" json:"max_global_series_per_metric,omitempty"`
+	// The maximum number of active native histogram series per user, across the cluster before replication. 0 to disable. Supported only if -distributor.shard-by-all-labels and ingester.active-series-metrics-enabled is true.
+	MaxGlobalNativeHistogramSeriesPerUser *int32 `protobuf:"varint,32,opt,name=max_global_native_histogram_series_per_user,json=maxGlobalNativeHistogramSeriesPerUser,proto3,oneof" json:"max_global_native_histogram_series_per_user,omitempty"`
 	// [Experimental] Enable limits per LabelSet. Supported limits per labelSet: [max_series]
-	LimitsPerLabelSet []*LimitsPerLabelSet `protobuf:"bytes,75,rep,name=limits_per_label_set,json=limitsPerLabelSet,proto3" json:"limits_per_label_set,omitempty"`
+	LimitsPerLabelSet []*LimitsPerLabelSet `protobuf:"bytes,33,rep,name=limits_per_label_set,json=limitsPerLabelSet,proto3" json:"limits_per_label_set,omitempty"`
+	// [EXPERIMENTAL] True to enable native histogram.
+	EnableNativeHistograms *bool `protobuf:"varint,34,opt,name=enable_native_histograms,json=enableNativeHistograms,proto3,oneof" json:"enable_native_histograms,omitempty"`
+	// The maximum number of active metrics with metadata per user, per ingester. 0 to disable.
+	MaxMetadataPerUser *int32 `protobuf:"varint,35,opt,name=max_metadata_per_user,json=maxMetadataPerUser,proto3,oneof" json:"max_metadata_per_user,omitempty"`
+	// The maximum number of metadata per metric, per ingester. 0 to disable.
+	MaxMetadataPerMetric *int32 `protobuf:"varint,36,opt,name=max_metadata_per_metric,json=maxMetadataPerMetric,proto3,oneof" json:"max_metadata_per_metric,omitempty"`
+	// The maximum number of active metrics with metadata per user, across the cluster. 0 to disable. Supported only if -distributor.shard-by-all-labels is true.
+	MaxGlobalMetadataPerUser *int32 `protobuf:"varint,37,opt,name=max_global_metadata_per_user,json=maxGlobalMetadataPerUser,proto3,oneof" json:"max_global_metadata_per_user,omitempty"`
+	// The maximum number of metadata per metric, across the cluster. 0 to disable.
+	MaxGlobalMetadataPerMetric *int32 `protobuf:"varint,38,opt,name=max_global_metadata_per_metric,json=maxGlobalMetadataPerMetric,proto3,oneof" json:"max_global_metadata_per_metric,omitempty"`
+	// [Experimental] Configures the allowed time window for ingestion of out-of-order samples. Disabled (0s) by default.
+	OutOfOrderTimeWindow *durationpb.Duration `protobuf:"bytes,39,opt,name=out_of_order_time_window,json=outOfOrderTimeWindow,proto3" json:"out_of_order_time_window,omitempty"`
+	// Enables support for exemplars in TSDB and sets the maximum number that will be stored. less than zero means disabled. If the value is set to zero, cortex will fallback to blocks-storage.tsdb.max-exemplars value.
+	MaxExemplars *int32 `protobuf:"varint,40,opt,name=max_exemplars,json=maxExemplars,proto3,oneof" json:"max_exemplars,omitempty"`
+	// Maximum number of chunks that can be fetched in a single query from ingesters and long-term storage. This limit is enforced in the querier, ruler and store-gateway. 0 to disable.
+	MaxFetchedChunksPerQuery *int32 `protobuf:"varint,41,opt,name=max_fetched_chunks_per_query,json=maxFetchedChunksPerQuery,proto3,oneof" json:"max_fetched_chunks_per_query,omitempty"`
+	// The maximum number of unique series for which a query can fetch samples from each ingesters and blocks storage. This limit is enforced in the querier, ruler and store-gateway. 0 to disable
+	MaxFetchedSeriesPerQuery *int32 `protobuf:"varint,42,opt,name=max_fetched_series_per_query,json=maxFetchedSeriesPerQuery,proto3,oneof" json:"max_fetched_series_per_query,omitempty"`
+	// Deprecated (use max-fetched-data-bytes-per-query instead): The maximum size of all chunks in bytes that a query can fetch from each ingester and storage. This limit is enforced in the querier, ruler and store-gateway. 0 to disable.
+	MaxFetchedChunkBytesPerQuery *int32 `protobuf:"varint,43,opt,name=max_fetched_chunk_bytes_per_query,json=maxFetchedChunkBytesPerQuery,proto3,oneof" json:"max_fetched_chunk_bytes_per_query,omitempty"`
+	// The maximum combined size of all data that a query can fetch from each ingester and storage. This limit is enforced in the querier and ruler for `query`, `query_range` and `series` APIs. 0 to disable.
+	MaxFetchedDataBytesPerQuery *int32 `protobuf:"varint,44,opt,name=max_fetched_data_bytes_per_query,json=maxFetchedDataBytesPerQuery,proto3,oneof" json:"max_fetched_data_bytes_per_query,omitempty"`
+	// Limit how long back data (series and metadata) can be queried, up until <lookback> duration ago. This limit is enforced in the query-frontend, querier and ruler. If the requested time range is outside the allowed range, the request will not fail but will be manipulated to only query data within the allowed time range. 0 to disable.
+	MaxQueryLookback *durationpb.Duration `protobuf:"bytes,45,opt,name=max_query_lookback,json=maxQueryLookback,proto3" json:"max_query_lookback,omitempty"`
+	// Limit the query time range (end - start time of range query parameter and max - min of data fetched time range). This limit is enforced in the query-frontend and ruler (on the received query). 0 to disable.
+	MaxQueryLength *durationpb.Duration `protobuf:"bytes,46,opt,name=max_query_length,json=maxQueryLength,proto3" json:"max_query_length,omitempty"`
+	// Maximum number of split queries will be scheduled in parallel by the frontend.
+	MaxQueryParallelism *int32 `protobuf:"varint,47,opt,name=max_query_parallelism,json=maxQueryParallelism,proto3,oneof" json:"max_query_parallelism,omitempty"`
+	// The maximum total uncompressed query response size. If the query was sharded the limit is applied to the total response size of all shards. This limit is enforced in query-frontend for `query` and `query_range` APIs. 0 to disable.
+	MaxQueryResponseSize *int64 `protobuf:"varint,48,opt,name=max_query_response_size,json=maxQueryResponseSize,proto3,oneof" json:"max_query_response_size,omitempty"`
+	// Most recent allowed cacheable result per-tenant, to prevent caching very recent results that might still be in flux.
+	MaxCacheFreshness *durationpb.Duration `protobuf:"bytes,49,opt,name=max_cache_freshness,json=maxCacheFreshness,proto3" json:"max_cache_freshness,omitempty"`
+	// Maximum number of queriers that can handle requests for a single tenant. If set to 0 or value higher than number of available queriers, *all* queriers will handle requests for the tenant. If the value is < 1, it will be treated as a percentage and the gets a percentage of the total queriers. Each frontend (or query-scheduler, if used) will select the same set of queriers for the same tenant (given that all queriers are connected to all frontends / query-schedulers). This option only works with queriers connecting to the query-frontend / query-scheduler, not when using downstream URL.
+	MaxQueriersPerTenant *float64 `protobuf:"fixed64,50,opt,name=max_queriers_per_tenant,json=maxQueriersPerTenant,proto3,oneof" json:"max_queriers_per_tenant,omitempty"`
+	// [Experimental] Number of shards to use when distributing shardable PromQL queries.
+	QueryVerticalShardSize *int32 `protobuf:"varint,51,opt,name=query_vertical_shard_size,json=queryVerticalShardSize,proto3,oneof" json:"query_vertical_shard_size,omitempty"`
+	// Enable to allow queries to be evaluated with data from a single zone, if other zones are not available.
+	QueryPartialData *bool `protobuf:"varint,52,opt,name=query_partial_data,json=queryPartialData,proto3,oneof" json:"query_partial_data,omitempty"`
+	// Maximum number of outstanding requests per tenant per request queue (either query frontend or query scheduler); requests beyond this error with HTTP 429.
+	MaxOutstandingRequestsPerTenant *int32 `protobuf:"varint,53,opt,name=max_outstanding_requests_per_tenant,json=maxOutstandingRequestsPerTenant,proto3,oneof" json:"max_outstanding_requests_per_tenant,omitempty"`
 	// Configuration for query priority.
-	QueryPriority *QueryPriority `protobuf:"bytes,76,opt,name=query_priority,json=queryPriority,proto3" json:"query_priority,omitempty"`
+	QueryPriority *QueryPriority `protobuf:"bytes,54,opt,name=query_priority,json=queryPriority,proto3" json:"query_priority,omitempty"`
 	// Configuration for query rejection.
-	QueryRejection *QueryRejection `protobuf:"bytes,77,opt,name=query_rejection,json=queryRejection,proto3" json:"query_rejection,omitempty"`
+	QueryRejection *QueryRejection `protobuf:"bytes,55,opt,name=query_rejection,json=queryRejection,proto3" json:"query_rejection,omitempty"`
+	// Deprecated(use ruler.query-offset instead) and will be removed in v1.19.0: Duration to delay the evaluation of rules to ensure the underlying metrics have been pushed to Cortex.
+	RulerEvaluationDelayDuration *durationpb.Duration `protobuf:"bytes,56,opt,name=ruler_evaluation_delay_duration,json=rulerEvaluationDelayDuration,proto3" json:"ruler_evaluation_delay_duration,omitempty"`
+	// The default tenant's shard size when the shuffle-sharding strategy is used by ruler. When this setting is specified in the per-tenant overrides, a value of 0 disables shuffle sharding for the tenant. If the value is < 1 the shard size will be a percentage of the total rulers.
+	RulerTenantShardSize *float64 `protobuf:"fixed64,57,opt,name=ruler_tenant_shard_size,json=rulerTenantShardSize,proto3,oneof" json:"ruler_tenant_shard_size,omitempty"`
+	// Maximum number of rules per rule group per-tenant. 0 to disable.
+	RulerMaxRulesPerRuleGroup *int32 `protobuf:"varint,58,opt,name=ruler_max_rules_per_rule_group,json=rulerMaxRulesPerRuleGroup,proto3,oneof" json:"ruler_max_rules_per_rule_group,omitempty"`
+	// Maximum number of rule groups per-tenant. 0 to disable.
+	RulerMaxRuleGroupsPerTenant *int32 `protobuf:"varint,59,opt,name=ruler_max_rule_groups_per_tenant,json=rulerMaxRuleGroupsPerTenant,proto3,oneof" json:"ruler_max_rule_groups_per_tenant,omitempty"`
 	// Duration to offset all rule evaluation queries per-tenant.
-	RulerQueryOffset *durationpb.Duration `protobuf:"bytes,78,opt,name=ruler_query_offset,json=rulerQueryOffset,proto3" json:"ruler_query_offset,omitempty"`
+	RulerQueryOffset *durationpb.Duration `protobuf:"bytes,60,opt,name=ruler_query_offset,json=rulerQueryOffset,proto3" json:"ruler_query_offset,omitempty"`
 	// external labels for alerting rules
-	RulerExternalLabels []*LabelsLabel `protobuf:"bytes,79,rep,name=ruler_external_labels,json=rulerExternalLabels,proto3" json:"ruler_external_labels,omitempty"`
+	RulerExternalLabels *LabelsLabels `protobuf:"bytes,61,opt,name=ruler_external_labels,json=rulerExternalLabels,proto3" json:"ruler_external_labels,omitempty"`
+	// Enable to allow rules to be evaluated with data from a single zone, if other zones are not available.
+	RulesPartialData *bool `protobuf:"varint,62,opt,name=rules_partial_data,json=rulesPartialData,proto3,oneof" json:"rules_partial_data,omitempty"`
+	// The default tenant's shard size when the shuffle-sharding strategy is used. Must be set when the store-gateway sharding is enabled with the shuffle-sharding strategy. When this setting is specified in the per-tenant overrides, a value of 0 disables shuffle sharding for the tenant. If the value is < 1 the shard size will be a percentage of the total store-gateways.
+	StoreGatewayTenantShardSize *float64 `protobuf:"fixed64,63,opt,name=store_gateway_tenant_shard_size,json=storeGatewayTenantShardSize,proto3,oneof" json:"store_gateway_tenant_shard_size,omitempty"`
+	// The maximum number of data bytes to download per gRPC request in Store Gateway, including Series/LabelNames/LabelValues requests. 0 to disable.
+	MaxDownloadedBytesPerRequest *int32 `protobuf:"varint,64,opt,name=max_downloaded_bytes_per_request,json=maxDownloadedBytesPerRequest,proto3,oneof" json:"max_downloaded_bytes_per_request,omitempty"`
+	// Delete blocks containing samples older than the specified retention period. 0 to disable.
+	CompactorBlocksRetentionPeriod *durationpb.Duration `protobuf:"bytes,65,opt,name=compactor_blocks_retention_period,json=compactorBlocksRetentionPeriod,proto3" json:"compactor_blocks_retention_period,omitempty"`
+	// The default tenant's shard size when the shuffle-sharding strategy is used by the compactor. When this setting is specified in the per-tenant overrides, a value of 0 disables shuffle sharding for the tenant. If the value is < 1 and > 0 the shard size will be a percentage of the total compactors
+	CompactorTenantShardSize *float64 `protobuf:"fixed64,66,opt,name=compactor_tenant_shard_size,json=compactorTenantShardSize,proto3,oneof" json:"compactor_tenant_shard_size,omitempty"`
 	// Index size limit in bytes for each compaction partition. 0 means no limit
-	CompactorPartitionIndexSizeBytes *int64 `protobuf:"varint,80,opt,name=compactor_partition_index_size_bytes,json=compactorPartitionIndexSizeBytes,proto3,oneof" json:"compactor_partition_index_size_bytes,omitempty"`
+	CompactorPartitionIndexSizeBytes *int64 `protobuf:"varint,67,opt,name=compactor_partition_index_size_bytes,json=compactorPartitionIndexSizeBytes,proto3,oneof" json:"compactor_partition_index_size_bytes,omitempty"`
 	// Time series count limit for each compaction partition. 0 means no limit
-	CompactorPartitionSeriesCount *int64 `protobuf:"varint,81,opt,name=compactor_partition_series_count,json=compactorPartitionSeriesCount,proto3,oneof" json:"compactor_partition_series_count,omitempty"`
-	unknownFields                 protoimpl.UnknownFields
-	sizeCache                     protoimpl.SizeCache
+	CompactorPartitionSeriesCount *int64 `protobuf:"varint,68,opt,name=compactor_partition_series_count,json=compactorPartitionSeriesCount,proto3,oneof" json:"compactor_partition_series_count,omitempty"`
+	// S3 server-side encryption type. Required to enable server-side encryption overrides for a specific tenant. If not set, the default S3 client settings are used.
+	S3SseType *string `protobuf:"bytes,69,opt,name=s3_sse_type,json=s3SseType,proto3,oneof" json:"s3_sse_type,omitempty"`
+	// S3 server-side encryption KMS Key ID. Ignored if the SSE type override is not set.
+	S3SseKmsKeyId *string `protobuf:"bytes,70,opt,name=s3_sse_kms_key_id,json=s3SseKmsKeyId,proto3,oneof" json:"s3_sse_kms_key_id,omitempty"`
+	// S3 server-side encryption KMS encryption context. If unset and the key ID override is set, the encryption context will not be provided to S3. Ignored if the SSE type override is not set.
+	S3SseKmsEncryptionContext *string `protobuf:"bytes,71,opt,name=s3_sse_kms_encryption_context,json=s3SseKmsEncryptionContext,proto3,oneof" json:"s3_sse_kms_encryption_context,omitempty"`
+	// Comma-separated list of network CIDRs to block in Alertmanager receiver integrations.
+	AlertmanagerReceiversFirewallBlockCidrNetworks []string `protobuf:"bytes,72,rep,name=alertmanager_receivers_firewall_block_cidr_networks,json=alertmanagerReceiversFirewallBlockCidrNetworks,proto3" json:"alertmanager_receivers_firewall_block_cidr_networks,omitempty"`
+	// True to block private and local addresses in Alertmanager receiver integrations. It blocks private addresses defined by  RFC 1918 (IPv4 addresses) and RFC 4193 (IPv6 addresses), as well as loopback, local unicast and local multicast addresses.
+	AlertmanagerReceiversFirewallBlockPrivateAddresses *bool `protobuf:"varint,73,opt,name=alertmanager_receivers_firewall_block_private_addresses,json=alertmanagerReceiversFirewallBlockPrivateAddresses,proto3,oneof" json:"alertmanager_receivers_firewall_block_private_addresses,omitempty"`
+	// Per-user rate limit for sending notifications from Alertmanager in notifications/sec. 0 = rate limit disabled. Negative value = no notifications are allowed.
+	AlertmanagerNotificationRateLimit *float64 `protobuf:"fixed64,74,opt,name=alertmanager_notification_rate_limit,json=alertmanagerNotificationRateLimit,proto3,oneof" json:"alertmanager_notification_rate_limit,omitempty"`
+	// Per-integration notification rate limits. Value is a map, where each key is integration name and value is a rate-limit (float). On command line, this map is given in JSON format. Rate limit has the same meaning as -alertmanager.notification-rate-limit, but only applies for specific integration. Allowed integration names: webhook, email, pagerduty, opsgenie, wechat, slack, victorops, pushover, sns, telegram, discord, webex, msteams, msteamsv2, jira, rocketchat.
+	AlertmanagerNotificationRateLimitPerIntegration map[string]float64 `protobuf:"bytes,75,rep,name=alertmanager_notification_rate_limit_per_integration,json=alertmanagerNotificationRateLimitPerIntegration,proto3" json:"alertmanager_notification_rate_limit_per_integration,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"fixed64,2,opt,name=value"`
+	// Maximum size of configuration file for Alertmanager that tenant can upload via Alertmanager API. 0 = no limit.
+	AlertmanagerMaxConfigSizeBytes *int32 `protobuf:"varint,76,opt,name=alertmanager_max_config_size_bytes,json=alertmanagerMaxConfigSizeBytes,proto3,oneof" json:"alertmanager_max_config_size_bytes,omitempty"`
+	// Maximum number of templates in tenant's Alertmanager configuration uploaded via Alertmanager API. 0 = no limit.
+	AlertmanagerMaxTemplatesCount *int32 `protobuf:"varint,77,opt,name=alertmanager_max_templates_count,json=alertmanagerMaxTemplatesCount,proto3,oneof" json:"alertmanager_max_templates_count,omitempty"`
+	// Maximum size of single template in tenant's Alertmanager configuration uploaded via Alertmanager API. 0 = no limit.
+	AlertmanagerMaxTemplateSizeBytes *int32 `protobuf:"varint,78,opt,name=alertmanager_max_template_size_bytes,json=alertmanagerMaxTemplateSizeBytes,proto3,oneof" json:"alertmanager_max_template_size_bytes,omitempty"`
+	// Maximum number of aggregation groups in Alertmanager's dispatcher that a tenant can have. Each active aggregation group uses single goroutine. When the limit is reached, dispatcher will not dispatch alerts that belong to additional aggregation groups, but existing groups will keep working properly. 0 = no limit.
+	AlertmanagerMaxDispatcherAggregationGroups *int32 `protobuf:"varint,79,opt,name=alertmanager_max_dispatcher_aggregation_groups,json=alertmanagerMaxDispatcherAggregationGroups,proto3,oneof" json:"alertmanager_max_dispatcher_aggregation_groups,omitempty"`
+	// Maximum number of alerts that a single user can have. Inserting more alerts will fail with a log message and metric increment. 0 = no limit.
+	AlertmanagerMaxAlertsCount *int32 `protobuf:"varint,80,opt,name=alertmanager_max_alerts_count,json=alertmanagerMaxAlertsCount,proto3,oneof" json:"alertmanager_max_alerts_count,omitempty"`
+	// Maximum total size of alerts that a single user can have, alert size is the sum of the bytes of its labels, annotations and generatorURL. Inserting more alerts will fail with a log message and metric increment. 0 = no limit.
+	AlertmanagerMaxAlertsSizeBytes *int32 `protobuf:"varint,81,opt,name=alertmanager_max_alerts_size_bytes,json=alertmanagerMaxAlertsSizeBytes,proto3,oneof" json:"alertmanager_max_alerts_size_bytes,omitempty"`
+	// Maximum number of silences that a single user can have, including expired silences. 0 = no limit.
+	AlertmanagerMaxSilencesCount *int32 `protobuf:"varint,82,opt,name=alertmanager_max_silences_count,json=alertmanagerMaxSilencesCount,proto3,oneof" json:"alertmanager_max_silences_count,omitempty"`
+	// Maximum size of individual silences that a single user can have. 0 = no limit.
+	AlertmanagerMaxSilencesSizeBytes *int32 `protobuf:"varint,83,opt,name=alertmanager_max_silences_size_bytes,json=alertmanagerMaxSilencesSizeBytes,proto3,oneof" json:"alertmanager_max_silences_size_bytes,omitempty"`
+	// list of rule groups to disable
+	DisabledRuleGroups []*DisabledRuleGroup `protobuf:"bytes,84,rep,name=disabled_rule_groups,json=disabledRuleGroups,proto3" json:"disabled_rule_groups,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
 }
 
 func (x *Limits) Reset() {
@@ -214,6 +238,13 @@ func (x *Limits) GetIngestionRate() float64 {
 	return 0
 }
 
+func (x *Limits) GetNativeHistogramIngestionRate() float64 {
+	if x != nil && x.NativeHistogramIngestionRate != nil {
+		return *x.NativeHistogramIngestionRate
+	}
+	return 0
+}
+
 func (x *Limits) GetIngestionRateStrategy() string {
 	if x != nil && x.IngestionRateStrategy != nil {
 		return *x.IngestionRateStrategy
@@ -228,9 +259,23 @@ func (x *Limits) GetIngestionBurstSize() int32 {
 	return 0
 }
 
+func (x *Limits) GetNativeHistogramIngestionBurstSize() int32 {
+	if x != nil && x.NativeHistogramIngestionBurstSize != nil {
+		return *x.NativeHistogramIngestionBurstSize
+	}
+	return 0
+}
+
 func (x *Limits) GetAcceptHaSamples() bool {
 	if x != nil && x.AcceptHaSamples != nil {
 		return *x.AcceptHaSamples
+	}
+	return false
+}
+
+func (x *Limits) GetAcceptMixedHaSamples() bool {
+	if x != nil && x.AcceptMixedHaSamples != nil {
+		return *x.AcceptMixedHaSamples
 	}
 	return false
 }
@@ -291,6 +336,13 @@ func (x *Limits) GetMaxLabelsSizeBytes() int32 {
 	return 0
 }
 
+func (x *Limits) GetMaxNativeHistogramSampleSizeBytes() int32 {
+	if x != nil && x.MaxNativeHistogramSampleSizeBytes != nil {
+		return *x.MaxNativeHistogramSampleSizeBytes
+	}
+	return 0
+}
+
 func (x *Limits) GetMaxMetadataLength() int32 {
 	if x != nil && x.MaxMetadataLength != nil {
 		return *x.MaxMetadataLength
@@ -347,18 +399,18 @@ func (x *Limits) GetMetricRelabelConfigs() []*RelabelConfig {
 	return nil
 }
 
-func (x *Limits) GetMaxExemplars() int32 {
-	if x != nil && x.MaxExemplars != nil {
-		return *x.MaxExemplars
-	}
-	return 0
-}
-
 func (x *Limits) GetMaxNativeHistogramBuckets() int32 {
 	if x != nil && x.MaxNativeHistogramBuckets != nil {
 		return *x.MaxNativeHistogramBuckets
 	}
 	return 0
+}
+
+func (x *Limits) GetPromoteResourceAttributes() []string {
+	if x != nil {
+		return x.PromoteResourceAttributes
+	}
+	return nil
 }
 
 func (x *Limits) GetMaxSeriesPerUser() int32 {
@@ -375,6 +427,13 @@ func (x *Limits) GetMaxSeriesPerMetric() int32 {
 	return 0
 }
 
+func (x *Limits) GetMaxNativeHistogramSeriesPerUser() int32 {
+	if x != nil && x.MaxNativeHistogramSeriesPerUser != nil {
+		return *x.MaxNativeHistogramSeriesPerUser
+	}
+	return 0
+}
+
 func (x *Limits) GetMaxGlobalSeriesPerUser() int32 {
 	if x != nil && x.MaxGlobalSeriesPerUser != nil {
 		return *x.MaxGlobalSeriesPerUser
@@ -387,6 +446,27 @@ func (x *Limits) GetMaxGlobalSeriesPerMetric() int32 {
 		return *x.MaxGlobalSeriesPerMetric
 	}
 	return 0
+}
+
+func (x *Limits) GetMaxGlobalNativeHistogramSeriesPerUser() int32 {
+	if x != nil && x.MaxGlobalNativeHistogramSeriesPerUser != nil {
+		return *x.MaxGlobalNativeHistogramSeriesPerUser
+	}
+	return 0
+}
+
+func (x *Limits) GetLimitsPerLabelSet() []*LimitsPerLabelSet {
+	if x != nil {
+		return x.LimitsPerLabelSet
+	}
+	return nil
+}
+
+func (x *Limits) GetEnableNativeHistograms() bool {
+	if x != nil && x.EnableNativeHistograms != nil {
+		return *x.EnableNativeHistograms
+	}
+	return false
 }
 
 func (x *Limits) GetMaxMetadataPerUser() int32 {
@@ -422,6 +502,13 @@ func (x *Limits) GetOutOfOrderTimeWindow() *durationpb.Duration {
 		return x.OutOfOrderTimeWindow
 	}
 	return nil
+}
+
+func (x *Limits) GetMaxExemplars() int32 {
+	if x != nil && x.MaxExemplars != nil {
+		return *x.MaxExemplars
+	}
+	return 0
 }
 
 func (x *Limits) GetMaxFetchedChunksPerQuery() int32 {
@@ -473,6 +560,13 @@ func (x *Limits) GetMaxQueryParallelism() int32 {
 	return 0
 }
 
+func (x *Limits) GetMaxQueryResponseSize() int64 {
+	if x != nil && x.MaxQueryResponseSize != nil {
+		return *x.MaxQueryResponseSize
+	}
+	return 0
+}
+
 func (x *Limits) GetMaxCacheFreshness() *durationpb.Duration {
 	if x != nil {
 		return x.MaxCacheFreshness
@@ -487,11 +581,39 @@ func (x *Limits) GetMaxQueriersPerTenant() float64 {
 	return 0
 }
 
+func (x *Limits) GetQueryVerticalShardSize() int32 {
+	if x != nil && x.QueryVerticalShardSize != nil {
+		return *x.QueryVerticalShardSize
+	}
+	return 0
+}
+
+func (x *Limits) GetQueryPartialData() bool {
+	if x != nil && x.QueryPartialData != nil {
+		return *x.QueryPartialData
+	}
+	return false
+}
+
 func (x *Limits) GetMaxOutstandingRequestsPerTenant() int32 {
 	if x != nil && x.MaxOutstandingRequestsPerTenant != nil {
 		return *x.MaxOutstandingRequestsPerTenant
 	}
 	return 0
+}
+
+func (x *Limits) GetQueryPriority() *QueryPriority {
+	if x != nil {
+		return x.QueryPriority
+	}
+	return nil
+}
+
+func (x *Limits) GetQueryRejection() *QueryRejection {
+	if x != nil {
+		return x.QueryRejection
+	}
+	return nil
 }
 
 func (x *Limits) GetRulerEvaluationDelayDuration() *durationpb.Duration {
@@ -501,7 +623,7 @@ func (x *Limits) GetRulerEvaluationDelayDuration() *durationpb.Duration {
 	return nil
 }
 
-func (x *Limits) GetRulerTenantShardSize() int32 {
+func (x *Limits) GetRulerTenantShardSize() float64 {
 	if x != nil && x.RulerTenantShardSize != nil {
 		return *x.RulerTenantShardSize
 	}
@@ -520,6 +642,27 @@ func (x *Limits) GetRulerMaxRuleGroupsPerTenant() int32 {
 		return *x.RulerMaxRuleGroupsPerTenant
 	}
 	return 0
+}
+
+func (x *Limits) GetRulerQueryOffset() *durationpb.Duration {
+	if x != nil {
+		return x.RulerQueryOffset
+	}
+	return nil
+}
+
+func (x *Limits) GetRulerExternalLabels() *LabelsLabels {
+	if x != nil {
+		return x.RulerExternalLabels
+	}
+	return nil
+}
+
+func (x *Limits) GetRulesPartialData() bool {
+	if x != nil && x.RulesPartialData != nil {
+		return *x.RulesPartialData
+	}
+	return false
 }
 
 func (x *Limits) GetStoreGatewayTenantShardSize() float64 {
@@ -543,9 +686,23 @@ func (x *Limits) GetCompactorBlocksRetentionPeriod() *durationpb.Duration {
 	return nil
 }
 
-func (x *Limits) GetCompactorTenantShardSize() int32 {
+func (x *Limits) GetCompactorTenantShardSize() float64 {
 	if x != nil && x.CompactorTenantShardSize != nil {
 		return *x.CompactorTenantShardSize
+	}
+	return 0
+}
+
+func (x *Limits) GetCompactorPartitionIndexSizeBytes() int64 {
+	if x != nil && x.CompactorPartitionIndexSizeBytes != nil {
+		return *x.CompactorPartitionIndexSizeBytes
+	}
+	return 0
+}
+
+func (x *Limits) GetCompactorPartitionSeriesCount() int64 {
+	if x != nil && x.CompactorPartitionSeriesCount != nil {
+		return *x.CompactorPartitionSeriesCount
 	}
 	return 0
 }
@@ -641,74 +798,25 @@ func (x *Limits) GetAlertmanagerMaxAlertsSizeBytes() int32 {
 	return 0
 }
 
+func (x *Limits) GetAlertmanagerMaxSilencesCount() int32 {
+	if x != nil && x.AlertmanagerMaxSilencesCount != nil {
+		return *x.AlertmanagerMaxSilencesCount
+	}
+	return 0
+}
+
+func (x *Limits) GetAlertmanagerMaxSilencesSizeBytes() int32 {
+	if x != nil && x.AlertmanagerMaxSilencesSizeBytes != nil {
+		return *x.AlertmanagerMaxSilencesSizeBytes
+	}
+	return 0
+}
+
 func (x *Limits) GetDisabledRuleGroups() []*DisabledRuleGroup {
 	if x != nil {
 		return x.DisabledRuleGroups
 	}
 	return nil
-}
-
-func (x *Limits) GetAcceptMixedHaSamples() bool {
-	if x != nil && x.AcceptMixedHaSamples != nil {
-		return *x.AcceptMixedHaSamples
-	}
-	return false
-}
-
-func (x *Limits) GetPromoteResourceAttributes() []string {
-	if x != nil {
-		return x.PromoteResourceAttributes
-	}
-	return nil
-}
-
-func (x *Limits) GetLimitsPerLabelSet() []*LimitsPerLabelSet {
-	if x != nil {
-		return x.LimitsPerLabelSet
-	}
-	return nil
-}
-
-func (x *Limits) GetQueryPriority() *QueryPriority {
-	if x != nil {
-		return x.QueryPriority
-	}
-	return nil
-}
-
-func (x *Limits) GetQueryRejection() *QueryRejection {
-	if x != nil {
-		return x.QueryRejection
-	}
-	return nil
-}
-
-func (x *Limits) GetRulerQueryOffset() *durationpb.Duration {
-	if x != nil {
-		return x.RulerQueryOffset
-	}
-	return nil
-}
-
-func (x *Limits) GetRulerExternalLabels() []*LabelsLabel {
-	if x != nil {
-		return x.RulerExternalLabels
-	}
-	return nil
-}
-
-func (x *Limits) GetCompactorPartitionIndexSizeBytes() int64 {
-	if x != nil && x.CompactorPartitionIndexSizeBytes != nil {
-		return *x.CompactorPartitionIndexSizeBytes
-	}
-	return 0
-}
-
-func (x *Limits) GetCompactorPartitionSeriesCount() int64 {
-	if x != nil && x.CompactorPartitionSeriesCount != nil {
-		return *x.CompactorPartitionSeriesCount
-	}
-	return 0
 }
 
 type DisabledRuleGroup struct {
@@ -769,7 +877,7 @@ type LimitsPerLabelSet struct {
 	state  protoimpl.MessageState  `protogen:"open.v1"`
 	Limits *LimitsPerLabelSetEntry `protobuf:"bytes,1,opt,name=limits,proto3" json:"limits,omitempty"`
 	// LabelSet which the limit should be applied. If no labels are provided, it becomes the default partition which matches any series that doesn't match any other explicitly defined label sets.'
-	LabelSet      []*LabelsLabel `protobuf:"bytes,2,rep,name=label_set,json=labelSet,proto3" json:"label_set,omitempty"`
+	LabelSet      *LabelsLabels `protobuf:"bytes,2,opt,name=label_set,json=labelSet,proto3" json:"label_set,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -811,7 +919,7 @@ func (x *LimitsPerLabelSet) GetLimits() *LimitsPerLabelSetEntry {
 	return nil
 }
 
-func (x *LimitsPerLabelSet) GetLabelSet() []*LabelsLabel {
+func (x *LimitsPerLabelSet) GetLabelSet() *LabelsLabels {
 	if x != nil {
 		return x.LabelSet
 	}
@@ -1326,28 +1434,26 @@ func (x *TimeWindow) GetEnd() *durationpb.Duration {
 	return nil
 }
 
-type LabelsLabel struct {
+type LabelsLabels struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Name          *string                `protobuf:"bytes,1,opt,name=Name,proto3,oneof" json:"Name,omitempty"`
-	Value         *string                `protobuf:"bytes,2,opt,name=Value,proto3,oneof" json:"Value,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *LabelsLabel) Reset() {
-	*x = LabelsLabel{}
+func (x *LabelsLabels) Reset() {
+	*x = LabelsLabels{}
 	mi := &file_github_com_aity_cloud_monty_internal_cortex_config_validation_limits_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *LabelsLabel) String() string {
+func (x *LabelsLabels) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*LabelsLabel) ProtoMessage() {}
+func (*LabelsLabels) ProtoMessage() {}
 
-func (x *LabelsLabel) ProtoReflect() protoreflect.Message {
+func (x *LabelsLabels) ProtoReflect() protoreflect.Message {
 	mi := &file_github_com_aity_cloud_monty_internal_cortex_config_validation_limits_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -1359,23 +1465,9 @@ func (x *LabelsLabel) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use LabelsLabel.ProtoReflect.Descriptor instead.
-func (*LabelsLabel) Descriptor() ([]byte, []int) {
+// Deprecated: Use LabelsLabels.ProtoReflect.Descriptor instead.
+func (*LabelsLabels) Descriptor() ([]byte, []int) {
 	return file_github_com_aity_cloud_monty_internal_cortex_config_validation_limits_proto_rawDescGZIP(), []int{11}
-}
-
-func (x *LabelsLabel) GetName() string {
-	if x != nil && x.Name != nil {
-		return *x.Name
-	}
-	return ""
-}
-
-func (x *LabelsLabel) GetValue() string {
-	if x != nil && x.Value != nil {
-		return *x.Value
-	}
-	return ""
 }
 
 type RelabelConfig struct {
@@ -1511,192 +1603,227 @@ var File_github_com_aity_cloud_monty_internal_cortex_config_validation_limits_pr
 const file_github_com_aity_cloud_monty_internal_cortex_config_validation_limits_proto_rawDesc = "" +
 	"\n" +
 	"Jgithub.com/aity-cloud/monty/internal/cortex/config/validation/limits.proto\x12\n" +
-	"validation\x1a)github.com/kralicky/codegen/cli/cli.proto\x1a\x1egoogle/protobuf/duration.proto\"\x9b;\n" +
+	"validation\x1a)github.com/kralicky/codegen/cli/cli.proto\x1a\x1egoogle/protobuf/duration.proto\"\xb6F\n" +
 	"\x06Limits\x127\n" +
 	"\x0eingestion_rate\x18\x01 \x01(\x01B\v\x8a\xc0\f\a\n" +
-	"\x0525000H\x00R\ringestionRate\x88\x01\x01\x12H\n" +
-	"\x17ingestion_rate_strategy\x18\x02 \x01(\tB\v\x8a\xc0\f\a\n" +
-	"\x05localH\x01R\x15ingestionRateStrategy\x88\x01\x01\x12B\n" +
-	"\x14ingestion_burst_size\x18\x03 \x01(\x05B\v\x8a\xc0\f\a\n" +
-	"\x0550000H\x02R\x12ingestionBurstSize\x88\x01\x01\x12<\n" +
-	"\x11accept_ha_samples\x18\x04 \x01(\bB\v\x8a\xc0\f\a\n" +
-	"\x05falseH\x03R\x0facceptHaSamples\x88\x01\x01\x12<\n" +
-	"\x10ha_cluster_label\x18\x05 \x01(\tB\r\x8a\xc0\f\t\n" +
-	"\aclusterH\x04R\x0ehaClusterLabel\x88\x01\x01\x12@\n" +
-	"\x10ha_replica_label\x18\x06 \x01(\tB\x11\x8a\xc0\f\r\n" +
-	"\v__replica__H\x05R\x0ehaReplicaLabel\x88\x01\x01\x124\n" +
-	"\x0fha_max_clusters\x18\a \x01(\x05B\a\x8a\xc0\f\x03\n" +
-	"\x010H\x06R\rhaMaxClusters\x88\x01\x01\x12)\n" +
-	"\vdrop_labels\x18\b \x03(\tB\b\x8a\xc0\f\x04\n" +
+	"\x0525000H\x00R\ringestionRate\x88\x01\x01\x12i\n" +
+	"\x1fnative_histogram_ingestion_rate\x18\x02 \x01(\x01B\x1d\x8a\xc0\f\x19\n" +
+	"\x171.7976931348623157e+308H\x01R\x1cnativeHistogramIngestionRate\x88\x01\x01\x12H\n" +
+	"\x17ingestion_rate_strategy\x18\x03 \x01(\tB\v\x8a\xc0\f\a\n" +
+	"\x05localH\x02R\x15ingestionRateStrategy\x88\x01\x01\x12B\n" +
+	"\x14ingestion_burst_size\x18\x04 \x01(\x05B\v\x8a\xc0\f\a\n" +
+	"\x0550000H\x03R\x12ingestionBurstSize\x88\x01\x01\x12^\n" +
+	"%native_histogram_ingestion_burst_size\x18\x05 \x01(\x05B\a\x8a\xc0\f\x03\n" +
+	"\x010H\x04R!nativeHistogramIngestionBurstSize\x88\x01\x01\x12<\n" +
+	"\x11accept_ha_samples\x18\x06 \x01(\bB\v\x8a\xc0\f\a\n" +
+	"\x05falseH\x05R\x0facceptHaSamples\x88\x01\x01\x12G\n" +
+	"\x17accept_mixed_ha_samples\x18\a \x01(\bB\v\x8a\xc0\f\a\n" +
+	"\x05falseH\x06R\x14acceptMixedHaSamples\x88\x01\x01\x12<\n" +
+	"\x10ha_cluster_label\x18\b \x01(\tB\r\x8a\xc0\f\t\n" +
+	"\aclusterH\aR\x0ehaClusterLabel\x88\x01\x01\x12@\n" +
+	"\x10ha_replica_label\x18\t \x01(\tB\x11\x8a\xc0\f\r\n" +
+	"\v__replica__H\bR\x0ehaReplicaLabel\x88\x01\x01\x124\n" +
+	"\x0fha_max_clusters\x18\n" +
+	" \x01(\x05B\a\x8a\xc0\f\x03\n" +
+	"\x010H\tR\rhaMaxClusters\x88\x01\x01\x12)\n" +
+	"\vdrop_labels\x18\v \x03(\tB\b\x8a\xc0\f\x04\n" +
 	"\x02[]R\n" +
 	"dropLabels\x12B\n" +
-	"\x15max_label_name_length\x18\t \x01(\x05B\n" +
+	"\x15max_label_name_length\x18\f \x01(\x05B\n" +
 	"\x8a\xc0\f\x06\n" +
-	"\x041024H\aR\x12maxLabelNameLength\x88\x01\x01\x12D\n" +
-	"\x16max_label_value_length\x18\n" +
-	" \x01(\x05B\n" +
+	"\x041024H\n" +
+	"R\x12maxLabelNameLength\x88\x01\x01\x12D\n" +
+	"\x16max_label_value_length\x18\r \x01(\x05B\n" +
 	"\x8a\xc0\f\x06\n" +
-	"\x042048H\bR\x13maxLabelValueLength\x88\x01\x01\x12I\n" +
-	"\x1amax_label_names_per_series\x18\v \x01(\x05B\b\x8a\xc0\f\x04\n" +
-	"\x0230H\tR\x16maxLabelNamesPerSeries\x88\x01\x01\x12?\n" +
-	"\x15max_labels_size_bytes\x18\f \x01(\x05B\a\x8a\xc0\f\x03\n" +
-	"\x010H\n" +
-	"R\x12maxLabelsSizeBytes\x88\x01\x01\x12?\n" +
-	"\x13max_metadata_length\x18\r \x01(\x05B\n" +
+	"\x042048H\vR\x13maxLabelValueLength\x88\x01\x01\x12I\n" +
+	"\x1amax_label_names_per_series\x18\x0e \x01(\x05B\b\x8a\xc0\f\x04\n" +
+	"\x0230H\fR\x16maxLabelNamesPerSeries\x88\x01\x01\x12?\n" +
+	"\x15max_labels_size_bytes\x18\x0f \x01(\x05B\a\x8a\xc0\f\x03\n" +
+	"\x010H\rR\x12maxLabelsSizeBytes\x88\x01\x01\x12_\n" +
+	"&max_native_histogram_sample_size_bytes\x18\x10 \x01(\x05B\a\x8a\xc0\f\x03\n" +
+	"\x010H\x0eR!maxNativeHistogramSampleSizeBytes\x88\x01\x01\x12?\n" +
+	"\x13max_metadata_length\x18\x11 \x01(\x05B\n" +
 	"\x8a\xc0\f\x06\n" +
-	"\x041024H\vR\x11maxMetadataLength\x88\x01\x01\x12>\n" +
-	"\x12reject_old_samples\x18\x0e \x01(\bB\v\x8a\xc0\f\a\n" +
-	"\x05falseH\fR\x10rejectOldSamples\x88\x01\x01\x12_\n" +
-	"\x1areject_old_samples_max_age\x18\x0f \x01(\v2\x19.google.protobuf.DurationB\b\x8a\xc0\f\x04\n" +
+	"\x041024H\x0fR\x11maxMetadataLength\x88\x01\x01\x12>\n" +
+	"\x12reject_old_samples\x18\x12 \x01(\bB\v\x8a\xc0\f\a\n" +
+	"\x05falseH\x10R\x10rejectOldSamples\x88\x01\x01\x12_\n" +
+	"\x1areject_old_samples_max_age\x18\x13 \x01(\v2\x19.google.protobuf.DurationB\b\x8a\xc0\f\x04\n" +
 	"\x022wR\x16rejectOldSamplesMaxAge\x12X\n" +
-	"\x15creation_grace_period\x18\x10 \x01(\v2\x19.google.protobuf.DurationB\t\x8a\xc0\f\x05\n" +
+	"\x15creation_grace_period\x18\x14 \x01(\v2\x19.google.protobuf.DurationB\t\x8a\xc0\f\x05\n" +
 	"\x0310mR\x13creationGracePeriod\x12P\n" +
-	"\x1cenforce_metadata_metric_name\x18\x11 \x01(\bB\n" +
+	"\x1cenforce_metadata_metric_name\x18\x15 \x01(\bB\n" +
 	"\x8a\xc0\f\x06\n" +
-	"\x04trueH\rR\x19enforceMetadataMetricName\x88\x01\x01\x12?\n" +
-	"\x13enforce_metric_name\x18\x12 \x01(\bB\n" +
+	"\x04trueH\x11R\x19enforceMetadataMetricName\x88\x01\x01\x12?\n" +
+	"\x13enforce_metric_name\x18\x16 \x01(\bB\n" +
 	"\x8a\xc0\f\x06\n" +
-	"\x04trueH\x0eR\x11enforceMetricName\x88\x01\x01\x12K\n" +
-	"\x1bingestion_tenant_shard_size\x18\x13 \x01(\x05B\a\x8a\xc0\f\x03\n" +
-	"\x010H\x0fR\x18ingestionTenantShardSize\x88\x01\x01\x12W\n" +
-	"\x16metric_relabel_configs\x18\x14 \x03(\v2\x19.validation.RelabelConfigB\x06\x8a\xc0\f\x02(\x01R\x14metricRelabelConfigs\x121\n" +
-	"\rmax_exemplars\x18\x15 \x01(\x05B\a\x8a\xc0\f\x03\n" +
-	"\x010H\x10R\fmaxExemplars\x88\x01\x01\x12M\n" +
-	"\x1cmax_native_histogram_buckets\x18\x16 \x01(\x05B\a\x8a\xc0\f\x03\n" +
-	"\x010H\x11R\x19maxNativeHistogramBuckets\x88\x01\x01\x12A\n" +
-	"\x13max_series_per_user\x18\x17 \x01(\x05B\r\x8a\xc0\f\t\n" +
-	"\a5000000H\x12R\x10maxSeriesPerUser\x88\x01\x01\x12C\n" +
-	"\x15max_series_per_metric\x18\x18 \x01(\x05B\v\x8a\xc0\f\a\n" +
-	"\x0550000H\x13R\x12maxSeriesPerMetric\x88\x01\x01\x12H\n" +
-	"\x1amax_global_series_per_user\x18\x19 \x01(\x05B\a\x8a\xc0\f\x03\n" +
-	"\x010H\x14R\x16maxGlobalSeriesPerUser\x88\x01\x01\x12L\n" +
-	"\x1cmax_global_series_per_metric\x18\x1a \x01(\x05B\a\x8a\xc0\f\x03\n" +
-	"\x010H\x15R\x18maxGlobalSeriesPerMetric\x88\x01\x01\x12B\n" +
-	"\x15max_metadata_per_user\x18\x1b \x01(\x05B\n" +
+	"\x04trueH\x12R\x11enforceMetricName\x88\x01\x01\x12K\n" +
+	"\x1bingestion_tenant_shard_size\x18\x17 \x01(\x05B\a\x8a\xc0\f\x03\n" +
+	"\x010H\x13R\x18ingestionTenantShardSize\x88\x01\x01\x12W\n" +
+	"\x16metric_relabel_configs\x18\x18 \x03(\v2\x19.validation.RelabelConfigB\x06\x8a\xc0\f\x02(\x01R\x14metricRelabelConfigs\x12M\n" +
+	"\x1cmax_native_histogram_buckets\x18\x19 \x01(\x05B\a\x8a\xc0\f\x03\n" +
+	"\x010H\x14R\x19maxNativeHistogramBuckets\x88\x01\x01\x12>\n" +
+	"\x1bpromote_resource_attributes\x18\x1a \x03(\tR\x19promoteResourceAttributes\x12A\n" +
+	"\x13max_series_per_user\x18\x1b \x01(\x05B\r\x8a\xc0\f\t\n" +
+	"\a5000000H\x15R\x10maxSeriesPerUser\x88\x01\x01\x12C\n" +
+	"\x15max_series_per_metric\x18\x1c \x01(\x05B\v\x8a\xc0\f\a\n" +
+	"\x0550000H\x16R\x12maxSeriesPerMetric\x88\x01\x01\x12[\n" +
+	"$max_native_histogram_series_per_user\x18\x1d \x01(\x05B\a\x8a\xc0\f\x03\n" +
+	"\x010H\x17R\x1fmaxNativeHistogramSeriesPerUser\x88\x01\x01\x12H\n" +
+	"\x1amax_global_series_per_user\x18\x1e \x01(\x05B\a\x8a\xc0\f\x03\n" +
+	"\x010H\x18R\x16maxGlobalSeriesPerUser\x88\x01\x01\x12L\n" +
+	"\x1cmax_global_series_per_metric\x18\x1f \x01(\x05B\a\x8a\xc0\f\x03\n" +
+	"\x010H\x19R\x18maxGlobalSeriesPerMetric\x88\x01\x01\x12h\n" +
+	"+max_global_native_histogram_series_per_user\x18  \x01(\x05B\a\x8a\xc0\f\x03\n" +
+	"\x010H\x1aR%maxGlobalNativeHistogramSeriesPerUser\x88\x01\x01\x12V\n" +
+	"\x14limits_per_label_set\x18! \x03(\v2\x1d.validation.LimitsPerLabelSetB\x06\x8a\xc0\f\x02(\x01R\x11limitsPerLabelSet\x12J\n" +
+	"\x18enable_native_histograms\x18\" \x01(\bB\v\x8a\xc0\f\a\n" +
+	"\x05falseH\x1bR\x16enableNativeHistograms\x88\x01\x01\x12B\n" +
+	"\x15max_metadata_per_user\x18# \x01(\x05B\n" +
 	"\x8a\xc0\f\x06\n" +
-	"\x048000H\x16R\x12maxMetadataPerUser\x88\x01\x01\x12D\n" +
-	"\x17max_metadata_per_metric\x18\x1c \x01(\x05B\b\x8a\xc0\f\x04\n" +
-	"\x0210H\x17R\x14maxMetadataPerMetric\x88\x01\x01\x12L\n" +
-	"\x1cmax_global_metadata_per_user\x18\x1d \x01(\x05B\a\x8a\xc0\f\x03\n" +
-	"\x010H\x18R\x18maxGlobalMetadataPerUser\x88\x01\x01\x12P\n" +
-	"\x1emax_global_metadata_per_metric\x18\x1e \x01(\x05B\a\x8a\xc0\f\x03\n" +
-	"\x010H\x19R\x1amaxGlobalMetadataPerMetric\x88\x01\x01\x12[\n" +
-	"\x18out_of_order_time_window\x18\x1f \x01(\v2\x19.google.protobuf.DurationB\b\x8a\xc0\f\x04\n" +
-	"\x020sR\x14outOfOrderTimeWindow\x12R\n" +
-	"\x1cmax_fetched_chunks_per_query\x18  \x01(\x05B\r\x8a\xc0\f\t\n" +
-	"\a2000000H\x1aR\x18maxFetchedChunksPerQuery\x88\x01\x01\x12L\n" +
-	"\x1cmax_fetched_series_per_query\x18! \x01(\x05B\a\x8a\xc0\f\x03\n" +
-	"\x010H\x1bR\x18maxFetchedSeriesPerQuery\x88\x01\x01\x12U\n" +
-	"!max_fetched_chunk_bytes_per_query\x18\" \x01(\x05B\a\x8a\xc0\f\x03\n" +
-	"\x010H\x1cR\x1cmaxFetchedChunkBytesPerQuery\x88\x01\x01\x12S\n" +
-	" max_fetched_data_bytes_per_query\x18# \x01(\x05B\a\x8a\xc0\f\x03\n" +
-	"\x010H\x1dR\x1bmaxFetchedDataBytesPerQuery\x88\x01\x01\x12Q\n" +
-	"\x12max_query_lookback\x18$ \x01(\v2\x19.google.protobuf.DurationB\b\x8a\xc0\f\x04\n" +
+	"\x048000H\x1cR\x12maxMetadataPerUser\x88\x01\x01\x12D\n" +
+	"\x17max_metadata_per_metric\x18$ \x01(\x05B\b\x8a\xc0\f\x04\n" +
+	"\x0210H\x1dR\x14maxMetadataPerMetric\x88\x01\x01\x12L\n" +
+	"\x1cmax_global_metadata_per_user\x18% \x01(\x05B\a\x8a\xc0\f\x03\n" +
+	"\x010H\x1eR\x18maxGlobalMetadataPerUser\x88\x01\x01\x12P\n" +
+	"\x1emax_global_metadata_per_metric\x18& \x01(\x05B\a\x8a\xc0\f\x03\n" +
+	"\x010H\x1fR\x1amaxGlobalMetadataPerMetric\x88\x01\x01\x12[\n" +
+	"\x18out_of_order_time_window\x18' \x01(\v2\x19.google.protobuf.DurationB\b\x8a\xc0\f\x04\n" +
+	"\x020sR\x14outOfOrderTimeWindow\x121\n" +
+	"\rmax_exemplars\x18( \x01(\x05B\a\x8a\xc0\f\x03\n" +
+	"\x010H R\fmaxExemplars\x88\x01\x01\x12R\n" +
+	"\x1cmax_fetched_chunks_per_query\x18) \x01(\x05B\r\x8a\xc0\f\t\n" +
+	"\a2000000H!R\x18maxFetchedChunksPerQuery\x88\x01\x01\x12L\n" +
+	"\x1cmax_fetched_series_per_query\x18* \x01(\x05B\a\x8a\xc0\f\x03\n" +
+	"\x010H\"R\x18maxFetchedSeriesPerQuery\x88\x01\x01\x12U\n" +
+	"!max_fetched_chunk_bytes_per_query\x18+ \x01(\x05B\a\x8a\xc0\f\x03\n" +
+	"\x010H#R\x1cmaxFetchedChunkBytesPerQuery\x88\x01\x01\x12S\n" +
+	" max_fetched_data_bytes_per_query\x18, \x01(\x05B\a\x8a\xc0\f\x03\n" +
+	"\x010H$R\x1bmaxFetchedDataBytesPerQuery\x88\x01\x01\x12Q\n" +
+	"\x12max_query_lookback\x18- \x01(\v2\x19.google.protobuf.DurationB\b\x8a\xc0\f\x04\n" +
 	"\x020sR\x10maxQueryLookback\x12M\n" +
-	"\x10max_query_length\x18% \x01(\v2\x19.google.protobuf.DurationB\b\x8a\xc0\f\x04\n" +
+	"\x10max_query_length\x18. \x01(\v2\x19.google.protobuf.DurationB\b\x8a\xc0\f\x04\n" +
 	"\x020sR\x0emaxQueryLength\x12A\n" +
-	"\x15max_query_parallelism\x18& \x01(\x05B\b\x8a\xc0\f\x04\n" +
-	"\x0214H\x1eR\x13maxQueryParallelism\x88\x01\x01\x12S\n" +
-	"\x13max_cache_freshness\x18' \x01(\v2\x19.google.protobuf.DurationB\b\x8a\xc0\f\x04\n" +
+	"\x15max_query_parallelism\x18/ \x01(\x05B\b\x8a\xc0\f\x04\n" +
+	"\x0214H%R\x13maxQueryParallelism\x88\x01\x01\x12C\n" +
+	"\x17max_query_response_size\x180 \x01(\x03B\a\x8a\xc0\f\x03\n" +
+	"\x010H&R\x14maxQueryResponseSize\x88\x01\x01\x12S\n" +
+	"\x13max_cache_freshness\x181 \x01(\v2\x19.google.protobuf.DurationB\b\x8a\xc0\f\x04\n" +
 	"\x021mR\x11maxCacheFreshness\x12C\n" +
-	"\x17max_queriers_per_tenant\x18( \x01(\x01B\a\x8a\xc0\f\x03\n" +
-	"\x010H\x1fR\x14maxQueriersPerTenant\x88\x01\x01\x12\\\n" +
-	"#max_outstanding_requests_per_tenant\x18) \x01(\x05B\t\x8a\xc0\f\x05\n" +
-	"\x03100H R\x1fmaxOutstandingRequestsPerTenant\x88\x01\x01\x12j\n" +
-	"\x1fruler_evaluation_delay_duration\x18* \x01(\v2\x19.google.protobuf.DurationB\b\x8a\xc0\f\x04\n" +
+	"\x17max_queriers_per_tenant\x182 \x01(\x01B\a\x8a\xc0\f\x03\n" +
+	"\x010H'R\x14maxQueriersPerTenant\x88\x01\x01\x12G\n" +
+	"\x19query_vertical_shard_size\x183 \x01(\x05B\a\x8a\xc0\f\x03\n" +
+	"\x010H(R\x16queryVerticalShardSize\x88\x01\x01\x129\n" +
+	"\x12query_partial_data\x184 \x01(\bB\x06\x8a\xc0\f\x02(\x01H)R\x10queryPartialData\x88\x01\x01\x12\\\n" +
+	"#max_outstanding_requests_per_tenant\x185 \x01(\x05B\t\x8a\xc0\f\x05\n" +
+	"\x03100H*R\x1fmaxOutstandingRequestsPerTenant\x88\x01\x01\x12H\n" +
+	"\x0equery_priority\x186 \x01(\v2\x19.validation.QueryPriorityB\x06\x8a\xc0\f\x02(\x01R\rqueryPriority\x12K\n" +
+	"\x0fquery_rejection\x187 \x01(\v2\x1a.validation.QueryRejectionB\x06\x8a\xc0\f\x02(\x01R\x0equeryRejection\x12j\n" +
+	"\x1fruler_evaluation_delay_duration\x188 \x01(\v2\x19.google.protobuf.DurationB\b\x8a\xc0\f\x04\n" +
 	"\x020sR\x1crulerEvaluationDelayDuration\x12C\n" +
-	"\x17ruler_tenant_shard_size\x18+ \x01(\x05B\a\x8a\xc0\f\x03\n" +
-	"\x010H!R\x14rulerTenantShardSize\x88\x01\x01\x12O\n" +
-	"\x1eruler_max_rules_per_rule_group\x18, \x01(\x05B\a\x8a\xc0\f\x03\n" +
-	"\x010H\"R\x19rulerMaxRulesPerRuleGroup\x88\x01\x01\x12S\n" +
-	" ruler_max_rule_groups_per_tenant\x18- \x01(\x05B\a\x8a\xc0\f\x03\n" +
-	"\x010H#R\x1brulerMaxRuleGroupsPerTenant\x88\x01\x01\x12R\n" +
-	"\x1fstore_gateway_tenant_shard_size\x18. \x01(\x01B\a\x8a\xc0\f\x03\n" +
-	"\x010H$R\x1bstoreGatewayTenantShardSize\x88\x01\x01\x12T\n" +
-	" max_downloaded_bytes_per_request\x18/ \x01(\x05B\a\x8a\xc0\f\x03\n" +
-	"\x010H%R\x1cmaxDownloadedBytesPerRequest\x88\x01\x01\x12n\n" +
-	"!compactor_blocks_retention_period\x180 \x01(\v2\x19.google.protobuf.DurationB\b\x8a\xc0\f\x04\n" +
+	"\x17ruler_tenant_shard_size\x189 \x01(\x01B\a\x8a\xc0\f\x03\n" +
+	"\x010H+R\x14rulerTenantShardSize\x88\x01\x01\x12O\n" +
+	"\x1eruler_max_rules_per_rule_group\x18: \x01(\x05B\a\x8a\xc0\f\x03\n" +
+	"\x010H,R\x19rulerMaxRulesPerRuleGroup\x88\x01\x01\x12S\n" +
+	" ruler_max_rule_groups_per_tenant\x18; \x01(\x05B\a\x8a\xc0\f\x03\n" +
+	"\x010H-R\x1brulerMaxRuleGroupsPerTenant\x88\x01\x01\x12Q\n" +
+	"\x12ruler_query_offset\x18< \x01(\v2\x19.google.protobuf.DurationB\b\x8a\xc0\f\x04\n" +
+	"\x020sR\x10rulerQueryOffset\x12T\n" +
+	"\x15ruler_external_labels\x18= \x01(\v2\x18.validation.LabelsLabelsB\x06\x8a\xc0\f\x02(\x01R\x13rulerExternalLabels\x129\n" +
+	"\x12rules_partial_data\x18> \x01(\bB\x06\x8a\xc0\f\x02(\x01H.R\x10rulesPartialData\x88\x01\x01\x12R\n" +
+	"\x1fstore_gateway_tenant_shard_size\x18? \x01(\x01B\a\x8a\xc0\f\x03\n" +
+	"\x010H/R\x1bstoreGatewayTenantShardSize\x88\x01\x01\x12T\n" +
+	" max_downloaded_bytes_per_request\x18@ \x01(\x05B\a\x8a\xc0\f\x03\n" +
+	"\x010H0R\x1cmaxDownloadedBytesPerRequest\x88\x01\x01\x12n\n" +
+	"!compactor_blocks_retention_period\x18A \x01(\v2\x19.google.protobuf.DurationB\b\x8a\xc0\f\x04\n" +
 	"\x020sR\x1ecompactorBlocksRetentionPeriod\x12K\n" +
-	"\x1bcompactor_tenant_shard_size\x181 \x01(\x05B\a\x8a\xc0\f\x03\n" +
-	"\x010H&R\x18compactorTenantShardSize\x88\x01\x01\x12+\n" +
-	"\vs3_sse_type\x182 \x01(\tB\x06\x8a\xc0\f\x02(\x01H'R\ts3SseType\x88\x01\x01\x125\n" +
-	"\x11s3_sse_kms_key_id\x183 \x01(\tB\x06\x8a\xc0\f\x02(\x01H(R\rs3SseKmsKeyId\x88\x01\x01\x12M\n" +
-	"\x1ds3_sse_kms_encryption_context\x184 \x01(\tB\x06\x8a\xc0\f\x02(\x01H)R\x19s3SseKmsEncryptionContext\x88\x01\x01\x12x\n" +
-	"3alertmanager_receivers_firewall_block_cidr_networks\x185 \x03(\tB\v\x8a\xc0\f\a\"\x05ipNetR.alertmanagerReceiversFirewallBlockCidrNetworks\x12\x85\x01\n" +
-	"7alertmanager_receivers_firewall_block_private_addresses\x186 \x01(\bB\v\x8a\xc0\f\a\n" +
-	"\x05falseH*R2alertmanagerReceiversFirewallBlockPrivateAddresses\x88\x01\x01\x12]\n" +
-	"$alertmanager_notification_rate_limit\x187 \x01(\x01B\a\x8a\xc0\f\x03\n" +
-	"\x010H+R!alertmanagerNotificationRateLimit\x88\x01\x01\x12\xc0\x01\n" +
-	"4alertmanager_notification_rate_limit_per_integration\x188 \x03(\v2G.validation.Limits.AlertmanagerNotificationRateLimitPerIntegrationEntryB\b\x8a\xc0\f\x04\n" +
+	"\x1bcompactor_tenant_shard_size\x18B \x01(\x01B\a\x8a\xc0\f\x03\n" +
+	"\x010H1R\x18compactorTenantShardSize\x88\x01\x01\x12f\n" +
+	"$compactor_partition_index_size_bytes\x18C \x01(\x03B\x11\x8a\xc0\f\r\n" +
+	"\v68719476736H2R compactorPartitionIndexSizeBytes\x88\x01\x01\x12U\n" +
+	" compactor_partition_series_count\x18D \x01(\x03B\a\x8a\xc0\f\x03\n" +
+	"\x010H3R\x1dcompactorPartitionSeriesCount\x88\x01\x01\x12+\n" +
+	"\vs3_sse_type\x18E \x01(\tB\x06\x8a\xc0\f\x02(\x01H4R\ts3SseType\x88\x01\x01\x125\n" +
+	"\x11s3_sse_kms_key_id\x18F \x01(\tB\x06\x8a\xc0\f\x02(\x01H5R\rs3SseKmsKeyId\x88\x01\x01\x12M\n" +
+	"\x1ds3_sse_kms_encryption_context\x18G \x01(\tB\x06\x8a\xc0\f\x02(\x01H6R\x19s3SseKmsEncryptionContext\x88\x01\x01\x12x\n" +
+	"3alertmanager_receivers_firewall_block_cidr_networks\x18H \x03(\tB\v\x8a\xc0\f\a\"\x05ipNetR.alertmanagerReceiversFirewallBlockCidrNetworks\x12\x85\x01\n" +
+	"7alertmanager_receivers_firewall_block_private_addresses\x18I \x01(\bB\v\x8a\xc0\f\a\n" +
+	"\x05falseH7R2alertmanagerReceiversFirewallBlockPrivateAddresses\x88\x01\x01\x12]\n" +
+	"$alertmanager_notification_rate_limit\x18J \x01(\x01B\a\x8a\xc0\f\x03\n" +
+	"\x010H8R!alertmanagerNotificationRateLimit\x88\x01\x01\x12\xc0\x01\n" +
+	"4alertmanager_notification_rate_limit_per_integration\x18K \x03(\v2G.validation.Limits.AlertmanagerNotificationRateLimitPerIntegrationEntryB\b\x8a\xc0\f\x04\n" +
 	"\x02{}R/alertmanagerNotificationRateLimitPerIntegration\x12X\n" +
-	"\"alertmanager_max_config_size_bytes\x189 \x01(\x05B\a\x8a\xc0\f\x03\n" +
-	"\x010H,R\x1ealertmanagerMaxConfigSizeBytes\x88\x01\x01\x12U\n" +
-	" alertmanager_max_templates_count\x18: \x01(\x05B\a\x8a\xc0\f\x03\n" +
-	"\x010H-R\x1dalertmanagerMaxTemplatesCount\x88\x01\x01\x12\\\n" +
-	"$alertmanager_max_template_size_bytes\x18; \x01(\x05B\a\x8a\xc0\f\x03\n" +
-	"\x010H.R alertmanagerMaxTemplateSizeBytes\x88\x01\x01\x12p\n" +
-	".alertmanager_max_dispatcher_aggregation_groups\x18< \x01(\x05B\a\x8a\xc0\f\x03\n" +
-	"\x010H/R*alertmanagerMaxDispatcherAggregationGroups\x88\x01\x01\x12O\n" +
-	"\x1dalertmanager_max_alerts_count\x18= \x01(\x05B\a\x8a\xc0\f\x03\n" +
-	"\x010H0R\x1aalertmanagerMaxAlertsCount\x88\x01\x01\x12X\n" +
-	"\"alertmanager_max_alerts_size_bytes\x18> \x01(\x05B\a\x8a\xc0\f\x03\n" +
-	"\x010H1R\x1ealertmanagerMaxAlertsSizeBytes\x88\x01\x01\x12W\n" +
-	"\x14disabled_rule_groups\x18? \x03(\v2\x1d.validation.DisabledRuleGroupB\x06\x8a\xc0\f\x02(\x01R\x12disabledRuleGroups\x12G\n" +
-	"\x17accept_mixed_ha_samples\x18I \x01(\bB\v\x8a\xc0\f\a\n" +
-	"\x05falseH2R\x14acceptMixedHaSamples\x88\x01\x01\x12>\n" +
-	"\x1bpromote_resource_attributes\x18J \x03(\tR\x19promoteResourceAttributes\x12V\n" +
-	"\x14limits_per_label_set\x18K \x03(\v2\x1d.validation.LimitsPerLabelSetB\x06\x8a\xc0\f\x02(\x01R\x11limitsPerLabelSet\x12H\n" +
-	"\x0equery_priority\x18L \x01(\v2\x19.validation.QueryPriorityB\x06\x8a\xc0\f\x02(\x01R\rqueryPriority\x12K\n" +
-	"\x0fquery_rejection\x18M \x01(\v2\x1a.validation.QueryRejectionB\x06\x8a\xc0\f\x02(\x01R\x0equeryRejection\x12Q\n" +
-	"\x12ruler_query_offset\x18N \x01(\v2\x19.google.protobuf.DurationB\b\x8a\xc0\f\x04\n" +
-	"\x020sR\x10rulerQueryOffset\x12S\n" +
-	"\x15ruler_external_labels\x18O \x03(\v2\x17.validation.LabelsLabelB\x06\x8a\xc0\f\x02(\x01R\x13rulerExternalLabels\x12f\n" +
-	"$compactor_partition_index_size_bytes\x18P \x01(\x03B\x11\x8a\xc0\f\r\n" +
-	"\v68719476736H3R compactorPartitionIndexSizeBytes\x88\x01\x01\x12U\n" +
-	" compactor_partition_series_count\x18Q \x01(\x03B\a\x8a\xc0\f\x03\n" +
-	"\x010H4R\x1dcompactorPartitionSeriesCount\x88\x01\x01\x1ab\n" +
+	"\"alertmanager_max_config_size_bytes\x18L \x01(\x05B\a\x8a\xc0\f\x03\n" +
+	"\x010H9R\x1ealertmanagerMaxConfigSizeBytes\x88\x01\x01\x12U\n" +
+	" alertmanager_max_templates_count\x18M \x01(\x05B\a\x8a\xc0\f\x03\n" +
+	"\x010H:R\x1dalertmanagerMaxTemplatesCount\x88\x01\x01\x12\\\n" +
+	"$alertmanager_max_template_size_bytes\x18N \x01(\x05B\a\x8a\xc0\f\x03\n" +
+	"\x010H;R alertmanagerMaxTemplateSizeBytes\x88\x01\x01\x12p\n" +
+	".alertmanager_max_dispatcher_aggregation_groups\x18O \x01(\x05B\a\x8a\xc0\f\x03\n" +
+	"\x010H<R*alertmanagerMaxDispatcherAggregationGroups\x88\x01\x01\x12O\n" +
+	"\x1dalertmanager_max_alerts_count\x18P \x01(\x05B\a\x8a\xc0\f\x03\n" +
+	"\x010H=R\x1aalertmanagerMaxAlertsCount\x88\x01\x01\x12X\n" +
+	"\"alertmanager_max_alerts_size_bytes\x18Q \x01(\x05B\a\x8a\xc0\f\x03\n" +
+	"\x010H>R\x1ealertmanagerMaxAlertsSizeBytes\x88\x01\x01\x12S\n" +
+	"\x1falertmanager_max_silences_count\x18R \x01(\x05B\a\x8a\xc0\f\x03\n" +
+	"\x010H?R\x1calertmanagerMaxSilencesCount\x88\x01\x01\x12\\\n" +
+	"$alertmanager_max_silences_size_bytes\x18S \x01(\x05B\a\x8a\xc0\f\x03\n" +
+	"\x010H@R alertmanagerMaxSilencesSizeBytes\x88\x01\x01\x12W\n" +
+	"\x14disabled_rule_groups\x18T \x03(\v2\x1d.validation.DisabledRuleGroupB\x06\x8a\xc0\f\x02(\x01R\x12disabledRuleGroups\x1ab\n" +
 	"4AlertmanagerNotificationRateLimitPerIntegrationEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\x01R\x05value:\x028\x01B\x11\n" +
-	"\x0f_ingestion_rateB\x1a\n" +
+	"\x0f_ingestion_rateB\"\n" +
+	" _native_histogram_ingestion_rateB\x1a\n" +
 	"\x18_ingestion_rate_strategyB\x17\n" +
-	"\x15_ingestion_burst_sizeB\x14\n" +
-	"\x12_accept_ha_samplesB\x13\n" +
+	"\x15_ingestion_burst_sizeB(\n" +
+	"&_native_histogram_ingestion_burst_sizeB\x14\n" +
+	"\x12_accept_ha_samplesB\x1a\n" +
+	"\x18_accept_mixed_ha_samplesB\x13\n" +
 	"\x11_ha_cluster_labelB\x13\n" +
 	"\x11_ha_replica_labelB\x12\n" +
 	"\x10_ha_max_clustersB\x18\n" +
 	"\x16_max_label_name_lengthB\x19\n" +
 	"\x17_max_label_value_lengthB\x1d\n" +
 	"\x1b_max_label_names_per_seriesB\x18\n" +
-	"\x16_max_labels_size_bytesB\x16\n" +
+	"\x16_max_labels_size_bytesB)\n" +
+	"'_max_native_histogram_sample_size_bytesB\x16\n" +
 	"\x14_max_metadata_lengthB\x15\n" +
 	"\x13_reject_old_samplesB\x1f\n" +
 	"\x1d_enforce_metadata_metric_nameB\x16\n" +
 	"\x14_enforce_metric_nameB\x1e\n" +
-	"\x1c_ingestion_tenant_shard_sizeB\x10\n" +
-	"\x0e_max_exemplarsB\x1f\n" +
+	"\x1c_ingestion_tenant_shard_sizeB\x1f\n" +
 	"\x1d_max_native_histogram_bucketsB\x16\n" +
 	"\x14_max_series_per_userB\x18\n" +
-	"\x16_max_series_per_metricB\x1d\n" +
+	"\x16_max_series_per_metricB'\n" +
+	"%_max_native_histogram_series_per_userB\x1d\n" +
 	"\x1b_max_global_series_per_userB\x1f\n" +
-	"\x1d_max_global_series_per_metricB\x18\n" +
+	"\x1d_max_global_series_per_metricB.\n" +
+	",_max_global_native_histogram_series_per_userB\x1b\n" +
+	"\x19_enable_native_histogramsB\x18\n" +
 	"\x16_max_metadata_per_userB\x1a\n" +
 	"\x18_max_metadata_per_metricB\x1f\n" +
 	"\x1d_max_global_metadata_per_userB!\n" +
-	"\x1f_max_global_metadata_per_metricB\x1f\n" +
+	"\x1f_max_global_metadata_per_metricB\x10\n" +
+	"\x0e_max_exemplarsB\x1f\n" +
 	"\x1d_max_fetched_chunks_per_queryB\x1f\n" +
 	"\x1d_max_fetched_series_per_queryB$\n" +
 	"\"_max_fetched_chunk_bytes_per_queryB#\n" +
 	"!_max_fetched_data_bytes_per_queryB\x18\n" +
 	"\x16_max_query_parallelismB\x1a\n" +
-	"\x18_max_queriers_per_tenantB&\n" +
+	"\x18_max_query_response_sizeB\x1a\n" +
+	"\x18_max_queriers_per_tenantB\x1c\n" +
+	"\x1a_query_vertical_shard_sizeB\x15\n" +
+	"\x13_query_partial_dataB&\n" +
 	"$_max_outstanding_requests_per_tenantB\x1a\n" +
 	"\x18_ruler_tenant_shard_sizeB!\n" +
 	"\x1f_ruler_max_rules_per_rule_groupB#\n" +
-	"!_ruler_max_rule_groups_per_tenantB\"\n" +
+	"!_ruler_max_rule_groups_per_tenantB\x15\n" +
+	"\x13_rules_partial_dataB\"\n" +
 	" _store_gateway_tenant_shard_sizeB#\n" +
 	"!_max_downloaded_bytes_per_requestB\x1e\n" +
-	"\x1c_compactor_tenant_shard_sizeB\x0e\n" +
+	"\x1c_compactor_tenant_shard_sizeB'\n" +
+	"%_compactor_partition_index_size_bytesB#\n" +
+	"!_compactor_partition_series_countB\x0e\n" +
 	"\f_s3_sse_typeB\x14\n" +
 	"\x12_s3_sse_kms_key_idB \n" +
 	"\x1e_s3_sse_kms_encryption_contextB:\n" +
@@ -1707,19 +1834,18 @@ const file_github_com_aity_cloud_monty_internal_cortex_config_validation_limits_
 	"%_alertmanager_max_template_size_bytesB1\n" +
 	"/_alertmanager_max_dispatcher_aggregation_groupsB \n" +
 	"\x1e_alertmanager_max_alerts_countB%\n" +
-	"#_alertmanager_max_alerts_size_bytesB\x1a\n" +
-	"\x18_accept_mixed_ha_samplesB'\n" +
-	"%_compactor_partition_index_size_bytesB#\n" +
-	"!_compactor_partition_series_count\"v\n" +
+	"#_alertmanager_max_alerts_size_bytesB\"\n" +
+	" _alertmanager_max_silences_countB'\n" +
+	"%_alertmanager_max_silences_size_bytes\"v\n" +
 	"\x11DisabledRuleGroup\x12)\n" +
 	"\tnamespace\x18\x01 \x01(\tB\x06\x8a\xc0\f\x02(\x01H\x00R\tnamespace\x88\x01\x01\x12\x1f\n" +
 	"\x04name\x18\x02 \x01(\tB\x06\x8a\xc0\f\x02(\x01H\x01R\x04name\x88\x01\x01B\f\n" +
 	"\n" +
 	"_namespaceB\a\n" +
-	"\x05_name\"\x95\x01\n" +
+	"\x05_name\"\x96\x01\n" +
 	"\x11LimitsPerLabelSet\x12B\n" +
-	"\x06limits\x18\x01 \x01(\v2\".validation.LimitsPerLabelSetEntryB\x06\x8a\xc0\f\x02(\x01R\x06limits\x12<\n" +
-	"\tlabel_set\x18\x02 \x03(\v2\x17.validation.LabelsLabelB\x06\x8a\xc0\f\x02(\x01R\blabelSet\"S\n" +
+	"\x06limits\x18\x01 \x01(\v2\".validation.LimitsPerLabelSetEntryB\x06\x8a\xc0\f\x02(\x01R\x06limits\x12=\n" +
+	"\tlabel_set\x18\x02 \x01(\v2\x18.validation.LabelsLabelsB\x06\x8a\xc0\f\x02(\x01R\blabelSet\"S\n" +
 	"\x16LimitsPerLabelSetEntry\x12*\n" +
 	"\n" +
 	"max_series\x18\x01 \x01(\x05B\x06\x8a\xc0\f\x02(\x01H\x00R\tmaxSeries\x88\x01\x01B\r\n" +
@@ -1771,12 +1897,8 @@ const file_github_com_aity_cloud_monty_internal_cortex_config_validation_limits_
 	"\n" +
 	"TimeWindow\x127\n" +
 	"\x05start\x18\x01 \x01(\v2\x19.google.protobuf.DurationB\x06\x8a\xc0\f\x02(\x01R\x05start\x123\n" +
-	"\x03end\x18\x02 \x01(\v2\x19.google.protobuf.DurationB\x06\x8a\xc0\f\x02(\x01R\x03end\"T\n" +
-	"\vLabelsLabel\x12\x17\n" +
-	"\x04Name\x18\x01 \x01(\tH\x00R\x04Name\x88\x01\x01\x12\x19\n" +
-	"\x05Value\x18\x02 \x01(\tH\x01R\x05Value\x88\x01\x01B\a\n" +
-	"\x05_NameB\b\n" +
-	"\x06_Value\"\xbe\x02\n" +
+	"\x03end\x18\x02 \x01(\v2\x19.google.protobuf.DurationB\x06\x8a\xc0\f\x02(\x01R\x03end\"\x0e\n" +
+	"\fLabelsLabels\"\xbe\x02\n" +
 	"\rRelabelConfig\x12#\n" +
 	"\rsource_labels\x18\x01 \x03(\tR\fsourceLabels\x12!\n" +
 	"\tseparator\x18\x02 \x01(\tH\x00R\tseparator\x88\x01\x01\x12\x14\n" +
@@ -1819,7 +1941,7 @@ var file_github_com_aity_cloud_monty_internal_cortex_config_validation_limits_pr
 	(*QueryStepLimit)(nil),         // 8: validation.QueryStepLimit
 	(*TimeRangeLimit)(nil),         // 9: validation.TimeRangeLimit
 	(*TimeWindow)(nil),             // 10: validation.TimeWindow
-	(*LabelsLabel)(nil),            // 11: validation.LabelsLabel
+	(*LabelsLabels)(nil),           // 11: validation.LabelsLabels
 	(*RelabelConfig)(nil),          // 12: validation.RelabelConfig
 	(*RegexpRegexp)(nil),           // 13: validation.RegexpRegexp
 	nil,                            // 14: validation.Limits.AlertmanagerNotificationRateLimitPerIntegrationEntry
@@ -1829,21 +1951,21 @@ var file_github_com_aity_cloud_monty_internal_cortex_config_validation_limits_pr
 	15, // 0: validation.Limits.reject_old_samples_max_age:type_name -> google.protobuf.Duration
 	15, // 1: validation.Limits.creation_grace_period:type_name -> google.protobuf.Duration
 	12, // 2: validation.Limits.metric_relabel_configs:type_name -> validation.RelabelConfig
-	15, // 3: validation.Limits.out_of_order_time_window:type_name -> google.protobuf.Duration
-	15, // 4: validation.Limits.max_query_lookback:type_name -> google.protobuf.Duration
-	15, // 5: validation.Limits.max_query_length:type_name -> google.protobuf.Duration
-	15, // 6: validation.Limits.max_cache_freshness:type_name -> google.protobuf.Duration
-	15, // 7: validation.Limits.ruler_evaluation_delay_duration:type_name -> google.protobuf.Duration
-	15, // 8: validation.Limits.compactor_blocks_retention_period:type_name -> google.protobuf.Duration
-	14, // 9: validation.Limits.alertmanager_notification_rate_limit_per_integration:type_name -> validation.Limits.AlertmanagerNotificationRateLimitPerIntegrationEntry
-	1,  // 10: validation.Limits.disabled_rule_groups:type_name -> validation.DisabledRuleGroup
-	2,  // 11: validation.Limits.limits_per_label_set:type_name -> validation.LimitsPerLabelSet
-	6,  // 12: validation.Limits.query_priority:type_name -> validation.QueryPriority
-	7,  // 13: validation.Limits.query_rejection:type_name -> validation.QueryRejection
-	15, // 14: validation.Limits.ruler_query_offset:type_name -> google.protobuf.Duration
-	11, // 15: validation.Limits.ruler_external_labels:type_name -> validation.LabelsLabel
+	2,  // 3: validation.Limits.limits_per_label_set:type_name -> validation.LimitsPerLabelSet
+	15, // 4: validation.Limits.out_of_order_time_window:type_name -> google.protobuf.Duration
+	15, // 5: validation.Limits.max_query_lookback:type_name -> google.protobuf.Duration
+	15, // 6: validation.Limits.max_query_length:type_name -> google.protobuf.Duration
+	15, // 7: validation.Limits.max_cache_freshness:type_name -> google.protobuf.Duration
+	6,  // 8: validation.Limits.query_priority:type_name -> validation.QueryPriority
+	7,  // 9: validation.Limits.query_rejection:type_name -> validation.QueryRejection
+	15, // 10: validation.Limits.ruler_evaluation_delay_duration:type_name -> google.protobuf.Duration
+	15, // 11: validation.Limits.ruler_query_offset:type_name -> google.protobuf.Duration
+	11, // 12: validation.Limits.ruler_external_labels:type_name -> validation.LabelsLabels
+	15, // 13: validation.Limits.compactor_blocks_retention_period:type_name -> google.protobuf.Duration
+	14, // 14: validation.Limits.alertmanager_notification_rate_limit_per_integration:type_name -> validation.Limits.AlertmanagerNotificationRateLimitPerIntegrationEntry
+	1,  // 15: validation.Limits.disabled_rule_groups:type_name -> validation.DisabledRuleGroup
 	3,  // 16: validation.LimitsPerLabelSet.limits:type_name -> validation.LimitsPerLabelSetEntry
-	11, // 17: validation.LimitsPerLabelSet.label_set:type_name -> validation.LabelsLabel
+	11, // 17: validation.LimitsPerLabelSet.label_set:type_name -> validation.LabelsLabels
 	5,  // 18: validation.PriorityDef.query_attributes:type_name -> validation.QueryAttribute
 	10, // 19: validation.QueryAttribute.time_window:type_name -> validation.TimeWindow
 	9,  // 20: validation.QueryAttribute.time_range_limit:type_name -> validation.TimeRangeLimit
@@ -1877,7 +1999,6 @@ func file_github_com_aity_cloud_monty_internal_cortex_config_validation_limits_p
 	file_github_com_aity_cloud_monty_internal_cortex_config_validation_limits_proto_msgTypes[5].OneofWrappers = []any{}
 	file_github_com_aity_cloud_monty_internal_cortex_config_validation_limits_proto_msgTypes[6].OneofWrappers = []any{}
 	file_github_com_aity_cloud_monty_internal_cortex_config_validation_limits_proto_msgTypes[7].OneofWrappers = []any{}
-	file_github_com_aity_cloud_monty_internal_cortex_config_validation_limits_proto_msgTypes[11].OneofWrappers = []any{}
 	file_github_com_aity_cloud_monty_internal_cortex_config_validation_limits_proto_msgTypes[12].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{

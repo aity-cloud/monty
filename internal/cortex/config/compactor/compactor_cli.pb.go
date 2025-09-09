@@ -47,5 +47,6 @@ func (in *Config) FlagSet(prefix ...string) *pflag.FlagSet {
 	fs.Var(flagutil.DurationpbValue(flagutil.Ptr[time.Duration](5*time.Minute), &in.CleanerVisitMarkerFileUpdateInterval), strings.Join(append(prefix, "cleaner-visit-marker-file-update-interval"), "."), "How frequently cleaner visit marker file should be updated when cleaning user.")
 	fs.Var(flagutil.BoolPtrValue(flagutil.Ptr(false), &in.CachingBucketEnabled), strings.Join(append(prefix, "caching-bucket-enabled"), "."), "When enabled, caching bucket will be used for compactor, except cleaner service, which serves as the source of truth for block status")
 	fs.Var(flagutil.DurationpbValue(flagutil.Ptr[time.Duration](1*time.Minute), &in.CompactionVisitMarkerFileUpdateInterval), strings.Join(append(prefix, "compaction-visit-marker-file-update-interval"), "."), "How frequently compaction visit marker file should be updated duration compaction.")
+	fs.Var(flagutil.BoolPtrValue(flagutil.Ptr(false), &in.CleanerCachingBucketEnabled), strings.Join(append(prefix, "cleaner-caching-bucket-enabled"), "."), "When enabled, caching bucket will be used for cleaner")
 	return fs
 }

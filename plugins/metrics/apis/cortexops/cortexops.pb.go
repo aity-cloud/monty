@@ -776,7 +776,7 @@ const file_github_com_aity_cloud_monty_plugins_metrics_apis_cortexops_cortexops_
 	"\x17CortexApplicationConfig\x12p\n" +
 	"\x06limits\x18\x01 \x01(\v2\x12.validation.LimitsBD\x92\xc0\f@\n" +
 	">\n" +
-	"%type.googleapis.com/validation.Limits\x12\x15\t\x00\x00\x00\x00\x80O\"A\x18\xc0\x84=\x82\x03\x05\b\x80\x9a\x9e\x01R\x06limits\x12Q\n" +
+	"%type.googleapis.com/validation.Limits\x12\x15\t\x00\x00\x00\x00\x80O\"A \xc0\x84=\x8a\x04\x05\b\x80\x9a\x9e\x01R\x06limits\x12Q\n" +
 	"\x0eruntime_config\x18\x02 \x01(\v2\".runtimeconfig.RuntimeConfigValuesB\x06\xbaH\x03\xd8\x01\x01R\rruntimeConfig\x12/\n" +
 	"\tcompactor\x18\x03 \x01(\v2\x11.compactor.ConfigR\tcompactor\x12)\n" +
 	"\aquerier\x18\x04 \x01(\v2\x0f.querier.ConfigR\aquerier\x12)\n" +

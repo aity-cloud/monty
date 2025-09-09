@@ -77,4 +77,6 @@ message Config {
   optional bool caching_bucket_enabled = 24 [(cli.flag) = {default: "false"}];
   // How frequently compaction visit marker file should be updated duration compaction.
   google.protobuf.Duration compaction_visit_marker_file_update_interval = 25 [(cli.flag) = {default: "1m0s"}];
+  // When enabled, caching bucket will be used for cleaner
+  optional bool cleaner_caching_bucket_enabled = 26 [(cli.flag) = {default: "false"}];
 }

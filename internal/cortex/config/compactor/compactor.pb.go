@@ -78,8 +78,10 @@ type Config struct {
 	CachingBucketEnabled *bool `protobuf:"varint,24,opt,name=caching_bucket_enabled,json=cachingBucketEnabled,proto3,oneof" json:"caching_bucket_enabled,omitempty"`
 	// How frequently compaction visit marker file should be updated duration compaction.
 	CompactionVisitMarkerFileUpdateInterval *durationpb.Duration `protobuf:"bytes,25,opt,name=compaction_visit_marker_file_update_interval,json=compactionVisitMarkerFileUpdateInterval,proto3" json:"compaction_visit_marker_file_update_interval,omitempty"`
-	unknownFields                           protoimpl.UnknownFields
-	sizeCache                               protoimpl.SizeCache
+	// When enabled, caching bucket will be used for cleaner
+	CleanerCachingBucketEnabled *bool `protobuf:"varint,26,opt,name=cleaner_caching_bucket_enabled,json=cleanerCachingBucketEnabled,proto3,oneof" json:"cleaner_caching_bucket_enabled,omitempty"`
+	unknownFields               protoimpl.UnknownFields
+	sizeCache                   protoimpl.SizeCache
 }
 
 func (x *Config) Reset() {
@@ -280,11 +282,18 @@ func (x *Config) GetCompactionVisitMarkerFileUpdateInterval() *durationpb.Durati
 	return nil
 }
 
+func (x *Config) GetCleanerCachingBucketEnabled() bool {
+	if x != nil && x.CleanerCachingBucketEnabled != nil {
+		return *x.CleanerCachingBucketEnabled
+	}
+	return false
+}
+
 var File_github_com_aity_cloud_monty_internal_cortex_config_compactor_compactor_proto protoreflect.FileDescriptor
 
 const file_github_com_aity_cloud_monty_internal_cortex_config_compactor_compactor_proto_rawDesc = "" +
 	"\n" +
-	"Lgithub.com/aity-cloud/monty/internal/cortex/config/compactor/compactor.proto\x12\tcompactor\x1a\x1bbuf/validate/validate.proto\x1a)github.com/kralicky/codegen/cli/cli.proto\x1a\x1egoogle/protobuf/duration.proto\"\xb6\x12\n" +
+	"Lgithub.com/aity-cloud/monty/internal/cortex/config/compactor/compactor.proto\x12\tcompactor\x1a\x1bbuf/validate/validate.proto\x1a)github.com/kralicky/codegen/cli/cli.proto\x1a\x1egoogle/protobuf/duration.proto\"\xb0\x13\n" +
 	"\x06Config\x12i\n" +
 	"\fblock_ranges\x18\x01 \x03(\v2\x19.google.protobuf.DurationB+\xbaH\f\x92\x01\t\b\x01\"\x05\xaa\x01\x02*\x00\x8a\xc0\f\x18\n" +
 	"\x162h0m0s,12h0m0s,24h0m0sR\vblockRanges\x12C\n" +
@@ -335,7 +344,9 @@ const file_github_com_aity_cloud_monty_internal_cortex_config_compactor_compacto
 	"\x05falseH\vR\x14cachingBucketEnabled\x88\x01\x01\x12\x84\x01\n" +
 	",compaction_visit_marker_file_update_interval\x18\x19 \x01(\v2\x19.google.protobuf.DurationB\n" +
 	"\x8a\xc0\f\x06\n" +
-	"\x041m0sR'compactionVisitMarkerFileUpdateIntervalB\x19\n" +
+	"\x041m0sR'compactionVisitMarkerFileUpdateInterval\x12U\n" +
+	"\x1ecleaner_caching_bucket_enabled\x18\x1a \x01(\bB\v\x8a\xc0\f\a\n" +
+	"\x05falseH\fR\x1bcleanerCachingBucketEnabled\x88\x01\x01B\x19\n" +
 	"\x17_block_sync_concurrencyB\x18\n" +
 	"\x16_meta_sync_concurrencyB\x15\n" +
 	"\x13_compaction_retriesB\x19\n" +
@@ -347,7 +358,8 @@ const file_github_com_aity_cloud_monty_internal_cortex_config_compactor_compacto
 	"'_block_deletion_marks_migration_enabledB\x16\n" +
 	"\x14_compaction_strategyB\x19\n" +
 	"\x17_accept_malformed_indexB\x19\n" +
-	"\x17_caching_bucket_enabledBF\x82\xc0\f\x04\b\x01\x10\x01Z<github.com/aity-cloud/monty/internal/cortex/config/compactorb\x06proto3"
+	"\x17_caching_bucket_enabledB!\n" +
+	"\x1f_cleaner_caching_bucket_enabledBF\x82\xc0\f\x04\b\x01\x10\x01Z<github.com/aity-cloud/monty/internal/cortex/config/compactorb\x06proto3"
 
 var (
 	file_github_com_aity_cloud_monty_internal_cortex_config_compactor_compactor_proto_rawDescOnce sync.Once
