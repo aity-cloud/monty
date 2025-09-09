@@ -13,7 +13,6 @@ import (
 	"github.com/prometheus/prometheus/model/rulefmt"
 	promql "github.com/prometheus/prometheus/promql/parser"
 	"github.com/samber/lo"
-	"gopkg.in/yaml.v3"
 )
 
 const NodeFilter = "instance"
@@ -149,20 +148,13 @@ type AlertRuleBuilder interface {
 	Or(rule *AlertingRule) AlertRuleBuilder
 	IfForSecondsThen(*AlertingRule, time.Duration) AlertRuleBuilder
 	IfNotForSecondsThen(*AlertingRule, time.Duration) AlertRuleBuilder
-	Build(id string) (*rulefmt.RuleNode, error)
+	Build(id string) (*rulefmt.Rule, error)
 }
 
-func (a *AlertingRule) AsRuleFmt() *rulefmt.RuleNode {
-	return &rulefmt.RuleNode{
-		Alert: yaml.Node{
-			Kind:  yaml.ScalarNode,
-			Value: a.Alert,
-		},
-		//a.Alert,
-		Expr: yaml.Node{
-			Kind:  yaml.ScalarNode,
-			Value: a.Expr,
-		},
+func (a *AlertingRule) AsRuleFmt() *rulefmt.Rule {
+	return &rulefmt.Rule{
+		Alert:       a.Alert,
+		Expr:        a.Expr,
 		For:         a.For,
 		Labels:      a.Labels,
 		Annotations: a.Annotations,
@@ -199,12 +191,12 @@ func (a *AlertingRule) IfNotForSecondsThen(_ *AlertingRule, _ time.Duration) Ale
 	return nil
 }
 
-func (a *AlertingRule) Build(id string) (*rulefmt.RuleNode, error) {
+func (a *AlertingRule) Build(id string) (*rulefmt.Rule, error) {
 	a.Alert = id
 	promRule := a.AsRuleFmt()
-	_, err := promql.ParseExpr(promRule.Expr.Value)
+	_, err := promql.ParseExpr(promRule.Expr)
 	if err != nil {
-		return nil, fmt.Errorf("constructed rule : %s is not a valid prometheus rule %v", promRule.Expr.Value, err)
+		return nil, fmt.Errorf("constructed rule : %s is not a valid prometheus rule %v", promRule.Expr, err)
 	}
 	promRule.Annotations = lo.Assign(promRule.Annotations, map[string]string{
 		message.NotificationPropertyMontyUuid: id,

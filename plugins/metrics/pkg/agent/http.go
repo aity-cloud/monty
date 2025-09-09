@@ -5,6 +5,8 @@ import (
 	"sync"
 	"sync/atomic"
 
+	"log/slog"
+
 	"github.com/aity-cloud/monty/plugins/metrics/apis/node"
 	"github.com/aity-cloud/monty/plugins/metrics/apis/remotewrite"
 	"github.com/cortexproject/cortex/pkg/cortexpb"
@@ -13,7 +15,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"log/slog"
 
 	"github.com/aity-cloud/monty/pkg/clients"
 	"github.com/aity-cloud/monty/pkg/health"
@@ -57,7 +58,7 @@ func (s *HttpServer) SetRemoteWriteClient(client clients.Locker[remotewrite.Remo
 }
 
 func (s *HttpServer) ConfigureRoutes(router *gin.Engine) {
-	router.POST("/api/agent/push", gin.WrapH(push.Handler(100<<20, nil, s.pushFunc)))
+	router.POST("/api/agent/push", gin.WrapH(push.Handler(true, 100<<20, nil, s.pushFunc)))
 	pprof.Register(router, "/debug/plugin_metrics/pprof")
 }
 

@@ -77,7 +77,7 @@ func (f *FilesystemRuleFinder) Find(context.Context) ([]RuleGroup, error) {
 				).Warn("error reading rules file")
 				continue
 			}
-			list, errs := rulefmt.Parse(data)
+			list, errs := rulefmt.Parse(data, true)
 			if len(errs) > 0 {
 				lg.With(
 					logger.Err(errors.Combine(errs...)),

@@ -12,7 +12,6 @@ import (
 	prommodel "github.com/prometheus/common/model"
 	"github.com/prometheus/prometheus/model/rulefmt"
 	"github.com/samber/lo"
-	"gopkg.in/yaml.v3"
 )
 
 /*
@@ -71,20 +70,14 @@ func NewPrometheusAlertingRule(
 	if err != nil {
 		return nil, nil, err
 	}
-	recordingRuleFmt := &rulefmt.RuleNode{
-		Record: yaml.Node{
-			Kind:  yaml.ScalarNode,
-			Value: ConstructRecordingRuleName(info.GoldenSignal(), info.AlertType()),
-		},
-		Expr: yaml.Node{
-			Kind:  yaml.ScalarNode,
-			Value: alertingRule.Expr.Value,
-		},
+	recordingRuleFmt := &rulefmt.Rule{
+		Record:      ConstructRecordingRuleName(info.GoldenSignal(), info.AlertType()),
+		Expr:        alertingRule.Expr,
 		Labels:      idLabels,
 		Annotations: map[string]string{},
 	}
 	// have the alerting rule instead point to the recording rule(s)
-	alertingRule.Expr.Value = fmt.Sprintf("%s{%s}", recordingRuleFmt.Record.Value, ConstructFiltersFromMap(idLabels))
+	alertingRule.Expr = fmt.Sprintf("%s{%s}", recordingRuleFmt.Record, ConstructFiltersFromMap(idLabels))
 	alertingRule.Labels = lo.Assign(alertingRule.Labels, montyLabels)
 	alertingRule.Annotations = lo.Assign(alertingRule.Annotations, montyAnnotations)
 
@@ -98,12 +91,12 @@ func NewPrometheusAlertingRule(
 	rg := &rulefmt.RuleGroup{
 		Name:     RuleIdFromUuid(alertId),
 		Interval: promInterval,
-		Rules:    []rulefmt.RuleNode{*alertingRule, *recordingRuleFmt},
+		Rules:    []rulefmt.Rule{*alertingRule, *recordingRuleFmt},
 	}
 
 	return rg, map[string]string{
 		MetadataCortexNamespace: shared.MontyAlertingCortexNamespace,
 		MetadataCortexGroup:     rg.Name,
-		MetadataCortexRuleName:  alertingRule.Alert.Value,
+		MetadataCortexRuleName:  alertingRule.Alert,
 	}, nil
 }

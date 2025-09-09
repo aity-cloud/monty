@@ -116,7 +116,7 @@ func (f *PrometheusRuleFinder) findRulesInNamespace(
 					continue
 				}
 			}
-			ruleNodes := []rulefmt.RuleNode{}
+			ruleNodes := []rulefmt.Rule{}
 			for _, rule := range group.Rules {
 				var ruleFor model.Duration
 				if rule.Alert != "" {
@@ -131,21 +131,12 @@ func (f *PrometheusRuleFinder) findRulesInNamespace(
 						continue
 					}
 				}
-				node := rulefmt.RuleNode{
+				node := rulefmt.Rule{
 					For:         ruleFor,
 					Labels:      rule.Labels,
 					Annotations: rule.Annotations,
-				}
-				node.Record.SetString(rule.Record)
-				node.Expr.SetString(rule.Expr.String())
-				if errs := node.Validate(); len(errs) > 0 {
-					lg.With(
-						"group", group.Name,
-						"errs", lo.Map(errs, func(t rulefmt.WrappedError, i int) string {
-							return t.Error()
-						}),
-					).Warn("skipping rule: invalid node")
-					continue
+					Record:      rule.Record,
+					Expr:        rule.Expr.String(),
 				}
 				ruleNodes = append(ruleNodes, node)
 			}

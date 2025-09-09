@@ -429,15 +429,9 @@ func (s *SLO) ConstructRecordingRuleGroup(interval *time.Duration) rulefmt.RuleG
 		if err != nil {
 			panic(err)
 		}
-		rrecording.Rules = append(rrecording.Rules, rulefmt.RuleNode{
-			Record: yaml.Node{
-				Kind:  yaml.ScalarNode,
-				Value: slo_ratio_rate_query_name + w,
-			},
-			Expr: yaml.Node{
-				Kind:  yaml.ScalarNode,
-				Value: rawSli,
-			},
+		rrecording.Rules = append(rrecording.Rules, rulefmt.Rule{
+			Record: slo_ratio_rate_query_name + w,
+			Expr:   rawSli,
 			Labels: MergeLabels(s.idLabels, map[string]string{
 				slo_window: w,
 			},
@@ -464,100 +458,58 @@ func (s *SLO) ConstructMetadataRules(interval *time.Duration) rulefmt.RuleGroup 
 		Name:     s.GetId() + MetadataRuleSuffix,
 		Interval: promInterval,
 	}
-	rmetadata.Rules = []rulefmt.RuleNode{
+	rmetadata.Rules = []rulefmt.Rule{
 		{
-			Record: yaml.Node{
-				Kind:  yaml.ScalarNode,
-				Value: slo_objective_ratio,
-			},
-			Expr: yaml.Node{
-				Kind:  yaml.ScalarNode,
-				Value: s.RawObjectiveQuery(),
-			},
+			Record: slo_objective_ratio,
+			Expr:   s.RawObjectiveQuery(),
 			Labels: MergeLabels(
 				s.idLabels,
 				s.userLabels,
 			),
 		},
 		{
-			Record: yaml.Node{
-				Kind:  yaml.ScalarNode,
-				Value: slo_error_budget_ratio,
-			},
-			Expr: yaml.Node{
-				Kind:  yaml.ScalarNode,
-				Value: s.RawErrorBudgetQuery(),
-			},
+			Record: slo_error_budget_ratio,
+			Expr:   s.RawErrorBudgetQuery(),
 			Labels: MergeLabels(
 				s.idLabels,
 				s.userLabels,
 			),
 		},
 		{
-			Record: yaml.Node{
-				Kind:  yaml.ScalarNode,
-				Value: slo_time_period_days,
-			},
-			Expr: yaml.Node{
-				Kind:  yaml.ScalarNode,
-				Value: s.RawPeriodDurationQuery(),
-			},
+			Record: slo_time_period_days,
+			Expr:   s.RawPeriodDurationQuery(),
 			Labels: MergeLabels(
 				s.idLabels,
 				s.userLabels,
 			),
 		},
 		{
-			Record: yaml.Node{
-				Kind:  yaml.ScalarNode,
-				Value: slo_current_burn_rate_ratio,
-			},
-			Expr: yaml.Node{
-				Kind:  yaml.ScalarNode,
-				Value: s.RawCurrentBurnRateQuery(),
-			},
+			Record: slo_current_burn_rate_ratio,
+			Expr:   s.RawCurrentBurnRateQuery(),
 			Labels: MergeLabels(
 				s.idLabels,
 				s.userLabels,
 			),
 		},
 		{
-			Record: yaml.Node{
-				Kind:  yaml.ScalarNode,
-				Value: slo_period_burn_rate_ratio,
-			},
-			Expr: yaml.Node{
-				Kind:  yaml.ScalarNode,
-				Value: s.RawPeriodBurnRateQuery(),
-			},
+			Record: slo_period_burn_rate_ratio,
+			Expr:   s.RawPeriodBurnRateQuery(),
 			Labels: MergeLabels(
 				s.idLabels,
 				s.userLabels,
 			),
 		},
 		{
-			Record: yaml.Node{
-				Kind:  yaml.ScalarNode,
-				Value: slo_period_error_budget_remaining_ratio,
-			},
-			Expr: yaml.Node{
-				Kind:  yaml.ScalarNode,
-				Value: s.RawBudgetRemainingQuery(),
-			},
+			Record: slo_period_error_budget_remaining_ratio,
+			Expr:   s.RawBudgetRemainingQuery(),
 			Labels: MergeLabels(
 				s.idLabels,
 				s.userLabels,
 			),
 		},
 		{
-			Record: yaml.Node{
-				Kind:  yaml.ScalarNode,
-				Value: slo_info,
-			},
-			Expr: yaml.Node{
-				Kind:  yaml.ScalarNode,
-				Value: s.RawDashboardInfoQuery(),
-			},
+			Record: slo_info,
+			Expr:   s.RawDashboardInfoQuery(),
 			Labels: MergeLabels(
 				s.idLabels,
 				s.userLabels,
@@ -675,26 +627,14 @@ func (s *SLO) ConstructAlertingRuleGroup(interval *time.Duration) rulefmt.RuleGr
 	}
 
 	// Note: first two are expected to be the recording rules
-	ralerting.Rules = append(ralerting.Rules, rulefmt.RuleNode{
-		Record: yaml.Node{
-			Kind:  yaml.ScalarNode,
-			Value: slo_alert_ticket_window,
-		},
-		Expr: yaml.Node{
-			Kind:  yaml.ScalarNode,
-			Value: recordTicket.String(),
-		},
+	ralerting.Rules = append(ralerting.Rules, rulefmt.Rule{
+		Record: slo_alert_ticket_window,
+		Expr:   recordTicket.String(),
 		Labels: MergeLabels(s.idLabels, map[string]string{"slo_severity": "ticket"}, s.userLabels),
 	})
-	ralerting.Rules = append(ralerting.Rules, rulefmt.RuleNode{
-		Record: yaml.Node{
-			Kind:  yaml.ScalarNode,
-			Value: slo_alert_page_window,
-		},
-		Expr: yaml.Node{
-			Kind:  yaml.ScalarNode,
-			Value: recordPage.String(),
-		},
+	ralerting.Rules = append(ralerting.Rules, rulefmt.Rule{
+		Record: slo_alert_page_window,
+		Expr:   recordPage.String(),
 		Labels: MergeLabels(s.idLabels, map[string]string{"slo_severity": "page"}, s.userLabels),
 	})
 
@@ -747,29 +687,29 @@ func (s *SLO) ConstructCortexRules(interval *time.Duration) (sli, metadata, aler
 	return rrecording, rmetadata, ralerts
 }
 
-func (s *SLO) ConstructRawAlertQueries() (yaml.Node, yaml.Node) {
+func (s *SLO) ConstructRawAlertQueries() (string, string) {
 	filters, err := s.GetPrometheusRuleFilterByIdLabels()
 	if err != nil {
 		panic(err)
 	}
 	filters = "{" + filters + "}"
 	alertCriticalRawQuery := s.ConstructAlertingRuleGroup(lo.ToPtr(sloapi.MinEvaluateInterval)).Rules[0].Expr
-	alertCriticalRawQuery.Value = strings.Replace(alertCriticalRawQuery.Value, filters, "", -1)
-	alertCriticalRawQuery.Value = strings.Replace(alertCriticalRawQuery.Value, fmt.Sprintf("without (%s)", slo_window), "", -1)
+	alertCriticalRawQuery = strings.Replace(alertCriticalRawQuery, filters, "", -1)
+	alertCriticalRawQuery = strings.Replace(alertCriticalRawQuery, fmt.Sprintf("without (%s)", slo_window), "", -1)
 	alertSevereRawQuery := s.ConstructAlertingRuleGroup(lo.ToPtr(sloapi.MinEvaluateInterval)).Rules[1].Expr
-	alertSevereRawQuery.Value = strings.Replace(alertSevereRawQuery.Value, filters, "", -1)
-	alertSevereRawQuery.Value = strings.Replace(alertSevereRawQuery.Value, fmt.Sprintf("without (%s)", slo_window), "", -1)
+	alertSevereRawQuery = strings.Replace(alertSevereRawQuery, filters, "", -1)
+	alertSevereRawQuery = strings.Replace(alertSevereRawQuery, fmt.Sprintf("without (%s)", slo_window), "", -1)
 
 	for _, rule := range s.ConstructRecordingRuleGroup(nil).Rules {
-		alertCriticalRawQuery.Value = strings.Replace(alertCriticalRawQuery.Value, rule.Record.Value, rule.Expr.Value, -1)
-		alertSevereRawQuery.Value = strings.Replace(alertSevereRawQuery.Value, rule.Record.Value, rule.Expr.Value, -1)
+		alertCriticalRawQuery = strings.Replace(alertCriticalRawQuery, rule.Record, rule.Expr, -1)
+		alertSevereRawQuery = strings.Replace(alertSevereRawQuery, rule.Record, rule.Expr, -1)
 	}
 
-	_, err = parser.ParseExpr(alertCriticalRawQuery.Value)
+	_, err = parser.ParseExpr(alertCriticalRawQuery)
 	if err != nil {
 		panic(err)
 	}
-	_, err = parser.ParseExpr(alertSevereRawQuery.Value)
+	_, err = parser.ParseExpr(alertSevereRawQuery)
 	if err != nil {
 		panic(err)
 	}
@@ -846,10 +786,10 @@ func ToMatchingSubsetIdenticalMetric(goodEvents, totalEvents []*sloapi.Event) (g
 }
 
 func MergeRuleGroups(left rulefmt.RuleGroup, right *rulefmt.RuleGroup) *rulefmt.RuleGroup {
-	newRules := LeftJoinSliceAbstract[rulefmt.RuleNode, string](
+	newRules := LeftJoinSliceAbstract[rulefmt.Rule, string](
 		left.Rules,
 		right.Rules,
-		func(r rulefmt.RuleNode) string { return r.Record.Value },
+		func(r rulefmt.Rule) string { return r.Record },
 	)
 	return &rulefmt.RuleGroup{
 		Name:     left.Name,

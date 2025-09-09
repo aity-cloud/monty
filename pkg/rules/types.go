@@ -4,7 +4,6 @@ import (
 	"maps"
 
 	"github.com/prometheus/prometheus/model/rulefmt"
-	"gopkg.in/yaml.v3"
 )
 
 // Alias so we can implement the Finder[T] interface
@@ -16,26 +15,14 @@ func (r RuleGroup) Clone() RuleGroup {
 	cloned := RuleGroup{
 		Name:     r.Name,
 		Interval: r.Interval,
-		Rules:    make([]rulefmt.RuleNode, len(r.Rules)),
+		Rules:    make([]rulefmt.Rule, len(r.Rules)),
 	}
 
 	for i, r := range r.Rules {
-		cloned.Rules[i] = rulefmt.RuleNode{
-			Record: yaml.Node{
-				Kind:  r.Record.Kind,
-				Tag:   r.Record.Tag,
-				Value: r.Record.Value,
-			},
-			Alert: yaml.Node{
-				Kind:  r.Alert.Kind,
-				Tag:   r.Alert.Tag,
-				Value: r.Alert.Value,
-			},
-			Expr: yaml.Node{
-				Kind:  r.Expr.Kind,
-				Tag:   r.Expr.Tag,
-				Value: r.Expr.Value,
-			},
+		cloned.Rules[i] = rulefmt.Rule{
+			Record:      r.Record,
+			Alert:       r.Alert,
+			Expr:        r.Expr,
 			For:         r.For,
 			Labels:      maps.Clone(r.Labels),
 			Annotations: maps.Clone(r.Annotations),

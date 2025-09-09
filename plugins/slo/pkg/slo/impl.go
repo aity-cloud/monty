@@ -72,25 +72,25 @@ func (s SLOMonitoring) Delete(existing *sloapi.SLOData) error {
 	toApply := []rulefmt.RuleGroup{rrecording, rmetadata, ralerting}
 	for _, ruleName := range toApply {
 		for _, rule := range ruleName.Rules {
-			if rule.Alert.Value != "" {
+			if rule.Alert != "" {
 				err := deleteCortexSLORules(
 					s.ctx,
 					s.p,
 					s.p.logger,
 					clusterId,
-					rule.Alert.Value,
+					rule.Alert,
 				)
 				if err != nil {
 					errArr = append(errArr, err)
 				}
 			}
-			if rule.Record.Value != "" {
+			if rule.Record != "" {
 				err := deleteCortexSLORules(
 					s.ctx,
 					s.p,
 					s.p.logger,
 					clusterId,
-					rule.Record.Value,
+					rule.Record,
 				)
 				if err != nil {
 					errArr = append(errArr, err)
@@ -225,7 +225,7 @@ func (s SLOMonitoring) Status(existing *sloapi.SLOData) (*sloapi.SLOStatus, erro
 	sliDataVector, err := QuerySLOComponentByRecordName(
 		s.ctx,
 		s.p.adminClient.Get(),
-		sliErrorName.Value,
+		sliErrorName,
 		existing.GetSLO().GetClusterId(),
 	)
 	if err != nil {
@@ -255,7 +255,7 @@ func (s SLOMonitoring) Status(existing *sloapi.SLOData) (*sloapi.SLOStatus, erro
 	//// ======================= alert =======================
 
 	alertBudgetRules := slo.ConstructAlertingRuleGroup(nil)
-	short, long := alertBudgetRules.Rules[0].Expr.Value, alertBudgetRules.Rules[1].Expr.Value
+	short, long := alertBudgetRules.Rules[0].Expr, alertBudgetRules.Rules[1].Expr
 	alertDataVector1, err := QuerySLOComponentByRawQuery(s.ctx, s.p.adminClient.Get(), short, existing.GetSLO().GetClusterId())
 	if err != nil {
 		return nil, err
@@ -298,7 +298,7 @@ func (s SLOMonitoring) Preview(slo *SLO) (*sloapi.SLOPreviewResponse, error) {
 	}
 
 	ruleGroup := slo.ConstructRecordingRuleGroup(lo.ToPtr(sloapi.MinEvaluateInterval))
-	sliPeriodErrorRate := ruleGroup.Rules[len(ruleGroup.Rules)-1].Expr.Value
+	sliPeriodErrorRate := ruleGroup.Rules[len(ruleGroup.Rules)-1].Expr
 	sli := "1 - (max(" + sliPeriodErrorRate + ") OR on() vector(NaN))" // handles the empty case and still differentiates between 0 and empty
 	_, err = parser.ParseExpr(sli)
 	if err != nil {
@@ -327,7 +327,7 @@ func (s SLOMonitoring) Preview(slo *SLO) (*sloapi.SLOPreviewResponse, error) {
 	alertTimeStep := time.Minute * 20
 
 	alertWindowSevereMatrix, err := QuerySLOComponentByRawQueryRange(s.ctx, s.p.adminClient.Get(),
-		alertSevereRawQuery.Value, req.GetSlo().GetClusterId(),
+		alertSevereRawQuery, req.GetSlo().GetClusterId(),
 		startTs, endTs, alertTimeStep,
 	)
 	if err != nil {
@@ -340,7 +340,7 @@ func (s SLOMonitoring) Preview(slo *SLO) (*sloapi.SLOPreviewResponse, error) {
 	preview.PlotVector.Windows = append(preview.PlotVector.Windows, severeWindows...)
 
 	alertWindowCriticalMatrix, err := QuerySLOComponentByRawQueryRange(s.ctx, s.p.adminClient.Get(),
-		alertCriticalRawQuery.Value, req.GetSlo().GetClusterId(),
+		alertCriticalRawQuery, req.GetSlo().GetClusterId(),
 		startTs, endTs, step,
 	)
 	if err != nil {
