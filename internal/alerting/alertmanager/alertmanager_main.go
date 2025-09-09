@@ -16,6 +16,7 @@ package alertmanager_internal
 import (
 	"context"
 	"fmt"
+	"log/slog"
 	"net"
 	"net/http"
 	"net/url"
@@ -31,8 +32,6 @@ import (
 	"github.com/aity-cloud/monty/pkg/alerting/extensions"
 	"github.com/aity-cloud/monty/pkg/alerting/templates"
 	kingpin "github.com/alecthomas/kingpin/v2"
-	"github.com/go-kit/log"
-	"github.com/go-kit/log/level"
 	"github.com/pkg/errors"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
@@ -112,7 +111,7 @@ var (
 			Help: "Number of configured integrations.",
 		},
 	)
-	promlogConfig = promlog.Config{}
+	promlogConfig = promslog.Config{}
 )
 
 func init() {
@@ -141,12 +140,13 @@ const defaultClusterAddr = "0.0.0.0:9094"
 
 // buildReceiverIntegrations builds a list of integration notifiers off of a
 // receiver config.
-func buildReceiverIntegrations(nc config.Receiver, tmpl *template.Template, logger log.Logger) ([]notify.Integration, error) {
+func buildReceiverIntegrations(nc config.Receiver, tmpl *template.Template, logger *slog.Logger) ([]notify.Integration, error) {
+
 	var (
 		errs         types.MultiError
 		integrations []notify.Integration
-		add          = func(name string, i int, rs notify.ResolvedSender, f func(l log.Logger) (notify.Notifier, error)) {
-			n, err := f(log.With(logger, "integration", name))
+		add          = func(name string, i int, rs notify.ResolvedSender, f func(l *slog.Logger) (notify.Notifier, error)) {
+			n, err := f(logger.With("integration", name))
 			if err != nil {
 				errs.Add(err)
 				return
@@ -156,43 +156,43 @@ func buildReceiverIntegrations(nc config.Receiver, tmpl *template.Template, logg
 	)
 
 	for i, c := range nc.WebhookConfigs {
-		add("webhook", i, c, func(l log.Logger) (notify.Notifier, error) { return webhook.New(c, tmpl, l) })
+		add("webhook", i, c, func(l *slog.Logger) (notify.Notifier, error) { return webhook.New(c, tmpl, l) })
 	}
 	for i, c := range nc.EmailConfigs {
-		add("email", i, c, func(l log.Logger) (notify.Notifier, error) { return email.New(c, tmpl, l), nil })
+		add("email", i, c, func(l *slog.Logger) (notify.Notifier, error) { return email.New(c, tmpl, l), nil })
 	}
 	for i, c := range nc.PagerdutyConfigs {
-		add("pagerduty", i, c, func(l log.Logger) (notify.Notifier, error) { return pagerduty.New(c, tmpl, l) })
+		add("pagerduty", i, c, func(l *slog.Logger) (notify.Notifier, error) { return pagerduty.New(c, tmpl, l) })
 	}
 	for i, c := range nc.OpsGenieConfigs {
-		add("opsgenie", i, c, func(l log.Logger) (notify.Notifier, error) { return opsgenie.New(c, tmpl, l) })
+		add("opsgenie", i, c, func(l *slog.Logger) (notify.Notifier, error) { return opsgenie.New(c, tmpl, l) })
 	}
 	for i, c := range nc.WechatConfigs {
-		add("wechat", i, c, func(l log.Logger) (notify.Notifier, error) { return wechat.New(c, tmpl, l) })
+		add("wechat", i, c, func(l *slog.Logger) (notify.Notifier, error) { return wechat.New(c, tmpl, l) })
 	}
 	for i, c := range nc.SlackConfigs {
-		add("slack", i, c, func(l log.Logger) (notify.Notifier, error) { return slack.New(c, tmpl, l) })
+		add("slack", i, c, func(l *slog.Logger) (notify.Notifier, error) { return slack.New(c, tmpl, l) })
 	}
 	for i, c := range nc.VictorOpsConfigs {
-		add("victorops", i, c, func(l log.Logger) (notify.Notifier, error) { return victorops.New(c, tmpl, l) })
+		add("victorops", i, c, func(l *slog.Logger) (notify.Notifier, error) { return victorops.New(c, tmpl, l) })
 	}
 	for i, c := range nc.PushoverConfigs {
-		add("pushover", i, c, func(l log.Logger) (notify.Notifier, error) { return pushover.New(c, tmpl, l) })
+		add("pushover", i, c, func(l *slog.Logger) (notify.Notifier, error) { return pushover.New(c, tmpl, l) })
 	}
 	for i, c := range nc.SNSConfigs {
-		add("sns", i, c, func(l log.Logger) (notify.Notifier, error) { return sns.New(c, tmpl, l) })
+		add("sns", i, c, func(l *slog.Logger) (notify.Notifier, error) { return sns.New(c, tmpl, l) })
 	}
 	for i, c := range nc.TelegramConfigs {
-		add("telegram", i, c, func(l log.Logger) (notify.Notifier, error) { return telegram.New(c, tmpl, l) })
+		add("telegram", i, c, func(l *slog.Logger) (notify.Notifier, error) { return telegram.New(c, tmpl, l) })
 	}
 	for i, c := range nc.DiscordConfigs {
-		add("discord", i, c, func(l log.Logger) (notify.Notifier, error) { return discord.New(c, tmpl, l) })
+		add("discord", i, c, func(l *slog.Logger) (notify.Notifier, error) { return discord.New(c, tmpl, l) })
 	}
 	for i, c := range nc.WebexConfigs {
-		add("webex", i, c, func(l log.Logger) (notify.Notifier, error) { return webex.New(c, tmpl, l) })
+		add("webex", i, c, func(l *slog.Logger) (notify.Notifier, error) { return webex.New(c, tmpl, l) })
 	}
 	for i, c := range nc.MSTeamsConfigs {
-		add("msteams", i, c, func(l log.Logger) (notify.Notifier, error) { return msteams.New(c, tmpl, l) })
+		add("msteams", i, c, func(l *slog.Logger) (notify.Notifier, error) { return msteams.New(c, tmpl, l) })
 	}
 
 	if errs.Len() > 0 {
@@ -259,32 +259,32 @@ func run(args []string) int {
 		extensions.StartMontyEmbeddedServer(ctxCa, *montyAddr, lo.FromPtrOr(montySendK8s, false))
 	}
 
-	logger := promlog.New(&promlogConfig)
+	logger := promslog.New(&promlogConfig)
 
-	level.Debug(logger).Log("msg", "waiting for alertmanager file", "config.file", *configFile)
+	logger.Debug("msg", "waiting for alertmanager file", "config.file", *configFile)
 	if ok := waitForAlertmanagerFile(ctxCa, *configFile); !ok {
-		level.Error(logger).Log("msg", "file does not exist", "config.file", *configFile)
+		logger.Error("msg", "file does not exist", "config.file", *configFile)
 		return 1
 	}
 
-	level.Info(logger).Log("msg", "Starting Alertmanager", "version", version.Info())
-	level.Info(logger).Log("build_context", version.BuildContext())
+	logger.Info("msg", "Starting Alertmanager", "version", version.Info())
+	logger.Info("build_context", version.BuildContext())
 
 	err := os.MkdirAll(*dataDir, 0o777)
 	if err != nil {
-		level.Error(logger).Log("msg", "Unable to create data directory", "err", err)
+		logger.Error("msg", "Unable to create data directory", "err", err)
 		return 1
 	}
 
 	tlsTransportConfig, err := cluster.GetTLSTransportConfig(*tlsConfigFile)
 	if err != nil {
-		level.Error(logger).Log("msg", "unable to initialize TLS transport configuration for gossip mesh", "err", err)
+		logger.Error("msg", "unable to initialize TLS transport configuration for gossip mesh", "err", err)
 		return 1
 	}
 	var peer *cluster.Peer
 	if *clusterBindAddr != "" {
 		peer, err = cluster.Create(
-			log.With(logger, "component", "cluster"),
+			logger.With("component", "cluster"),
 			prometheus.DefaultRegisterer,
 			*clusterBindAddr,
 			*clusterAdvertiseAddr,
@@ -300,7 +300,7 @@ func run(args []string) int {
 			*label,
 		)
 		if err != nil {
-			level.Error(logger).Log("msg", "unable to initialize gossip mesh", "err", err)
+			logger.Error("msg", "unable to initialize gossip mesh", "err", err)
 			return 1
 		}
 		clusterEnabled.Set(1)
@@ -313,13 +313,13 @@ func run(args []string) int {
 	notificationLogOpts := nflog.Options{
 		SnapshotFile: filepath.Join(*dataDir, "nflog"),
 		Retention:    *retention,
-		Logger:       log.With(logger, "component", "nflog"),
+		Logger:       logger.With("component", "nflog"),
 		Metrics:      prometheus.DefaultRegisterer,
 	}
 
 	notificationLog, err := nflog.New(notificationLogOpts)
 	if err != nil {
-		level.Error(logger).Log("err", err)
+		logger.Error("err", err)
 		return 1
 	}
 	if peer != nil {
@@ -332,13 +332,13 @@ func run(args []string) int {
 	silenceOpts := silence.Options{
 		SnapshotFile: filepath.Join(*dataDir, "silences"),
 		Retention:    *retention,
-		Logger:       log.With(logger, "component", "silences"),
+		Logger:       logger.With("component", "silences"),
 		Metrics:      prometheus.DefaultRegisterer,
 	}
 
 	silences, err := silence.New(silenceOpts)
 	if err != nil {
-		level.Error(logger).Log("err", err)
+		logger.Error("err", err)
 		return 1
 	}
 	if peer != nil {
@@ -365,13 +365,13 @@ func run(args []string) int {
 			*peerReconnectTimeout,
 		)
 		if err != nil {
-			level.Warn(logger).Log("msg", "unable to join gossip mesh", "err", err)
+			logger.Warn("msg", "unable to join gossip mesh", "err", err)
 		}
 		ctx, cancel := context.WithTimeout(context.Background(), *settleTimeout)
 		defer func() {
 			cancel()
 			if err := peer.Leave(10 * time.Second); err != nil {
-				level.Warn(logger).Log("msg", "unable to leave gossip mesh", "err", err)
+				logger.Warn("msg", "unable to leave gossip mesh", "err", err)
 			}
 		}()
 		go peer.Settle(ctx, *gossipInterval*10)
@@ -379,7 +379,7 @@ func run(args []string) int {
 
 	alerts, err := mem.NewAlerts(context.Background(), marker, *alertGCInterval, nil, logger, prometheus.DefaultRegisterer)
 	if err != nil {
-		level.Error(logger).Log("err", err)
+		logger.Error("err", err)
 		return 1
 	}
 	defer alerts.Close()
@@ -402,27 +402,27 @@ func run(args []string) int {
 	}
 
 	api, err := api.New(api.Options{
-		Alerts:      alerts,
-		Silences:    silences,
-		StatusFunc:  marker.Status,
-		Peer:        clusterPeer,
-		Timeout:     *httpTimeout,
-		Concurrency: *getConcurrency,
-		Logger:      log.With(logger, "component", "api"),
-		Registry:    prometheus.DefaultRegisterer,
-		GroupFunc:   groupFn,
+		Alerts:          alerts,
+		Silences:        silences,
+		AlertStatusFunc: marker.Status,
+		Peer:            clusterPeer,
+		Timeout:         *httpTimeout,
+		Concurrency:     *getConcurrency,
+		Logger:          logger.With("component", "api"),
+		Registry:        prometheus.DefaultRegisterer,
+		GroupFunc:       groupFn,
 	})
 	if err != nil {
-		level.Error(logger).Log("err", errors.Wrap(err, "failed to create API"))
+		logger.Error("err", errors.Wrap(err, "failed to create API"))
 		return 1
 	}
 
 	amURL, err := extURL(logger, os.Hostname, (*webConfig.WebListenAddresses)[0], *externalURL)
 	if err != nil {
-		level.Error(logger).Log("msg", "failed to determine external URL", "err", err)
+		logger.Error("msg", "failed to determine external URL", "err", err)
 		return 1
 	}
-	level.Debug(logger).Log("externalURL", amURL.String())
+	logger.Debug("externalURL", amURL.String())
 
 	waitFunc := func() time.Duration { return 0 }
 	if peer != nil {
@@ -442,7 +442,7 @@ func run(args []string) int {
 
 	dispMetrics := dispatch.NewDispatcherMetrics(false, prometheus.DefaultRegisterer)
 	pipelineBuilder := notify.NewPipelineBuilder(prometheus.DefaultRegisterer, featurecontrol.NoopFlags{})
-	configLogger := log.With(logger, "component", "configuration")
+	configLogger := logger.With("component", "configuration")
 	configCoordinator := config.NewCoordinator(
 		*configFile,
 		prometheus.DefaultRegisterer,
@@ -468,7 +468,7 @@ func run(args []string) int {
 		for _, rcv := range conf.Receivers {
 			if _, found := activeReceivers[rcv.Name]; !found {
 				// No need to build a receiver if no route is using it.
-				level.Info(configLogger).Log("msg", "skipping creation of receiver not referenced by any route", "receiver", rcv.Name)
+				configLogger.Info("msg", "skipping creation of receiver not referenced by any route", "receiver", rcv.Name)
 				continue
 			}
 			integrations, err := buildReceiverIntegrations(rcv, tmpl, logger)
@@ -510,6 +510,7 @@ func run(args []string) int {
 			inhibitor,
 			silencer,
 			timeinterval.NewIntervener(timeIntervals),
+			types.NewMarker(prometheus.DefaultRegisterer),
 			notificationLog,
 			pipelinePeer,
 		)
@@ -524,7 +525,7 @@ func run(args []string) int {
 		disp = dispatch.NewDispatcher(alerts, routes, pipeline, marker, timeoutFunc, nil, logger, dispMetrics)
 		routes.Walk(func(r *dispatch.Route) {
 			if r.RouteOpts.RepeatInterval > *retention {
-				level.Warn(configLogger).Log(
+				configLogger.Warn(
 					"msg",
 					"repeat_interval is greater than the data retention period. It can lead to notifications being repeated more often than expected.",
 					"repeat_interval",
@@ -536,7 +537,7 @@ func run(args []string) int {
 				)
 			}
 			if r.RouteOpts.RepeatInterval < r.RouteOpts.GroupInterval {
-				level.Warn(configLogger).Log(
+				configLogger.Warn(
 					"msg",
 					"repeat_interval is less than group_interval. Notifications will not repeat until the next group_interval.",
 					"repeat_interval",
@@ -564,7 +565,7 @@ func run(args []string) int {
 		*routePrefix = amURL.Path
 	}
 	*routePrefix = "/" + strings.Trim(*routePrefix, "/")
-	level.Debug(logger).Log("routePrefix", *routePrefix)
+	logger.Debug("routePrefix", *routePrefix)
 
 	router := route.New().WithInstrumentation(instrumentHandler)
 	if *routePrefix != "/" {
@@ -585,12 +586,12 @@ func run(args []string) int {
 
 	go func() {
 		if err := web.ListenAndServe(srv, webConfig, logger); err != http.ErrServerClosed {
-			level.Error(logger).Log("msg", "Listen error", "err", err)
+			logger.Error("msg", "Listen error", "err", err)
 			close(srvc)
 		}
 		defer func() {
 			if err := srv.Close(); err != nil {
-				level.Error(logger).Log("msg", "Error on closing the server", "err", err)
+				logger.Error("msg", "Error on closing the server", "err", err)
 			}
 		}()
 	}()
@@ -610,7 +611,7 @@ func run(args []string) int {
 		case errc := <-webReload:
 			errc <- configCoordinator.Reload()
 		case <-term:
-			level.Info(logger).Log("msg", "Received SIGTERM, exiting gracefully...")
+			logger.Info("msg", "Received SIGTERM, exiting gracefully...")
 			return 0
 		case <-srvc:
 			return 1
@@ -626,7 +627,7 @@ func clusterWait(p *cluster.Peer, timeout time.Duration) func() time.Duration {
 	}
 }
 
-func extURL(logger log.Logger, hostnamef func() (string, error), listen, external string) (*url.URL, error) {
+func extURL(logger *slog.Logger, hostnamef func() (string, error), listen, external string) (*url.URL, error) {
 	if external == "" {
 		hostname, err := hostnamef()
 		if err != nil {
@@ -637,7 +638,7 @@ func extURL(logger log.Logger, hostnamef func() (string, error), listen, externa
 			return nil, err
 		}
 		if port == "" {
-			level.Warn(logger).Log("msg", "no port found for listen address", "address", listen)
+			logger.Warn("msg", "no port found for listen address", "address", listen)
 		}
 
 		external = fmt.Sprintf("http://%s:%s/", hostname, port)
