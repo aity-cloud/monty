@@ -123,7 +123,7 @@ func BuildLoadRuleGroupsCmd() *cobra.Command {
 				lg.Error("fatal", logger.Err(err))
 				os.Exit(1)
 			}
-			rgs, errors := rulefmt.Parse(yamlContent)
+			rgs, errors := rulefmt.Parse(yamlContent, true)
 			if len(errors) > 0 {
 				for _, err := range errors {
 					lg.Error("error", logger.Err(err))

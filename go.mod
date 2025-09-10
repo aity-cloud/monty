@@ -38,6 +38,7 @@ require (
 	github.com/go-logr/logr v1.4.3
 	github.com/go-openapi/strfmt v0.23.0
 	github.com/go-playground/validator/v10 v10.27.0
+	github.com/goccy/go-yaml v1.18.0
 	github.com/golang/protobuf v1.5.4
 	github.com/golang/snappy v1.0.0
 	github.com/google/cel-go v0.26.1
@@ -50,7 +51,7 @@ require (
 	github.com/hashicorp/go-hclog v1.6.3
 	github.com/hashicorp/go-plugin v1.4.3
 	github.com/hashicorp/golang-lru/v2 v2.0.7
-	github.com/hashicorp/memberlist v0.5.2
+	github.com/hashicorp/memberlist v0.5.3
 	github.com/iancoleman/strcase v0.3.0
 	github.com/jarcoal/httpmock v1.3.0
 	github.com/jedib0t/go-pretty/v6 v6.4.6
@@ -94,7 +95,7 @@ require (
 	github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.66.0
 	github.com/prometheus-operator/prometheus-operator/pkg/client v0.66.0
 	github.com/prometheus/alertmanager v0.28.1
-	github.com/prometheus/client_golang v1.23.0-rc.1
+	github.com/prometheus/client_golang v1.23.0
 	github.com/prometheus/common v0.65.1-0.20250703115700-7f8b2a0d32d3
 	github.com/prometheus/common/sigv4 v0.1.0
 	github.com/prometheus/exporter-toolkit v0.14.0
@@ -185,13 +186,14 @@ require (
 	github.com/VictoriaMetrics/fastcache v1.12.2 // indirect
 	github.com/antlr4-go/antlr/v4 v4.13.1 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.13.0 // indirect
+	github.com/aws/aws-sdk-go-v2/service/sns v1.35.0 // indirect
 	github.com/bboreham/go-loser v0.0.0-20230920113527-fcc2c21820a3 // indirect
 	github.com/bytedance/sonic/loader v0.3.0 // indirect
 	github.com/caio/go-tdigest v3.1.0+incompatible // indirect
 	github.com/cenkalti/backoff/v5 v5.0.2 // indirect
 	github.com/cloudwego/base64x v0.1.6 // indirect
 	github.com/cncf/xds/go v0.0.0-20250501225837-2ac532fd4443 // indirect
-	github.com/coder/quartz v0.1.2 // indirect
+	github.com/coder/quartz v0.2.1 // indirect
 	github.com/containerd/errdefs v1.0.0 // indirect
 	github.com/containerd/log v0.1.0 // indirect
 	github.com/cristalhq/hedgedhttp v0.9.1 // indirect
@@ -205,6 +207,7 @@ require (
 	github.com/fxamacker/cbor/v2 v2.7.0 // indirect
 	github.com/go-chi/chi/v5 v5.2.2 // indirect
 	github.com/go-ini/ini v1.67.0 // indirect
+	github.com/go-jose/go-jose/v4 v4.1.1 // indirect
 	github.com/go-task/slim-sprig/v3 v3.0.0 // indirect
 	github.com/go-viper/mapstructure/v2 v2.4.0 // indirect
 	github.com/google/go-tpm v0.9.5 // indirect
@@ -227,18 +230,20 @@ require (
 	github.com/prometheus-community/parquet-common v0.0.0-20250827225610-65f0b68d35e6 // indirect
 	github.com/prometheus-community/prom-label-proxy v0.11.1 // indirect
 	github.com/prometheus/otlptranslator v0.0.0-20250731173911-a9673827589a // indirect
-	github.com/prometheus/sigv4 v0.2.0 // indirect
+	github.com/prometheus/sigv4 v0.2.1 // indirect
 	github.com/puzpuzpuz/xsync/v3 v3.5.1 // indirect
 	github.com/rantav/go-grpc-channelz v0.0.4 // indirect
 	github.com/seiflotfy/cuckoofilter v0.0.0-20240715131351-a2f2c23f1771 // indirect
 	github.com/sercand/kuberesolver/v5 v5.1.1 // indirect
 	github.com/shirou/gopsutil/v4 v4.25.7 // indirect
 	github.com/soheilhy/cmux v0.1.5 // indirect
+	github.com/spiffe/go-spiffe/v2 v2.5.0 // indirect
 	github.com/tinylib/msgp v1.3.0 // indirect
 	github.com/tjhop/slog-gokit v0.1.4 // indirect
 	github.com/trivago/tgo v1.0.7 // indirect
 	github.com/valyala/fastjson v1.6.4 // indirect
 	github.com/x448/float16 v0.8.4 // indirect
+	github.com/zeebo/errs v1.4.0 // indirect
 	go.opentelemetry.io/auto/sdk v1.1.0 // indirect
 	go.opentelemetry.io/collector/client v1.40.0 // indirect
 	go.opentelemetry.io/collector/config/configmiddleware v0.127.0 // indirect
@@ -301,18 +306,18 @@ require (
 	github.com/apparentlymart/go-textseg/v13 v13.0.0 // indirect
 	github.com/armon/go-metrics v0.4.1 // indirect
 	github.com/asaskevich/govalidator v0.0.0-20230301143203-a9d515a09cc2 // indirect
-	github.com/aws/aws-sdk-go-v2 v1.37.0 // indirect
-	github.com/aws/aws-sdk-go-v2/config v1.29.15 // indirect
-	github.com/aws/aws-sdk-go-v2/credentials v1.17.68 // indirect
-	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.16.30 // indirect
+	github.com/aws/aws-sdk-go-v2 v1.38.3 // indirect
+	github.com/aws/aws-sdk-go-v2/config v1.30.1 // indirect
+	github.com/aws/aws-sdk-go-v2/credentials v1.18.1 // indirect
+	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.18.0 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/configsources v1.4.0 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.7.0 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/ini v1.8.3 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.13.0 // indirect
-	github.com/aws/aws-sdk-go-v2/service/sso v1.25.3 // indirect
-	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.30.1 // indirect
-	github.com/aws/aws-sdk-go-v2/service/sts v1.33.20 // indirect
-	github.com/aws/smithy-go v1.22.5 // indirect
+	github.com/aws/aws-sdk-go-v2/service/sso v1.26.0 // indirect
+	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.31.0 // indirect
+	github.com/aws/aws-sdk-go-v2/service/sts v1.35.0 // indirect
+	github.com/aws/smithy-go v1.23.0 // indirect
 	github.com/aymanbagabas/go-osc52/v2 v2.0.1 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/bitly/go-simplejson v0.5.1 // indirect
@@ -660,7 +665,7 @@ replace (
 	//opensearch.opster.io => github.com/dbason/opensearch-k8s-operator/opensearch-operator v0.0.0-20231124032547-2158e537f8ea
 	github.com/Opster/opensearch-k8s-operator/opensearch-operator => github.com/open-panoptes/opensearch-k8s-operator/opensearch-operator v0.0.0-20250830203440-481aa7604242
 	// github.com/bufbuild/protovalidate-go => github.com/kralicky/protovalidate-go v0.0.0-20231106202554-5e160b661210
-	github.com/cortexproject/cortex => ../cortex //github.com/aity-cloud/cortex v0.0.0-20250909170519-177ed0d5f66d
+	github.com/cortexproject/cortex => github.com/aity-cloud/cortex v1.19.0-monty.3
 	// TODO: Update when https://github.com/grafana-operator/grafana-operator/pull/1301/files is merged
 	github.com/grafana-operator/grafana-operator/v5 => github.com/jaehnri/grafana-operator/v5 v5.0.0-20231107224428-8e66ce068452
 	// https://github.com/hashicorp/go-plugin/pull/251
@@ -716,3 +721,6 @@ replace (
 exclude github.com/knadh/koanf v1.5.0
 
 replace github.com/kralicky/codegen => github.com/aity-cloud/codegen v0.0.0-20250907110124-41e7765ad3ff
+
+//temp replace
+replace github.com/prometheus/alertmanager => github.com/prometheus/alertmanager v0.0.0-20250907150727-1ce9b772a181

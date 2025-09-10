@@ -13,7 +13,7 @@ import (
 
 	"github.com/go-kit/log/level"
 	"github.com/pkg/errors"
-	"gopkg.in/yaml.v2"
+	yaml "gopkg.in/yaml.v3"
 
 	"github.com/cortexproject/cortex/pkg/cortex"
 	"github.com/cortexproject/cortex/pkg/tracing"
@@ -164,7 +164,7 @@ func parseConfigFileParameter(args []string) (configFile string, expandEnv bool)
 
 // LoadConfig read YAML-formatted config from filename into cfg.
 func LoadConfig(filename string, expandENV bool, cfg *cortex.Config) error {
-	buf, err := ioutil.ReadFile(filename)
+	buf, err := os.ReadFile(filename)
 	if err != nil {
 		return errors.Wrap(err, "Error reading config file")
 	}
@@ -173,7 +173,7 @@ func LoadConfig(filename string, expandENV bool, cfg *cortex.Config) error {
 		buf = expandEnv(buf)
 	}
 
-	err = yaml.UnmarshalStrict(buf, cfg)
+	err = yaml.Unmarshal(buf, cfg)
 	if err != nil {
 		return errors.Wrap(err, "Error parsing config file")
 	}
