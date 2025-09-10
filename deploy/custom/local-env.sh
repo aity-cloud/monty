@@ -15,5 +15,5 @@ export TEST_ENV_API_PORT=18080
 export AGENT_DISCONNECT_PORT=19000
 export NODE_EXPORTER_PORT=9100
 
-mage build:monty
+mage build:all
 mage test:env

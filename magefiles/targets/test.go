@@ -126,13 +126,13 @@ var testbinConfig = fmt.Sprintf(`
 		{
 			"name": "prometheus",
 			"sourceImage": "prom/prometheus",
-			"version": "v2.55.1",
+			"version": "v3.5.0",
 			"path": "/bin/prometheus"
 		},
 		{
 			"name": "promtool",
 			"sourceImage": "prom/prometheus",
-			"version": "v2.55.1",
+			"version": "v3.5.0",
 			"path": "/bin/promtool"
 		},
 		{
@@ -143,13 +143,13 @@ var testbinConfig = fmt.Sprintf(`
 		{
 			"name": "alertmanager",
 			"sourceImage": "prom/alertmanager",
-			"version": "v0.27.0",
+			"version": "v0.28.1",
 			"path": "/bin/alertmanager"
 		},
 		{
 			"name": "amtool",
 			"sourceImage": "prom/alertmanager",
-			"version": "v0.27.0",
+			"version": "v0.28.1",
 			"path": "/bin/amtool"
 		},
 		{

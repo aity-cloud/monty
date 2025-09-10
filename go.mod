@@ -38,7 +38,6 @@ require (
 	github.com/go-logr/logr v1.4.3
 	github.com/go-openapi/strfmt v0.23.0
 	github.com/go-playground/validator/v10 v10.27.0
-	github.com/goccy/go-yaml v1.18.0
 	github.com/golang/protobuf v1.5.4
 	github.com/golang/snappy v1.0.0
 	github.com/google/cel-go v0.26.1
@@ -97,10 +96,10 @@ require (
 	github.com/prometheus/alertmanager v0.28.1
 	github.com/prometheus/client_golang v1.23.0
 	github.com/prometheus/common v0.65.1-0.20250703115700-7f8b2a0d32d3
-	github.com/prometheus/common/sigv4 v0.1.0
 	github.com/prometheus/exporter-toolkit v0.14.0
 	github.com/prometheus/procfs v0.17.0
 	github.com/prometheus/prometheus v0.305.1-0.20250808023455-1e4144a496fb
+	github.com/prometheus/sigv4 v0.2.1
 	github.com/pulumi/pulumi/sdk/v3 v3.68.0
 	github.com/qmuntal/stateless v1.6.8
 	github.com/rancher/charts-build-scripts v0.0.0-00010101000000-000000000000
@@ -207,7 +206,6 @@ require (
 	github.com/fxamacker/cbor/v2 v2.7.0 // indirect
 	github.com/go-chi/chi/v5 v5.2.2 // indirect
 	github.com/go-ini/ini v1.67.0 // indirect
-	github.com/go-jose/go-jose/v4 v4.1.1 // indirect
 	github.com/go-task/slim-sprig/v3 v3.0.0 // indirect
 	github.com/go-viper/mapstructure/v2 v2.4.0 // indirect
 	github.com/google/go-tpm v0.9.5 // indirect
@@ -230,20 +228,17 @@ require (
 	github.com/prometheus-community/parquet-common v0.0.0-20250827225610-65f0b68d35e6 // indirect
 	github.com/prometheus-community/prom-label-proxy v0.11.1 // indirect
 	github.com/prometheus/otlptranslator v0.0.0-20250731173911-a9673827589a // indirect
-	github.com/prometheus/sigv4 v0.2.1 // indirect
 	github.com/puzpuzpuz/xsync/v3 v3.5.1 // indirect
 	github.com/rantav/go-grpc-channelz v0.0.4 // indirect
 	github.com/seiflotfy/cuckoofilter v0.0.0-20240715131351-a2f2c23f1771 // indirect
 	github.com/sercand/kuberesolver/v5 v5.1.1 // indirect
 	github.com/shirou/gopsutil/v4 v4.25.7 // indirect
 	github.com/soheilhy/cmux v0.1.5 // indirect
-	github.com/spiffe/go-spiffe/v2 v2.5.0 // indirect
 	github.com/tinylib/msgp v1.3.0 // indirect
 	github.com/tjhop/slog-gokit v0.1.4 // indirect
 	github.com/trivago/tgo v1.0.7 // indirect
 	github.com/valyala/fastjson v1.6.4 // indirect
 	github.com/x448/float16 v0.8.4 // indirect
-	github.com/zeebo/errs v1.4.0 // indirect
 	go.opentelemetry.io/auto/sdk v1.1.0 // indirect
 	go.opentelemetry.io/collector/client v1.40.0 // indirect
 	go.opentelemetry.io/collector/config/configmiddleware v0.127.0 // indirect
@@ -699,9 +694,6 @@ replace (
 	// Using cortex fork of weaveworks/common
 	github.com/weaveworks/common => github.com/cortexproject/weaveworks-common v0.0.0-20250902164925-0315015a8b9f
 
-	// Wait for fix for https://github.com/grpc/grpc-go/pull/8504.
-	//google.golang.org/grpc => google.golang.org/grpc v1.71.2
-
 	// Same replace used by thanos: (may be removed in the future)
 	// https://github.com/thanos-io/thanos/blob/fdeea3917591fc363a329cbe23af37c6fff0b5f0/go.mod#L265
 	gopkg.in/alecthomas/kingpin.v2 => github.com/alecthomas/kingpin v1.3.8-0.20210301060133-17f40c25f497
@@ -724,3 +716,5 @@ replace github.com/kralicky/codegen => github.com/aity-cloud/codegen v0.0.0-2025
 
 //temp replace
 replace github.com/prometheus/alertmanager => github.com/prometheus/alertmanager v0.0.0-20250907150727-1ce9b772a181
+
+replace google.golang.org/grpc => google.golang.org/grpc v1.71.2

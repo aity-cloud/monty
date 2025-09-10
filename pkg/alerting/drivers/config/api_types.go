@@ -37,7 +37,7 @@ import (
 	"github.com/prometheus/alertmanager/timeinterval"
 	commoncfg "github.com/prometheus/common/config"
 	"github.com/prometheus/common/model"
-	"github.com/prometheus/common/sigv4"
+	"github.com/prometheus/sigv4"
 	"gopkg.in/yaml.v2"
 )
 

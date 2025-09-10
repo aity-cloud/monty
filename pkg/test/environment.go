@@ -1112,7 +1112,7 @@ func (e *Environment) UnsafeStartPrometheus(ctx context.Context, montyAgentId st
 		fmt.Sprintf("--web.listen-address=127.0.0.1:%d", port),
 		"--log.level=error",
 		"--web.enable-lifecycle",
-		"--enable-feature=agent",
+		"--agent",
 	}
 	cmd := exec.CommandContext(ctx, prometheusBin, defaultArgs...)
 	plugins.ConfigureSysProcAttr(cmd)
