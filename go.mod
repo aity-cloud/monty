@@ -154,7 +154,7 @@ require (
 	gonum.org/v1/gonum v0.16.0
 	google.golang.org/genproto/googleapis/api v0.0.0-20250826171959-ef028d996bc1
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20250826171959-ef028d996bc1
-	google.golang.org/grpc v1.75.0
+	google.golang.org/grpc v1.75.1
 	google.golang.org/protobuf v1.36.8
 	gopkg.in/ini.v1 v1.67.0
 	gopkg.in/square/go-jose.v2 v2.6.0
@@ -206,6 +206,7 @@ require (
 	github.com/fxamacker/cbor/v2 v2.7.0 // indirect
 	github.com/go-chi/chi/v5 v5.2.2 // indirect
 	github.com/go-ini/ini v1.67.0 // indirect
+	github.com/go-jose/go-jose/v4 v4.1.1 // indirect
 	github.com/go-task/slim-sprig/v3 v3.0.0 // indirect
 	github.com/go-viper/mapstructure/v2 v2.4.0 // indirect
 	github.com/google/go-tpm v0.9.5 // indirect
@@ -234,11 +235,13 @@ require (
 	github.com/sercand/kuberesolver/v5 v5.1.1 // indirect
 	github.com/shirou/gopsutil/v4 v4.25.7 // indirect
 	github.com/soheilhy/cmux v0.1.5 // indirect
+	github.com/spiffe/go-spiffe/v2 v2.5.0 // indirect
 	github.com/tinylib/msgp v1.3.0 // indirect
 	github.com/tjhop/slog-gokit v0.1.4 // indirect
 	github.com/trivago/tgo v1.0.7 // indirect
 	github.com/valyala/fastjson v1.6.4 // indirect
 	github.com/x448/float16 v0.8.4 // indirect
+	github.com/zeebo/errs v1.4.0 // indirect
 	go.opentelemetry.io/auto/sdk v1.1.0 // indirect
 	go.opentelemetry.io/collector/client v1.40.0 // indirect
 	go.opentelemetry.io/collector/config/configmiddleware v0.127.0 // indirect
@@ -717,4 +720,4 @@ replace github.com/kralicky/codegen => github.com/aity-cloud/codegen v0.0.0-2025
 //temp replace
 replace github.com/prometheus/alertmanager => github.com/prometheus/alertmanager v0.0.0-20250907150727-1ce9b772a181
 
-replace google.golang.org/grpc => google.golang.org/grpc v1.71.2
+//replace github.com/prometheus/prometheus => ../prometheus
